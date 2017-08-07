@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Aplikasi Ujian Berbasis Web</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">		
+		<link rel="stylesheet" href="/stylesheets/w3.css">
+	</head>
+<body>
+	<script src="/javascripts/angular.js"></script>
+	<script src="/javascripts/angular-route.js"></script>
+	<script src="/javascripts/angular-id.js"></script>
+	<script src="/javascripts/angular-animate.js"></script>
+	<script src="/config/app.js"></script>
+	<header class="w3-container w3-black">
+		<h1>Aplikasi Ujian Berbasis Web (Peserta)</h1>
+		<div class="w3-bar">
+			<a class="w3-bar-item w3-button w3-blue" href="#!/">Home</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!admin/ujian">Kelola Daftar Ujian</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!admin/peserta">Kelola Daftar Peserta</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!admin/soal">Kelola Soal</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!ujian/masuk">Test Ujian</a>
+		</div>
+	</header>
+	<div ng-app="mandan">
+	<div ng-view class="w3-container"></div>
+	</div>
+	<footer class="w3-container w3-black w3-cell-row"><h5 class="w3-cell-bottom">Created by Mandan</h5></footer>
+</body>
+</html>

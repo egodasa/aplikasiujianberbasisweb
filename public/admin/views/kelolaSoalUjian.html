@@ -1,0 +1,38 @@
+<h2>Kelola Soal Ujian</h2>
+<span ng-include="'/admin/views/buttonAtas.html'"></span>
+<div class="w3-modal" ng-model="createForm" style="{{form}}">
+	<div class="w3-modal-content w3-animate-top">
+		<form class="w3-card-8 w3-container" method="POST" ng-submit="createData()">
+			<span ng-click="showForm(0,0)" class="w3-closebtn">&times;</span>
+			<h2>Daftar Soal</h2>
+			<table class="w3-table w3-bordered w3-border w3-section" ng-model="tabelData" ng-hide="tabelData">
+				<tr class="w3-teal">
+					<th>No</th>
+					<th>Soal</th>
+					<th>Aksi</th>
+				</tr>
+				<tr ng-repeat="x in soal">
+					<td>{{$index+1}}</td>
+					<td>{{x.isi_soal}}</td>
+					<td><button type="button" class="w3-btn w3-small w3-red" ng-click="createData(x.id_soal)">Tambahkan Soal</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<h2>Daftar Soal Ujian</h2>
+<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
+	<tr class="w3-teal">
+		<th>No</th>
+		<th>Soal Ujian</th>
+		<th>Aksi</th>
+	</tr>
+	<tr ng-repeat="x in data">
+		<td>{{$index+1}}</td>
+		<td>{{x.isi_soal}}</td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)">Hapus</button></td>
+	</tr>
+</table>
+
+

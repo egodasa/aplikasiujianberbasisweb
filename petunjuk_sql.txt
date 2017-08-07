@@ -1,0 +1,11 @@
+Hampir semua command sql sudah diubah menjadi fungsi dan prosedure demi keamanan dan kemudahan penggunaan pada coding program.
+CRUD tbujian :
+1. call getUjian(0=semua atau id_ujian);
+2. call deleteUjian(id_ujian);
+3. call updateUjian(id_ujian);
+4. call createUjian('nm_ujian');
+5. genIdUjian(); return uniqe id_ujian;
+
+CRUD tbpeserta_ujian :
+1. call getPesertaUjian(id_peserta atau 0,'id_ujian atau 0000000');
+2. call createPesertaUjian()

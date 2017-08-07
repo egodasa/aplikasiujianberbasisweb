@@ -1,0 +1,67 @@
+<h2>Kelola Soal</h2>
+<span ng-include="'/admin/views/buttonAtas.html'"></span>
+<div class="w3-modal" ng-model="createForm" style="{{form}}">
+	<div class="w3-modal-content w3-animate-top">
+		<form ng-show="createForm" class="w3-card-8 w3-container w3-section" method="POST" ng-submit="createData()">
+			<span ng-click="showForm(0,0)" class="w3-closebtn">&times;</span>
+			<h3>Tambah Data</h3>
+			<textarea class="w3-input w3-border" type="text" id="Tsoal" ng-model="Tsoal" placeholder="Isi Soal"></textarea>
+			<label class="w3-label w3-text-red">{{ETsoal}}</label><br/>
+			<div class="w3-row">
+				<div class="w3-col l1">
+					<input ng-repeat="x in Thuruf" class="w3-input w3-border" type="text" ng-model="Thuruf[$index]" placeholder="Huruf" /><label class="w3-label w3-text-red">{{EThuruf[0]}}</label>
+				</div>
+				<div class="w3-col l11">
+					<input ng-repeat="x in Thuruf" class="w3-input w3-border" type="text" ng-model="Tisi_pilihan[$index]" placeholder="Isi Pilihan Ganda" /><label class="w3-label w3-text-red">{{ETpilihan[0]}}</label><br/>
+				</div>
+			</div>
+			<button class="w3-btn w3-tiny w3-teal" type="button" ng-click="addPG(0)">+</button>
+			<button class="w3-btn w3-tiny w3-red" type="button" ng-click="deletePG(0)">-</button>
+			<br/>
+			Jawaban :
+			<label class="w3-label w3-text-red">{{ERjawaban}}</label><br/>
+			<div ng-repeat="x in Thuruf">
+				<input class="w3-radio" type="radio" name="Huruf" ng-model="$parent.Rjawaban" ng-value='Thuruf[$index]' /> <label class="w3-label">{{Thuruf[$index]}}</label>
+			</div>
+			<span ng-include="'/admin/views/buttonCreate.html'"></span>
+		</form>
+		<!-- UPDATE FORM -->
+		<form ng-show="updateForm" class="w3-card-8 w3-container w3-section" method="PUT" ng-submit="updateData(id)">
+			<span ng-click="showForm(0,1)" class="w3-closebtn">&times;</span>
+			<h3>Update Data </h3>
+			<input class="w3-input w3-border" type="text" id="UTsoal" ng-model="UTsoal" placeholder="Isi Soal" /><label class="w3-label w3-text-red">{{EUTsoal}}</label><br/>
+			<div class="w3-row">
+				<div class="w3-col l1">
+					<input ng-repeat="x in UThuruf" ng-value='x' class="w3-input w3-border" type="text" ng-model="UThuruf[$index]" placeholder="Huruf" /><label class="w3-label w3-text-red">{{EThuruf[0]}}</label>
+				</div>
+				<div class="w3-col l11">
+					<input ng-repeat="x in UTisi_pilihan" ng-value='x' class="w3-input w3-border" type="text" ng-model="UTisi_pilihan[$index]" placeholder="Isi Pilihan Ganda" /><label class="w3-label w3-text-red">{{ETpilihan[0]}}</label><br/>
+				</div>
+			</div>
+			<button class="w3-btn w3-tiny w3-teal" type="button" ng-click="addPG(1)">+</button>
+			<button class="w3-btn w3-tiny w3-red" type="button" ng-click="deletePG(1)">-</button>
+			<br/>
+			Jawaban :
+			<label class="w3-label w3-text-red">{{EURjawaban}}</label><br/>
+			<div ng-repeat="x in pilihan_ganda">
+				<input class="w3-radio" type="radio" name="UHuruf" ng-model="$parent.URjawaban" ng-value='x.huruf' /> <label class="w3-label">{{x.huruf}}</label>
+			</div>
+			<span ng-include="'/admin/views/buttonUpdate.html'"></span>
+		</form>
+	</div>
+</div>
+
+<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
+	<tr class="w3-teal">
+		<th>No</th>
+		<th>Isi Soal</th>
+		<th>Aksi</th>
+	</tr>
+	<tr ng-repeat="x in data">
+		<td>{{$index+1}}</td>
+		<td>{{x.isi_soal | limitTo : 20}}</td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)">Hapus</button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)">Update</button></td>
+	</tr>
+</table>
+

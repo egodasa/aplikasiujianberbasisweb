@@ -1,0 +1,50 @@
+<div class="w3-section">
+	<div class="w3-card-2 w3-center" style="margin : 0 auto;width:50%;">
+		<div class="w3-container">
+			<h1>Login Peserta Ujian</h1>
+			<select class="w3-select w3-section" name="idUjian" ng-model="id_ujian" ng-option="x.nm_ujian for x in listUjian">
+				<option value="" disabled selected>-- Pilih Ujian --</option>
+			</select>
+			<input class="w3-input w3-section" placeholder="Nomor Peserta" ng-model="id_peserta" />
+			<button type="submit" class="w3-btn w3-blue w3-section">Submit</button>
+		</div>
+	</div>
+</div>
+<!--
+<h2>Kelola Ujian</h2>
+<button type="button" ng-click="readData()" class="w3-btn w3-lighgray">Refresh</button>
+<button type="button" ng-click="showCreateForm()" class="w3-btn w3-blue">Tambah Data</button>
+<div class="w3-card" ng-model="createForm" ng-hide="createForm">
+<form class="w3-container" method="POST" ng-submit="createData()">
+<h3>Tambah Data</h3>
+<input class="w3-input w3-border" type="text" id="Tnm_ujian" ng-model="Tnm_ujian" placeholder="Nama Ujian " /><span>{{ETnm_ujian}}</span><br/>
+<button type="submit" class="w3-btn w3-small w3-teal">Simpan</button>
+<button type="reset" class="w3-btn w3-small w3-red">Reset</button>
+<button type="button" ng-click="showCreateForm()" class="w3-btn w3-small w3-blue">Batal</button>
+</form>
+</div>
+<div class="w3-card" ng-model="updateForm" ng-hide="updateForm">
+<form class="w3-container" method="POST" ng-submit="updateData(id)">
+<h3>Update Data </h3>
+<input class="w3-input w3-border" type="text" id="UTnm_ujian" ng-model="UTnm_ujian" placeholder="Nama Ujian " /><span>{{EUTnm_ujian}}</span><br/>
+<button type="submit" class="w3-btn w3-small w3-teal">Simpan</button>
+<button type="reset" class="w3-btn w3-small w3-red">Reset</button>
+<button type="button" ng-click="showUpdateForm()" class="w3-btn w3-small w3-blue">Batal</button>
+</form>
+</div>
+<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
+	<tr class="w3-teal">
+		<th>No</th>
+		<th>Nama Ujian</th>
+		<th>Aksi</th>
+	</tr>
+	<tr ng-repeat="x in data">
+		<td>{{$index+1}}</td>
+		<td>{{x.nm_ujian}}</td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)">Hapus</button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)">Update</button>
+		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)">Soal Ujian</button>
+		<button type="button" class="w3-btn w3-small w3-orange" ng-click="setIdUjian(x.id_ujian,0)">Peserta Ujian</button></td>
+	</tr>
+</table>
+-->

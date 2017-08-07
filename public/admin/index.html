@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Aplikasi Ujian Berbasis Web</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">		
+		<link rel="stylesheet" href="/stylesheets/w3.css">
+		<link rel="stylesheet" href="/stylesheets/font-awesome.min.css">
+	</head>
+<body>
+	<script src="/javascripts/angular.js"></script>
+	<script src="/javascripts/angular-route.js"></script>
+	<script src="/javascripts/angular-id.js"></script>
+	<script src="/javascripts/angular-animate.js"></script>
+	<script src="/javascripts/angular-cookies.js"></script>
+	<script src="/admin/config/app.js"></script>
+	<script src="/admin/controller/kelolaUjian.js"></script>
+	<script src="/admin/controller/kelolaPeserta.js"></script>
+	<script src="/admin/controller/kelolaPesertaUjian.js"></script>
+	<script src="/admin/controller/kelolaSoalUjian.js"></script>
+	<script src="/admin/controller/kelolaSoal.js"></script>
+	<script src="/admin/controller/cekPesertaUjian.js"></script>
+	<header class="w3-container w3-black">
+		<h1>Aplikasi Ujian Berbasis Web (Admin)</h1>
+		<div class="w3-bar">
+			<a class="w3-bar-item w3-button w3-blue" href="#!/">Home</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!ujian">Kelola Daftar Ujian</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!peserta">Kelola Daftar Peserta</a>
+			<a class="w3-bar-item w3-button w3-blue" href="#!soal">Kelola Soal</a>
+			<a class="w3-bar-item w3-button w3-blue" href="/peserta">Halaman Ujian</a>
+		</div>
+	</header>
+	<div ng-app="adminAUBE">
+	<div ng-view class="w3-container"></div>
+	</div>
+	<footer class="w3-container w3-black w3-cell-row"><h5 class="w3-cell-bottom">Created by Mandan</h5></footer>
+</body>
+</html>

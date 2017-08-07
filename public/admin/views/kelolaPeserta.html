@@ -1,0 +1,36 @@
+<h2>Kelola Peserta</h2>
+<span ng-include="'/admin/views/buttonAtas.html'"></span>
+<div class="w3-modal" ng-model="createForm" style="{{form}}">
+	<div class="w3-modal-content w3-animate-top">
+		<form ng-show="createForm" class="w3-card-8 w3-container w3-section" method="POST" ng-submit="createData()">
+			<span ng-click="showForm(0,0)" class="w3-closebtn">&times;</span>
+			<h3>Tambah Data</h3>
+			<input class="w3-input w3-border" type="text" id="Tnm_peserta" ng-model="Tnm_peserta" placeholder="Nama Peserta " />
+			<label class="w3-validate">{{ETnm_peserta}}</label><br/>
+			<span ng-include="'/admin/views/buttonCreate.html'"></span>
+		</form>
+		<form ng-show="updateForm" class="w3-card-8 w3-container w3-section" method="PUT" ng-submit="updateData(id)">
+			<span ng-click="showForm(0,1)" class="w3-closebtn">&times;</span>
+			<h3>Update Data </h3>
+			<input class="w3-input w3-border" type="text" id="UTnm_peserta" ng-model="UTnm_peserta" placeholder="Nama Peserta " />
+			<label class="w3-validate">{{EUTnm_peserta}}</label><br/>
+			<span ng-include="'/admin/views/buttonUpdate.html'"></span>
+		</form>
+	</div>
+</div>
+<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
+	<tr class="w3-teal">
+		<th>No</th>
+		<th>Nomor Peserta</th>
+		<th>Nama Peserta</th>
+		<th>Aksi</th>
+	</tr>
+	<tr ng-repeat="x in data">
+		<td>{{$index+1}}</td>
+		<td>{{x.id_peserta}}</td>
+		<td>{{x.nm_peserta}}</td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_peserta)">Hapus</button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_peserta)">Update</button></td>
+	</tr>
+</table>
+
