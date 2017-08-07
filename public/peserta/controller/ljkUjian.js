@@ -18,7 +18,8 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			$scope.jawaban = $scope.listJawaban[no_soal].jawaban;
 			//SET POSISI SOAL SEDANG DIsoalKAN KE COOKIES
 			$scope.setSesiLjk(no_soal,id_soal);
-			console.log($scope.sesiLjk);
+			//SET NOMOR SOAL UNTUK DITAMPILKAN
+			$scope.noSoal = 1*no_soal+1;
 		}), function(res){
 			$scope.isiSoal =[];
 			};
