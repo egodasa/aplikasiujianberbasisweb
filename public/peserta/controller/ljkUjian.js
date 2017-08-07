@@ -1,5 +1,8 @@
-app.controller("ljkUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
-	$scope.tgl = new Date();
+app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookies, infoPesertaUjian, sesiUjian){
+	$interval(function(){
+		$scope.tgl = new Date();
+		$scope.jam = $scope.tgl.getHours() + ' : ' + $scope.tgl.getMinutes() + ' : ' + $scope.tgl.getSeconds();
+		}, 1000);
 	$scope.sesiUjian = sesiUjian.getSesiUjian();
 	$scope.setSesiLjk = function(x,y){
 		sesiUjian.setSesiLjk(x,y);
