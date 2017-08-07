@@ -1,4 +1,5 @@
 app.controller("ljkUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
+	$scope.tgl = new Date();
 	$scope.sesiUjian = sesiUjian.getSesiUjian();
 	$scope.setSesiLjk = function(x,y){
 		sesiUjian.setSesiLjk(x,y);
