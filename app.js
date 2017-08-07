@@ -12,7 +12,7 @@ mysql = require('mysql');
 koneksi = mysql.createPool({
 		host : 'localhost',
 		user : 'root',
-		password : '',
+		password : 'qwe123*iop',
 		database : 'dbujian',
 		multipleStatements : true
 		});

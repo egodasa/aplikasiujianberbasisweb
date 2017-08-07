@@ -1,14 +1,20 @@
-app.controller("ljkUjian", function($scope, $http, $location, infoPesertaUjian){
+app.controller("ljkUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
+	$scope.sesiUjian = sesiUjian.getSesiUjian();
+	$scope.setSesiLjk = function(x,y){
+		sesiUjian.setSesiLjk(x,y);
+	};
+	$scope.sesiLjk = sesiUjian.getSesiLjk();
 	$scope.listIdUjian = [];
 	$scope.listJawaban = [];
 	$scope.hasilUjian = {};
-	$scope.infoPesertaUjian = infoPesertaUjian.getPesertaUjian();
-	$scope.showSoalUjian = function(no_soal,id_soal){
+	$scope.showSoalUjian = function(no_soal){
+		var id_soal = $scope.idSoalUjian[no_soal].id_soal;
 		$http.get('http://localhost:3000/api/soal/'+id_soal).then(function(res){
 			$scope.isiSoal = res.data.data[0];
 			$scope.jawaban = $scope.listJawaban[no_soal].jawaban;
-			infoPesertaUjian.setPosisiSoal(no_soal,id_soal);
-			$scope.posisiSoal = infoPesertaUjian.getPosisiSoal();
+			//SET POSISI SOAL SEDANG DIsoalKAN KE COOKIES
+			$scope.setSesiLjk(no_soal,id_soal);
+			console.log($scope.sesiLjk);
 		}), function(res){
 			$scope.isiSoal =[];
 			};
@@ -19,6 +25,8 @@ app.controller("ljkUjian", function($scope, $http, $location, infoPesertaUjian){
 			for(var x=0;x< res.data.data.length;x++){
 				$scope.listJawaban.push({no_soal : x,id_soal : res.data.data[x].id_soal,jawaban : null});
 			}
+			//tampilkan ujian setelah daftar id_ujian diambil
+			$scope.showSoalUjian($scope.sesiLjk.no_soal,$scope.idSoalUjian[$scope.sesiLjk.no_soal].id_soal);
 		}), function(res){
 			$scope.isiSoal =[];
 			};
@@ -47,5 +55,5 @@ app.controller("ljkUjian", function($scope, $http, $location, infoPesertaUjian){
 		infoPesertaUjian.setHasilUjian($scope.hasilUjian);
 		$location.path('/ljk/hasil');
 	};
-	$scope.getSoalUjian($scope.infoPesertaUjian.ujian.id_ujian);
+	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
 });

@@ -1,4 +1,4 @@
-var app = angular.module("pesertaAUBE", ["ngRoute"]);
+var app = angular.module("pesertaAUBE", ["ngRoute","ngCookies"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -29,17 +29,6 @@ app.service('infoPesertaUjian', function($location, $http){
 		this.no_soal;
 		this.posisiSoal;
 		this.hasilUjian;
-		this.setPesertaUjian = function(x,y){
-			this.id_ujian = x;
-			this.id_peserta = y;
-		};
-		this.getPesertaUjian = function(){
-			this.detail = {
-				ujian : this.id_ujian,
-				id_peserta : this.id_peserta
-			};
-			return this.detail;
-		};
 		this.setSoalUjian = function(x){
 			$http.get('http://localhost:3000/api/ujian/'+x+'/soal').then(function(res){
 				this.soalUjian = res.data.data;
@@ -67,3 +56,27 @@ app.service('infoPesertaUjian', function($location, $http){
 		};
 });
 
+app.service('sesiUjian', function($cookies){
+	this.getSesiUjian = function(){
+		return {
+			id_ujian : $cookies.get('id_ujian'),
+			nm_ujian : $cookies.get('nm_ujian'),
+			id_peserta : $cookies.get('id_peserta')
+		};
+	};
+	this.setSesiUjian = function(x,x1,y){
+		$cookies.put('id_ujian',x);
+		$cookies.put('nm_ujian',x1);
+		$cookies.put('id_peserta',y);
+	};
+	this.getSesiLjk = function(){
+		return {
+			no_soal : $cookies.get('no_soal'),
+			id_soal : $cookies.get('id_soal')
+		};
+	};
+	this.setSesiLjk = function(x,y){
+		$cookies.put('no_soal',x);
+		$cookies.put('id_soal',y);
+	};
+});

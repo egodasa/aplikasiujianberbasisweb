@@ -1,9 +1,9 @@
-app.controller("cekPesertaUjian", function($scope, $http, $location, infoPesertaUjian){
-	$scope.setPesertaUjian = function(x,y){
-		infoPesertaUjian.setPesertaUjian(x,y);
+app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
+	$scope.setSesiUjian = function(x,y,z){
+		sesiUjian.setSesiUjian(x,y,z);
 	};
-	$scope.setNoKerja = function(x){
-		infoPesertaUjian.setNoKerja(x);
+	$scope.setSesiLjk = function(x,y){
+		sesiUjian.setSesiLjk(x,y);
 	};
 	$scope.pesanWarning = false;
 	$scope.pesanSuccess = false;
@@ -24,14 +24,15 @@ app.controller("cekPesertaUjian", function($scope, $http, $location, infoPeserta
 			};
 		};
 	$scope.cekPeserta = function(){
+		//$scope.idUjian BERBENTUK OBJEK KARENA DARI NG-OPTIONS
 		$http.get('http://localhost:3000/api/ujian/'+$scope.idUjian.id_ujian+'/peserta/'+$scope.idPeserta).then(function(res){
 				$scope.hasilCek = res.data.data;
 				if($scope.hasilCek.length <1) {
 					$scope.showWarning();
 				}
 				else {
-					$scope.setPesertaUjian($scope.idUjian,$scope.idPeserta);
-					$scope.setSoalUjian($scope.idUjian);
+					$scope.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta);
+					$scope.setSesiLjk(0,'0000000');
 					$location.path('/petunjuk');
 				}
 		}), function(res){

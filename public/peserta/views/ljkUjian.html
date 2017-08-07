@@ -7,21 +7,21 @@
 			<a class="w3-border-bottom">Nama Ujian</a>
 		</div>
 		<div class="w3-col l6">
-			<a class="w3-border-bottom" href="#">{{infoPesertaUjian.id_peserta}}</a>
-			<a class="w3-border-bottom" href="#">{{infoPesertaUjian.ujian.id_ujian}}</a>
-			<a class="w3-border-bottom" href="#">{{infoPesertaUjian.ujian.nm_ujian}}</a>
+			<a class="w3-border-bottom" href="#">{{sesiUjian.id_peserta}}</a>
+			<a class="w3-border-bottom" href="#">{{sesiUjian.id_ujian}}</a>
+			<a class="w3-border-bottom" href="#">{{sesiUjian.nm_ujian}}</a>
 		</div>
 	</div>
 	<a class="w3-teal"><h3 class="w3-margin">Pilih Soal</h3></a>
-	<a ng-repeat="x in idSoalUjian" ng-click="showSoalUjian($index,x.id_soal)" class="w3-hover-grey">Soal Nomor {{$index+1}}</a>
+	<a ng-repeat="x in idSoalUjian" ng-click="showSoalUjian($index)" class="w3-hover-grey">Soal Nomor {{$index+1}}</a>
 </nav>
 	<div style="width:80%;margin-left:20%;">
 		<div class="w3-container">
-		<h2>Soal Nomor {{posisiSoal.no_soal+1}}</h2>
+		<h2>Soal Nomor {{sesiUjian.no_soal+1}}</h2>
 		<p>{{isiSoal.isi_soal}}</p>
 		Jawaban : 
 			<div ng-repeat="x in isiSoal.pilihan_ganda">
-				<input class="w3-radio" ng-model="$parent.jawaban" type="radio" name="Huruf" ng-value='x.huruf' ng-click="simpanJawaban(posisiSoal.no_soal,posisiSoal.id_soal,x.huruf)" /> {{x.isi_pilihan}}
+				<input class="w3-radio" ng-model="$parent.jawaban" type="radio" name="Huruf" ng-value='x.huruf' ng-click="simpanJawaban(sesiLjk.no_soal,sesiLjk.id_soal,x.huruf)" /> {{x.isi_pilihan}}
 			</div>
 		</div>
 		<button type="button" class="w3-button w3-red w3-right w3-section" ng-click="kumpulkanUjian()">Kumpulkan Ujian >></button>
