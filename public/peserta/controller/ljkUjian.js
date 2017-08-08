@@ -2,16 +2,26 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	$interval(function(){
 		$scope.tgl = new Date();
 		}, 1000);
-		
-	$scope.durasiUjian = function(jam,menit,detik){
-		$scope.durasiUjian = new Date();
-		$scope.durasiUjian.setHours(jam);
-		$scope.durasiUjian.setMinutes(menit);
-		$scope.durasiUjian.setSeconds(detik);
-		$scope.durasiUjian.setMilliseconds(999);
-		$scope.sisaWaktu = $scope.durasiUjian.getTime();
-		$interval(function(){
-			$scope.sisaWaktu = $scope.sisaWaktu - 1000 ;
+	$scope.durasiUjian = function(jam,menit){
+		var lamaUjian = 3600000*jam+menit*60000;
+		var waktu = new Date();
+		waktu.setHours(0);
+		waktu.setMinutes(0);
+		waktu.setSeconds(0);
+		waktu.setMilliseconds(0);
+		$scope.startUjian = waktu.getTime();
+		waktu.setHours(jam);
+		waktu.setMinutes(menit);
+		waktu.setSeconds(0);
+		waktu.setMilliseconds(0);
+		$scope.finishUjian = waktu.getTime(); //SET WAKTU FINISH
+		$scope.runWaktu = $interval(function(){
+			$scope.finishUjian = $scope.finishUjian - 1000; //WAKTU FINISH DIPROSES HINGGA SAMA DENGAN WAKTU START
+			if($scope.finishUjian == $scope.startUjian) { //CEK WAKTU
+				console.log('waktu habis');
+				$interval.cancel($scope.runWaktu); //WAKTU DISTOP
+				$scope.runWaktu = undefined;
+			}
 			}, 1000);
 	};
 	$scope.sesiUjian = sesiUjian.getSesiUjian();
@@ -72,5 +82,5 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		$location.path('/ljk/hasil');
 	};
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
-	$scope.durasiUjian(0,0,10);
+	$scope.durasiUjian(0,1);
 });
