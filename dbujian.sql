@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2017 at 04:14 AM
+-- Generation Time: Aug 08, 2017 at 10:22 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -45,10 +45,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `createSoalUjian` (IN `id_ujian` VAR
 insert into tbsoal_ujian(id_ujian,id_soal) values(id_ujian,id_soal);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createUjian` (IN `nm_ujian` VARCHAR(30))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createUjian` (IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT(2), IN `menit` TINYINT(2))  BEGIN
 declare id varchar(7);
 set id = genIdUjian();
-INSERT into tbujian values (id,nm_ujian);
+INSERT into tbujian values (id,nm_ujian,stringToTime(jam,menit));
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePeserta` (IN `id` INT(11))  BEGIN
@@ -196,6 +196,12 @@ when (id_tmp >= 100000 AND id_tmp <= 999999 ) then RETURN CONCAT('0',id_tmp);
 ELSE RETURN id_tmp;
 END CASE;
 END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `stringToTime` (`jam` TINYINT, `menit` TINYINT) RETURNS BIGINT(20) BEGIN
+declare hasil bigint;
+set hasil = jam*3600000+menit*60000;
+return hasil;
+end$$
 
 DELIMITER ;
 
@@ -383,16 +389,17 @@ INSERT INTO `tbsoal_ujian` (`id`, `id_ujian`, `id_soal`) VALUES
 
 CREATE TABLE `tbujian` (
   `id_ujian` varchar(7) NOT NULL,
-  `nm_ujian` varchar(30) NOT NULL
+  `nm_ujian` varchar(30) NOT NULL,
+  `durasi_ujian` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbujian`
 --
 
-INSERT INTO `tbujian` (`id_ujian`, `nm_ujian`) VALUES
-('0000001', 'WWII'),
-('0000002', 'TI');
+INSERT INTO `tbujian` (`id_ujian`, `nm_ujian`, `durasi_ujian`) VALUES
+('0000001', 'WWII', 0),
+('0000002', 'TI', 0);
 
 --
 -- Indexes for dumped tables
@@ -470,7 +477,7 @@ ALTER TABLE `tbjawaban_ljk`
 -- AUTO_INCREMENT for table `tbpeserta`
 --
 ALTER TABLE `tbpeserta`
-  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbpeserta_ujian`
 --
