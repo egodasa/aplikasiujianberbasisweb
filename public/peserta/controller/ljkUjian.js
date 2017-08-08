@@ -2,8 +2,8 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	$interval(function(){
 		$scope.tgl = new Date();
 		}, 1000);
-	$scope.durasiUjian = function(jam,menit){
-		var lamaUjian = 3600000*jam+menit*60000;
+	$scope.durasiUjian = function(millidetik){
+		var lamaUjian = millidetik;
 		var waktu = new Date();
 		waktu.setHours(0);
 		waktu.setMinutes(0);

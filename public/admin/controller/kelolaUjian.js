@@ -5,8 +5,16 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 	$scope.resetForm = function(){
 		$scope.Tnm_ujian = '';
 		$scope.ETnm_ujian = '';
+		$scope.Tjam = '';
+		$scope.ETjam = '';
+		$scope.Tmenit = '';
+		$scope.ETmenit = '';
 		$scope.EUTnm_ujian = '';
 		$scope.UTnm_ujian = '';
+		$scope.EUTjam = '';
+		$scope.UTjam = '';
+		$scope.EUTmenit = '';
+		$scope.UTmenit = '';
 	};
 	$scope.createForm = false;
 	$scope.updateForm = false;
@@ -54,7 +62,9 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		};
 	$scope.createData = function(){
 		var data = {
-			nm_ujian : $scope.Tnm_ujian
+			nm_ujian : $scope.Tnm_ujian,
+			jam : $scope.Tjam,
+			menit : $scope.Tmenit
 		};
 		data = JSON.stringify(data);
 		$http({
@@ -72,6 +82,8 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			}
 			else {
 				$scope.ETnm_ujian = hasil.error.nm_ujian.msg;
+				$scope.ETjam = hasil.error.jam.msg;
+				$scope.ETmenit = hasil.error.menit.msg;
 			}
 		}), function(res){
 			console.log(res.data.status);
@@ -81,8 +93,11 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		$http.get('http://localhost:3000/api/ujian/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
+				$scope.resetForm();
 				$scope.id = hasil.id_ujian;
 				$scope.UTnm_ujian = hasil.nm_ujian;
+				$scope.UTjam = hasil.jam;
+				$scope.UTmenit = hasil.menit;
 				$scope.showForm(1,1);
 			}), function(res){
 				console.log('error fetch data details');
@@ -90,7 +105,9 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		}
 		$scope.updateData = function(id){
 			var data = {
-				nm_ujian : $scope.UTnm_ujian
+				nm_ujian : $scope.UTnm_ujian,
+				jam : $scope.UTjam,
+				menit : $scope.UTmenit
 			};
 			data = JSON.stringify(data);
 			$http({
@@ -107,6 +124,8 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 						}
 					else {
 						$scope.EUTnm_ujian = hasil.error.nm_ujian.msg;
+						$scope.EUTjam = hasil.error.jam.msg;
+						$scope.EUTmenit = hasil.error.menit.msg;
 						}
 				}), function(){
 					};

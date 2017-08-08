@@ -7,6 +7,17 @@
 			<h3>Tambah Data</h3>
 			<input class="w3-input w3-border" type="text" id="Tnm_ujian" ng-model="Tnm_ujian" placeholder="Nama Ujian " />
 			<label class="w3-validate">{{ETnm_ujian}}</label><br/>
+			<label class="w3-label">Lama Ujian</label>
+			<div class="w3-row">
+				<div class="w3-col l6">
+					<input class="w3-input w3-border" type="number" min=0 id="Tjam" ng-model="Tjam" placeholder="Jam" />
+					<label class="w3-validate">{{ETjam}}</label>
+				</div>
+				<div class="w3-col l6">
+					<input class="w3-input w3-border" type="number" min=0 max=59 id="Tmenit" ng-model="Tmenit" placeholder="menit" />
+					<label class="w3-validate">{{ETmenit}}</label>
+				</div>
+			</div>
 			<span ng-include="'/admin/views/buttonCreate.html'"></span>
 		</form>
 		<form ng-show="updateForm" class="w3-card-8 w3-container w3-section" method="PUT" ng-submit="updateData(id)">
@@ -14,6 +25,16 @@
 			<h3>Update Data </h3>
 				<input class="w3-input w3-border" type="text" id="UTnm_ujian" ng-model="UTnm_ujian" placeholder="Nama Ujian " />
 				<label class="w3-validate">{{EUTnm_ujian}}</label><br/>
+				<div class="w3-row">
+				<div class="w3-col l6">
+					<input class="w3-input w3-border" type="number" min=0 id="UTjam" ng-model="UTjam" placeholder="Jam" />
+					<label class="w3-validate">{{EUTjam}}</label>
+				</div>
+				<div class="w3-col l6">
+					<input class="w3-input w3-border" type="number" min=0 max=59 id="UTmenit" ng-model="UTmenit" placeholder="menit" />
+					<label class="w3-validate">{{EUTmenit}}</label>
+				</div>
+			</div>
 				<span ng-include="'/admin/views/buttonUpdate.html'"></span>
 		</form>
 	</div>
@@ -22,11 +43,13 @@
 	<tr class="w3-teal">
 		<th>No</th>
 		<th>Nama Ujian</th>
+		<th>Durasi</th>
 		<th>Aksi</th>
 	</tr>
 	<tr ng-repeat="x in data">
 		<td>{{$index+1}}</td>
 		<td>{{x.nm_ujian}}</td>
+		<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
 		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)">Hapus</button>
 		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)">Update</button>
 		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)">Soal Ujian</button>

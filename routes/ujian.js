@@ -68,6 +68,20 @@ router.post('/create',(req,res,next)=>{
 				value : data.nm_ujian
 			};
 		}
+		if(pesan.jam == undefined){
+			pesan.jam ={
+				param : "jam",
+				msg : "",
+				value : data.jam
+			};
+		}
+		if(pesan.menit == undefined){
+			pesan.menit ={
+				param : "menit",
+				msg : "",
+				value : data.menit
+			};
+		}
 		hasil = {
 			status : false,
 			error : pesan
@@ -75,7 +89,7 @@ router.post('/create',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-	sql = 'call createUjian("'+data.nm_ujian+'");';
+	sql = 'call createUjian("'+data.nm_ujian+'",'+data.jam+','+data.menit+');';
 	koneksi.query(sql, function(e, r, f){
 		if(!e){
 			hasil = {
@@ -139,6 +153,20 @@ router.put('/update/:id',(req,res,next)=>{
 				value : data.nm_ujian
 			};
 		}
+		if(pesan.jam == undefined){
+			pesan.jam ={
+				param : "jam",
+				msg : "",
+				value : data.jam
+			};
+		}
+		if(pesan.menit == undefined){
+			pesan.menit ={
+				param : "menit",
+				msg : "",
+				value : data.menit
+			};
+		}
 		hasil = {
 			status : false,
 			error : pesan
@@ -146,7 +174,7 @@ router.put('/update/:id',(req,res,next)=>{
 	res.json(hasil);
 	}
 	else{
-	sql = 'call updateUjian("'+id+'","'+data.nm_ujian+'");';
+	sql = 'call updateUjian("'+id+'","'+data.nm_ujian+'",'+data.jam+','+data.menit+');';
 	koneksi.query(sql, function(e, r, f){
 		if(!e){
 			if(r.affectedRows != 0){
