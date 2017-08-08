@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 08, 2017 at 10:22 AM
+-- Generation Time: Aug 08, 2017 at 03:39 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -108,8 +108,8 @@ select * from tbsoal_ujian inner join tbsoal on tbsoal_ujian.id_soal=tbsoal.id_s
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUjian` (IN `id` VARCHAR(7))  BEGIN
-if(id = '0000000') then SELECT * FROM tbujian;
-else SELECT * from tbujian where id_ujian=id;
+if(id = '0000000') then SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' FROM tbujian;
+else SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' from tbujian where id_ujian=id;
 END iF;
 end$$
 
@@ -128,10 +128,6 @@ update tbsoal set isi_soal=soal,jawaban=jawaban where id_soal=id;
 delete from tbpilihan_ganda where id_pilihan_ganda=id_pg;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUjian` (IN `id` VARCHAR(7), IN `nm_ujian` VARCHAR(30))  BEGIN
-UPDATE tbujian set nm_ujian=nm_ujian WHERE id_ujian=id;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
 CASE
 when(id_peserta = 0 AND id_ujian !='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=tbujian.id_ujian;
@@ -141,6 +137,10 @@ when(id_peserta != 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian
 when(id_peserta = 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta;
 else select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=id_ujian and tbpeserta_ujian.id_peserta=id_peserta;
 end case;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUjian` (IN `id` VARCHAR(7), IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT, IN `menit` TINYINT)  BEGIN
+UPDATE tbujian set nm_ujian=nm_ujian,durasi_ujian = stringToTime(jam,menit) WHERE id_ujian=id;
 END$$
 
 --
@@ -196,6 +196,18 @@ when (id_tmp >= 100000 AND id_tmp <= 999999 ) then RETURN CONCAT('0',id_tmp);
 ELSE RETURN id_tmp;
 END CASE;
 END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `miliToJam` (`mili` BIGINT) RETURNS TINYINT(4) BEGIN
+declare hasil tinyint;
+set hasil = floor(mili/3600000);
+return hasil;
+end$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `miliToMenit` (`mili` BIGINT) RETURNS TINYINT(2) BEGIN
+declare hasil tinyint;
+set hasil = (mili mod 3600000)/60000;
+return hasil;
+end$$
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `stringToTime` (`jam` TINYINT, `menit` TINYINT) RETURNS BIGINT(20) BEGIN
 declare hasil bigint;
@@ -399,7 +411,10 @@ CREATE TABLE `tbujian` (
 
 INSERT INTO `tbujian` (`id_ujian`, `nm_ujian`, `durasi_ujian`) VALUES
 ('0000001', 'WWII', 0),
-('0000002', 'TI', 0);
+('0000002', 'TI', 0),
+('0000003', 'ganti', 1260000),
+('0000005', 'IPA', 9000000),
+('0000006', 'IpS', 3600000);
 
 --
 -- Indexes for dumped tables
