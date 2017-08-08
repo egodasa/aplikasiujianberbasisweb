@@ -61,13 +61,17 @@ app.service('sesiUjian', function($cookies){
 		return {
 			id_ujian : $cookies.get('id_ujian'),
 			nm_ujian : $cookies.get('nm_ujian'),
+			jam : $cookies.get('jam'),
+			menit : $cookies.get('menit'),
 			id_peserta : $cookies.get('id_peserta')
 		};
 	};
-	this.setSesiUjian = function(x,x1,y){
+	this.setSesiUjian = function(x,x1,y,y1,y2){
 		$cookies.put('id_ujian',x);
 		$cookies.put('nm_ujian',x1);
 		$cookies.put('id_peserta',y);
+		$cookies.put('jam',y1);
+		$cookies.put('menit',y2);
 	};
 	this.getSesiLjk = function(){
 		return {

@@ -2,8 +2,8 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	$interval(function(){
 		$scope.tgl = new Date();
 		}, 1000);
-	$scope.durasiUjian = function(millidetik){
-		var lamaUjian = millidetik;
+	$scope.durasiUjian = function(jam,menit){
+		var lamaUjian = jam*3600000+menit*60000;
 		var waktu = new Date();
 		waktu.setHours(0);
 		waktu.setMinutes(0);
@@ -81,6 +81,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		infoPesertaUjian.setHasilUjian($scope.hasilUjian);
 		$location.path('/ljk/hasil');
 	};
+	console.log($scope.sesiUjian);
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
-	$scope.durasiUjian(0,1);
+	$scope.durasiUjian($scope.sesiUjian.jam,$scope.sesiUjian.menit);
 });

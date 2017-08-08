@@ -1,6 +1,6 @@
 app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
-	$scope.setSesiUjian = function(x,y,z){
-		sesiUjian.setSesiUjian(x,y,z);
+	$scope.setSesiUjian = function(x,y,z,a,b){
+		sesiUjian.setSesiUjian(x,y,z,a,b);
 	};
 	$scope.setSesiLjk = function(x,y){
 		sesiUjian.setSesiLjk(x,y);
@@ -31,7 +31,7 @@ app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, i
 					$scope.showWarning();
 				}
 				else {
-					$scope.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta);
+					$scope.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta,$scope.idUjian.jam,$scope.idUjian.menit);
 					$scope.setSesiLjk(0,'0000000');
 					$location.path('/petunjuk');
 				}
