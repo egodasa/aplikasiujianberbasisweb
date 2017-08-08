@@ -1,8 +1,19 @@
 app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookies, infoPesertaUjian, sesiUjian){
 	$interval(function(){
 		$scope.tgl = new Date();
-		$scope.jam = $scope.tgl.getHours() + ' : ' + $scope.tgl.getMinutes() + ' : ' + $scope.tgl.getSeconds();
 		}, 1000);
+		
+	$scope.durasiUjian = function(jam,menit,detik){
+		$scope.durasiUjian = new Date();
+		$scope.durasiUjian.setHours(jam);
+		$scope.durasiUjian.setMinutes(menit);
+		$scope.durasiUjian.setSeconds(detik);
+		$scope.durasiUjian.setMilliseconds(999);
+		$scope.sisaWaktu = $scope.durasiUjian.getTime();
+		$interval(function(){
+			$scope.sisaWaktu = $scope.sisaWaktu - 1000 ;
+			}, 1000);
+	};
 	$scope.sesiUjian = sesiUjian.getSesiUjian();
 	$scope.setSesiLjk = function(x,y){
 		sesiUjian.setSesiLjk(x,y);
@@ -61,4 +72,5 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		$location.path('/ljk/hasil');
 	};
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
+	$scope.durasiUjian(0,0,10);
 });
