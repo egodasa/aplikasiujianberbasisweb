@@ -6,8 +6,7 @@ app.config(function($routeProvider) {
         controller : "cekPesertaUjian"
     })
     .when("/petunjuk", {
-        templateUrl : "/peserta/views/petunjukUjian.html",
-        controller : "ljkUjian"
+        templateUrl : "/peserta/views/petunjukUjian.html"
     })
     .when("/ljk", {
         templateUrl : "/peserta/views/ljkUjian.html",
@@ -61,17 +60,16 @@ app.service('sesiUjian', function($cookies){
 		return {
 			id_ujian : $cookies.get('id_ujian'),
 			nm_ujian : $cookies.get('nm_ujian'),
-			jam : $cookies.get('jam'),
-			menit : $cookies.get('menit'),
+			waktu : $cookies.get('waktu'),
 			id_peserta : $cookies.get('id_peserta')
 		};
 	};
 	this.setSesiUjian = function(x,x1,y,y1,y2){
+		this.mili = y1*3600000+y2*60000;
 		$cookies.put('id_ujian',x);
 		$cookies.put('nm_ujian',x1);
 		$cookies.put('id_peserta',y);
-		$cookies.put('jam',y1);
-		$cookies.put('menit',y2);
+		$cookies.put('waktu',this.mili);
 	};
 	this.getSesiLjk = function(){
 		return {
@@ -82,5 +80,11 @@ app.service('sesiUjian', function($cookies){
 	this.setSesiLjk = function(x,y){
 		$cookies.put('no_soal',x);
 		$cookies.put('id_soal',y);
+	};
+	this.setJawabanLjk = function(x){
+		$cookies.putObject('jawaban',x);
+	};
+	this.getJawabanLjk = function(){
+		return $cookies.getObject('jawaban');
 	};
 });
