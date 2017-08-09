@@ -24,6 +24,10 @@ app.config(function($routeProvider) {
         templateUrl : "/admin/views/kelolaSoal.html",
         controller : "kelolaSoal"
     })
+    .when("/ujian/laporan", {
+        templateUrl : "/admin/views/hasilUjian.html",
+        controller : "hasilUjian"
+    })
     .when("/test", {
         templateUrl : "/test.html"
     })
@@ -37,6 +41,7 @@ app.service('ujian', function($location){
 			this.id_ujian = x;
 			if(y == 0) $location.path('/ujian/peserta');
 			else if(y == 1) $location.path('/ujian/soal');
+			else if(y == 2) $location.path('/ujian/laporan');
 			else $location.path('/ujian/soal');
 		};
 		this.getIdUjian = function(){

@@ -6,13 +6,14 @@ app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, i
 		sesiUjian.setSesiLjk(x,y);
 	};
 	$scope.pesanWarning = false;
-	$scope.pesanSuccess = false;
-	$scope.showSuccess = function(){
-		$scope.pesanSuccess = !$scope.pesanSuccess;
-	}
-	$scope.showWarning = function(){
+	$scope.showWarning = function(isi){
+		$scope.isiPesan = isi;
+		$scope.pesanWarning = false;
 		$scope.pesanWarning = !$scope.pesanWarning;
 	}
+	$scope.closeWarning = function(){
+		$scope.pesanWarning = false;
+	};
 	$scope.setSoalUjian = function(x){
 		infoPesertaUjian.setSoalUjian(x);
 	};
@@ -28,9 +29,13 @@ app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, i
 		$http.get('http://localhost:3000/api/ujian/'+$scope.idUjian.id_ujian+'/peserta/'+$scope.idPeserta).then(function(res){
 				$scope.hasilCek = res.data.data;
 				if($scope.hasilCek.length <1) {
-					$scope.showWarning();
+					$scope.showWarning('Anda tidak terdaftar diujian ini ...');
+				}
+				else if($scope.hasilCek.status = 'Sudah'){
+					$scope.showWarning('Anda sudah mengikuti ujian ini ...');
 				}
 				else {
+					console.log($scope.hasilCek);
 					$scope.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta,$scope.idUjian.jam,$scope.idUjian.menit);
 					$scope.setSesiLjk(0,'0000000');
 					$location.path('/petunjuk');
