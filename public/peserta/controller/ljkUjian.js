@@ -20,7 +20,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			if($scope.finishUjian == $scope.startUjian) { //CEK WAKTU
 				$interval.cancel($scope.runWaktu); //WAKTU DISTOP
 				$scope.runWaktu = undefined;
-				$scope.kumpulkanUjian();
+				$scope.kumpulkanUjian(); 
 			}
 			}, 1000);
 	};
@@ -69,6 +69,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		if(no_soal == $scope.listJawaban[no_soal].no_soal){
 			$scope.listJawaban[no_soal].id_soal = id_soal;
 			$scope.listJawaban[no_soal].jawaban = jawaban;
+		$scope.setJawabanLjk($scope.listJawaban);
 		}
 		else console.log("tidak dapat menyimpan jawaban");
 	};
@@ -87,6 +88,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			});
 		}
 		infoPesertaUjian.setHasilUjian($scope.hasilUjian);
+		sesiUjian.resetCookies();
 		$location.path('/ljk/hasil');
 	};
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);

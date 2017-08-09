@@ -1,12 +1,7 @@
-app.controller("hasilUjian", function($scope, $http, $location, infoPesertaUjian){
+app.controller("hasilUjian", function($scope, $http, $location, infoPesertaUjian, sesiUjian){
 	$scope.hasilUjian = infoPesertaUjian.getHasilUjian();
 	$scope.resetUjian = function(){
-		infoPesertaUjian.setPesertaUjian(null,null);
-		infoPesertaUjian.setSoalUjian(null);
-		infoPesertaUjian.setPosisiSoal(null);
-		$cookies.remove('id_ujian');
-		$cookies.remove('id_peserta');
-		$cookies.remove('no_kerja');
+		sesiUjian.resetCookies();
 		$location.path('/');
 	};
 });

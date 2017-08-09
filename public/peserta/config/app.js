@@ -87,4 +87,10 @@ app.service('sesiUjian', function($cookies){
 	this.getJawabanLjk = function(){
 		return $cookies.getObject('jawaban');
 	};
+	this.resetCookies = function(){
+		this.listCookies = ['id_ujian','nm_ujian','id_peserta','waktu','no_soal','id_soal','jawaban'];
+		for(x=0;x<this.listCookies.length;x++){
+			$cookies.remove(this.listCookies[x]);
+		}
+	};
 });
