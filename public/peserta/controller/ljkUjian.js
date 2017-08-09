@@ -77,9 +77,17 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		$scope.hasilUjian.id_peserta = $scope.sesiUjian.id_peserta;
 		$scope.hasilUjian.id_ujian = $scope.sesiUjian.id_ujian;
 		$scope.hasilUjian.hasil_ujian = [];
-		for(var x=0;x<$scope.idSoalUjian.length;x++){
-			if($scope.idSoalUjian[x].jawaban == $scope.listJawaban[x].jawaban) $scope.ket_jawaban = true;
-			else $scope.ket_jawaban = false;
+		var jawabanBenar=0;
+		var jawabanSalah=0;
+		for(var x=0;x<$scope.idSoalUjian.length;x++){ //MEMBANDINGKAN JAWABAN DAN MENGETAHUI BENAR SALAH SOAL
+			if($scope.idSoalUjian[x].jawaban == $scope.listJawaban[x].jawaban) {
+				$scope.ket_jawaban = true;
+				jawabanBenar++;
+			}
+			else {
+				$scope.ket_jawaban = false;
+				jawabanSalah++;
+			}
 			$scope.hasilUjian.hasil_ujian.push({
 				id_soal : $scope.idSoalUjian[x].id_soal,
 				jawaban_soal : $scope.idSoalUjian[x].jawaban,
@@ -87,10 +95,30 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 				keterangan : $scope.ket_jawaban
 			});
 		}
-		if($scope.runWaktu != undefined) $interval.cancel($scope.runWaktu); //MENGHENTIKAN TIMER JIKA TOMBOL KUMPULKAN UJIAN DITEKAN
-		infoPesertaUjian.setHasilUjian($scope.hasilUjian);
-		sesiUjian.resetCookies();
-		$location.path('/ljk/hasil');
+		var data = {
+				id_ujian : $scope.sesiUjian.id_ujian,
+				id_peserta : $scope.sesiUjian.id_peserta,
+				benar : jawabanBenar,
+				salah : jawabanSalah
+			};
+		data = JSON.stringify(data);
+		console.log(data);
+		$http({
+			method : 'POST',
+			url : 'http://localhost:3000/api/ujian/'+$scope.sesiUjian.id_ujian+'/hasil',
+			contentType : 'application/json; charset=utf-8',
+			data : data
+			}).then(function(){
+				if($scope.runWaktu != undefined) $interval.cancel($scope.runWaktu); //MENGHENTIKAN TIMER JIKA TOMBOL KUMPULKAN UJIAN DITEKAN
+				infoPesertaUjian.setHasilUjian($scope.hasilUjian);
+				sesiUjian.resetCookies();
+				$location.path('/ljk/hasil');
+			}), function(){
+				console.log('tidak dapat menyimpan jawaban');
+		};
+	};
+	$scope.simpanHasilUjian = function(){
+		$scope.listJawaban
 	};
 	if(sesiUjian.getJawabanLjk()) $scope.listJawaban = sesiUjian.getJawabanLjk(); //JAWABAN DISIMPAN KE COOKIES AGAR PERSISTENT
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);

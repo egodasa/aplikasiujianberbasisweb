@@ -457,4 +457,57 @@ router.post('/:id/soal/delete',(req,res,next)=>{
 		res.json(hasil);
 		});
 	});
+	
+//HASIL UJIAN
+router.get('/:id/hasil',(req, res, next)=>{
+	var id = req.params.id;
+	sql = 'call getHasilUjian("'+id+'",0);';
+	koneksi.query(sql, (e, r, f)=>{
+		if(!e){
+				if(r[0].length == 0) {
+					var hasil = {
+						status : false,
+						data : r[0],
+						error : "Data tidak ditemukan!"
+						};
+				}
+				else {
+					var hasil = {
+						status : true,
+						data : r[0],
+						error : null
+					};
+				}
+			}
+		else {
+			var hasil = {
+				status : false,
+				data : r[0],
+				error : e
+				};	
+			}
+		res.json(hasil);
+		});
+	});
+router.post('/:id/hasil',(req,res,next)=>{
+	var data = req.body;
+	var id = req.params.id;
+	sql = 'call createHasilUjian("'+id+'",'+data.id_peserta+','+data.benar+','+data.salah+');';
+	console.log(sql);
+	koneksi.query(sql, function(e, r, f){
+		if(!e){
+			hasil = {
+					status : true,
+					error : null
+				};
+			}
+		else {
+			hasil = {
+					status : false,
+					error : e
+				};
+			}
+		res.json(hasil);
+		});
+});
 module.exports = router;
