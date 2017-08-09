@@ -1,0 +1,19 @@
+<h2>Laporan Hasil Ujian</h2>
+<table class="w3-table w3-bordered w3-border" >
+	<tr class="w3-teal">
+		<th>No</th>
+		<th>Nama Peserta</th>
+		<th>Jawaban Benar</th>
+		<th>Jawaban Salah</th>
+		<th>Nilai</th>
+	</tr>
+	<tr ng-repeat="x in hasil">
+		<td>{{$index+1}}</td>
+		<td>{{x.nm_peserta}}</td>
+		<td>{{x.benar}}</td>
+		<td>{{x.salah}}</td>
+		<td>{{x.nilai}}</td>
+	</tr>
+</table>
+
+
