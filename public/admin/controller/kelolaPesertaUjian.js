@@ -51,7 +51,7 @@ app.controller("kelolaPesertaUjian", function($scope, $http, $location, ujian){
 			data : data,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
-				$scope.showCreateForm();
+				$scope.showForm(0);
 				$scope.readData();
 		}), function(res){
 			console.log(res.data.status);
