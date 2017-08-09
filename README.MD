@@ -1,5 +1,5 @@
 <h1>Aplikasi ujian berbasis web</h1>
-*versi : 1.0.0*
+versi : 1.0.0
 
 <h2>Keterangan</h2>
 1. Backend menggunakan NodeJS dan frontend menggunakan angularjs v1.6.5 
@@ -12,10 +12,8 @@
 4. Laporan hasil ujian setelah selesai pelaksanaan ujian oleh peserta.
 
 <h2>Kekurangan</h2>
-1. Pelaksanaan ujian masih belum menggunakan waktu atau timer.
-2. Belum menerapkan session atau cookies sehingga jika direfresh pada pelaksanaan ujian maka semua akan tereset.
-3. Belum ada laporan hasil ujian seluruh peserta untuk admin.
-4. Pada frontend (AngularJS) masih menerapkan module $http native untuk pertukaran data. DI versi selanjutnya akan 
+1. Belum ada laporan hasil ujian seluruh peserta untuk admin.
+2. Pada frontend (AngularJS) masih menerapkan module $http native untuk pertukaran data. DI versi selanjutnya akan 
 menggunakan modul $resource.
 
 <h2>Informasi</h2>
