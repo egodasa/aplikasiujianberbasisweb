@@ -18,7 +18,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			$scope.finishUjian = $scope.finishUjian - 1000; //WAKTU FINISH DIPROSES HINGGA SAMA DENGAN WAKTU START
 			$cookies.put('waktu',$scope.finishUjian-$scope.startUjian); //SIMPAN SISA WAKTU KE COOKIES
 			if($scope.finishUjian == $scope.startUjian) { //CEK WAKTU
-				$interval.cancel($scope.runWaktu); //WAKTU DISTOP
+				$interval.cancel($scope.runWaktu); //WAKTU DISTOP JIKA WAKTU SUDAH HABIS
 				$scope.runWaktu = undefined;
 				$scope.kumpulkanUjian(); 
 			}
@@ -27,7 +27,6 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	$scope.setJawabanLjk = function(x){
 		sesiUjian.setJawabanLjk(x);
 	};
-	$scope.getJawabanLjk = sesiUjian.getJawabanLjk();
 	$scope.sesiUjian = sesiUjian.getSesiUjian();
 	$scope.setSesiLjk = function(x,y){
 		sesiUjian.setSesiLjk(x,y);
@@ -70,6 +69,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			$scope.listJawaban[no_soal].id_soal = id_soal;
 			$scope.listJawaban[no_soal].jawaban = jawaban;
 		$scope.setJawabanLjk($scope.listJawaban);
+		console.log(sesiUjian.getJawabanLjk());
 		}
 		else console.log("tidak dapat menyimpan jawaban");
 	};
@@ -87,10 +87,12 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 				keterangan : $scope.ket_jawaban
 			});
 		}
+		if($scope.runWaktu != undefined) $interval.cancel($scope.runWaktu); //MENGHENTIKAN TIMER JIKA TOMBOL KUMPULKAN UJIAN DITEKAN
 		infoPesertaUjian.setHasilUjian($scope.hasilUjian);
 		sesiUjian.resetCookies();
 		$location.path('/ljk/hasil');
 	};
+	if(sesiUjian.getJawabanLjk()) $scope.listJawaban = sesiUjian.getJawabanLjk(); //JAWABAN DISIMPAN KE COOKIES AGAR PERSISTENT
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
 	$scope.durasiUjian($scope.sesiUjian.waktu);
 });
