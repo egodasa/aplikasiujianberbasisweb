@@ -1,62 +1,100 @@
 app.controller("kelolaSoal", function($scope, $http, $location){
-	$scope.alfabet = ["A","B","C","D","E","F","G","H","I"];
+	$scope.pilihanGandaDefault = [
+	{huruf : 'A', isi_pilihan : ''},
+	{huruf : 'B', isi_pilihan : ''},
+	{huruf : 'C', isi_pilihan : ''},
+	{huruf : 'D', isi_pilihan : ''},
+	{huruf : 'E', isi_pilihan : ''}
+	];
+	$scope.pilihanGanda = [
+	{huruf : 'A', isi_pilihan : ''},
+	{huruf : 'B', isi_pilihan : ''},
+	{huruf : 'C', isi_pilihan : ''},
+	{huruf : 'D', isi_pilihan : ''},
+	{huruf : 'E', isi_pilihan : ''}
+	];
+	$scope.Thuruf =[];
+	$scope.Tisi_pilihan =[];
+	for(x = 0;x<$scope.pilihanGanda.length;x++){
+		$scope.Thuruf.push($scope.pilihanGanda[x].huruf);
+		$scope.Tisi_pilihan.push($scope.pilihanGanda[x].isi_pilihan);
+	};
+	$scope.Thuruf =
 	$scope.addPG = function(x){
 		if(x == 0){
-			$scope.Thuruf.push($scope.alfabet[$scope.Thuruf.length]);
-			$scope.Tisi_pilihan.push("");
-		}else {
-			$scope.UThuruf.push($scope.alfabet[$scope.UThuruf.length]);
-			$scope.UTisi_pilihan.push("");
+			$scope.pilihanGanda.push($scope.pilihanGandaDefault[$scope.pilihanGanda.length]);
+			$scope.Thuruf.push($scope.pilihanGandaDefault[$scope.pilihanGanda.length]);
+			$scope.Tisi_pilihan.push($scope.pilihanGandaDefault[$scope.pilihanGanda.length]);
+		}
+		else if(x == 1){
+			$scope.pilihanGandaUpdate.push($scope.pilihanGandaDefault[$scope.pilihanGandaUpdate.length]);
+			$scope.UThuruf.push($scope.pilihanGandaDefault[$scope.pilihanGandaUpdate.length]);
+			$scope.UTisi_pilihan.push($scope.pilihanGandaDefault[$scope.pilihanGandaUpdate.length]);
 		}
 	}
 	$scope.deletePG = function(x){
 		if(x == 0){
+			$scope.pilihanGanda.pop();
 			$scope.Thuruf.pop();
 			$scope.Tisi_pilihan.pop();
-		}else {
+		}
+		else if(x == 1){
+			$scope.pilihanGandaUpdate.pop();
 			$scope.UThuruf.pop();
 			$scope.UTisi_pilihan.pop();
 		}
 	}
-	$scope.resetForm = function(){
-		$scope.Tsoal ='';
-		$scope.ETsoal ='';
-		$scope.UTsoal ='';
-		$scope.EUTsoal ='';
-		$scope.Rjawaban = '';
-		$scope.Thuruf=["A","B","C"];
-		$scope.Tisi_pilihan=["","",""];
+	$scope.resetForm = function(x){
+		if(x == 0){
+			$scope.Tsoal = '';
+			$scope.pilihanGanda = $scope.pilihanGandaDefault;
+			$scope.Thuruf = [];
+			$scope.Tisi_pilihan = [];
+			$scope.Rjawaban = '';
+			$scoep.ETsoal = '';
+			$scope.ERjawaban = '';
+		}
+		else {
+			$scope.UTsoal = '';
+			$scope.pilihanGandaUpdate = $scope.pilihanGandaDefault;
+			$scope.UThuruf = [];
+			$scope.UTisi_pilihan = [];
+			$scope.URjawaban = '';
+			$scope.EUTsoal = '';
+			$scope.EURjawaban = '';
+		}
 	};
 	$scope.createForm = false;
 	$scope.updateForm = false;
+	$scope.form = "display:none;";
 	$scope.showForm = function(x,y){
-		if(x == 0) {
+		if(x == 0){
+			$scope.createForm = false;
+			$scope.updateForm = false;
 			$scope.form = "display:none;";
-			$scope.resetForm();
+			$scope.resetForm(0);
+			$scope.resetForm(1);
+		}
+		else {
+			if(y == 0){
+				$scope.createForm = !$scope.updateForm;
 			}
-		else $scope.form = "display:block;";
-		
-		if(y == 0){
-			$scope.createForm = true;
-			$scope.updateForm = !$scope.createForm;
+			else $scope.updateForm = !$scope.createForm;
+			$scope.form = "display:block;";
 		}
-		else{
-			$scope.updateForm = true;
-			$scope.createForm = !$scope.updateForm;
-		}
-	}
+	};
 	$scope.readData = function(){
 		$http.get('http://localhost:3000/api/soal').then(function(res){
-			$scope.data = res.data.data;
+			$scope.laporanSoal = res.data.data;
 		}), function(res){
-			$scope.data_tabel ="error";
+			$scope.laporanSoal = [];
 			};
 		};
 	$scope.deleteData = function(id){
 		$http.delete('http://localhost:3000/api/soal/delete/'+id).then(function(res){
-			$scope.result = res.data.status;
-			if($scope.result == true){
-			$scope.readData();
+			var result = res.data.status;
+			if(result == true){
+				$scope.readData();
 			}
 			else {
 				console.log("data gagal dihapus");
@@ -88,7 +126,7 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 			var hasil = res.data;
 			console.log(hasil);
 			if(hasil.status == true){
-				$scope.resetForm();
+				$scope.resetForm(0);
 				$scope.showForm(0,0);
 				$scope.readData();
 			}
@@ -101,17 +139,17 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 			};
 		};
 		$scope.detailData = function(id){
+		$scope.idSoal = id;
 		$http.get('http://localhost:3000/api/soal/'+id)
 			.then(function(res){
+				var hasil = res.data.data[0];
 				$scope.UThuruf = [];
 				$scope.UTisi_pilihan = [];
-				hasil = res.data.data[0];
-				console.log(hasil);
-				for(var x=0;x<hasil.pilihan_ganda.length;x++){
-					$scope.UThuruf[x] = hasil.pilihan_ganda[x].huruf;
-					$scope.UTisi_pilihan[x] = hasil.pilihan_ganda[x].isi_pilihan;
-				}
-				console.log($scope.UThuruf);
+				$scope.pilihanGandaUpdate = hasil.pilihan_ganda;
+				for(x = 0;x<$scope.pilihanGandaUpdate.length;x++){
+					$scope.UThuruf[x] = $scope.pilihanGandaUpdate[x].huruf;
+					$scope.UTisi_pilihan[x] = $scope.pilihanGandaUpdate[x].isi_pilihan;
+				};
 				$scope.UTsoal = hasil.isi_soal;
 				$scope.URjawaban = hasil.jawaban;
 				$scope.showForm(1,1);
@@ -120,8 +158,9 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 			};
 		}
 		$scope.updateData = function(id){
-			for(x=0;x<$scope.Thuruf.length;x++){
-			$scope.pilihan.push({huruf : $scope.Thuruf[x], isi_pilihan : $scope.Tisi_pilihan[x]});
+			$scope.pilihan = [];
+			for(x=0;x<$scope.UThuruf.length;x++){
+			$scope.pilihan.push({huruf : $scope.UThuruf[x], isi_pilihan : $scope.UTisi_pilihan[x]});
 			}
 			var data = {
 				isi_soal : $scope.UTsoal,
@@ -137,7 +176,7 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 			}).then(function(res){
 				var hasil = res.data;
 					if(hasil.status == true){
-						$scope.resetForm();
+						$scope.resetForm(1);
 						$scope.readData();
 						$scope.showForm(0,1);
 						}
@@ -148,6 +187,5 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 				}), function(){
 					};
 		}
-$scope.resetForm();
 $scope.readData();
 });

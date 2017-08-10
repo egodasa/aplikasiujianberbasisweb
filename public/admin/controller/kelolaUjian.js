@@ -2,36 +2,39 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 	$scope.setIdUjian = function(x,y){
 		ujian.setIdUjian(x,y);
 	};
-	$scope.resetForm = function(){
-		$scope.Tnm_ujian = '';
-		$scope.ETnm_ujian = '';
-		$scope.Tjam = '';
-		$scope.ETjam = '';
-		$scope.Tmenit = '';
-		$scope.ETmenit = '';
-		$scope.EUTnm_ujian = '';
-		$scope.UTnm_ujian = '';
-		$scope.EUTjam = '';
-		$scope.UTjam = '';
-		$scope.EUTmenit = '';
-		$scope.UTmenit = '';
+	$scope.resetForm = function(x){
+		if(x == 0){
+			$scope.Tnm_ujian = '';
+			$scope.ETnm_ujian = '';
+			$scope.Tjam = '';
+			$scope.ETjam = '';
+			$scope.Tmenit = '';
+			$scope.ETmenit = '';
+		}
+		else {
+			$scope.EUTnm_ujian = '';
+			$scope.UTnm_ujian = '';
+			$scope.EUTjam = '';
+			$scope.UTjam = '';
+			$scope.EUTmenit = '';
+			$scope.UTmenit = '';
+		}
 	};
 	$scope.createForm = false;
 	$scope.updateForm = false;
+	$scope.form = "display:none;";
 	$scope.showForm = function(x,y){
 		if(x == 0) {
 			$scope.form = "display:none;";
-			$scope.resetForm();
+			$scope.resetForm(0);
+			$scope.resetForm(1);
 			}
-		else $scope.form = "display:block;";
-		
-		if(y == 0){
-			$scope.createForm = true;
-			$scope.updateForm = !$scope.createForm;
-		}
-		else{
-			$scope.updateForm = true;
-			$scope.createForm = !$scope.updateForm;
+		else {
+			if(y == 0){
+				$scope.createForm = !$scope.updateForm;
+			}
+			else $scope.updateForm = !$scope.createForm;
+			$scope.form = "display:block;";
 		}
 	}
 	$scope.readData = function(){
@@ -93,7 +96,6 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		$http.get('http://localhost:3000/api/ujian/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
-				$scope.resetForm();
 				$scope.id = hasil.id_ujian;
 				$scope.UTnm_ujian = hasil.nm_ujian;
 				$scope.UTjam = hasil.jam;
