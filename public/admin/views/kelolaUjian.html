@@ -1,4 +1,8 @@
 <h2>Kelola Ujian</h2>
+<div class="{{tipePesan}}" ng-show="pesan">
+	<span class="w3-closebtn" ng-click="closePesan()">X</span>
+	<p>{{isiPesan}}</p>
+</div>
 <span ng-include="'/admin/views/buttonAtas.html'"></span>
 <div class="w3-modal" ng-model="createForm" style="{{form}}">
 	<div class="w3-modal-content w3-animate-top">

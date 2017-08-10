@@ -37,11 +37,24 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			$scope.form = "display:block;";
 		}
 	}
+	$scope.pesan = false;
+	$scope.showPesan= function(tipe,isi){
+		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-red';
+		else $scope.tipePesan = 'w3-panel w3-green';
+		$scope.isiPesan = isi;
+		$scope.pesan = true;
+	};
+	$scope.closePesan = function(){
+		$scope.pesanWarning = false;
+		$scope.isiPesan = '';
+	};
 	$scope.readData = function(){
 		$http.get('http://localhost:3000/api/ujian').then(function(res){
 			$scope.data = res.data.data;
 		}), function(res){
-			$scope.data_tabel ="error";
+			$scope.data=[];
+			var result = res.data;
+			$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
 			};
 		};
 	$scope.deleteData = function(id){
@@ -50,17 +63,18 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			url : 'http://localhost:3000/api/ujian/delete/'+id,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
-			$scope.result = res.data.status;
-			if($scope.result == true){
+			var result = res.data.status;
+			if(result == true){
 				console.log("data berhasil dihapus");
-			$scope.readData();
-			}
-			else {
-				console.log("data gagal dihapus");
 				$scope.readData();
 			}
+			else {
+				var result = res.data;
+				$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
+			}
 		}), function(res){
-			console.log(res.data.status);
+			var result = res.data;
+			$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
 			};
 		};
 	$scope.createData = function(){
@@ -77,8 +91,9 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
 			var hasil = res.data;
-			console.log(hasil);
+			console.log(hasil.error);
 			if(hasil.status == true){
+				$scope.showPesan('Success','Data baru berhasil ditambahkan ...');
 				$scope.resetForm();
 				$scope.showForm(0,0);
 				$scope.readData();
@@ -89,7 +104,9 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 				$scope.ETmenit = hasil.error.menit.msg;
 			}
 		}), function(res){
-			console.log(res.data.status);
+			var result = res.data.data;
+			$scope.showForm(0,0);
+			$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
 			};
 		};
 		$scope.detailData = function(id){
@@ -102,7 +119,8 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 				$scope.UTmenit = hasil.menit;
 				$scope.showForm(1,1);
 			}), function(res){
-				console.log('error fetch data details');
+				var result = res.data;
+				$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
 			};
 		}
 		$scope.updateData = function(id){
@@ -130,6 +148,9 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 						$scope.EUTmenit = hasil.error.menit.msg;
 						}
 				}), function(){
+					var result = res.data.data;
+					$scope.showForm(0,0);
+					$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
 					};
 		}
 $scope.readData();
