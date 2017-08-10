@@ -12,10 +12,9 @@ versi : 1.0.0
 4. Laporan hasil ujian setelah selesai pelaksanaan ujian oleh peserta.
 
 <h2>Kekurangan</h2>
-1. Belum ada laporan hasil ujian seluruh peserta untuk admin.
-2. Pada frontend (AngularJS) masih menerapkan module $http native untuk pertukaran data. DI versi selanjutnya akan 
+1. Pada frontend (AngularJS) masih menerapkan module $http native untuk pertukaran data. DI versi selanjutnya akan 
 menggunakan modul $resource.
-
+2. Masih menggunakan cookies untuk mengingat sesi ujian. Akan digantikan dengan localStorage
 <h2>Informasi</h2>
 1. Untuk module yang dibutuhkan NodeJS silahkan lihat file "package.json".
 2. File untuk frontend AngularJS dapat dilihat pada folder "public". Untuk halaman admin pada folder "admin" dan folder 
