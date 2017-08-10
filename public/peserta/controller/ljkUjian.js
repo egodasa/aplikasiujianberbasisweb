@@ -1,4 +1,4 @@
-app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookies, $localStorage, infoPesertaUjian, sesiUjian){
+app.controller("ljkUjian", function($scope, $rootScope, $http, $location, $interval, $cookies, $localStorage, infoPesertaUjian, sesiUjian){
 	$scope.simpanWaktu = function(x){
 		var menit,jam;
 	};
@@ -37,7 +37,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	$scope.hasilUjian = {};
 	$scope.showSoalUjian = function(no_soal){
 		var id_soal = $scope.idSoalUjian[no_soal].id_soal;
-		$http.get('http://localhost:3000/api/soal/'+id_soal).then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/soal/'+id_soal).then(function(res){
 			//SET POSISI SOAL SEDANG DIsoalKAN KE COOKIES
 			console.log('no soal '+no_soal);
 			$scope.setSesiLjk(no_soal,id_soal);
@@ -51,7 +51,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 			};
 	};
 	$scope.getSoalUjian = function(id){
-		$http.get('http://localhost:3000/api/ujian/'+id+'/soal').then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/ujian/'+id+'/soal').then(function(res){
 			$scope.idSoalUjian = res.data.data;
 			for(var x=0;x< res.data.data.length;x++){
 				$scope.listJawaban.push({no_soal : x,id_soal : res.data.data[x].id_soal,jawaban : null});
@@ -105,7 +105,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		console.log(data);
 		$http({
 			method : 'POST',
-			url : 'http://localhost:3000/api/ujian/'+$scope.sesiUjian.id_ujian+'/hasil',
+			url : $rootScope.serverBackEnd+'/api/ujian/'+$scope.sesiUjian.id_ujian+'/hasil',
 			contentType : 'application/json; charset=utf-8',
 			data : data
 			}).then(function(){
@@ -123,4 +123,5 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 	if(sesiUjian.getJawabanLjk()) $scope.listJawaban = sesiUjian.getJawabanLjk(); //JAWABAN DISIMPAN KE COOKIES AGAR PERSISTENT
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
 	$scope.durasiUjian($scope.sesiUjian.waktu);
+	console.log(sesiUjian.getSesiUjian());
 });

@@ -20,6 +20,9 @@ app.config(function($routeProvider) {
         redirectTo: "/"
     });
 });
+app.run(function($rootScope) {
+    $rootScope.serverBackEnd = 'http://localhost:3000';
+});
 app.service('infoPesertaUjian', function($location, $http){
 		this.ujian;
 		this.id_peserta;
@@ -29,7 +32,7 @@ app.service('infoPesertaUjian', function($location, $http){
 		this.posisiSoal;
 		this.hasilUjian;
 		this.setSoalUjian = function(x){
-			$http.get('http://localhost:3000/api/ujian/'+x+'/soal').then(function(res){
+			$http.get($rootScope.serverBackEnd+'/api/ujian/'+x+'/soal').then(function(res){
 				this.soalUjian = res.data.data;
 				}), function(res){
 					this.soalUjian =[];
