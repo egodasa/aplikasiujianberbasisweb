@@ -1,4 +1,5 @@
-app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, infoPesertaUjian, sesiUjian){
+app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, $localStorage, infoPesertaUjian, sesiUjian){
+	$scope.sesiUjian = sesiUjian;
 	$scope.setSesiUjian = function(x,y,z,a,b){
 		sesiUjian.setSesiUjian(x,y,z,a,b);
 	};
@@ -37,10 +38,15 @@ app.controller("cekPesertaUjian", function($scope, $http, $location, $cookies, i
 						$scope.showWarning('Anda sudah mengikuti ujian ini ...');
 					}
 					else {
-						console.log($scope.hasilCek);
-						$scope.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta,$scope.idUjian.jam,$scope.idUjian.menit);
-						$scope.setSesiLjk(0,'0000000');
-						$location.path('/petunjuk');
+						console.log($scope.sesiUjian.getSesiUjian());
+						if($scope.sesiUjian.getSesiUjian() == undefined){
+							sesiUjian.setSesiUjian($scope.idUjian.id_ujian,$scope.idUjian.nm_ujian,$scope.idPeserta,$scope.idUjian.jam,$scope.idUjian.menit);
+							sesiUjian.setSesiLjk(0,'0000000');
+							$location.path('/petunjuk');
+						}
+						else {
+							$location.path('/ljk');
+						}
 					}
 				}
 		}), function(res){

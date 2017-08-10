@@ -16,7 +16,7 @@ app.controller("ljkUjian", function($scope, $http, $location, $interval, $cookie
 		$scope.finishUjian = 1*$scope.startUjian + 1*mili; //SET WAKTU FINISH
 		$scope.runWaktu = $interval(function(){
 			$scope.finishUjian = $scope.finishUjian - 1000; //WAKTU FINISH DIPROSES HINGGA SAMA DENGAN WAKTU START
-			$localStorage.waktu = $scope.finishUjian - $scope.startUjian; //SIMPAN SISA WAKTU KE COOKIES
+			$cookies.put('waktu',$scope.finishUjian-$scope.startUjian); //SIMPAN SISA WAKTU KE COOKIES
 			if($scope.finishUjian == $scope.startUjian) { //CEK WAKTU
 				$interval.cancel($scope.runWaktu); //WAKTU DISTOP JIKA WAKTU SUDAH HABIS
 				$scope.runWaktu = undefined;

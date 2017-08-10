@@ -1,4 +1,4 @@
-var app = angular.module("pesertaAUBE", ["ngRoute","ngCookies"]);
+var app = angular.module("pesertaAUBE", ["ngRoute","ngCookies","ngStorage"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -55,42 +55,40 @@ app.service('infoPesertaUjian', function($location, $http){
 		};
 });
 
-app.service('sesiUjian', function($cookies){
+app.service('sesiUjian', function($localStorage){
+	this.sesi = $localStorage;
 	this.getSesiUjian = function(){
 		return {
-			id_ujian : $cookies.get('id_ujian'),
-			nm_ujian : $cookies.get('nm_ujian'),
-			waktu : $cookies.get('waktu'),
-			id_peserta : $cookies.get('id_peserta')
+			id_ujian : this.sesi.id_ujian,
+			nm_ujian : this.sesi.nm_ujian,
+			waktu : this.sesi.waktu,
+			id_peserta : this.sesi.id_peserta
 		};
 	};
 	this.setSesiUjian = function(x,x1,y,y1,y2){
 		this.mili = y1*3600000+y2*60000;
-		$cookies.put('id_ujian',x);
-		$cookies.put('nm_ujian',x1);
-		$cookies.put('id_peserta',y);
-		$cookies.put('waktu',this.mili);
+		this.sesi.id_ujian = x;
+		this.sesi.nm_ujian = x1;
+		this.sesi.id_peserta = y;
+		this.sesi.waktu = this.mili;
 	};
 	this.getSesiLjk = function(){
 		return {
-			no_soal : $cookies.get('no_soal'),
-			id_soal : $cookies.get('id_soal')
+			no_soal : this.sesi.no_soal,
+			id_soal : this.sesi.id_soal
 		};
 	};
 	this.setSesiLjk = function(x,y){
-		$cookies.put('no_soal',x);
-		$cookies.put('id_soal',y);
+		this.sesi.no_soal = x;
+		this.sesi.id_soal = y;
 	};
 	this.setJawabanLjk = function(x){
-		$cookies.putObject('jawaban',x);
+		this.sesi.jawaban = x;
 	};
 	this.getJawabanLjk = function(){
-		return $cookies.getObject('jawaban');
+		return this.sesi.jawaban;
 	};
 	this.resetCookies = function(){
-		this.listCookies = ['id_ujian','nm_ujian','id_peserta','waktu','no_soal','id_soal','jawaban'];
-		for(x=0;x<this.listCookies.length;x++){
-			$cookies.remove(this.listCookies[x]);
-		}
+		$localStorage.$reset();
 	};
 });
