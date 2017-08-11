@@ -1,5 +1,5 @@
-app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, ujian){
-	$scope.loading = "display:none;";
+app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, ujian, loadingScreen){
+	$rootScope.loading = "display:none;";
 	$scope.setIdUjian = function(x,y){
 		ujian.setIdUjian(x,y);
 	};
@@ -50,13 +50,12 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 		$scope.isiPesan = '';
 	};
 	$scope.readData = function(){
-		$scope.loading = "display:block;";
 		$http.get($rootScope.serverBackEnd+'/api/ujian').then(function(res){
 			$scope.data = res.data.data;
 		}).catch(function(e){
 				$scope.showPesan('Warning',e);
 			}).finally(function(){
-				$scope.loading = "display:none;";
+				
 				});
 		};
 	$scope.deleteData = function(id){
@@ -120,10 +119,10 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 				$scope.UTjam = hasil.jam;
 				$scope.UTmenit = hasil.menit;
 				$scope.showForm(1,1);
-			}), function(res){
-				var result = res.data;
-				$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
-			};
+			}).catch(function(e){
+				$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+e);
+			}).finally(function(){
+				});
 		}
 		$scope.updateData = function(id){
 			var data = {

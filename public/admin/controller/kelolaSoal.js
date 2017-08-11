@@ -1,4 +1,4 @@
-app.controller("kelolaSoal", function($rootScope, $scope, $http, $location){
+app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, loadingScreen){
 	$scope.pilihanGandaDefault = [
 	{huruf : 'A', isi_pilihan : ''},
 	{huruf : 'B', isi_pilihan : ''},

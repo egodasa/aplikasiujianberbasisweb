@@ -60,4 +60,32 @@ app.service('ujian', function($location){
 			$location.path('/');
 		};
 	});
-
+app.service('loadingScreen', 
+    ['$q', '$rootScope', '$log', 
+    function($q, $rootScope, $log) {
+        'use strict';
+ 
+        return {
+            request: function(config) {
+                $rootScope.loading = "display:block;";
+                return config;
+            },
+            requestError: function(rejection) {
+                $rootScope.loading = "display:none;";
+                $log.error('Request error:', rejection);
+                return $q.reject(rejection);
+            },
+            response: function(response) {
+                $rootScope.loading = "display:none;";
+                return response;
+            },
+            responseError: function(rejection) {
+                $rootScope.loading = "display:none;";
+                $log.error('Response error:', rejection);
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push('loadingScreen');
+}]);

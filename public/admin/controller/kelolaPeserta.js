@@ -1,4 +1,4 @@
-app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location){
+app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, loadingScreen){
 	$scope.resetForm = function(){
 		$scope.Tnm_peserta ='';
 		$scope.ETnm_peserta ='';
