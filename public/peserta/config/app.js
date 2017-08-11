@@ -21,7 +21,8 @@ app.config(function($routeProvider) {
     });
 });
 app.run(function($rootScope, $localStorage) {
-    $rootScope.serverBackEnd = $localStorage.serverBackEnd;
+    //$rootScope.serverBackEnd = $localStorage.serverBackEnd;
+    $rootScope.serverBackEnd = 'http://localhost:3000';
 });
 app.service('infoPesertaUjian', function($location, $http, $rootScope){
 		this.ujian;

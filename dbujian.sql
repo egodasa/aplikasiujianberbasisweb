@@ -24,15 +24,15 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createPeserta` (IN `nm_peserta` VARCHAR(50))  BEGIN
+CREATE PROCEDURE `createPeserta` (IN `nm_peserta` VARCHAR(50))  BEGIN
 insert into tbpeserta (nm_peserta) VALUE (nm_peserta);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createPesertaUjian` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
+CREATE PROCEDURE `createPesertaUjian` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
 insert into tbpeserta_ujian (id_ujian,id_peserta) values (id_ujian,id_peserta);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createSoal` (IN `nm_soal` VARCHAR(750), IN `jawaban` VARCHAR(5), OUT `hasil` VARCHAR(9))  BEGIN
+CREATE PROCEDURE `createSoal` (IN `nm_soal` VARCHAR(750), IN `jawaban` VARCHAR(5), OUT `hasil` VARCHAR(9))  BEGIN
 declare id_soal varchar(7);
 declare id_pg varchar(9);
 set id_soal= genIdSoal();
@@ -41,54 +41,54 @@ insert into tbsoal values(id_soal,nm_soal,id_pg,jawaban);
 select id_pg into hasil;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createSoalUjian` (IN `id_ujian` VARCHAR(7), IN `id_soal` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `createSoalUjian` (IN `id_ujian` VARCHAR(7), IN `id_soal` VARCHAR(7))  BEGIN
 insert into tbsoal_ujian(id_ujian,id_soal) values(id_ujian,id_soal);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createUjian` (IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT(2), IN `menit` TINYINT(2))  BEGIN
+CREATE PROCEDURE `createUjian` (IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT(2), IN `menit` TINYINT(2))  BEGIN
 declare id varchar(7);
 set id = genIdUjian();
 INSERT into tbujian values (id,nm_ujian,stringToTime(jam,menit));
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePeserta` (IN `id` INT(11))  BEGIN
+CREATE PROCEDURE `deletePeserta` (IN `id` INT(11))  BEGIN
 delete from tbpeserta where id_peserta=id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePesertaUjian` (IN `id_pu` INT(11))  BEGIN
+CREATE PROCEDURE `deletePesertaUjian` (IN `id_pu` INT(11))  BEGIN
 delete from tbpeserta_ujian where id=id_pu;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSoal` (IN `id` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `deleteSoal` (IN `id` VARCHAR(7))  BEGIN
 declare id_pg varchar(9);
 set id_pg=CONCAT('PG',id);
 delete from tbsoal where id_soal=id;
 delete from tbpilihan_ganda where id_pilihan_ganda=id_pg;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSoalUjian` (IN `id_ujian` INT(11))  BEGIN
+CREATE PROCEDURE `deleteSoalUjian` (IN `id_ujian` INT(11))  BEGIN
 delete from tbsoal_ujian where id=id_ujian;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUjian` (IN `id` INT(11))  BEGIN
+CREATE PROCEDURE `deleteUjian` (IN `id` INT(11))  BEGIN
 delete from tbujian where id_ujian=id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getNotPesertaUjian` (IN `id` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `getNotPesertaUjian` (IN `id` VARCHAR(7))  BEGIN
 select * from tbpeserta where id_peserta not in (select id_peserta from tbpeserta_ujian where id_ujian=id);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getNotSoalUjian` (IN `id` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `getNotSoalUjian` (IN `id` VARCHAR(7))  BEGIN
 select * from tbsoal where id_soal not in (select id_soal from tbsoal_ujian where id_ujian=id);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPeserta` (IN `id` INT(11))  BEGIN
+CREATE PROCEDURE `getPeserta` (IN `id` INT(11))  BEGIN
 if(id = 0) then select * from tbpeserta;
 else select * from tbpeserta where id_peserta=id;
 end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPesertaUjian` (IN `id` VARCHAR(7), IN `id_peserta` INT)  BEGIN
+CREATE PROCEDURE `getPesertaUjian` (IN `id` VARCHAR(7), IN `id_peserta` INT)  BEGIN
 CASE
 when(id_peserta = 0) then
 select tbpeserta_ujian.id,tbpeserta_ujian.id_peserta,tbpeserta.nm_peserta,tbpeserta_ujian.status from tbpeserta_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=id;
@@ -97,38 +97,38 @@ select tbpeserta_ujian.id,tbpeserta_ujian.id_peserta,tbpeserta.nm_peserta,tbpese
 end case;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSoal` (IN `id` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `getSoal` (IN `id` VARCHAR(7))  BEGIN
 if(id = "0000000") THEN select * from tbsoal;
 else select * from tbsoal where id_soal=id;
 end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSoalUjian` (IN `id_su` CHAR(7))  BEGIN
+CREATE PROCEDURE `getSoalUjian` (IN `id_su` CHAR(7))  BEGIN
 select * from tbsoal_ujian inner join tbsoal on tbsoal_ujian.id_soal=tbsoal.id_soal and tbsoal_ujian.id_ujian=id_su;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getUjian` (IN `id` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `getUjian` (IN `id` VARCHAR(7))  BEGIN
 if(id = '0000000') then SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' FROM tbujian;
 else SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' from tbujian where id_ujian=id;
 END iF;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePeserta` (IN `id` INT(11), `nm_peserta` VARCHAR(30))  BEGIN
+CREATE PROCEDURE `updatePeserta` (IN `id` INT(11), `nm_peserta` VARCHAR(30))  BEGIN
 update tbpeserta set nm_peserta=nm_peserta where id_peserta=id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePesertaUjian` (IN `id` INT(11), IN `id_peserta` INT(11), IN `id_ujian` VARCHAR(7))  BEGIN
+CREATE PROCEDURE `updatePesertaUjian` (IN `id` INT(11), IN `id_peserta` INT(11), IN `id_ujian` VARCHAR(7))  BEGIN
 update tbpeserta_ujian set id_peserta=id_peserta,id_ujian=id_ujian where id=id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateSoal` (IN `id` VARCHAR(7), IN `soal` VARCHAR(750), IN `jawaban` VARCHAR(5))  BEGIN
+CREATE PROCEDURE `updateSoal` (IN `id` VARCHAR(7), IN `soal` VARCHAR(750), IN `jawaban` VARCHAR(5))  BEGIN
 declare id_pg varchar(9);
 set id_pg = concat('PG',id);
 update tbsoal set isi_soal=soal,jawaban=jawaban where id_soal=id;
 delete from tbpilihan_ganda where id_pilihan_ganda=id_pg;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
+CREATE PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
 CASE
 when(id_peserta = 0 AND id_ujian !='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=tbujian.id_ujian;
 
@@ -139,14 +139,14 @@ else select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian
 end case;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUjian` (IN `id` VARCHAR(7), IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT, IN `menit` TINYINT)  BEGIN
+CREATE PROCEDURE `updateUjian` (IN `id` VARCHAR(7), IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT, IN `menit` TINYINT)  BEGIN
 UPDATE tbujian set nm_ujian=nm_ujian,durasi_ujian = stringToTime(jam,menit) WHERE id_ujian=id;
 END$$
 
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `genIdLjk` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
+CREATE FUNCTION `genIdLjk` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
 declare id_tmp int;
 SELECT max(id_ljk) into id_tmp from tbljk_ujian;
 if(id_tmp IS NULL) then set id_tmp=1;
@@ -163,7 +163,7 @@ ELSE RETURN id_tmp;
 END CASE;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `genIdSoal` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
+CREATE FUNCTION `genIdSoal` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
 declare id_tmp int;
 SELECT max(id_soal) into id_tmp from tbsoal;
 if(id_tmp IS NULL) then set id_tmp=1;
@@ -180,7 +180,7 @@ ELSE RETURN id_tmp;
 END CASE;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `genIdUjian` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
+CREATE FUNCTION `genIdUjian` () RETURNS VARCHAR(7) CHARSET latin1 BEGIN
 declare id_tmp int;
 SELECT max(id_ujian) into id_tmp from tbujian;
 if(id_tmp IS NULL) then set id_tmp=1;
@@ -197,19 +197,19 @@ ELSE RETURN id_tmp;
 END CASE;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `miliToJam` (`mili` BIGINT) RETURNS TINYINT(4) BEGIN
+CREATE FUNCTION `miliToJam` (`mili` BIGINT) RETURNS TINYINT(4) BEGIN
 declare hasil tinyint;
 set hasil = floor(mili/3600000);
 return hasil;
 end$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `miliToMenit` (`mili` BIGINT) RETURNS TINYINT(2) BEGIN
+CREATE FUNCTION `miliToMenit` (`mili` BIGINT) RETURNS TINYINT(2) BEGIN
 declare hasil tinyint;
 set hasil = (mili mod 3600000)/60000;
 return hasil;
 end$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `stringToTime` (`jam` TINYINT, `menit` TINYINT) RETURNS BIGINT(20) BEGIN
+CREATE FUNCTION `stringToTime` (`jam` TINYINT, `menit` TINYINT) RETURNS BIGINT(20) BEGIN
 declare hasil bigint;
 set hasil = jam*3600000+menit*60000;
 return hasil;

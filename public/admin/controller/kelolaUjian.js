@@ -1,4 +1,5 @@
 app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, ujian){
+	$scope.loading = "display:none;";
 	$scope.setIdUjian = function(x,y){
 		ujian.setIdUjian(x,y);
 	};
@@ -45,17 +46,18 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 		$scope.pesan = true;
 	};
 	$scope.closePesan = function(){
-		$scope.pesanWarning = false;
+		$scope.pesan = false;
 		$scope.isiPesan = '';
 	};
 	$scope.readData = function(){
+		$scope.loading = "display:block;";
 		$http.get($rootScope.serverBackEnd+'/api/ujian').then(function(res){
 			$scope.data = res.data.data;
-		}), function(res){
-			$scope.data=[];
-			var result = res.data;
-			$scope.showPesan('Warning','Telah terjadi kesalahan. <br/> Pesan error : '+res.data.error);
-			};
+		}).catch(function(e){
+				$scope.showPesan('Warning',e);
+			}).finally(function(){
+				$scope.loading = "display:none;";
+				});
 		};
 	$scope.deleteData = function(id){
 		$http({

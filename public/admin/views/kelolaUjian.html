@@ -1,3 +1,10 @@
+<div class="w3-modal" style="{{loading}}">
+	<div class="w3-modal-content">
+		<div class="w3-display-container">
+			<div class="w3-display-middle"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></div>
+		</div>
+	</div>
+</div>
 <h2>Kelola Ujian</h2>
 <div class="{{tipePesan}}" ng-show="pesan">
 	<span class="w3-closebtn" ng-click="closePesan()">X</span>
@@ -55,7 +62,7 @@
 		<td>{{x.nm_ujian}}</td>
 		<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
 		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)">Hapus</button>
-		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)">Update</button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit" stle="font-size:13px;"></i> Update</button>
 		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)">Soal Ujian</button>
 		<button type="button" class="w3-btn w3-small w3-orange" ng-click="setIdUjian(x.id_ujian,0)">Peserta Ujian</button>
 		<button type="button" class="w3-btn w3-small w3-blue"  ng-click="setIdUjian(x.id_ujian,2)">Hasil Ujian</button></td>
