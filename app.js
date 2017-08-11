@@ -10,10 +10,10 @@ var Promise = require('promise');
 
 mysql = require('mysql');
 koneksi = mysql.createPool({
-		host : 'localhost',
-		user : 'root',
-		password : 'qwe123*iop',
-		database : 'dbujian',
+		host : 'http://sql12.freemysqlhosting.net:3306',
+		user : 'sql12189662',
+		password : '2mnJVriMNR',
+		database : 'sql12189662',
 		multipleStatements : true
 		});
 
