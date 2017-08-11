@@ -1,4 +1,4 @@
-app.controller("kelolaPeserta", function($scope, $http, $location){
+app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location){
 	$scope.resetForm = function(){
 		$scope.Tnm_peserta ='';
 		$scope.ETnm_peserta ='';
@@ -24,14 +24,14 @@ app.controller("kelolaPeserta", function($scope, $http, $location){
 		}
 	}
 	$scope.readData = function(){
-		$http.get('http://localhost:3000/api/peserta').then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/peserta').then(function(res){
 			$scope.data = res.data.data;
 		}), function(res){
 			$scope.data_tabel ="error";
 			};
 		};
 	$scope.deleteData = function(id){
-		$http.delete('http://localhost:3000/api/peserta/delete/'+id).then(function(res){
+		$http.delete($rootScope.serverBackEnd+'/api/peserta/delete/'+id).then(function(res){
 			$scope.result = res.data.status;
 			if($scope.result == true){
 				console.log("data berhasil dihapus");
@@ -52,7 +52,7 @@ app.controller("kelolaPeserta", function($scope, $http, $location){
 		data = JSON.stringify(data);
 		$http({
 			method : 'POST',
-			url : 'http://localhost:3000/api/peserta/create',
+			url : $rootScope.serverBackEnd+'/api/peserta/create',
 			data : data,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
@@ -70,7 +70,7 @@ app.controller("kelolaPeserta", function($scope, $http, $location){
 			};
 		};
 		$scope.detailData = function(id){
-		$http.get('http://localhost:3000/api/peserta/'+id)
+		$http.get($rootScope.serverBackEnd+'/api/peserta/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
 				$scope.id = hasil.id_peserta;
@@ -87,7 +87,7 @@ app.controller("kelolaPeserta", function($scope, $http, $location){
 			data = JSON.stringify(data);
 			$http({
 				method : 'PUT',
-				url : 'http://localhost:3000/api/peserta/update/'+id,
+				url : $rootScope.serverBackEnd+'/api/peserta/update/'+id,
 				data : data,
 				contentType : 'application/json; charset=utf-8'
 			}).then(function(res){

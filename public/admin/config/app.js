@@ -1,4 +1,4 @@
-var app = angular.module("adminAUBE", ["ngRoute"]);
+var app = angular.module("adminAUBE", ["ngRoute","ngStorage"]);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
@@ -31,9 +31,16 @@ app.config(function($routeProvider) {
     .when("/test", {
         templateUrl : "/test.html"
     })
+    .when("/pengaturan", {
+        templateUrl : "/admin/views/pengaturan.html",
+        controller : "pengaturan"
+    })
     .otherwise({
         redirectTo: "/"
     });
+});
+app.run(function($rootScope, $localStorage) {
+    $rootScope.serverBackEnd = $localStorage.serverBackEnd;
 });
 app.service('ujian', function($location){
 		this.id_ujian = "";

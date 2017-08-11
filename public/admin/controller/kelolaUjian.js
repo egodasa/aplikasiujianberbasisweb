@@ -1,4 +1,4 @@
-app.controller("kelolaUjian", function($scope, $http, $location, ujian){
+app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, ujian){
 	$scope.setIdUjian = function(x,y){
 		ujian.setIdUjian(x,y);
 	};
@@ -49,7 +49,7 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		$scope.isiPesan = '';
 	};
 	$scope.readData = function(){
-		$http.get('http://localhost:3000/api/ujian').then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/ujian').then(function(res){
 			$scope.data = res.data.data;
 		}), function(res){
 			$scope.data=[];
@@ -60,7 +60,7 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 	$scope.deleteData = function(id){
 		$http({
 			method : 'DELETE',
-			url : 'http://localhost:3000/api/ujian/delete/'+id,
+			url : $rootScope.serverBackEnd+'/api/ujian/delete/'+id,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
 			var result = res.data.status;
@@ -86,7 +86,7 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 		data = JSON.stringify(data);
 		$http({
 			method : 'POST',
-			url : 'http://localhost:3000/api/ujian/create',
+			url : $rootScope.serverBackEnd+'/api/ujian/create',
 			data : data,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
@@ -110,7 +110,7 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			};
 		};
 		$scope.detailData = function(id){
-		$http.get('http://localhost:3000/api/ujian/'+id)
+		$http.get($rootScope.serverBackEnd+'/api/ujian/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
 				$scope.id = hasil.id_ujian;
@@ -132,7 +132,7 @@ app.controller("kelolaUjian", function($scope, $http, $location, ujian){
 			data = JSON.stringify(data);
 			$http({
 				method : 'PUT',
-				url : 'http://localhost:3000/api/ujian/update/'+id,
+				url : $rootScope.serverBackEnd+'/api/ujian/update/'+id,
 				data : data,
 				contentType : 'application/json; charset=utf-8'
 			}).then(function(res){

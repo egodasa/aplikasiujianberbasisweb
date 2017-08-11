@@ -20,10 +20,10 @@ app.config(function($routeProvider) {
         redirectTo: "/"
     });
 });
-app.run(function($rootScope) {
-    $rootScope.serverBackEnd = 'http://localhost:3000';
+app.run(function($rootScope, $localStorage) {
+    $rootScope.serverBackEnd = $localStorage.serverBackEnd;
 });
-app.service('infoPesertaUjian', function($location, $http){
+app.service('infoPesertaUjian', function($location, $http, $rootScope){
 		this.ujian;
 		this.id_peserta;
 		this.soalUjian;

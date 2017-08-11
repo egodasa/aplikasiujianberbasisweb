@@ -53,9 +53,4 @@ app.controller("cekPesertaUjian", function($scope, $rootScope, $http, $location,
 			};
 		};
 	$scope.getUjian();
-	if(sesiUjian.getSesiUjian() == undefined) console.log('sesi kosong');
-	else {
-		console.log('sesi berisi');
-		console.log(sesiUjian.getSesiUjian());
-	}
 });

@@ -1,4 +1,4 @@
-app.controller("kelolaSoal", function($scope, $http, $location){
+app.controller("kelolaSoal", function($rootScope, $scope, $http, $location){
 	$scope.pilihanGandaDefault = [
 	{huruf : 'A', isi_pilihan : ''},
 	{huruf : 'B', isi_pilihan : ''},
@@ -84,14 +84,14 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 		}
 	};
 	$scope.readData = function(){
-		$http.get('http://localhost:3000/api/soal').then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/soal').then(function(res){
 			$scope.laporanSoal = res.data.data;
 		}), function(res){
 			$scope.laporanSoal = [];
 			};
 		};
 	$scope.deleteData = function(id){
-		$http.delete('http://localhost:3000/api/soal/delete/'+id).then(function(res){
+		$http.delete($rootScope.serverBackEnd+'/api/soal/delete/'+id).then(function(res){
 			var result = res.data.status;
 			if(result == true){
 				$scope.readData();
@@ -119,7 +119,7 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 		console.log(data);
 		$http({
 			method : 'POST',
-			url : 'http://localhost:3000/api/soal/create',
+			url : $rootScope.serverBackEnd+'/api/soal/create',
 			data : data,
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
@@ -140,7 +140,7 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 		};
 		$scope.detailData = function(id){
 		$scope.idSoal = id;
-		$http.get('http://localhost:3000/api/soal/'+id)
+		$http.get($rootScope.serverBackEnd+'/api/soal/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
 				$scope.UThuruf = [];
@@ -170,7 +170,7 @@ app.controller("kelolaSoal", function($scope, $http, $location){
 			data = JSON.stringify(data);
 			$http({
 				method : 'PUT',
-				url : 'http://localhost:3000/api/soal/update/'+id,
+				url : $rootScope.serverBackEnd+'/api/soal/update/'+id,
 				data : data,
 				contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
