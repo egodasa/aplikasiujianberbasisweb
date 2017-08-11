@@ -1,5 +1,4 @@
 app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, ujian, loadingScreen){
-	$rootScope.loading = "display:none;";
 	$scope.setIdUjian = function(x,y){
 		ujian.setIdUjian(x,y);
 	};
