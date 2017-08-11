@@ -10,7 +10,7 @@ var Promise = require('promise');
 
 mysql = require('mysql');
 koneksi = mysql.createPool({
-		host : 'http://sql12.freemysqlhosting.net:3306',
+		host : 'sql12.freemysqlhosting.net',
 		user : 'sql12189662',
 		password : '2mnJVriMNR',
 		database : 'sql12189662',
