@@ -22,7 +22,8 @@ app.config(function($routeProvider) {
 });
 app.run(function($rootScope, $localStorage) {
     //$rootScope.serverBackEnd = $localStorage.serverBackEnd;
-    $rootScope.serverBackEnd = 'http://localhost:3000';
+    //$rootScope.serverBackEnd = 'http://localhost:3000';
+    $rootScope.serverBackEnd = 'https://ujianweb.herokuapp.com';
 });
 app.service('infoPesertaUjian', function($location, $http, $rootScope){
 		this.ujian;
