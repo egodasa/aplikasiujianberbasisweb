@@ -39,10 +39,8 @@ app.config(function($routeProvider) {
         redirectTo: "/"
     });
 });
-app.run(function($rootScope, $localStorage) {
-   //$rootScope.serverBackEnd = $localStorage.serverBackEnd;
+app.run(function($rootScope) {
    $rootScope.serverBackEnd = '';
-   //$rootScope.serverBackEnd = 'https://ujianweb.herokuapp.com';
 });
 app.service('ujian', function($location){
 		this.id_ujian = "";
