@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 08, 2017 at 03:39 PM
+-- Generation Time: Aug 12, 2017 at 05:59 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -24,6 +24,17 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE PROCEDURE `createHasilUjian` (IN `idujian` VARCHAR(7), IN `idpeserta` INT, IN `b` TINYINT, IN `s` TINYINT)  BEGIN
+declare total_soal tinyint;
+declare nilai float;
+declare point float;
+set total_soal = b+s;
+set point = 100/total_soal;
+set nilai = b*point;
+insert into tbhasil_ujian(id_ujian,id_peserta,benar,salah,nilai) value (idujian,idpeserta,b,s,TRUNCATE(nilai,2));
+update tbpeserta_ujian set tbpeserta_ujian.status = 'Sudah' where tbpeserta_ujian.id_ujian=idujian and tbpeserta_ujian.id_peserta=idpeserta;
+end$$
+
 CREATE PROCEDURE `createPeserta` (IN `nm_peserta` VARCHAR(50))  BEGIN
 insert into tbpeserta (nm_peserta) VALUE (nm_peserta);
 END$$
@@ -74,6 +85,14 @@ CREATE PROCEDURE `deleteUjian` (IN `id` INT(11))  BEGIN
 delete from tbujian where id_ujian=id;
 END$$
 
+CREATE PROCEDURE `getHasilUjian` (IN `idUjian` VARCHAR(7), IN `idPeserta` INT)  BEGIN
+CASE
+when(idUjian != '0000000' and idPeserta = 0)then select tbhasil_ujian.id_ujian,tbhasil_ujian.id_peserta,tbpeserta.nm_peserta,tbujian.nm_ujian,tbhasil_ujian.benar,tbhasil_ujian.salah,tbhasil_ujian.nilai from tbhasil_ujian left join tbpeserta on tbhasil_ujian.id_peserta =tbpeserta.id_peserta left join tbujian on tbhasil_ujian.id_ujian = tbujian.id_ujian where tbhasil_ujian.id_ujian = idUjian;
+when(idUjian = '000000' and idPeserta!= 0)then select tbhasil_ujian.id_ujian,tbhasil_ujian.id_peserta,tbpeserta.nm_peserta,tbujian.nm_ujian,tbhasil_ujian.benar,tbhasil_ujian.salah,tbhasil_ujian.nilai from tbhasil_ujian left join tbpeserta on tbhasil_ujian.id_peserta =tbpeserta.id_peserta left join tbujian on tbhasil_ujian.id_ujian = tbujian.id_ujian where tbhasil_ujian.id_peserta=idPeserta;
+else select tbhasil_ujian.id_ujian,tbhasil_ujian.id_peserta,tbpeserta.nm_peserta,tbujian.nm_ujian,tbhasil_ujian.benar,tbhasil_ujian.salah,tbhasil_ujian.nilai from tbhasil_ujian left join tbpeserta on tbhasil_ujian.id_peserta =tbpeserta.id_peserta left join tbujian on tbhasil_ujian.id_ujian = tbujian.id_ujian;
+end case;
+end$$
+
 CREATE PROCEDURE `getNotPesertaUjian` (IN `id` VARCHAR(7))  BEGIN
 select * from tbpeserta where id_peserta not in (select id_peserta from tbpeserta_ujian where id_ujian=id);
 END$$
@@ -103,6 +122,17 @@ else select * from tbsoal where id_soal=id;
 end if;
 END$$
 
+CREATE PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
+CASE
+when(id_peserta = 0 AND id_ujian !='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=tbujian.id_ujian;
+
+when(id_peserta != 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta WHERE tbpeserta_ujian.id_peserta=id_peserta;
+
+when(id_peserta = 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta;
+else select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=id_ujian and tbpeserta_ujian.id_peserta=id_peserta;
+end case;
+END$$
+
 CREATE PROCEDURE `getSoalUjian` (IN `id_su` CHAR(7))  BEGIN
 select * from tbsoal_ujian inner join tbsoal on tbsoal_ujian.id_soal=tbsoal.id_soal and tbsoal_ujian.id_ujian=id_su;
 END$$
@@ -127,17 +157,6 @@ set id_pg = concat('PG',id);
 update tbsoal set isi_soal=soal,jawaban=jawaban where id_soal=id;
 delete from tbpilihan_ganda where id_pilihan_ganda=id_pg;
 end$$
-
-CREATE PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
-CASE
-when(id_peserta = 0 AND id_ujian !='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=tbujian.id_ujian;
-
-when(id_peserta != 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta WHERE tbpeserta_ujian.id_peserta=id_peserta;
-
-when(id_peserta = 0 AND  id_ujian='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta;
-else select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=id_ujian and tbpeserta_ujian.id_peserta=id_peserta;
-end case;
-END$$
 
 CREATE PROCEDURE `updateUjian` (IN `id` VARCHAR(7), IN `nm_ujian` VARCHAR(30), IN `jam` TINYINT, IN `menit` TINYINT)  BEGIN
 UPDATE tbujian set nm_ujian=nm_ujian,durasi_ujian = stringToTime(jam,menit) WHERE id_ujian=id;
@@ -215,6 +234,25 @@ set hasil = jam*3600000+menit*60000;
 return hasil;
 end$$
 
+CREATE FUNCTION `timeToString` (`mili` BIGINT) RETURNS VARCHAR(50) CHARSET latin1 BEGIN
+declare hasil varchar(50);
+declare jam tinyint;
+declare menit tinyint;
+declare ket_jam varchar(10);
+declare ket_menit varchar(20);
+set jam = miliToJam(mili);
+set menit = miliToMenit(mili);
+if(jam = 0) then set ket_jam='';
+else set ket_jam=concat(jam,' Jam');
+end if;
+
+if(menit = 0) then set ket_jam ='';
+else set ket_menit = concat(menit,' Menit');
+end if;
+set hasil = concat(ket_jam,' ',ket_menit);
+return hasil;
+end$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -227,10 +265,30 @@ CREATE TABLE `tbhasil_ujian` (
   `id_hasil` int(11) NOT NULL,
   `id_ujian` int(11) NOT NULL,
   `id_peserta` int(11) NOT NULL,
-  `betul` int(3) NOT NULL,
+  `benar` int(3) NOT NULL,
   `salah` int(3) NOT NULL,
-  `nilai` int(4) NOT NULL
+  `nilai` decimal(4,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbhasil_ujian`
+--
+
+INSERT INTO `tbhasil_ujian` (`id_hasil`, `id_ujian`, `id_peserta`, `benar`, `salah`, `nilai`) VALUES
+(1, 1, 1, 4, 1, '80.00'),
+(2, 1, 2, 4, 1, '80.00'),
+(3, 1, 3, 5, 0, '99.99'),
+(4, 1, 4, 4, 1, '80.00'),
+(5, 1, 5, 0, 5, '0.00'),
+(6, 2, 1, 0, 1, '0.00'),
+(7, 2, 2, 1, 0, '99.99'),
+(8, 1, 7, 2, 3, '40.00'),
+(9, 1, 8, 3, 2, '60.00'),
+(10, 1, 9, 5, 0, '99.99'),
+(11, 1, 11, 4, 1, '80.00'),
+(12, 1, 12, 1, 4, '20.00'),
+(13, 1, 13, 2, 3, '40.00'),
+(14, 1, 14, 3, 2, '60.00');
 
 -- --------------------------------------------------------
 
@@ -275,7 +333,20 @@ CREATE TABLE `tbpeserta` (
 
 INSERT INTO `tbpeserta` (`id_peserta`, `nm_peserta`) VALUES
 (1, 'Semvak Anoa'),
-(2, 'Peserta Baru');
+(2, 'Peserta Baru'),
+(3, 'Kudil'),
+(4, 'Biji Onta'),
+(5, 'Admin'),
+(6, 'Suhu'),
+(7, 'Archlinux'),
+(8, 'Ubuntu'),
+(9, 'Fedora'),
+(10, 'Tinycore Linux'),
+(11, 'Elementary'),
+(12, 'Redhat'),
+(13, 'Slackware'),
+(14, 'KDE'),
+(16, 'dssdc');
 
 -- --------------------------------------------------------
 
@@ -295,8 +366,30 @@ CREATE TABLE `tbpeserta_ujian` (
 --
 
 INSERT INTO `tbpeserta_ujian` (`id`, `id_peserta`, `id_ujian`, `status`) VALUES
-(1, 1, '0000001', 'Belum'),
-(2, 2, '0000001', 'Belum');
+(1, 1, '0000001', 'Sudah'),
+(2, 2, '0000001', 'Sudah'),
+(3, 3, '0000001', 'Sudah'),
+(4, 4, '0000001', 'Sudah'),
+(5, 5, '0000001', 'Sudah'),
+(6, 1, '0000002', 'Sudah'),
+(7, 6, '0000001', 'Belum'),
+(8, 2, '0000002', 'Sudah'),
+(9, 7, '0000001', 'Sudah'),
+(10, 8, '0000001', 'Sudah'),
+(11, 9, '0000001', 'Sudah'),
+(12, 10, '0000001', 'Belum'),
+(13, 11, '0000001', 'Sudah'),
+(14, 12, '0000001', 'Sudah'),
+(15, 13, '0000001', 'Sudah'),
+(16, 14, '0000001', 'Sudah'),
+(18, 7, '0000003', 'Belum'),
+(19, 8, '0000003', 'Belum'),
+(20, 9, '0000003', 'Belum'),
+(21, 11, '0000003', 'Belum'),
+(22, 10, '0000003', 'Belum'),
+(23, 14, '0000003', 'Belum'),
+(25, 13, '0000003', 'Belum'),
+(26, 12, '0000003', 'Belum');
 
 -- --------------------------------------------------------
 
@@ -319,11 +412,6 @@ INSERT INTO `tbpilihan_ganda` (`id`, `id_pilihan_ganda`, `huruf`, `isi_pilihan`)
 (36, 'PG0000008', 'A', 'Hiperteks markup language'),
 (37, 'PG0000008', 'B', 'Hypertex Markup Language'),
 (38, 'PG0000008', 'C', 'Hypertext Markup Language'),
-(43, 'PG0000010', 'A', 'Firefly'),
-(44, 'PG0000010', 'B', 'Jagdpanzer'),
-(45, 'PG0000010', 'C', 'Churchil'),
-(46, 'PG0000010', 'D', 'Sherman'),
-(47, 'PG0000010', 'E', 'Jumbo'),
 (48, 'PG0000011', 'A', '45mm'),
 (49, 'PG0000011', 'B', '76.2mm'),
 (50, 'PG0000011', 'C', '88mm'),
@@ -341,7 +429,33 @@ INSERT INTO `tbpilihan_ganda` (`id`, `id_pilihan_ganda`, `huruf`, `isi_pilihan`)
 (67, 'PG0000015', 'D', '8.8cm flak'),
 (68, 'PG0000016', 'A', 'Armour Piercing Composite Rigid'),
 (69, 'PG0000016', 'B', 'Armour Point Complex Reaction'),
-(70, 'PG0000016', 'C', 'Agregate Point Compound Run');
+(70, 'PG0000016', 'C', 'Agregate Point Compound Run'),
+(74, 'PGundefin', 'A', 'asd'),
+(75, 'PGundefin', 'B', 'asddwd'),
+(76, 'PGundefin', 'C', 'daw'),
+(77, 'PGundefin', 'A', ''),
+(78, 'PGundefin', 'B', ''),
+(79, 'PGundefin', 'C', ''),
+(94, 'PG0000010', 'A', 'Firefly'),
+(95, 'PG0000010', 'B', 'Jagdpanzer'),
+(96, 'PG0000010', 'C', 'Churchil'),
+(97, 'PG0000010', 'D', 'Sherman'),
+(101, 'PG0000017', 'A', 'Ryan Dhal'),
+(102, 'PG0000017', 'B', 'Linus Trovaldis'),
+(103, 'PG0000017', 'C', 'IanMurdock'),
+(110, 'PG0000018', 'A', 'Windows mobile 6.5.3'),
+(111, 'PG0000018', 'B', 'Windows mobile 6.5'),
+(112, 'PG0000018', 'C', 'Windows mobile 6.0'),
+(113, 'PG0000019', 'A', 'Progress With Automatic'),
+(114, 'PG0000019', 'B', 'Progressive Web Applicaton'),
+(115, 'PG0000019', 'C', 'Progress Web Acquire'),
+(121, 'PG0000020', 'A', 'Typescript'),
+(122, 'PG0000020', 'B', 'ASP.NET'),
+(123, 'PG0000020', 'C', 'C#'),
+(124, 'PG0000020', 'D', 'C++'),
+(128, 'PG0000021', 'A', 'AngularJS'),
+(129, 'PG0000021', 'B', 'VueJS'),
+(130, 'PG0000021', 'C', 'BackboneJS');
 
 -- --------------------------------------------------------
 
@@ -362,12 +476,17 @@ CREATE TABLE `tbsoal` (
 
 INSERT INTO `tbsoal` (`id_soal`, `isi_soal`, `id_pilihan_ganda`, `jawaban`) VALUES
 ('0000008', 'Kepanjangan dari HTML adalah ?', 'PG0000008', 'C'),
-('0000010', 'Nama panggilan untuk tank perang dunia ke II milik Amerika Serikat M4 yaitu ?', 'PG0000010', 'D'),
+('0000010', 'Berikut adalah tank buatan Jerman pada perang dunia ke II ?', 'PG0000010', 'B'),
 ('0000011', 'Kaliber peluru dari tank T-34 (1942) milik Rusia pada perang dunia ke II adalah?', 'PG0000011', 'B'),
 ('0000012', 'Salah satu MBT (Main Battle Tank) milik Russia pada perang dunia ke II adalah ?', 'PG0000012', 'D'),
 ('0000013', 'Kepanjangan HEAT dalam istilah tank adalah ?', 'PG0000013', 'A'),
 ('0000015', 'Jenis peluru (armament) yang digunakan tank Jerman Panther adalah?', 'PG0000015', 'B'),
-('0000016', 'Kepanjangan dari APCR adalah ?', 'PG0000016', 'A');
+('0000016', 'Kepanjangan dari APCR adalah ?', 'PG0000016', 'A'),
+('0000017', 'Bahasa pemrograman NodeJS diciptakan oleh?', 'PG0000017', 'A'),
+('0000018', 'Successor dari sistem operasi windows mobile 5 adalah ?', 'PG0000018', 'C'),
+('0000019', 'Kepanjangan dari PWA adalah ?', 'PG0000019', 'B'),
+('0000020', 'Berikut adalah bahasa pemrograman yang dibuat oleh microsoft, KECUALI?', 'PG0000020', 'D'),
+('0000021', 'Framework javscript dibawah ini yang dibuat oleh Google adalah ?', 'PG0000021', 'A');
 
 -- --------------------------------------------------------
 
@@ -391,7 +510,12 @@ INSERT INTO `tbsoal_ujian` (`id`, `id_ujian`, `id_soal`) VALUES
 (4, '0000001', '0000010'),
 (5, '0000001', '0000015'),
 (6, '0000001', '0000013'),
-(7, '0000002', '0000008');
+(7, '0000002', '0000008'),
+(8, '0000003', '0000008'),
+(9, '0000003', '0000020'),
+(10, '0000003', '0000019'),
+(11, '0000003', '0000017'),
+(13, '0000003', '0000018');
 
 -- --------------------------------------------------------
 
@@ -410,11 +534,9 @@ CREATE TABLE `tbujian` (
 --
 
 INSERT INTO `tbujian` (`id_ujian`, `nm_ujian`, `durasi_ujian`) VALUES
-('0000001', 'WWII', 0),
-('0000002', 'TI', 0),
-('0000003', 'ganti', 1260000),
-('0000005', 'IPA', 9000000),
-('0000006', 'IpS', 3600000);
+('0000001', 'WWII', 120000),
+('0000002', 'TI', 180000),
+('0000003', 'Sistem Informasi', 180000);
 
 --
 -- Indexes for dumped tables
@@ -482,7 +604,7 @@ ALTER TABLE `tbujian`
 -- AUTO_INCREMENT for table `tbhasil_ujian`
 --
 ALTER TABLE `tbhasil_ujian`
-  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `tbjawaban_ljk`
 --
@@ -492,22 +614,22 @@ ALTER TABLE `tbjawaban_ljk`
 -- AUTO_INCREMENT for table `tbpeserta`
 --
 ALTER TABLE `tbpeserta`
-  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `tbpeserta_ujian`
 --
 ALTER TABLE `tbpeserta_ujian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `tbpilihan_ganda`
 --
 ALTER TABLE `tbpilihan_ganda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 --
 -- AUTO_INCREMENT for table `tbsoal_ujian`
 --
 ALTER TABLE `tbsoal_ujian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

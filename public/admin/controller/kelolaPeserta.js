@@ -1,4 +1,4 @@
-app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location){
+app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $timeout){
 	$scope.showLoading = function(x){
 		if(x == true) $rootScope.loading = 'display:block;';
 		else $rootScope.loading = 'display:none;';
@@ -10,6 +10,10 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location){
 		else $scope.tipePesan = 'w3-panel w3-green';
 		$scope.isiPesan = isi;
 		$scope.pesan = true;
+		var pesanTimer = $timeout(function () {
+	        $scope.closePesan();
+	        $timeout.cancel(pesanTimer);
+	    }, 5000);
 	};
 	$scope.closePesan = function(){
 		$scope.pesan = false;
