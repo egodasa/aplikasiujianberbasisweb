@@ -41,7 +41,7 @@ app.config(function($routeProvider) {
 });
 app.run(function($rootScope, $localStorage) {
    //$rootScope.serverBackEnd = $localStorage.serverBackEnd;
-   $rootScope.serverBackEnd = 'https://localhost:3000';
+   $rootScope.serverBackEnd = '';
    //$rootScope.serverBackEnd = 'https://ujianweb.herokuapp.com';
 });
 app.service('ujian', function($location){
