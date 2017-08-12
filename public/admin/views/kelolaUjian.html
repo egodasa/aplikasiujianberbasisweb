@@ -1,8 +1,4 @@
 <h2>Kelola Ujian</h2>
-<div class="{{tipePesan}}" ng-show="pesan">
-	<span class="w3-closebtn" ng-click="closePesan()">X</span>
-	<p>{{isiPesan}}</p>
-</div>
 <span ng-include="'/admin/views/buttonAtas.html'"></span>
 <div class="w3-modal" ng-model="createForm" style="{{form}}">
 	<div class="w3-modal-content w3-animate-top">
@@ -14,11 +10,11 @@
 			<label class="w3-label">Lama Ujian</label>
 			<div class="w3-row">
 				<div class="w3-col l6">
-					<input class="w3-input w3-border" type="number" min=0 id="Tjam" ng-model="Tjam" placeholder="Jam" />
+					<input class="w3-input w3-border" type="number" min=0 id="Tjam" ng-model="Tjam" value='0' placeholder="Jam" />
 					<label class="w3-validate">{{ETjam}}</label>
 				</div>
 				<div class="w3-col l6">
-					<input class="w3-input w3-border" type="number" min=0 max=59 id="Tmenit" ng-model="Tmenit" placeholder="menit" />
+					<input class="w3-input w3-border" type="number" min=0 max=59 id="Tmenit" value='0' ng-model="Tmenit" placeholder="menit" />
 					<label class="w3-validate">{{ETmenit}}</label>
 				</div>
 			</div>

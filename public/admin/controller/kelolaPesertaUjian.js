@@ -1,4 +1,4 @@
-app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $location, ujian, loadingScreen){
+app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $location, ujian){
 	$scope.id_ujian = ujian.getIdUjian();
 	$scope.createForm = false;
 	$scope.showForm = function(x){

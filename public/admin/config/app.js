@@ -41,8 +41,8 @@ app.config(function($routeProvider) {
 });
 app.run(function($rootScope, $localStorage) {
    //$rootScope.serverBackEnd = $localStorage.serverBackEnd;
-   //$rootScope.serverBackEnd = 'http://localhost:3000';
-   $rootScope.serverBackEnd = 'https://ujianweb.herokuapp.com';
+   $rootScope.serverBackEnd = 'http://localhost:3000';
+   //$rootScope.serverBackEnd = 'https://ujianweb.herokuapp.com';
 });
 app.service('ujian', function($location){
 		this.id_ujian = "";
@@ -61,6 +61,7 @@ app.service('ujian', function($location){
 			$location.path('/');
 		};
 	});
+/*
 app.service('loadingScreen', 
     ['$q', '$rootScope', '$log', 
     function($q, $rootScope, $log) {
@@ -90,3 +91,4 @@ app.service('loadingScreen',
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('loadingScreen');
 }]);
+*/
