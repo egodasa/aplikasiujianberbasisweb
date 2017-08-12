@@ -7,7 +7,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 	$scope.showLoading(false);
 	$scope.pesan = false;
 	$scope.showPesan= function(tipe,isi){
-		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-red';
+		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-pale-red';
 		else $scope.tipePesan = 'w3-panel w3-pale-green';
 		$scope.isiPesan = isi;
 		$scope.pesan = true;

@@ -14,7 +14,7 @@
 				<tr ng-repeat="x in soal">
 					<td>{{$index+1}}</td>
 					<td>{{x.isi_soal}}</td>
-					<td><button type="button" class="w3-btn w3-small w3-red" ng-click="createData(x.id_soal)">Tambahkan Soal</button></td>
+					<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="createData(x.id_soal)">Tambahkan Soal</button></td>
 				</tr>
 			</table>
 		</form>
@@ -31,7 +31,7 @@
 	<tr ng-repeat="x in data">
 		<td>{{$index+1}}</td>
 		<td>{{x.isi_soal}}</td>
-		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)">Hapus</button></td>
+		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id)">Hapus</button></td>
 	</tr>
 </table>
 

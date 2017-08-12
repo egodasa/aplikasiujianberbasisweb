@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<button class="w3-btn w3-tiny w3-teal" type="button" ng-click="addPG(0)">+</button>
-			<button class="w3-btn w3-tiny w3-red" type="button" ng-click="deletePG(0)">-</button>
+			<button class="w3-btn w3-tiny w3-pale-red" type="button" ng-click="deletePG(0)">-</button>
 			<br/>
 			Jawaban :
 			<label class="w3-label w3-text-red">{{ERjawaban}}</label><br/>
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<button class="w3-btn w3-tiny w3-teal" type="button" ng-click="addPG(1)">+</button>
-			<button class="w3-btn w3-tiny w3-red" type="button" ng-click="deletePG(1)">-</button>
+			<button class="w3-btn w3-tiny w3-pale-red" type="button" ng-click="deletePG(1)">-</button>
 			<br/>
 			Jawaban :
 			<label class="w3-label w3-text-red">{{EURjawaban}}</label><br/>
@@ -60,7 +60,7 @@
 	<tr ng-repeat="x in laporanSoal">
 		<td>{{$index+1}}</td>
 		<td>{{x.isi_soal | limitTo : 20}}</td>
-		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)">Hapus</button>
+		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id_soal)">Hapus</button>
 		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)">Update</button></td>
 	</tr>
 </table>
