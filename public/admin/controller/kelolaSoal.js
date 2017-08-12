@@ -6,7 +6,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 	$scope.showLoading(false);
 	$scope.showPesan= function(tipe,isi){
 		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-red';
-		else $scope.tipePesan = 'w3-panel w3-green';
+		else $scope.tipePesan = 'w3-panel w3-pale-green';
 		$scope.isiPesan = isi;
 		$scope.pesan = true;
 		var pesanTimer = $timeout(function () {
