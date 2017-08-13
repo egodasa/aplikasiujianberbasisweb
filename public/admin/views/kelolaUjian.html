@@ -46,7 +46,7 @@
 		<th>Durasi</th>
 		<th>Aksi</th>
 	</tr>
-	<tr ng-repeat="x in data">
+	<tr ng-repeat="x in data | filter : kataKunci ">
 		<td>{{$index+1}}</td>
 		<td>{{x.nm_ujian}}</td>
 		<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>

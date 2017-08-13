@@ -7,7 +7,7 @@
 		<th>Jawaban Salah</th>
 		<th>Nilai</th>
 	</tr>
-	<tr ng-repeat="x in hasil">
+	<tr ng-repeat="x in hasil | filter : kataKunci ">
 		<td>{{$index+1}}</td>
 		<td>{{x.nm_peserta}}</td>
 		<td>{{x.benar}}</td>

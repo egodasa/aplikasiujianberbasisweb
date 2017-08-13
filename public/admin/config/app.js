@@ -41,6 +41,9 @@ app.config(function($routeProvider) {
 });
 app.run(function($rootScope) {
    $rootScope.serverBackEnd = '';
+   $rootScope.pencarian = function(x){
+		$rootScope.kataKunci = x;
+	};
 });
 app.service('ujian', function($location){
 		this.id_ujian = "";

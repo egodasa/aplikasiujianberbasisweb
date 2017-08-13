@@ -1,5 +1,3 @@
-<h2>Kelola Soal Ujian</h2>
-<span ng-include="'/admin/views/buttonAtas.html'"></span>
 <div class="w3-modal" ng-model="createForm" style="{{form}}">
 	<div class="w3-modal-content w3-animate-top">
 		<form class="w3-card-8 w3-container" method="POST" ng-submit="createData()">
@@ -22,13 +20,14 @@
 </div>
 
 <h2>Daftar Soal Ujian</h2>
+<span ng-include="'/admin/views/buttonAtas.html'"></span>
 <table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
 	<tr class="w3-teal">
 		<th>No</th>
 		<th>Soal Ujian</th>
 		<th>Aksi</th>
 	</tr>
-	<tr ng-repeat="x in data">
+	<tr ng-repeat="x in data | filter : kataKunci ">
 		<td>{{$index+1}}</td>
 		<td>{{x.isi_soal}}</td>
 		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id)">Hapus</button></td>

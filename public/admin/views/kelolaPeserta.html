@@ -25,7 +25,7 @@
 		<th>Nama Peserta</th>
 		<th>Aksi</th>
 	</tr>
-	<tr ng-repeat="x in data">
+	<tr ng-repeat="x in data | filter : kataKunci ">
 		<td>{{$index+1}}</td>
 		<td>{{x.id_peserta}}</td>
 		<td>{{x.nm_peserta}}</td>

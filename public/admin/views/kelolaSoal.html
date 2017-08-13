@@ -57,9 +57,9 @@
 		<th>Isi Soal</th>
 		<th>Aksi</th>
 	</tr>
-	<tr ng-repeat="x in laporanSoal">
+	<tr ng-repeat="x in laporanSoal | filter : kataKunci ">
 		<td>{{$index+1}}</td>
-		<td>{{x.isi_soal | limitTo : 20}}</td>
+		<td>{{x.isi_soal}}</td>
 		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id_soal)">Hapus</button>
 		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)">Update</button></td>
 	</tr>
