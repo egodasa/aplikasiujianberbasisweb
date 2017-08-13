@@ -20,6 +20,9 @@ menggunakan modul $resource.
 2. File untuk frontend AngularJS dapat dilihat pada folder "public". Untuk halaman admin pada folder "admin" dan folder 
 "peserta" untuk halaman peserta ujian.
 
+Versi Admin : [https://ujianweb.herokuapp.com/admin](https://ujianweb.herokuapp.com/admin)
+Versi Peserta : [https://ujianweb.herokuapp.com/peserta](https://ujianweb.herokuapp.com/peserta)
+
 URL admin : [localhost:3000/admin](localhost:3000/admin)
 URL peserta : [localhost:3000/peserta](localhost:3000/peserta)
 URL API : [localhost:3000/api/NAMA_DATA](localhost:3000/api/NAMA_DATA)

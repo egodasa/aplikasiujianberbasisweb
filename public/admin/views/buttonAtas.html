@@ -1,7 +1,11 @@
-<button type="button" ng-click="readData()" class="w3-btn w3-deep-orange"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
-<button type="button" ng-click="showForm(1,0)" class="w3-btn w3-blue"><i class="fa fa-plus-square" style="font-size:17px"></i> Tambah Data</button>
-<button type="button" class="w3-btn w3-green w3-right" ng-click="pencarian(y)"> <i class="fa fa-search" style="font-size:17px"></i></button>
-<input type="input" class="w3-input w3-border w3-right" placeholder="Pencarian data ..." ng-model="y" ng-change="pencarian(y)" style="width:25%;height:34px;" />
+<button type="button" ng-click="readData(10,0)" class="w3-btn w3-deep-orange w3-left"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
+<button type="button" ng-click="showForm(1,0)" class="w3-btn w3-blue w3-left"><i class="fa fa-plus-square" style="font-size:17px"></i> Tambah Data</button>
+<input type="input" class="w3-input w3-border w3-left" placeholder="Pencarian data ..." ng-model="y" ng-change="pencarian(y)" style="width:15%;height:34px;" />
+<button type="button" class="w3-btn w3-green w3-left" ng-click="pencarian(y)"> <i class="fa fa-search" style="font-size:17px"></i></button>
+<button type="button" class="w3-button w3-green w3-white w3-hover-blue-gray w3-right" ng-click="readData(50,0)">50</button>
+<button type="button" class="w3-button w3-green w3-white w3-hover-blue-gray w3-right" ng-click="readData(25,0)">25</button>
+<button type="button" class="w3-button w3-green w3-white w3-hover-blue-gray w3-right" ng-click="readData(10,0)">10</button>
+<button type="button" class="w3-button w3-right w3-white w3-hover-white">Tampilkan Data </button>
 <div class="{{tipePesan}} w3" ng-show="pesan">
 	<span class="w3-closebtn" ng-click="closePesan()">X</span>
 	<p>{{isiPesan}}</p>

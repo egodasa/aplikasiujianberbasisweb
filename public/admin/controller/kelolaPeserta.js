@@ -1,4 +1,16 @@
 app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $timeout){
+	$scope.pagination = {
+		limit : 10,
+		offset : 0
+	};
+	$scope.pagNum = function(length,limit){
+		var hasil = Math.ceil(length/limit);
+		$scope.pagCount=[];
+		for(x = 0;x < hasil;x++){
+			$scope.pagCount.push(x);
+		}
+		console.log($scope.pagCount);
+	};
 	$scope.showLoading = function(x){
 		if(x == true) $rootScope.loading = 'display:block;';
 		else $rootScope.loading = 'display:none;';
@@ -43,11 +55,17 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			$scope.createForm = !$scope.updateForm;
 		}
 	}
-	$scope.readData = function(){
+	$scope.readData = function(x,y){
+		var url;
+		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/peserta';
+		else url = $rootScope.serverBackEnd+'/api/peserta/limit/'+x+'/offset/'+y;
 		$scope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/peserta')
+		$scope.pagination.limit = x;
+		$scope.pagination.offset = y;
+		$http.get(url)
 		.then(function(res){
 			$scope.data = res.data.data;
+			$scope.pagNum(res.data.row,$scope.pagination.limit);
 		})
 		.catch(function(e){
 			$scope.showPesan('Warning',e);
@@ -91,7 +109,7 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			.then(function(res){
 				var hasil = res.data;
 				if(hasil.status == true){
-					$scope.resetForm();
+					$scope.resetForm($scope.pagination.limit,$scope.pagination.offset);
 					$scope.showForm(0,0);
 					$scope.readData();
 					$scope.showPesan('Success','Data berhasil ditambah ...');
@@ -138,7 +156,7 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				var hasil = res.data;
 					if(hasil.status == true){
 						$scope.resetForm();
-						$scope.readData();
+						$scope.readData($scope.pagination.limit,$scope.pagination.offset);
 						$scope.showForm(0,1);
 						$scope.showPesan('Success','Perubahan disimpan ...');
 						}
@@ -153,5 +171,5 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				
 			});
 		}
-$scope.readData();
+$scope.readData($scope.pagination.limit,$scope.pagination.offset);
 });
