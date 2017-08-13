@@ -1,3 +1,4 @@
+
 <h2>Kelola Ujian</h2>
 <span ng-include="'/admin/views/buttonAtas.html'"></span>
 <div class="w3-modal" ng-model="createForm" style="{{form}}">
@@ -50,11 +51,11 @@
 		<td>{{$index+1}}</td>
 		<td>{{x.nm_ujian}}</td>
 		<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
-		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id_ujian)">Hapus</button>
-		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit" stle="font-size:13px;"></i> Update</button>
-		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)">Soal Ujian</button>
-		<button type="button" class="w3-btn w3-small w3-orange" ng-click="setIdUjian(x.id_ujian,0)">Peserta Ujian</button>
-		<button type="button" class="w3-btn w3-small w3-pale-blue"  ng-click="setIdUjian(x.id_ujian,2)">Hasil Ujian</button></td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)"><i class="fa fa-close w3-small"></i> <b>Hapus</b></button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button>
+		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)"><i class="fa fa-list-alt"></i> <b>Soal Ujian</b></button>
+		<button type="button" class="w3-btn w3-small w3-lime" ng-click="setIdUjian(x.id_ujian,0)"><i class="fa fa-user"></i> <b>Peserta Ujian</b></button>
+		<button type="button" class="w3-btn w3-small w3-cyan"  ng-click="setIdUjian(x.id_ujian,2)"><i class="fa fa-list-ol"></i> <b>Hasil Ujian</b></button></td>
 	</tr>
 </table>
 

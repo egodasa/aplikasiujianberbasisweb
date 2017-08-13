@@ -29,8 +29,8 @@
 		<td>{{$index+1}}</td>
 		<td>{{x.id_peserta}}</td>
 		<td>{{x.nm_peserta}}</td>
-		<td><button type="button" class="w3-btn w3-small w3-pale-red" ng-click="deleteData(x.id_peserta)">Hapus</button>
-		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_peserta)">Update</button></td>
+		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_peserta)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
+		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_peserta)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
 	</tr>
 </table>
 

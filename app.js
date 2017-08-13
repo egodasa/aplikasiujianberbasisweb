@@ -17,6 +17,7 @@ koneksi = mysql.createPool({
 		database : 'sql12189662',
 		multipleStatements : true
 		});
+
 /*
 koneksi = mysql.createPool({
 		host : 'localhost',

@@ -5,7 +5,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 	};
 	$scope.showLoading(false);
 	$scope.showPesan= function(tipe,isi){
-		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-pale-red';
+		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-red';
 		else $scope.tipePesan = 'w3-panel w3-pale-green';
 		$scope.isiPesan = isi;
 		$scope.pesan = true;
@@ -77,7 +77,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 		.then(function(res){
 			var result = res.data.status;
 			if(result == true){
-				$scope.showPesan('Success','Data berhasil dihapus ...');
+				$scope.showPesan('Success','Data berhasil di<b>Hapus</b> ...');
 				$scope.readData();
 			}
 			else {
