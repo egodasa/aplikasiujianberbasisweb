@@ -58,7 +58,8 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
 	};
 	$scope.readData = function(){
 		$scope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/ujian').then(function(res){
+		$http.get($rootScope.serverBackEnd+'/api/ujian')
+		.then(function(res){
 			$scope.data = res.data.data;
 		}).catch(function(e){
 			$scope.showPesan('Warning',e);
