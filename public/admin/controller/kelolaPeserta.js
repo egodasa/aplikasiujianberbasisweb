@@ -81,11 +81,11 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			$scope.result = res.data.status;
 			if($scope.result == true){
 				$scope.showPesan('Success','Data berhasil dihapus ...');
-				$scope.readData();
+				$scope.readData($scope.pagination.limit,$scope.pagination.offset);
 			}
 			else {
 				$scope.showPesan('Warning','Data gagal dihapus ...');
-				$scope.readData();
+				$scope.readData($scope.pagination.limit,$scope.pagination.offset);
 			}
 		})
 		.catch(function(e){
@@ -111,7 +111,7 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				if(hasil.status == true){
 					$scope.resetForm($scope.pagination.limit,$scope.pagination.offset);
 					$scope.showForm(0,0);
-					$scope.readData();
+					$scope.readData($scope.pagination.limit,$scope.pagination.offset);
 					$scope.showPesan('Success','Data berhasil ditambah ...');
 				}
 				else {
