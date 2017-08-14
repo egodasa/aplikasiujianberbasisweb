@@ -8,11 +8,11 @@ app.config(function($routeProvider) {
         templateUrl : "/admin/views/kelolaUjian.html",
         controller : "kelolaUjian"
     })
-    .when("/ujian/peserta", {
+    .when("/ujian/:idUjian/peserta", {
         templateUrl : "/admin/views/kelolaPesertaUjian.html",
         controller : "kelolaPesertaUjian"
     })
-    .when("/ujian/soal", {
+    .when("/ujian/:idUjian/soal", {
         templateUrl : "/admin/views/kelolaSoalUjian.html",
         controller : "kelolaSoalUjian"
     })
@@ -24,7 +24,7 @@ app.config(function($routeProvider) {
         templateUrl : "/admin/views/kelolaSoal.html",
         controller : "kelolaSoal"
     })
-    .when("/ujian/laporan", {
+    .when("/ujian/:idUjian/laporan", {
         templateUrl : "/admin/views/hasilUjian.html",
         controller : "hasilUjian"
     })
@@ -39,29 +39,50 @@ app.config(function($routeProvider) {
         redirectTo: "/"
     });
 });
-app.run(function($rootScope) {
+app.run(function($rootScope, $timeout) {
    $rootScope.serverBackEnd = '';
    $rootScope.pencarian = function(x){
 		$rootScope.kataKunci = x;
 	};
+	$rootScope.showLoading = function(x){
+		if(x == true) $rootScope.loading = 'display:block;';
+		else $rootScope.loading = 'display:none;';
+	};
+	$rootScope.showLoading(false);
+	$rootScope.pesan = false;
+	$rootScope.showPesan= function(tipe,isi){
+		if(tipe == 'Warning') $rootScope.tipePesan = 'w3-panel w3-pale-red';
+		else $rootScope.tipePesan = 'w3-panel w3-pale-green';
+		$rootScope.isiPesan = isi;
+		$rootScope.pesan = true;
+		var pesanTimer = $timeout(function () {
+	        $rootScope.closePesan();
+	        $timeout.cancel(pesanTimer);
+	    }, 5000);
+	};
+	$rootScope.closePesan = function(){
+		$rootScope.pesan = false;
+		$rootScope.isiPesan = '';
+	};
+	$rootScope.createForm = false;
+	$rootScope.updateForm = false;
+	$rootScope.showForm = function(x,y){
+		if(x == 0) {
+			$rootScope.form = "display:none;";
+			}
+		else $rootScope.form = "display:block;";
+		
+		if(y == 0){
+			$rootScope.createForm = true;
+			$rootScope.updateForm = !$rootScope.createForm;
+		}
+		else{
+			$rootScope.updateForm = true;
+			$rootScope.createForm = !$rootScope.updateForm;
+		}
+	}
+	
 });
-app.service('ujian', function($location){
-		this.id_ujian = "";
-		this.setIdUjian = function(x,y){
-			this.id_ujian = x;
-			if(y == 0) $location.path('/ujian/peserta');
-			else if(y == 1) $location.path('/ujian/soal');
-			else if(y == 2) $location.path('/ujian/laporan');
-			else $location.path('/ujian/soal');
-		};
-		this.getIdUjian = function(){
-			return this.id_ujian;
-		};
-		this.removeIdUjian = function(){
-			id_ujian = "";
-			$location.path('/');
-		};
-	});
 /*
 app.service('loadingScreen', 
     ['$q', '$rootScope', '$log', 

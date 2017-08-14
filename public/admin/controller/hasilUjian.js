@@ -1,5 +1,5 @@
-app.controller("hasilUjian", function($rootScope, $scope, $http, ujian){
-	$scope.id_ujian = ujian.getIdUjian();
+app.controller("hasilUjian", function($rootScope, $scope, $http, $routeParams){
+	$scope.id_ujian = $routeParams.idUjian;
 	$scope.readData = function(id){
 		$http({
 			method : 'GET',

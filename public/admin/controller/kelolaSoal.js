@@ -1,23 +1,4 @@
 app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $timeout){
-	$scope.showLoading = function(x){
-		if(x == true) $rootScope.loading = 'display:block;';
-		else $rootScope.loading = 'display:none;';
-	};
-	$scope.showLoading(false);
-	$scope.showPesan= function(tipe,isi){
-		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-pale-red';
-		else $scope.tipePesan = 'w3-panel w3-pale-green';
-		$scope.isiPesan = isi;
-		$scope.pesan = true;
-		var pesanTimer = $timeout(function () {
-	        $scope.closePesan();
-	        $timeout.cancel(pesanTimer);
-	    }, 5000);
-	};
-	$scope.closePesan = function(){
-		$scope.pesan = false;
-		$scope.isiPesan = '';
-	};
 	$scope.pilihanGandaDefault = [
 	{huruf : 'A', isi_pilihan : ''},
 	{huruf : 'B', isi_pilihan : ''},
@@ -65,55 +46,38 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 			$scope.EURjawaban = '';
 		}
 	};
-	$scope.createForm = false;
-	$scope.updateForm = false;
-	$scope.form = "display:none;";
-	$scope.showForm = function(x,y){
-		if(x == 0){
-			$scope.createForm = false;
-			$scope.updateForm = false;
-			$scope.form = "display:none;";
-		}
-		else {
-			if(y == 0){
-				$scope.createForm = !$scope.updateForm;
-			}
-			else $scope.updateForm = !$scope.createForm;
-			$scope.form = "display:block;";
-		}
-	};
 	$scope.readData = function(){
-		$scope.showLoading(true);
+		$rootScope.showLoading(true);
 		$http.get($rootScope.serverBackEnd+'/api/soal')
 		.then(function(res){
 			$scope.laporanSoal = res.data.data;
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
-			$scope.showLoading(false);
+			$rootScope.showLoading(false);
 		})
 		};
 	$scope.deleteData = function(id){
-		$scope.showLoading(true);
+		$rootScope.showLoading(true);
 		$http.delete($rootScope.serverBackEnd+'/api/soal/delete/'+id)
 		.then(function(res){
 			var result = res.data.status;
 			if(result == true){
 				$scope.readData();
-				$scope.showPesan('Success','Data berhasil dihapus ...');
+				$rootScope.showPesan('Success','Data berhasil dihapus ...');
 			}
 			else {
-				$scope.showPesan('Warning','Data gagal dihapus ...');
+				$rootScope.showPesan('Warning','Data gagal dihapus ...');
 				$scope.readData();
 			}
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
-			$scope.showLoading(false);
+			$rootScope.showLoading(false);
 		})
 		};
 	$scope.createData = function(){
@@ -135,9 +99,9 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 			console.log(hasil);
 			if(hasil.status == true){
 				$scope.resetForm(0);
-				$scope.showForm(0,0);
+				$rootScope.showForm(0,0);
 				$scope.readData();
-				$scope.showPesan('Success','Data berhasil ditambahkan ...');
+				$rootScope.showPesan('Success','Data berhasil ditambahkan ...');
 			}
 			else {
 				$scope.ETsoal = hasil.error.isi_soal.msg;
@@ -145,7 +109,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 			}
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
 			
@@ -161,10 +125,10 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 				$scope.pilihanGandaUpdate = hasil.pilihan_ganda;
 				$scope.UTsoal = hasil.isi_soal;
 				$scope.URjawaban = hasil.jawaban;
-				$scope.showForm(1,1);
+				$rootScope.showForm(1,1);
 			})
 			.catch(function(e){
-				$scope.showPesan('Warning',e);
+				$rootScope.showPesan('Warning',e);
 			})
 			.finally(function(){
 			});
@@ -186,8 +150,8 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 					if(hasil.status == true){
 						$scope.resetForm(1);
 						$scope.readData();
-						$scope.showForm(0,1);
-						$scope.showPesan('Success','Perubahan disimpan...');
+						$rootScope.showForm(0,1);
+						$rootScope.showPesan('Success','Perubahan disimpan...');
 						}
 					else {
 						$scope.EUTsoal = hasil.error.isi_soal.msg;
@@ -195,10 +159,13 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 					}
 				})
 				.catch(function(e){
-					$scope.showPesan('Warning',e);
+					$rootScope.showPesan('Warning',e);
 				})
 				.finally(function(){
 				})
 		}
 $scope.readData();
+$scope.$watch('form',function(newValue,oldValue,scope){
+	if(newValue == 'display:none;') scope.resetForm();
+});
 });

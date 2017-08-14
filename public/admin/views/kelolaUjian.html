@@ -53,9 +53,9 @@
 		<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
 		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)"><i class="fa fa-close w3-small"></i> <b>Hapus</b></button>
 		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button>
-		<button type="button" class="w3-btn w3-small w3-indigo" ng-click="setIdUjian(x.id_ujian,1)"><i class="fa fa-list-alt"></i> <b>Soal Ujian</b></button>
-		<button type="button" class="w3-btn w3-small w3-lime" ng-click="setIdUjian(x.id_ujian,0)"><i class="fa fa-user"></i> <b>Peserta Ujian</b></button>
-		<button type="button" class="w3-btn w3-small w3-cyan"  ng-click="setIdUjian(x.id_ujian,2)"><i class="fa fa-list-ol"></i> <b>Hasil Ujian</b></button></td>
+		<a href="{{'#!ujian/'+x.id_ujian+'/soal'}}" class="w3-btn w3-small w3-indigo"><i class="fa fa-list-alt"></i> <b>Soal Ujian</b></a>
+		<a href="{{'#!ujian/'+x.id_ujian+'/peserta'}}" class="w3-btn w3-small w3-lime"><i class="fa fa-user"></i> <b>Peserta Ujian</b></a>
+		<a href="{{'#!ujian/'+x.id_ujian+'/laporan'}}" class="w3-btn w3-small w3-cyan"><i class="fa fa-list-ol"></i> <b>Hasil Ujian</b></a></td>
 	</tr>
 </table>
 

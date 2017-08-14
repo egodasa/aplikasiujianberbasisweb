@@ -1,25 +1,5 @@
-app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location, ujian, $timeout){
-	$scope.id_ujian = ujian.getIdUjian();
-	$scope.showLoading = function(x){
-		if(x == true) $rootScope.loading = 'display:block;';
-		else $rootScope.loading = 'display:none;';
-	};
-	$scope.showLoading(false);
-	$scope.pesan = false;
-	$scope.showPesan= function(tipe,isi){
-		if(tipe == 'Warning') $scope.tipePesan = 'w3-panel w3-pale-red';
-		else $scope.tipePesan = 'w3-panel w3-pale-green';
-		$scope.isiPesan = isi;
-		$scope.pesan = true;
-		var pesanTimer = $timeout(function () {
-	        $scope.closePesan();
-	        $timeout.cancel(pesanTimer);
-	    }, 5000);
-	};
-	$scope.closePesan = function(){
-		$scope.pesan = false;
-		$scope.isiPesan = '';
-	};
+app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location, $timeout, $routeParams){
+	$scope.id_ujian = $routeParams.idUjian;
 	$scope.createForm = false;
 	$scope.showForm = function(x){
 		if(x == 0) {
@@ -31,32 +11,32 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 		}
 	}
 	$scope.getSoal = function(id){
-		$scope.showLoading(true);
+		$rootScope.showLoading(true);
 		$http.get($rootScope.serverBackEnd+'/api/soal/not/'+id)
 		.then(function(res){
 			$scope.soal = res.data.data;
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
-			$scope.showLoading(false);
+			$rootScope.showLoading(false);
 		});
 	};
 	$scope.readData = function(){
-		$scope.showLoading(true);
+		$rootScope.showLoading(true);
 		$http.get($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal').then(function(res){
 			$scope.data = res.data.data;
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
-			$scope.showLoading(false);
+			$rootScope.showLoading(false);
 		});
 		};
 	$scope.deleteData = function(id){
-		$scope.showLoading(true);
+		$rootScope.showLoading(true);
 		data = JSON.stringify({id : id});
 		$http.post($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/delete',data)
 		.then(function(res){
@@ -71,7 +51,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 			}
 		})
 		.catch(function(e){
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
 		});
@@ -93,7 +73,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 		})
 		.catch(function(e){
 			$scope.showForm(0,0);
-			$scope.showPesan('Warning',e);
+			$rootScope.showPesan('Warning',e);
 			})
 		.finally(function(){
 		});
@@ -104,7 +84,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 				$scope.showUpdateForm();
 			})
 			.catch(function(e){
-				$scope.showPesan('Warning',e);
+				$rootScope.showPesan('Warning',e);
 			})
 			.finally(function(){
 			})
