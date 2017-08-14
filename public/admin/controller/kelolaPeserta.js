@@ -1,33 +1,21 @@
-app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $timeout){
-	$scope.pagination = {
-		limit : 10,
-		offset : 0
+app.controller("kelolaPeserta", function($rootScope, $rootScope, $http, $location, $timeout){
+	$rootScope.resetForm = function(){
+		$rootScope.Tnm_peserta ='';
+		$rootScope.ETnm_peserta ='';
+		$rootScope.UTnm_peserta ='';
+		$rootScope.EUTnm_peserta ='';
 	};
-	$scope.pagNum = function(length,limit){
-		var hasil = Math.ceil(length/limit);
-		$scope.pagCount=[];
-		for(x = 0;x < hasil;x++){
-			$scope.pagCount.push(x);
-		}
-		console.log($scope.pagCount);
-	};
-	$scope.resetForm = function(){
-		$scope.Tnm_peserta ='';
-		$scope.ETnm_peserta ='';
-		$scope.UTnm_peserta ='';
-		$scope.EUTnm_peserta ='';
-	};
-	$scope.readData = function(x,y){
+	$rootScope.readData = function(x,y){
 		var url;
 		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/peserta';
 		else url = $rootScope.serverBackEnd+'/api/peserta/limit/'+x+'/offset/'+y;
 		$rootScope.showLoading(true);
-		$scope.pagination.limit = x;
-		$scope.pagination.offset = y;
+		$rootScope.pagination.limit = x;
+		$rootScope.pagination.offset = y;
 		$http.get(url)
 		.then(function(res){
-			$scope.data = res.data.data;
-			$scope.pagNum(res.data.row,$scope.pagination.limit);
+			$rootScope.data = res.data.data;
+			$rootScope.pagNum(res.data.row,$rootScope.pagination.limit);
 		})
 		.catch(function(e){
 			$rootScope.showPesan('Warning',e);
@@ -36,18 +24,18 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			$rootScope.showLoading(false);
 		});
 		};
-	$scope.deleteData = function(id){
+	$rootScope.deleteData = function(id){
 		$rootScope.showLoading(true);
 		$http.delete($rootScope.serverBackEnd+'/api/peserta/delete/'+id)
 		.then(function(res){
-			$scope.result = res.data.status;
-			if($scope.result == true){
+			$rootScope.result = res.data.status;
+			if($rootScope.result == true){
 				$rootScope.showPesan('Success','Data berhasil dihapus ...');
-				$scope.readData($scope.pagination.limit,$scope.pagination.offset);
+				$rootScope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 			}
 			else {
 				$rootScope.showPesan('Warning','Data gagal dihapus ...');
-				$scope.readData($scope.pagination.limit,$scope.pagination.offset);
+				$rootScope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 			}
 		})
 		.catch(function(e){
@@ -57,9 +45,9 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			$rootScope.showLoading(false);
 		});
 		};
-	$scope.createData = function(){
+	$rootScope.createData = function(){
 		var data = {
-			nm_peserta : $scope.Tnm_peserta
+			nm_peserta : $rootScope.Tnm_peserta
 		};
 		data = JSON.stringify(data);
 		$http({
@@ -71,13 +59,13 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			.then(function(res){
 				var hasil = res.data;
 				if(hasil.status == true){
-					$scope.resetForm($scope.pagination.limit,$scope.pagination.offset);
+					$rootScope.resetForm($rootScope.pagination.limit,$rootScope.pagination.offset);
 					$rootScope.showForm(0,0);
-					$scope.readData($scope.pagination.limit,$scope.pagination.offset);
+					$rootScope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 					$rootScope.showPesan('Success','Data berhasil ditambah ...');
 				}
 				else {
-					$scope.ETnm_peserta = hasil.error.nm_peserta.msg;
+					$rootScope.ETnm_peserta = hasil.error.nm_peserta.msg;
 				}
 			})
 			.catch(function(e){
@@ -88,12 +76,12 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				
 			})
 		};
-		$scope.detailData = function(id){
+		$rootScope.detailData = function(id){
 		$http.get($rootScope.serverBackEnd+'/api/peserta/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
-				$scope.id = hasil.id_peserta;
-				$scope.UTnm_peserta = hasil.nm_peserta;
+				$rootScope.id = hasil.id_peserta;
+				$rootScope.UTnm_peserta = hasil.nm_peserta;
 				$rootScope.showForm(1,1);
 			})
 			.catch(function(e){
@@ -103,9 +91,9 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				
 			})
 		}
-		$scope.updateData = function(id){
+		$rootScope.updateData = function(id){
 			var data = {
-				nm_peserta : $scope.UTnm_peserta
+				nm_peserta : $rootScope.UTnm_peserta
 			};
 			data = JSON.stringify(data);
 			$http({
@@ -117,13 +105,13 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 			.then(function(res){
 				var hasil = res.data;
 					if(hasil.status == true){
-						$scope.resetForm();
-						$scope.readData($scope.pagination.limit,$scope.pagination.offset);
+						$rootScope.resetForm();
+						$rootScope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 						$rootScope.showForm(0,1);
 						$rootScope.showPesan('Success','Perubahan disimpan ...');
 						}
 					else {
-						$scope.EUTnm_peserta = hasil.error.nm_peserta.msg;
+						$rootScope.EUTnm_peserta = hasil.error.nm_peserta.msg;
 						}
 			})
 			.catch(function(e){
@@ -133,9 +121,8 @@ app.controller("kelolaPeserta", function($rootScope, $scope, $http, $location, $
 				
 			});
 		}
-$scope.readData($scope.pagination.limit,$scope.pagination.offset);
-
-$scope.$watch('form',function(newValue,oldValue,scope){
+$rootScope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
+$rootScope.$watch('form',function(newValue,oldValue,scope){
 	if(newValue == 'display:none;') scope.resetForm();
 });
 });

@@ -82,6 +82,17 @@ app.run(function($rootScope, $timeout) {
 		}
 	}
 	
+	$rootScope.pagination = {
+		limit : 10,
+		offset : 0
+	};
+	$rootScope.pagNum = function(length,limit){
+		var hasil = Math.ceil(length/limit);
+		$rootScope.pagCount=[];
+		for(x = 0;x < hasil;x++){
+			$rootScope.pagCount.push(x);
+		}
+	};
 });
 /*
 app.service('loadingScreen', 

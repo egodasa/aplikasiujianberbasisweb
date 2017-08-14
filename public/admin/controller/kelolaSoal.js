@@ -46,11 +46,18 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 			$scope.EURjawaban = '';
 		}
 	};
-	$scope.readData = function(){
+	$scope.readData = function(x,y){
+		var url;
+		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/soal';
+		else url = $rootScope.serverBackEnd+'/api/soal/limit/'+x+'/offset/'+y;
 		$rootScope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/soal')
+		$rootScope.pagination.limit = x;
+		$rootScope.pagination.offset = y;
+		$rootScope.showLoading(true);
+		$http.get(url)
 		.then(function(res){
 			$scope.laporanSoal = res.data.data;
+			$rootScope.pagNum(res.data.row,$rootScope.pagination.limit);
 		})
 		.catch(function(e){
 			$rootScope.showPesan('Warning',e);
@@ -65,12 +72,12 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 		.then(function(res){
 			var result = res.data.status;
 			if(result == true){
-				$scope.readData();
+				$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 				$rootScope.showPesan('Success','Data berhasil dihapus ...');
 			}
 			else {
 				$rootScope.showPesan('Warning','Data gagal dihapus ...');
-				$scope.readData();
+				$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 			}
 		})
 		.catch(function(e){
@@ -96,11 +103,10 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 			contentType : 'application/json; charset=utf-8'
 			}).then(function(res){
 			var hasil = res.data;
-			console.log(hasil);
 			if(hasil.status == true){
 				$scope.resetForm(0);
 				$rootScope.showForm(0,0);
-				$scope.readData();
+				$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 				$rootScope.showPesan('Success','Data berhasil ditambahkan ...');
 			}
 			else {
@@ -149,7 +155,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 				var hasil = res.data;
 					if(hasil.status == true){
 						$scope.resetForm(1);
-						$scope.readData();
+						$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 						$rootScope.showForm(0,1);
 						$rootScope.showPesan('Success','Perubahan disimpan...');
 						}
@@ -164,7 +170,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 				.finally(function(){
 				})
 		}
-$scope.readData();
+$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 $scope.$watch('form',function(newValue,oldValue,scope){
 	if(newValue == 'display:none;') scope.resetForm();
 });

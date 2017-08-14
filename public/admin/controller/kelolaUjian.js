@@ -24,11 +24,18 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			$scope.UTmenit = '';
 		}
 	};
-	$scope.readData = function(){
+	$scope.readData = function(x,y){
+		var url;
+		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/ujian';
+		else url = $rootScope.serverBackEnd+'/api/ujian/limit/'+x+'/offset/'+y;
 		$rootScope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/ujian')
+		$rootScope.pagination.limit = x;
+		$rootScope.pagination.offset = y;
+		$rootScope.showLoading(true);
+		$http.get(url)
 		.then(function(res){
 			$scope.data = res.data.data;
+			$rootScope.pagNum(res.data.row,$rootScope.pagination.limit);
 		}).catch(function(e){
 			$rootScope.showPesan('Warning',e);
 		}).finally(function(){
@@ -46,7 +53,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			var result = res.data.status;
 			if(result == true){
 				$rootScope.showPesan('Success','Data berhasil di<b>Hapus</b> ...');
-				$scope.readData();
+				$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 			}
 			else {
 				var result = res.data;
@@ -79,7 +86,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			$scope.resetForm();
 			$rootScope.showForm(0,0);
 			$rootScope.showPesan('Success','Data baru berhasil ditambahkan ...');
-			$scope.readData();
+			$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 		}
 		else {
 			$scope.ETnm_ujian = hasil.error.nm_ujian.msg;
@@ -125,7 +132,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 				var hasil = res.data;
 					if(hasil.status == true){
 						$scope.resetForm();
-						$scope.readData();
+						$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 						$rootScope.showForm(0,1);
 						$rootScope.showPesan('Success','Perubahan disimpan ...');
 						}
@@ -143,7 +150,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 				
 			})
 		}
-$scope.readData();
+$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 $scope.$watch('form',function(newValue,oldValue,scope){
 	if(newValue == 'display:none;') scope.resetForm();
 });

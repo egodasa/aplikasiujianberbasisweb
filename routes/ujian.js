@@ -4,7 +4,7 @@ var checkData = require('../validator/ujian/create_update');
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
 var checkDataSoal = require('../validator/soal_ujian/create_update');
 router.get('/',(req, res, next)=>{
-	sql = 'call getUjian("0000000");';
+	sql = 'call getUjian("0000000",0,0);';
 	koneksi.query(sql, (e, r, f)=>{
 		if(!e){
 			var hasil = {
@@ -19,6 +19,31 @@ router.get('/',(req, res, next)=>{
 				data : r[0],
 				error : e
 				};
+			}
+		res.json(hasil);
+		});
+	});
+router.get('/limit/:lim/offset/:off',(req, res, next)=>{
+	var lim = req.params.lim;
+	var off = req.params.off;
+	sql = 'call getUjian("0000000",'+lim+','+off+');';
+	koneksi.query(sql, (e, r, f)=>{
+		if(!e){
+			var hasil = {
+				status : true,
+				data : r[0],
+				row : r[1][0].jumlah, //array inside array of array
+				error : null
+				};
+			console.log(sql);
+			}
+		else {
+			var hasil = {
+				status : false,
+				data : r[0],
+				error : e
+				};
+			
 			}
 		res.json(hasil);
 		});

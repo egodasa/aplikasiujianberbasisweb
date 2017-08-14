@@ -41,7 +41,6 @@ router.get('/limit/:lim/offset/:off',(req, res, next)=>{
 				data : r[0],
 				error : e
 				};
-			
 			}
 		res.json(hasil);
 		});
