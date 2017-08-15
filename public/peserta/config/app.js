@@ -58,7 +58,7 @@ app.service('infoPesertaUjian', function($location, $http, $rootScope){
 		};
 });
 
-app.service('sesiUjian', function($localStorage){
+app.service('sesiUjian', function($localStorage, $location){
 	this.sesi = $localStorage;
 	this.getSesiUjian = function(){
 		return {
@@ -93,5 +93,8 @@ app.service('sesiUjian', function($localStorage){
 	};
 	this.resetCookies = function(){
 		$localStorage.$reset();
+	};
+	this.cekLogin = function(){
+		if($localStorage.id_ujian == undefined) $location.path('/peserta');
 	};
 });

@@ -1,4 +1,5 @@
-app.controller("ljkUjian", function($scope, $rootScope, $http, $location, $interval, $cookies, $localStorage, infoPesertaUjian, sesiUjian){
+app.controller("ljkUjian", function($scope, $rootScope, $http, $location, $interval, $cookies, $localStorage, infoPesertaUjian, sesiUjian){;
+	sesiUjian.cekLogin();
 	$scope.simpanWaktu = function(x){
 		var menit,jam;
 	};

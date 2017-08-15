@@ -47,7 +47,7 @@ router.get('/limit/:lim/offset/:off',(req, res, next)=>{
 	});
 router.get('/:id',(req, res, next)=>{
 	var id = req.params.id;
-	sql = 'call getPeserta('+id+');';
+	sql = 'call getPeserta('+id+',0,0);';
 	koneksi.query(sql, (e, r, f)=>{
 		if(!e){
 				if(r[0].length == 0) {

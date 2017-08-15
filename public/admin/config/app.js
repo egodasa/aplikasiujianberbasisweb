@@ -40,6 +40,13 @@ app.config(function($routeProvider) {
     });
 });
 app.run(function($rootScope, $timeout) {
+   $rootScope.nav = false;
+   $rootScope.navigasi = 'display:none!important;width:25%;';
+   $rootScope.toggleNav = function(){
+	   $rootScope.nav = !$rootScope.nav;
+	   if($rootScope.nav == true) $rootScope.navigasi = 'display:block!important;width:25%;';
+	   else $rootScope.navigasi = 'display:none!important;width:25%;';
+   };
    $rootScope.serverBackEnd = '';
    $rootScope.pencarian = function(x){
 		$rootScope.kataKunci = x;
