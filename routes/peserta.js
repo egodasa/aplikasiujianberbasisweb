@@ -53,7 +53,7 @@ router.get('/not/:id',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
-router.post('/create',(req,res,next)=>{
+router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
 	req.checkBody(checkData);
@@ -83,7 +83,7 @@ router.post('/create',(req,res,next)=>{
 	}
 	});
 });
-router.delete('/delete/:id',(req,res,next)=>{
+router.delete('/:id',(req,res,next)=>{
 	var id = req.params.id;
 	var hasil = {};
 	sql = 'call deletePeserta('+id+');';
@@ -94,7 +94,7 @@ router.delete('/delete/:id',(req,res,next)=>{
 		res.json(hasil);
 		});
 	});
-router.put('/update/:id',(req,res,next)=>{
+router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
