@@ -4,21 +4,12 @@ var checkData = require('../validator/soal/create_update');
 router.get('/',(req, res, next)=>{
 	sql = 'call getSoal("0000000",0,0);';
 	koneksi.query(sql, (e, r, f)=>{
-		if(!e){
-			var hasil = {
-				status : true,
-				data : r[0],
-				error : null
-				};
-			}
-		else {
-			var hasil = {
-				status : false,
-				data : r[0],
-				error : e
-				};
-			
-			}
+		var hasil = {};
+		if(!e) hasil.status = true;	
+		else hasil.status = false;
+		hasil.data = r[0];
+		hasil.row = r[0].length;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	});
@@ -27,22 +18,12 @@ router.get('/limit/:lim/offset/:off',(req, res, next)=>{
 	var off = req.params.off;
 	sql = 'call getSoal("0000000",'+lim+','+off+');';
 	koneksi.query(sql, (e, r, f)=>{
-		if(!e){
-			var hasil = {
-				status : true,
-				data : r[0],
-				row : r[1][0].jumlah, //array inside array of array
-				error : null
-				};
-			}
-		else {
-			var hasil = {
-				status : false,
-				data : r[0],
-				error : e
-				};
-			
-			}
+		var hasil = {};
+		if(!e) hasil.status = true;	
+		else hasil.status = false;
+		hasil.data = r[0];
+		hasil.row = r[1][0].jumlah;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	});
@@ -50,32 +31,12 @@ router.get('/:id',(req, res, next)=>{
 	var id = req.params.id;
 	sql = 'select * from tbsoal where id_soal="'+id+'"; select * from tbpilihan_ganda where id_pilihan_ganda="PG'+id+'"';
 	koneksi.query(sql, (e, r, f)=>{
-		if(!e){
-				if(r[0].length == 0) {
-					var hasil = {
-						status : false,
-						data : r[0],
-						error : "Data tidak ditemukan!"
-						};
-					
-				}
-				else {
-					r[0][0].pilihan_ganda = r[1];
-					var hasil = {
-						status : true,
-						data : r[0],
-						error : null
-					};
-				}
-			}
-		else {
-			var hasil = {
-				status : false,
-				data : r[0],
-				error : e
-				};
-				
-			}
+		var hasil = {};
+		if(!e) hasil.status = true;	
+		else hasil.status = false;
+		hasil.data = r[0];
+		hasil.row = r[0].length;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	});
@@ -83,32 +44,12 @@ router.get('/not/:id',(req, res, next)=>{
 	var id = req.params.id;
 	sql = 'call getNotSoalUjian("'+id+'")';
 	koneksi.query(sql, (e, r, f)=>{
-		if(!e){
-				if(r[0].length == 0) {
-					var hasil = {
-						status : false,
-						data : r[0],
-						error : "Data tidak ditemukan!"
-						};
-					
-				}
-				else {
-					r[0][0].pilihan_ganda = r[1];
-					var hasil = {
-						status : true,
-						data : r[0],
-						error : null
-					};
-				}
-			}
-		else {
-			var hasil = {
-				status : false,
-				data : r[0],
-				error : e
-				};
-				
-			}
+		var hasil = {};
+		if(!e) hasil.status = true;	
+		else hasil.status = false;
+		hasil.data = r[0];
+		hasil.row = r[0].length;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	});
@@ -135,10 +76,8 @@ router.post('/create',(req,res,next)=>{
 				value : data.jawaban
 			};
 		}
-		hasil = {
-			status : false,
-			error : pesan
-			};
+		hasil.status = false;
+		hasil.error = pesan;
 	res.json(hasil); 
 	}
 	else{
@@ -150,19 +89,9 @@ router.post('/create',(req,res,next)=>{
 	}
 	sql = 'set @id_pg=genIdSoal(); call createSoal("'+data.isi_soal+'","'+data.jawaban+'",@id_pg); insert into tbpilihan_ganda (id_pilihan_ganda,huruf,isi_pilihan) values '+sql1+';';
 	koneksi.query(sql, function(e, r, f){
-		if(!e){
-			hasil = {
-					status : true,
-					error : null
-				};
-			}
-		else {
-			hasil = {
-					status : false,
-					error : e
-				};
-			
-			}
+		if(!e) hasil.status = true;
+		else hasil.status = false;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	}
@@ -170,31 +99,12 @@ router.post('/create',(req,res,next)=>{
 });
 router.delete('/delete/:id',(req,res,next)=>{
 	var id = req.params.id;
-	var hasil = {};
 	sql = 'call deleteSoal("'+id+'");';
 	koneksi.query(sql, (e, r, f)=>{
-		if(!e){
-				if(r.affectedRows != 0){
-					hasil = {
-						status : true,
-						error : null
-						};
-				}
-				else {
-					hasil = {
-						status : false,
-						error : "Data tidak ditemukan"
-						};
-					
-					}
-			}
-		else {
-			hasil = {
-				status : false,
-				error : e
-				};
-			
-			}
+		var hasil = {};
+		if(!e) hasil.status = true;	
+		else hasil.status = false;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	});
@@ -221,10 +131,8 @@ router.put('/update/:id',(req,res,next)=>{
 				value : data.jawaban
 			};
 		}
-		hasil = {
-			status : false,
-			error : pesan
-			}; 
+		hasil.status = false;
+		hasil.error = pesan;
 	res.json(hasil);
 	}
 	else{
@@ -236,28 +144,9 @@ router.put('/update/:id',(req,res,next)=>{
 	}
 	sql = 'call updateSoal("'+id+'","'+data.isi_soal+'","'+data.jawaban+'"); insert into tbpilihan_ganda (id_pilihan_ganda,huruf,isi_pilihan) values '+sql1+';';
 	koneksi.query(sql, function(e, r, f){
-		if(!e){
-			if(r.affectedRows != 0){
-					hasil = {
-						status : true,
-						error : null
-						};
-				}
-				else {
-					hasil = {
-						status : false,
-						error : "ID Data tidak ditemukan"
-						};
-					
-				}
-			}
-		else {
-			hasil = {
-					status : false,
-					error : e
-				};
-			
-			}
+		if(!e) hasil.status = true;
+		else hasil.status = false;
+		hasil.error = e;
 		res.json(hasil);
 		});
 	}

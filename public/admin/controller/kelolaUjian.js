@@ -26,7 +26,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 	};
 	$scope.readData = function(x,y){
 		var url;
-		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/ujian';
+		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/index.php/ujian';
 		else url = $rootScope.serverBackEnd+'/api/ujian/limit/'+x+'/offset/'+y;
 		$rootScope.showLoading(true);
 		$rootScope.pagination.limit = x;

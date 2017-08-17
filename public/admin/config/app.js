@@ -40,13 +40,6 @@ app.config(function($routeProvider) {
     });
 });
 app.run(function($rootScope, $timeout) {
-   $rootScope.nav = false;
-   $rootScope.navigasi = 'display:none!important;width:25%;';
-   $rootScope.toggleNav = function(){
-	   $rootScope.nav = !$rootScope.nav;
-	   if($rootScope.nav == true) $rootScope.navigasi = 'display:block!important;width:25%;';
-	   else $rootScope.navigasi = 'display:none!important;width:25%;';
-   };
    $rootScope.serverBackEnd = '';
    $rootScope.pencarian = function(x){
 		$rootScope.kataKunci = x;
@@ -58,8 +51,8 @@ app.run(function($rootScope, $timeout) {
 	$rootScope.showLoading(false);
 	$rootScope.pesan = false;
 	$rootScope.showPesan= function(tipe,isi){
-		if(tipe == 'Warning') $rootScope.tipePesan = 'w3-panel w3-pale-red';
-		else $rootScope.tipePesan = 'w3-panel w3-pale-green';
+		if(tipe == 'Warning') $rootScope.tipePesan = 'w3-panel w3-pink';
+		else $rootScope.tipePesan = 'w3-panel w3-light-green w3-text-white';
 		$rootScope.isiPesan = isi;
 		$rootScope.pesan = true;
 		var pesanTimer = $timeout(function () {

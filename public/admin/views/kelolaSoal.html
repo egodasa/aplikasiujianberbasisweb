@@ -1,4 +1,6 @@
-<h2>Kelola Soal</h2>
+<div class="w3-container w3-blue-gray">
+	<h2>Daftar Soal</h2>
+</div>
 <span ng-include="'/admin/views/buttonAtas.html'"></span>
 <div class="w3-modal" ng-model="createForm" style="{{form}}">
 	<div class="w3-modal-content w3-animate-top">
@@ -50,19 +52,19 @@
 		</form>
 	</div>
 </div>
-
-<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
-	<tr class="w3-teal">
-		<th>No</th>
-		<th>Isi Soal</th>
-		<th>Aksi</th>
-	</tr>
-	<tr ng-repeat="x in laporanSoal | filter : kataKunci ">
-		<td>{{$index+1}}</td>
-		<td>{{x.isi_soal}}</td>
-		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
-		<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
-	</tr>
-</table>
+<div class="w3-container">
+	<table class="w3-table-all" ng-model="tabelData" ng-hide="tabelData">
+		<tr class="w3-teal">
+			<th>No</th>
+			<th>Isi Soal</th>
+			<th>Aksi</th>
+		</tr>
+		<tr ng-repeat="x in laporanSoal | filter : kataKunci ">
+			<td>{{$index+1+pagination.offset}}</td>
+			<td>{{x.isi_soal}}</td>
+			<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
+			<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
+		</tr>
+	</table>
 <span ng-include="'/admin/views/paginasiBawah.html'"></span>
-
+</div>
