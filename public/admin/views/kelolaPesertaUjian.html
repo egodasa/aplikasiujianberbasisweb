@@ -19,9 +19,12 @@
 			</table>
 	</div>
 </div>
-<h2>Daftar Peserta Ujian</h2>
+<div class="w3-container w3-blue-gray">
+	<h2>Daftar Peserta Ujian </h2>
+</div>
 <span ng-include="'/admin/views/buttonAtas.html'"></span>
-<table class="w3-table w3-bordered w3-border" ng-model="tabelData" ng-hide="tabelData">
+<div class="w3-container">
+<table class="w3-table-all" ng-model="tabelData" ng-hide="tabelData">
 	<tr class="w3-teal">
 		<th>No</th>
 		<th>Nomor Peserta</th>
@@ -35,5 +38,5 @@
 		<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button></td>
 	</tr>
 </table>
-
+</div>
 

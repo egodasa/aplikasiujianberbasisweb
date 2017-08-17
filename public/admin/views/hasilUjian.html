@@ -1,13 +1,16 @@
-<h2>Laporan Hasil Ujian</h2>
-<table class="w3-table w3-bordered w3-border" >
-	<tr class="w3-white" class="w3-teal">
+<div class="w3-container w3-blue-gray">
+	<h2>Laporan Hasil Ujian Peserta</h2>
+</div>
+<div class="w3-container w3-padding">
+<table class="w3-table-all" >
+	<tr class="w3-teal">
 		<th>No</th>
 		<th>Nama Peserta</th>
 		<th>Jawaban Benar</th>
 		<th>Jawaban Salah</th>
 		<th>Nilai</th>
 	</tr>
-	<tr class="w3-white" ng-repeat="x in hasil | filter : kataKunci ">
+	<tr ng-repeat="x in hasil | filter : kataKunci ">
 		<td>{{$index+1}}</td>
 		<td>{{x.nm_peserta}}</td>
 		<td>{{x.benar}}</td>
@@ -15,5 +18,4 @@
 		<td>{{x.nilai}}</td>
 	</tr>
 </table>
-
-
+</div>
