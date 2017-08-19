@@ -34,6 +34,7 @@ router.get('/:id',(req, res, next)=>{
 		var hasil = {};
 		if(!e) hasil.status = true;	
 		else hasil.status = false;
+		r[0][0].pilihanGanda = r[1];
 		hasil.data = r[0];
 		hasil.row = r[0].length;
 		hasil.error = e;

@@ -9,6 +9,7 @@ var fileUpload = require('express-fileupload');
 var Promise = require('promise');
 
 mysql = require('mysql');
+/*
 koneksi = mysql.createPool({
 		host : 'sql12.freemysqlhosting.net',
 		user : 'sql12189662',
@@ -16,15 +17,14 @@ koneksi = mysql.createPool({
 		database : 'sql12189662',
 		multipleStatements : true
 		});
-/*
+*/
 koneksi = mysql.createPool({
 		host : 'localhost',
 		user : 'root',
-		password : '',
+		password : 'qwe123*iop',
 		database : 'dbujian',
 		multipleStatements : true
 		});
-		*/
 var app = express();
 
 // view engine setup

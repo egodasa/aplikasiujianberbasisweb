@@ -1,34 +1,41 @@
-<nav style="width:30%;margin-right:70%;" class="w3-sidenav w3-blue" >
-	<div class="w3-row">
-		<a class="w3-teal"><h3 class="w3-margin">Info Ujian</h3></a>
-		<div class="w3-col l4">
-			<a class="w3-border w3-border-white">Id Peserta</a>
-			<a class="w3-border w3-border-white">Id Ujian</a>
-			<a class="w3-border w3-border-white">Nama Ujian</a>
-			<a class="w3-border w3-border-white">Hari/Tanggal</a>
-			<a class="w3-border w3-border-white">Jam</a>
-			<a class="w3-border w3-border-white">Sisa Waktu</a>
+<div class="w3-container w3-blue-gray">
+	<h2 class="w3-center">Ujian</h2>
+</div>
+<div class="w3-container">
+	<div class="w3-col l5 s12">
+		<p>
+		<div class="w3-cell-row">
+			<div class="w3-col l4 s12">ID Peserta</div> 
+			<div class="w3-col l8 s12">{{sesiUjian.id_peserta}}</div> 
+			<div class="w3-col l4 s12">ID Ujian</div> 
+			<div class="w3-col l8 s12">{{sesiUjian.id_ujian}}</div> 
+			<div class="w3-col l4 s12">Nama Ujian</div> 
+			<div class="w3-col l8 s12">{{sesiUjian.nm_ujian}}</div> 
+			<div class="w3-col l4 s12">Hari/Tanggal</div> 
+			<div class="w3-col l8 s12">{{ tgl | date : 'fullDate'}}</div> 
+			<div class="w3-col l4 s12">Jam</div> 
+			<div class="w3-col l8 s12">{{ tgl | date : 'HH : mm : ss' }}</div> 
+			<div class="w3-col l4 s12">Sisa Waktu</div> 
+			<div class="w3-col l8 s12">{{ finishUjian | date : 'HH : mm : ss' }}	</div> 
 		</div>
-		<div class="w3-col l8">
-			<a class="w3-border w3-border-white" href="#">{{sesiUjian.id_peserta}}</a>
-			<a class="w3-border w3-border-white" href="#">{{sesiUjian.id_ujian}}</a>
-			<a class="w3-border w3-border-white" href="#">{{sesiUjian.nm_ujian}}</a>
-			<a class="w3-border w3-border-white" href="#">{{ tgl | date : 'fullDate'}}</a>
-			<a class="w3-border w3-border-white" href="#">{{ tgl | date : 'HH : mm : ss' }}</a>
-			<a class="w3-border w3-border-white" href="#">{{ finishUjian | date : 'HH : mm : ss' }}</a>
-		</div>
+	</p>
+		<h3>Pilih Soal</h3>
+		<select class="w3-select" multiple="multiple">
+			<option class="w3-light-grey w3-hover-amber" ng-repeat="x in idSoalUjian" ng-click="showSoalUjian($index)">Soal Nomor {{$index+1}}</option>
+		</select>
 	</div>
-	<a class="w3-teal"><h3 class="w3-margin">Pilih Soal</h3></a>
-	<a ng-repeat="x in idSoalUjian" ng-click="showSoalUjian($index)" class="w3-hover-grey w3-border-bottom">Soal Nomor {{$index+1}}</a>
-</nav>
-	<div style="width:70%;margin-left:30%;">
-		<div class="w3-container">
-		<h2>Soal Nomor {{noSoal}}</h2>
+	<div class="w3-col l7 s12">
+		<div class="w3-padding">
+		<h3>Soal Nomor {{noSoal}}</h3>
 		<p>{{isiSoal.isi_soal}}</p>
 		Jawaban : 
-			<div ng-repeat="x in isiSoal.pilihan_ganda">
-				<input class="w3-radio" ng-model="$parent.jawaban" type="radio" name="Huruf" ng-value='x.huruf' ng-click="simpanJawaban(sesiLjk.no_soal,sesiLjk.id_soal,x.huruf)" /> {{x.isi_pilihan}}
-			</div>
+		<div ng-repeat="x in isiSoal.pilihanGanda">
+		<input class="w3-radio" ng-model="$parent.jawaban" type="radio" name="Huruf" ng-value='x.huruf' ng-click="simpanJawaban(sesiLjk.no_soal,sesiLjk.id_soal,x.huruf)" /> {{x.isi_pilihan}}
 		</div>
-		<button type="button" class="w3-button w3-red w3-right w3-section" ng-click="kumpulkanUjian()">Kumpulkan Ujian >></button>
+		</div>
 	</div>
+</div>
+<div class="w3-container">
+<div class="w3-col s12">
+	<button type="button" class="w3-button w3-red w3-right w3-section w3-right" ng-click="kumpulkanUjian()">Kumpulkan Ujian >></button>
+</div>

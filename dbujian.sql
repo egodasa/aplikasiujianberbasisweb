@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 13, 2017 at 04:55 PM
+-- Generation Time: Aug 19, 2017 at 04:34 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -64,6 +64,7 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePeserta` (IN `id` INT(11))  BEGIN
 delete from tbpeserta where id_peserta=id;
+delete from tbpeserta_ujian where id_peserta = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePesertaUjian` (IN `id_pu` INT(11))  BEGIN
@@ -75,6 +76,7 @@ declare id_pg varchar(9);
 set id_pg=CONCAT('PG',id);
 delete from tbsoal where id_soal=id;
 delete from tbpilihan_ganda where id_pilihan_ganda=id_pg;
+delete from tbsoal_ujian where id_soal = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSoalUjian` (IN `id_ujian` INT(11))  BEGIN
@@ -83,6 +85,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUjian` (IN `id` INT(11))  BEGIN
 delete from tbujian where id_ujian=id;
+delete from tbpeserta_ujian where id_ujian = id;
+delete from tbsoal_ujian where id_ujian = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getHasilUjian` (IN `idUjian` VARCHAR(7), IN `idPeserta` INT)  BEGIN
@@ -102,9 +106,11 @@ select * from tbsoal where id_soal not in (select id_soal from tbsoal_ujian wher
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPeserta` (IN `id` INT(11), IN `lim` INT(5), IN `off` INT(5))  BEGIN
-if(id = 0) then select * from tbpeserta limit lim OFFSET off;
+CASE
+when(id = 0 and lim=0 and off=0) then select * from tbpeserta;
+when(id=0 and lim!=0 or off!=0)then select * from tbpeserta limit lim offset off;
 else select * from tbpeserta where id_peserta=id;
-end if;
+end case;
 select count(*) as "jumlah" from tbpeserta;
 END$$
 
@@ -117,12 +123,6 @@ select tbpeserta_ujian.id,tbpeserta_ujian.id_peserta,tbpeserta.nm_peserta,tbpese
 end case;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSoal` (IN `id` VARCHAR(7))  BEGIN
-if(id = "0000000") THEN select * from tbsoal;
-else select * from tbsoal where id_soal=id;
-end if;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPesertaUjianOLD` (IN `id_ujian` VARCHAR(7), IN `id_peserta` INT(11))  BEGIN
 CASE
 when(id_peserta = 0 AND id_ujian !='0000000') then select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian=tbujian.id_ujian left join tbpeserta on tbpeserta_ujian.id_peserta=tbpeserta.id_peserta where tbpeserta_ujian.id_ujian=tbujian.id_ujian;
@@ -134,14 +134,26 @@ else select * from tbpeserta_ujian left join tbujian on tbpeserta_ujian.id_ujian
 end case;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSoal` (IN `id` VARCHAR(7), IN `lim` INT(5), IN `off` INT(5))  BEGIN
+CASE
+when(id = "0000000" and lim=0 and off=0) THEN select * from tbsoal;
+when(id="0000000" and lim!=0 or off!=0) then select * from tbsoal limit lim OFFSET off;
+else select * from tbsoal where id_soal=id;
+end case;
+select COUNT(*) as 'jumlah' from tbsoal;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSoalUjian` (IN `id_su` CHAR(7))  BEGIN
 select * from tbsoal_ujian inner join tbsoal on tbsoal_ujian.id_soal=tbsoal.id_soal and tbsoal_ujian.id_ujian=id_su;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getUjian` (IN `id` VARCHAR(7))  BEGIN
-if(id = '0000000') then SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' FROM tbujian;
-else SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit' from tbujian where id_ujian=id;
-END iF;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUjian` (IN `id` VARCHAR(7), IN `lim` INT(5), IN `off` INT(5))  BEGIN
+CASE
+when(id = '0000000' and lim=0 and off=0) then SELECT tbujian.id_ujian,tbujian.nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit',(select count(tbsoal_ujian.id_ujian) from tbsoal_ujian where tbsoal_ujian.id_ujian = tbujian.id_ujian) as 'banyak_soal',(select count(tbpeserta_ujian.id_ujian) from tbpeserta_ujian where tbpeserta_ujian.id_ujian = tbujian.id_ujian) as 'banyak_peserta' FROM tbujian;
+when(id = '0000000' and lim!=0 or off!=0) then SELECT tbujian.id_ujian,tbujian.nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit',(select count(tbsoal_ujian.id_ujian) from tbsoal_ujian where tbsoal_ujian.id_ujian = tbujian.id_ujian) as 'banyak_soal',(select count(tbpeserta_ujian.id_ujian) from tbpeserta_ujian where tbpeserta_ujian.id_ujian = tbujian.id_ujian) as 'banyak_peserta' FROM tbujian limit lim OFFSET off;
+else SELECT id_ujian,nm_ujian,miliToJam(durasi_ujian) as 'jam',miliToMenit(durasi_ujian) as 'menit',(select count(tbsoal_ujian.id_ujian) from tbsoal_ujian where tbsoal_ujian.id_ujian = tbujian.id_ujian) as 'banyak_soal',(select count(tbpeserta_ujian.id_ujian) from tbpeserta_ujian where tbpeserta_ujian.id_ujian = tbujian.id_ujian) as 'banyak_peserta' from tbujian where id_ujian=id;
+END CASE;
+select count(*) as 'jumlah' from tbujian;
 end$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePeserta` (IN `id` INT(11), `nm_peserta` VARCHAR(30))  BEGIN
@@ -289,7 +301,13 @@ INSERT INTO `tbhasil_ujian` (`id_hasil`, `id_ujian`, `id_peserta`, `benar`, `sal
 (11, 1, 11, 4, 1, '80.00'),
 (12, 1, 12, 1, 4, '20.00'),
 (13, 1, 13, 2, 3, '40.00'),
-(14, 1, 14, 3, 2, '60.00');
+(14, 1, 14, 3, 2, '60.00'),
+(15, 3, 7, 5, 0, '99.99'),
+(16, 3, 9, 0, 5, '0.00'),
+(17, 3, 13, 3, 2, '60.00'),
+(18, 3, 14, 3, 2, '60.00'),
+(19, 3, 8, 2, 3, '40.00'),
+(20, 3, 1, 4, 1, '80.00');
 
 -- --------------------------------------------------------
 
@@ -342,13 +360,9 @@ INSERT INTO `tbpeserta` (`id_peserta`, `nm_peserta`) VALUES
 (7, 'Archlinux'),
 (8, 'Ubuntu'),
 (9, 'Fedora'),
-(10, 'Tinycore Linux'),
-(11, 'Elementary'),
-(12, 'Redhat'),
 (13, 'Slackware'),
 (14, 'KDE'),
-(16, 'dssdc'),
-(17, 'Heroku');
+(19, 'Ani');
 
 -- --------------------------------------------------------
 
@@ -381,17 +395,18 @@ INSERT INTO `tbpeserta_ujian` (`id`, `id_peserta`, `id_ujian`, `status`) VALUES
 (11, 9, '0000001', 'Sudah'),
 (12, 10, '0000001', 'Belum'),
 (13, 11, '0000001', 'Sudah'),
-(14, 12, '0000001', 'Sudah'),
 (15, 13, '0000001', 'Sudah'),
-(16, 14, '0000001', 'Sudah'),
-(18, 7, '0000003', 'Belum'),
-(19, 8, '0000003', 'Belum'),
-(20, 9, '0000003', 'Belum'),
-(21, 11, '0000003', 'Belum'),
-(22, 10, '0000003', 'Belum'),
-(23, 14, '0000003', 'Belum'),
-(25, 13, '0000003', 'Belum'),
-(26, 12, '0000003', 'Belum');
+(18, 7, '0000003', 'Sudah'),
+(19, 8, '0000003', 'Sudah'),
+(20, 9, '0000003', 'Sudah'),
+(23, 14, '0000003', 'Sudah'),
+(25, 13, '0000003', 'Sudah'),
+(26, 1, '0000003', 'Sudah'),
+(27, 2, '0000003', 'Belum'),
+(28, 3, '0000003', 'Belum'),
+(29, 4, '0000003', 'Belum'),
+(30, 5, '0000003', 'Belum'),
+(31, 6, '0000003', 'Belum');
 
 -- --------------------------------------------------------
 
@@ -457,7 +472,10 @@ INSERT INTO `tbpilihan_ganda` (`id`, `id_pilihan_ganda`, `huruf`, `isi_pilihan`)
 (124, 'PG0000020', 'D', 'C++'),
 (128, 'PG0000021', 'A', 'AngularJS'),
 (129, 'PG0000021', 'B', 'VueJS'),
-(130, 'PG0000021', 'C', 'BackboneJS');
+(130, 'PG0000021', 'C', 'BackboneJS'),
+(131, 'PG0000022', 'A', 'PostgreSQL'),
+(132, 'PG0000022', 'B', 'Firebase'),
+(133, 'PG0000022', 'C', 'MYSQL');
 
 -- --------------------------------------------------------
 
@@ -488,7 +506,8 @@ INSERT INTO `tbsoal` (`id_soal`, `isi_soal`, `id_pilihan_ganda`, `jawaban`) VALU
 ('0000018', 'Successor dari sistem operasi windows mobile 5 adalah ?', 'PG0000018', 'C'),
 ('0000019', 'Kepanjangan dari PWA adalah ?', 'PG0000019', 'B'),
 ('0000020', 'Berikut adalah bahasa pemrograman yang dibuat oleh microsoft, KECUALI?', 'PG0000020', 'D'),
-('0000021', 'Framework javscript dibawah ini yang dibuat oleh Google adalah ?', 'PG0000021', 'A');
+('0000021', 'Framework javscript dibawah ini yang dibuat oleh Google adalah ?', 'PG0000021', 'A'),
+('0000022', 'Salah satu database dibawaha ini yang bersifat ''nosql'' adalah ?', 'PG0000022', 'B');
 
 -- --------------------------------------------------------
 
@@ -511,7 +530,6 @@ INSERT INTO `tbsoal_ujian` (`id`, `id_ujian`, `id_soal`) VALUES
 (3, '0000001', '0000011'),
 (4, '0000001', '0000010'),
 (5, '0000001', '0000015'),
-(6, '0000001', '0000013'),
 (7, '0000002', '0000008'),
 (8, '0000003', '0000008'),
 (9, '0000003', '0000020'),
@@ -538,7 +556,8 @@ CREATE TABLE `tbujian` (
 INSERT INTO `tbujian` (`id_ujian`, `nm_ujian`, `durasi_ujian`) VALUES
 ('0000001', 'WWII', 120000),
 ('0000002', 'TI', 180000),
-('0000003', 'Sistem Informasi', 180000);
+('0000003', 'Test', 3600000),
+('0000004', 'Ujian baru', 3600000);
 
 --
 -- Indexes for dumped tables
@@ -606,7 +625,7 @@ ALTER TABLE `tbujian`
 -- AUTO_INCREMENT for table `tbhasil_ujian`
 --
 ALTER TABLE `tbhasil_ujian`
-  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `tbjawaban_ljk`
 --
@@ -616,17 +635,17 @@ ALTER TABLE `tbjawaban_ljk`
 -- AUTO_INCREMENT for table `tbpeserta`
 --
 ALTER TABLE `tbpeserta`
-  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_peserta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `tbpeserta_ujian`
 --
 ALTER TABLE `tbpeserta_ujian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `tbpilihan_ganda`
 --
 ALTER TABLE `tbpilihan_ganda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 --
 -- AUTO_INCREMENT for table `tbsoal_ujian`
 --

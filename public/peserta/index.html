@@ -17,15 +17,14 @@
 	<script src="/peserta/controller/cekPesertaUjian.js"></script>
 	<script src="/peserta/controller/ljkUjian.js"></script>
 	<script src="/peserta/controller/hasilUjian.js"></script>
-	<header class="w3-container w3-black">
-		<h1>Aplikasi Ujian Berbasis Web (Peserta)</h1>
-		<div class="w3-bar">
-			<a class="w3-bar-item w3-button w3-blue" href="#!/">Home</a>
-			<a class="w3-bar-item w3-button w3-blue" href="/admin">Halaman Admin</a>
+	<div class="w3-row" ng-app="pesertaAUBE">
+		<header class="w3-col s12 w3-black">
+			<h1 class="w3-container">Aplikasi Ujian Berbasis Web (Peserta)</h1>
+		</header>
+		<div class="w3-main w3-amber w3-col s12">
+			<div class="w3-card-8 w3-margin w3-light-gray w3-round-large" ng-view></div>
 		</div>
-	</header>
-	<div ng-app="pesertaAUBE">
-	<div ng-view></div>
+		<footer class="w3-col s12 w3-black w3-cell-row w3-container" style="bottom:0px;"><h5 class="w3-cell-bottom">Created by Ego Dafma Dasa</h5></footer>
 	</div>
 </body>
 </html>

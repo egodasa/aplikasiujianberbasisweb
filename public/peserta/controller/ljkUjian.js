@@ -40,7 +40,6 @@ app.controller("ljkUjian", function($scope, $rootScope, $http, $location, $inter
 		var id_soal = $scope.idSoalUjian[no_soal].id_soal;
 		$http.get($rootScope.serverBackEnd+'/api/soal/'+id_soal).then(function(res){
 			//SET POSISI SOAL SEDANG DIsoalKAN KE COOKIES
-			console.log('no soal '+no_soal);
 			$scope.setSesiLjk(no_soal,id_soal);
 			$scope.sesiLjk = sesiUjian.getSesiLjk();
 			$scope.isiSoal = res.data.data[0];
@@ -124,5 +123,4 @@ app.controller("ljkUjian", function($scope, $rootScope, $http, $location, $inter
 	if(sesiUjian.getJawabanLjk()) $scope.listJawaban = sesiUjian.getJawabanLjk(); //JAWABAN DISIMPAN KE COOKIES AGAR PERSISTENT
 	$scope.getSoalUjian($scope.sesiUjian.id_ujian);
 	$scope.durasiUjian($scope.sesiUjian.waktu);
-	console.log(sesiUjian.getSesiUjian());
 });

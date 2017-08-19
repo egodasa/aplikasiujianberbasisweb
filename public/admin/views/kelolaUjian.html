@@ -46,12 +46,16 @@
 		<tr class="w3-teal">
 			<th>No</th>
 			<th>Nama Ujian</th>
+			<th>Banyak Soal</th>
+			<th>Banyak Peserta</th>
 			<th>Durasi</th>
 			<th>Aksi</th>
 		</tr>
-		<tr ng-repeat="x in data | filter : kataKunci ">
+		<tr class="w3-white" ng-repeat="x in data | filter : kataKunci ">
 			<td>{{$index+1+pagination.offset}}</td>
 			<td>{{x.nm_ujian}}</td>
+			<td>{{x.banyak_soal}}</td>
+			<td>{{x.banyak_peserta}} Orang</td>
 			<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
 			<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)"><i class="fa fa-close w3-small"></i> <b>Hapus</b></button>
 			<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button>
