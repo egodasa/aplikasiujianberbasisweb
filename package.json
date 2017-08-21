@@ -9,13 +9,13 @@
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "debug": "^2.6.8",
-    "express": "^4.15.3",
+    "express": "^4.15.4",
     "express-fileupload": "^0.1.4",
     "express-validator": "^3.2.1",
     "jade": "^1.11.0",
-    "mongoose": "^4.11.4",
+    "mongoose": "^4.11.7",
     "morgan": "^1.8.2",
-    "mysql": "^2.13.0",
+    "mysql": "^2.14.1",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.3"
   }
