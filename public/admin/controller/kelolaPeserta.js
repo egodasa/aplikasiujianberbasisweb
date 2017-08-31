@@ -43,6 +43,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 		})
 		.finally(function(){
 			$rootScope.showLoading(false);
+			$scope.toggleBulkdelete = false;
 		});
 		};
 	$scope.createData = function(){

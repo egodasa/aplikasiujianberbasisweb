@@ -1,17 +1,17 @@
 app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $timeout){
 	$scope.pilihanGandaDefault = [
-	{huruf : 'A', isi_pilihan : ''},
-	{huruf : 'B', isi_pilihan : ''},
-	{huruf : 'C', isi_pilihan : ''},
-	{huruf : 'D', isi_pilihan : ''},
-	{huruf : 'E', isi_pilihan : ''}
+		{huruf : 'A', isi_pilihan : ''},
+		{huruf : 'B', isi_pilihan : ''},
+		{huruf : 'C', isi_pilihan : ''},
+		{huruf : 'D', isi_pilihan : ''},
+		{huruf : 'E', isi_pilihan : ''}
 	];
 	$scope.pilihanGanda = [
-	{huruf : 'A', isi_pilihan : ''},
-	{huruf : 'B', isi_pilihan : ''},
-	{huruf : 'C', isi_pilihan : ''},
-	{huruf : 'D', isi_pilihan : ''},
-	{huruf : 'E', isi_pilihan : ''}
+		{huruf : 'A', isi_pilihan : ''},
+		{huruf : 'B', isi_pilihan : ''},
+		{huruf : 'C', isi_pilihan : ''},
+		{huruf : 'D', isi_pilihan : ''},
+		{huruf : 'E', isi_pilihan : ''}
 	];
 
 	$scope.addPG = function(x){
@@ -33,14 +33,26 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 	$scope.resetForm = function(x){
 		if(x == 0){
 			$scope.Tsoal = '';
-			$scope.pilihanGanda = $scope.pilihanGandaDefault;
+			$scope.pilihanGanda = [
+				{huruf : 'A', isi_pilihan : ''},
+				{huruf : 'B', isi_pilihan : ''},
+				{huruf : 'C', isi_pilihan : ''},
+				{huruf : 'D', isi_pilihan : ''},
+				{huruf : 'E', isi_pilihan : ''}
+			];
 			$scope.Rjawaban = '';
 			$scope.ETsoal = '';
 			$scope.ERjawaban = '';
 		}
 		else {
 			$scope.UTsoal = '';
-			$scope.pilihanGandaUpdate = $scope.pilihanGandaDefault;
+			$scope.pilihanGandaUpdate = [
+				{huruf : 'A', isi_pilihan : ''},
+				{huruf : 'B', isi_pilihan : ''},
+				{huruf : 'C', isi_pilihan : ''},
+				{huruf : 'D', isi_pilihan : ''},
+				{huruf : 'E', isi_pilihan : ''}
+			];
 			$scope.URjawaban = '';
 			$scope.EUTsoal = '';
 			$scope.EURjawaban = '';
@@ -122,27 +134,27 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
 		})
 			};
 		$scope.detailData = function(id){
-		$scope.idSoal = id;
-		$http.get($rootScope.serverBackEnd+'/api/soal/'+id)
-			.then(function(res){
-				var hasil = res.data.data[0];
-				$scope.UThuruf = [];
-				$scope.UTisi_pilihan = [];
-				$scope.pilihanGandaUpdate = hasil.pilihan_ganda;
-				$scope.UTsoal = hasil.isi_soal;
-				$scope.URjawaban = hasil.jawaban;
-				$rootScope.showForm(1,1);
-			})
-			.catch(function(e){
-				$rootScope.showPesan('Warning',e);
-			})
-			.finally(function(){
-			});
+			$scope.idSoal = id;
+			$http.get($rootScope.serverBackEnd+'/api/soal/'+id)
+				.then(function(res){
+					var hasil = res.data.data[0];
+					$scope.UThuruf = [];
+					$scope.UTisi_pilihan = [];
+					$scope.pilihanGandaUpdate = hasil.pilihanGanda;
+					$scope.UTsoal = hasil.isi_soal;
+					$scope.URjawaban = hasil.jawaban;
+					$rootScope.showForm(1,1);
+				})
+				.catch(function(e){
+					$rootScope.showPesan('Warning',e);
+				})
+				.finally(function(){
+				});
 		}
 		$scope.updateData = function(id){
 			var data = {
 				isi_soal : $scope.UTsoal,
-				pilihan_ganda : $scope.pilihanGandaUpdate,
+				pilihanGanda : $scope.pilihanGandaUpdate,
 				jawaban : $scope.URjawaban
 				};
 			data = JSON.stringify(data);

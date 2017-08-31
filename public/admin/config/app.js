@@ -93,8 +93,20 @@ app.run(function($rootScope, $timeout) {
 			$rootScope.pagCount.push(x);
 		}
 	};
+	//bulk delete data
+	$rootScope.bulkDelete = [];
+	$rootScope.addBulkDelete = function(status,id){
+		if(status == true) $rootScope.bulkDelete.push(id);
+		else {
+			var l = $rootScope.bulkDelete.length;
+			for(var x=0;x < l;x++){
+				if($rootScope.bulkDelete[x] == id){
+					$rootScope.bulkDelete.splice(x,1);
+				}
+			}
+		}		
+	};
 });
-/*
 app.service('loadingScreen', 
     ['$q', '$rootScope', '$log', 
     function($q, $rootScope, $log) {
@@ -124,4 +136,3 @@ app.service('loadingScreen',
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('loadingScreen');
 }]);
-*/

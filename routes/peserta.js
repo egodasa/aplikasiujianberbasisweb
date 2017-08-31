@@ -84,9 +84,10 @@ router.post('/',(req,res,next)=>{
 	});
 });
 router.delete('/:id',(req,res,next)=>{
-	var id = req.params.id;
+	var id = " "+req.params.id;
 	var hasil = {};
-	sql = 'call deletePeserta('+id+');';
+	//sql = 'call deletePeserta('+id+');';
+	sql = 'DELETE FROM tbpeserta WHERE id_peserta IN ('+id+');';
 	koneksi.query(sql, (e, r, f)=>{
 		if(!e) hasil.status = true;	
 		else hasil.status = false;

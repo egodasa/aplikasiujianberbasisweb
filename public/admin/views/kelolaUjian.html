@@ -42,8 +42,15 @@
 	</div>
 </div>
 <div class="w3-container">
+	<div class="w3-bar">
+		<span class="w3-item-bar w3-button w3-green w3-padding">
+			<input type="checkbox" ng-model="toggleBulkDelete" /> Pilih Banyak Data
+		</span>
+		<button class="w3-button w3-red w3-item-bar" ng-disabled="!toggleBulkDelete" ng-show="toggleBulkDelete" ng-click="deleteData(bulkDelete)">Hapus Data Terpilih</button>
+	</div>
 	<table class="w3-table-all" ng-model="tabelData" ng-hide="tabelData">
 		<tr class="w3-teal">
+			<th ng-show="toggleBulkDelete">Pilih</th>
 			<th>No</th>
 			<th>Nama Ujian</th>
 			<th>Banyak Soal</th>
@@ -52,6 +59,7 @@
 			<th>Aksi</th>
 		</tr>
 		<tr class="w3-white" ng-repeat="x in data | filter : kataKunci ">
+			<td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id_ujian)"/ ng-disable="toggleBulkDelete"></td>
 			<td>{{$index+1+pagination.offset}}</td>
 			<td>{{x.nm_ujian}}</td>
 			<td>{{x.banyak_soal}}</td>
