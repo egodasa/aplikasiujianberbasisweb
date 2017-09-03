@@ -104,7 +104,8 @@ app.run(function($rootScope, $timeout) {
 					$rootScope.bulkDelete.splice(x,1);
 				}
 			}
-		}		
+		}
+		console.log($rootScope.bulkDelete);		
 	};
 });
 app.service('loadingScreen', 

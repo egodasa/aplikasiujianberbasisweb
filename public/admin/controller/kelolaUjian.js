@@ -64,6 +64,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
+			$rootScope.bulkDelete = [];
 			$rootScope.showLoading(false);
 		});
 	};

@@ -38,11 +38,11 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 	$scope.deleteData = function(id){
 		$rootScope.showLoading(true);
 		data = JSON.stringify({id : id});
-		$http.post($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/delete',data)
+		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/'+id)
 		.then(function(res){
 			$scope.result = res.data.status;
 			if($scope.result == true){
-				console.log("data berhasil dihapus");
+				$rootScope.showPesan('Success','Data berhasil di<b>Hapus</b> ...');
 			$scope.readData();
 			}
 			else {
@@ -54,6 +54,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
 			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
+			$rootScope.bulkDelete = [];
 		});
 		};
 	$scope.createData = function(id){

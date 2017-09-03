@@ -42,6 +42,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 			$rootScope.showPesan('Warning'.e);
 		})
 		.finally(function(){
+			$rootScope.bulkDelete = [];
 			$rootScope.showLoading(false);
 			$scope.toggleBulkdelete = false;
 		});

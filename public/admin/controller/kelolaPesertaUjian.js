@@ -36,11 +36,11 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 		})
 		};
 	$scope.deleteData = function(id){
-		$http.post($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/delete',JSON.stringify({id_peserta_ujian : id}))
+		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/delete/'+id)
 		.then(function(res){
 			$scope.result = res.data.status;
 			if($scope.result == true){
-				$rootScope.showPesan('Success','Data berhsil dihapus ...');
+				$rootScope.showPesan('Success','Data berhasil dihapus ...');
 				$scope.readData();
 			}
 			else {

@@ -2,20 +2,22 @@
 	<h2>Laporan Hasil Ujian Peserta</h2>
 </div>
 <div class="w3-container w3-padding">
-<table class="w3-table-all" >
-	<tr class="w3-teal">
-		<th>No</th>
-		<th>Nama Peserta</th>
-		<th>Jawaban Benar</th>
-		<th>Jawaban Salah</th>
-		<th>Nilai</th>
-	</tr>
-	<tr ng-repeat="x in hasil | filter : kataKunci ">
-		<td>{{$index+1}}</td>
-		<td>{{x.nm_peserta}}</td>
-		<td>{{x.benar}}</td>
-		<td>{{x.salah}}</td>
-		<td>{{x.nilai}}</td>
-	</tr>
-</table>
+	<div class="w3-responsive">
+		<table class="w3-table-all" >
+			<tr class="w3-teal">
+				<th>No</th>
+				<th>Nama Peserta</th>
+				<th>Jawaban Benar</th>
+				<th>Jawaban Salah</th>
+				<th>Nilai</th>
+			</tr>
+			<tr ng-repeat="x in hasil | filter : kataKunci ">
+				<td>{{$index+1}}</td>
+				<td>{{x.nm_peserta}}</td>
+				<td>{{x.benar}}</td>
+				<td>{{x.salah}}</td>
+				<td>{{x.nilai}}</td>
+			</tr>
+		</table>
+	</div>
 </div>

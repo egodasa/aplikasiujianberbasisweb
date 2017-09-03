@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Aplikasi Ujian Berbasis Web</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">		
-		<link rel="stylesheet" href="/stylesheets/w3.css">
-		<link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
-	</head>
+
+<head>
+    <title>Aplikasi Ujian Berbasis Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/w3.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
 <body>
-	<script src="/javascripts/angular.js"></script>
-	<script src="/javascripts/angular-route.js"></script>
-	<script src="/javascripts/angular-id.js"></script>
-	<script src="/javascripts/angular-animate.js"></script>
-	<script src="/javascripts/angular-cookies.js"></script>
-	<script src="/javascripts/ngStorage.js"></script>
-	<script src="/admin/config/app.js"></script>
-	<script src="/admin/controller/kelolaUjian.js"></script>
-	<script src="/admin/controller/hasilUjian.js"></script>
-	<script src="/admin/controller/kelolaPeserta.js"></script>
-	<script src="/admin/controller/kelolaPesertaUjian.js"></script>
-	<script src="/admin/controller/kelolaSoalUjian.js"></script>
-	<script src="/admin/controller/kelolaSoal.js"></script>
-	<script src="/admin/controller/pengaturan.js"></script>
-	<div class="w3-row" ng-app="adminAUBE">
-		<header class="w3-col s12 w3-black" style="height:auto;">
-			<h1 class="w3-container">Aplikasi Ujian Berbasis Web (Admin)</h1>
-			<nav class="w3-blue-gray w3-bar">
-				<a class="w3-button w3-blue-gray w3-mobile " href="#!/">Home</a>
-				<a class="w3-button w3-blue-gray w3-mobile " href="#!ujian">Kelola Daftar Ujian</a>
-				<a class="w3-button w3-blue-gray w3-mobile " href="#!peserta">Kelola Daftar Peserta</a>
-				<a class="w3-button w3-blue-gray w3-mobile " href="#!soal">Kelola Soal</a>
-				<a class="w3-button w3-blue-gray w3-mobile " href="#!pengaturan">Pengaturan</a>
-			</nav>
-		</header>
-		<div class="w3-main w3-amber w3-col s12">
-		<div class="w3-modal" style="{{loading}}">
-			<div class="w3-modal-content">
-				<div class="w3-display-container">
-					<div class="w3-display-middle w3-section"><i class="fa fa-spinner fa-spin" style="font-size:50px;color:white;"></i></div>
-				</div>
-			</div>
-		</div>
-		<div class="w3-card-8 w3-margin w3-light-gray w3-round-large" ng-view></div>
-		</div>
-		<footer class="w3-col s12 w3-black w3-cell-row w3-container" style="bottom:0px;"><h5 class="w3-cell-bottom">Created by Ego Dafma Dasa</h5></footer>
-	</div>
+    <script src="/javascripts/angular.js"></script>
+    <script src="/javascripts/angular-route.js"></script>
+    <script src="/javascripts/angular-id.js"></script>
+    <script src="/javascripts/angular-animate.js"></script>
+    <script src="/javascripts/angular-cookies.js"></script>
+    <script src="/javascripts/ngStorage.js"></script>
+    <script src="/admin/config/app.js"></script>
+    <script src="/admin/controller/kelolaUjian.js"></script>
+    <script src="/admin/controller/hasilUjian.js"></script>
+    <script src="/admin/controller/kelolaPeserta.js"></script>
+    <script src="/admin/controller/kelolaPesertaUjian.js"></script>
+    <script src="/admin/controller/kelolaSoalUjian.js"></script>
+    <script src="/admin/controller/kelolaSoal.js"></script>
+    <script src="/admin/controller/pengaturan.js"></script>
+    <div class="w3-row" ng-app="adminAUBE">
+        <header class="w3-col s12 w3-black" style="height:auto;">
+            <nav class="w3-blue-gray w3-bar">
+				<a class="w3-button w3-bar-item w3-hover-green" href="#!/">Home</a>
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button w3-hover-green w3-blue-gray">Menu</button>
+                    <div class="w3-dropdown-content w3-white w3-card-4">
+                        <a href="#!ujian">Kelola Daftar Ujian</a>
+                        <a href="#!peserta">Kelola Daftar Peserta</a>
+                        <a href="#!soal">Kelola Soal</a>
+                    </div>
+                </div>
+                <a class="w3-button w3-blue-gray w3-hover-green" href="#!pengaturan">Pengaturan</a>
+            </nav>
+        </header>
+        <div class="w3-main w3-amber w3-col s12">
+            <div class="w3-modal" style="{{loading}}">
+                <div class="w3-modal-content">
+                    <div class="w3-display-container">
+                        <div class="w3-display-middle w3-section"><i class="fa fa-spinner fa-spin" style="font-size:50px;color:white;"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-card-8 w3-margin w3-light-gray w3-round-large" ng-view></div>
+        </div>
+        <footer class="w3-col s12 w3-black w3-cell-row w3-container" style="bottom:0px;">
+            <h5 class="w3-cell-bottom">Aplikasi Ujian Berbasis Web, Created by Ego Dafma Dasa</h5>
+        </footer>
+    </div>
 </body>
+
 </html>
