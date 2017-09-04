@@ -1,95 +1,244 @@
 app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location, $timeout, $routeParams){
 	$scope.id_ujian = $routeParams.idUjian;
-	$scope.createForm = false;
-	$scope.showForm = function(x){
-		if(x == 0) {
-			$scope.form = "display:none;";
-			}
-		else{
-			$scope.getSoal($scope.id_ujian);
-			$scope.form = "display:block;";
-		}
-	}
-	$scope.getSoal = function(id){
-		$rootScope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/soal/not/'+id)
-		.then(function(res){
-			$scope.soal = res.data.data;
-		})
-		.catch(function(e){
-			$rootScope.showPesan('Warning',e);
-		})
-		.finally(function(){
-			$rootScope.showLoading(false);
-		});
-	};
-	$scope.readData = function(){
-		$rootScope.showLoading(true);
-		$http.get($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal').then(function(res){
-			$scope.data = res.data.data;
-		})
-		.catch(function(e){
-			$rootScope.showPesan('Warning',e);
-		})
-		.finally(function(){
-			$rootScope.showLoading(false);
-		});
-		};
-	$scope.deleteData = function(id){
-		$rootScope.showLoading(true);
-		data = JSON.stringify({id : id});
-		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/'+id)
-		.then(function(res){
-			$scope.result = res.data.status;
-			if($scope.result == true){
-				$rootScope.showPesan('Success','Data berhasil di<b>Hapus</b> ...');
-			$scope.readData();
-			}
-			else {
-				console.log("data gagal dihapus");
-				$scope.readData();
-			}
-		})
-		.catch(function(e){
-			$rootScope.showPesan('Warning',e);
-		})
-		.finally(function(){
-			$rootScope.bulkDelete = [];
-		});
-		};
-	$scope.createData = function(id){
-		var data = {
-			id_soal : id
-		};
-		data = JSON.stringify(data);
-		$http({
-			method : 'POST',
-			url : $rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/create',
-			data : data,
-			contentType : 'application/json; charset=utf-8'
-			})
-		.then(function(res){
-				$scope.showForm(0,0);
-				$scope.readData();
-		})
-		.catch(function(e){
-			$scope.showForm(0,0);
-			$rootScope.showPesan('Warning',e);
-			})
-		.finally(function(){
-		});
-	};
-		$scope.detailData = function(id){
-		$http.get($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/soal/'+id)
-			.then(function(res){
-				$scope.showUpdateForm();
-			})
-			.catch(function(e){
-				$rootScope.showPesan('Warning',e);
-			})
-			.finally(function(){
-			})
-		}
-if($scope.id_ujian == "") $location.path('/');
-	else $scope.readData();
+	$scope.pilihanGandaDefault = [{
+            huruf: 'A',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'B',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'C',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'D',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'E',
+            isi_pilihan: ''
+        }
+    ];
+    $scope.pilihanGanda = [{
+            huruf: 'A',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'B',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'C',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'D',
+            isi_pilihan: ''
+        },
+        {
+            huruf: 'E',
+            isi_pilihan: ''
+        }
+    ];
+
+    $scope.addPG = function(x) {
+        if (x == 0) {
+            $scope.pilihanGanda.push({
+                huruf: $scope.pilihanGandaDefault[$scope.pilihanGanda.length].huruf,
+                isi_pilihan: $scope.pilihanGandaDefault[$scope.pilihanGanda.length].isi_pilihan
+            });
+        } else if (x == 1) {
+            $scope.pilihanGandaUpdate.push({
+                huruf: $scope.pilihanGandaDefault[$scope.pilihanGandaUpdate.length].huruf,
+                isi_pilihan: $scope.pilihanGandaDefault[$scope.pilihanGandaUpdate.length].isi_pilihan
+            });
+        }
+    }
+    $scope.deletePG = function(x) {
+        if (x == 0) {
+            $scope.pilihanGanda.pop();
+        } else if (x == 1) {
+            $scope.pilihanGandaUpdate.pop();
+        }
+    }
+    $scope.resetForm = function(x) {
+        if (x == 0) {
+            $scope.Tsoal = '';
+            $scope.pilihanGanda = [{
+                    huruf: 'A',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'B',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'C',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'D',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'E',
+                    isi_pilihan: ''
+                }
+            ];
+            $scope.Rjawaban = '';
+            $scope.ETsoal = '';
+            $scope.ERjawaban = '';
+        } else {
+            $scope.UTsoal = '';
+            $scope.pilihanGandaUpdate = [{
+                    huruf: 'A',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'B',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'C',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'D',
+                    isi_pilihan: ''
+                },
+                {
+                    huruf: 'E',
+                    isi_pilihan: ''
+                }
+            ];
+            $scope.URjawaban = '';
+            $scope.EUTsoal = '';
+            $scope.EURjawaban = '';
+        }
+    };
+    $scope.readData = function(x, y) {
+        var url;
+        if (x == 0 && y == 0) url = $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal';
+        else url = $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/limit/' + x + '/offset/' + y;
+        $rootScope.showLoading(true);
+        $rootScope.pagination.limit = x;
+        $rootScope.pagination.offset = y;
+        $rootScope.showLoading(true);
+        $http.get(url)
+            .then(function(res) {
+                $scope.laporanSoal = res.data.data;
+                $rootScope.pagNum(res.data.row, $rootScope.pagination.limit);
+            })
+            .catch(function(e) {
+                $rootScope.showPesan('Warning', e);
+            })
+            .finally(function() {
+                $rootScope.showLoading(false);
+            })
+    };
+    $scope.deleteData = function(id) {
+        $rootScope.showLoading(true);
+        $http.delete($rootScope.serverBackEnd + '/api/soal/delete/' + id)
+            .then(function(res) {
+                var result = res.data.status;
+                if (result == true) {
+                    $rootScope.showPesan('Success', 'Data berhasil dihapus ...');
+                } else {
+                    $rootScope.showPesan('Warning', 'Data gagal dihapus ...');  
+                }
+                $scope.readData($rootScope.pagination.limit, $rootScope.pagination.offset);
+            })
+            .catch(function(e) {
+                $rootScope.showPesan('Warning', e);
+            })
+            .finally(function() {
+				$rootScope.bulkDelete = [];
+                $rootScope.showLoading(false);
+            })
+    };
+    $scope.createData = function() {
+        var data = {
+            isi_soal: $scope.Tsoal,
+            pilihan_ganda: $scope.pilihanGanda,
+            jawaban: $scope.Rjawaban
+        };
+        console.log($scope.Rjawaban);
+        data = JSON.stringify(data);
+        console.log(data);
+        $http({
+                method: 'POST',
+                url: $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/create',
+                data: data,
+                contentType: 'application/json; charset=utf-8'
+            }).then(function(res) {
+                var hasil = res.data;
+                if (hasil.status == true) {
+                    $scope.resetForm(0);
+                    $rootScope.showForm(0, 0);
+                    $scope.readData($rootScope.pagination.limit, $rootScope.pagination.offset);
+                    $rootScope.showPesan('Success', 'Data berhasil ditambahkan ...');
+                } else {
+                    $scope.ETsoal = hasil.error.isi_soal.msg;
+                    $scope.ERjawaban = hasil.error.jawaban.msg;
+                }
+            })
+            .catch(function(e) {
+                $rootScope.showPesan('Warning', e);
+            })
+            .finally(function() {
+
+            })
+    };
+    $scope.detailData = function(id) {
+        $scope.idSoal = id;
+        $http.get($rootScope.serverBackEnd + '/api/soal/' + id)
+            .then(function(res) {
+                var hasil = res.data.data[0];
+                $scope.UThuruf = [];
+                $scope.UTisi_pilihan = [];
+                $scope.pilihanGandaUpdate = hasil.pilihanGanda;
+                $scope.UTsoal = hasil.isi_soal;
+                $scope.URjawaban = hasil.jawaban;
+                $rootScope.showForm(1, 1);
+            })
+            .catch(function(e) {
+                $rootScope.showPesan('Warning', e);
+            })
+            .finally(function() {});
+    }
+    $scope.updateData = function(id) {
+        var data = {
+            isi_soal: $scope.UTsoal,
+            pilihanGanda: $scope.pilihanGandaUpdate,
+            jawaban: $scope.URjawaban
+        };
+        data = JSON.stringify(data);
+        $http({
+                method: 'PUT',
+                url: $rootScope.serverBackEnd + '/api/soal/update/' + id,
+                data: data,
+                contentType: 'application/json; charset=utf-8'
+            }).then(function(res) {
+                var hasil = res.data;
+                if (hasil.status == true) {
+                    $scope.resetForm(1);
+                    $scope.readData($rootScope.pagination.limit, $rootScope.pagination.offset);
+                    $rootScope.showForm(0, 1);
+                    $rootScope.showPesan('Success', 'Perubahan disimpan...');
+                } else {
+                    $scope.EUTsoal = hasil.error.isi_soal.msg;
+                    $scope.EURjawaban = hasil.error.jawaban.msg;
+                }
+            })
+            .catch(function(e) {
+                $rootScope.showPesan('Warning', e);
+            })
+            .finally(function() {})
+    }
+    $scope.readData($rootScope.pagination.limit, $rootScope.pagination.offset);
+    $scope.$watch('form', function(newValue, oldValue, scope) {
+        if (newValue == 'display:none;') scope.resetForm();
+    });
 });

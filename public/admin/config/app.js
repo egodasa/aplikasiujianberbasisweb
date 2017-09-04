@@ -81,7 +81,7 @@ app.run(function($rootScope, $timeout) {
 			$rootScope.createForm = !$rootScope.updateForm;
 		}
 	}
-	
+	//PAGINASI
 	$rootScope.pagination = {
 		limit : 10,
 		offset : 0

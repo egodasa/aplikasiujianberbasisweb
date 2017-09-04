@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/ujian/create_update');
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
-var checkDataSoal = require('../validator/soal_ujian/create_update');
+var checkDataSoal = require('../validator/soal/create_update');
 
 router.get('/', (req, res, next) => {
     sql = 'call getUjian("0000000",0,0);';
@@ -226,13 +226,28 @@ router.delete('/:id/peserta/delete/:id_pu', (req, res, next) => {
 
 router.get('/:id/soal', (req, res, next) => {
     var id = req.params.id;
-    sql = 'call getSoalUjian("' + id + '");';
+    sql = 'call getSoalUjian("' + id + '",0,0);';
     koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
         hasil.data = r[0];
         hasil.row = r[0].length;
+        hasil.error = e;
+        res.json(hasil);
+    });
+});
+router.get('/:id/soal/limit/:lim/offset/:off', (req, res, next) => {
+    var id = req.params.id;
+    var lim = req.params.lim;
+    var off = req.params.off;
+    sql = 'call getSoalUjian("' + id + '",'+lim+','+off+');';
+    koneksi.query(sql, (e, r, f) => {
+        var hasil = {};
+        if (!e) hasil.status = true;
+        else hasil.status = false;
+        hasil.data = r[0];
+        hasil.row = r[1][0].jumlah;
         hasil.error = e;
         res.json(hasil);
     });
@@ -252,38 +267,51 @@ router.get('/:id/soal/:id_soal', (req, res, next) => {
     });
 });
 router.post('/:id/soal/create', (req, res, next) => {
-    var data = req.body;
-    var id = req.params.id;
-    var hasil = {};
-    req.checkBody(checkDataSoal);
-    req.getValidationResult().then(function(result) {
-        result.useFirstErrorOnly();
-        var pesan = result.mapped();
-        if (result.isEmpty() == false) {
-            if (pesan.id_soal == undefined) {
-                pesan.id_soal = {
-                    param: "id_soal",
-                    msg: "",
-                    value: data.id_soal
-                };
-            }
-            hasil = {
-                status: false,
-                error: pesan
-            };
-            res.json(hasil);
-        } else {
-            sql = 'call createSoalUjian("' + id + '","' + data.id_soal + '");';
-            console.log(sql);
-            koneksi.query(sql, function(e, r, f) {
-                var hasil = {};
-                if (!e) hasil.status = true;
-                else hasil.status = false;
-                hasil.error = e;
-                res.json(hasil);
-            });
-        }
-    });
+	var data = req.body;
+	var id = req.params.id;
+	var hasil = {};
+	console.log(data);
+	req.checkBody(checkDataSoal);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		if(pesan.isi_soal == undefined){
+			pesan.isi_soal ={
+				param : "isi_soal",
+				msg : "",
+				value : data.isi_soal
+			};
+		}
+		if(pesan.jawaban == undefined){
+			pesan.jawaban ={
+				param : "jawaban",
+				msg : "",
+				value : data.jawaban
+			};
+		}
+		hasil.status = false;
+		hasil.error = pesan;
+	console.log(hasil);
+	res.json(hasil); 
+	}
+	else{
+	var sql1 = '';
+	var pg = data.pilihan_ganda;
+	for(var x=0;x<pg.length;x++){
+		if(x == 0) sql1 = '(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
+		else sql1+= ',(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
+	}
+	sql = 'set @id_pg=genIdSoal(); call createSoal(@id_pg,"'+data.isi_soal+'","'+data.jawaban+'"); insert into tbpilihan_ganda (id_soal,huruf,isi_pilihan) values '+sql1+'; call createSoalUjian("' + id + '",@id_pg);';
+	koneksi.query(sql, function(e, r, f){
+		if(!e) hasil.status = true;
+		else hasil.status = false;
+		hasil.error = e;
+		console.log(hasil);
+		res.json(hasil);
+		});
+	}
+});
 });
 router.delete('/:id/soal/:idSoal', (req, res, next) => {
     var id = req.params.idSoal;
