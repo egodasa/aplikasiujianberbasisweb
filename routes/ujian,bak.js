@@ -2,14 +2,25 @@ var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/ujian/create_update');
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
-var checkDataSoal = require('../validator/soal/create_update');
+var checkDataSoal = require('../validator/soal_ujian/create_update');
 
-router.get('/:id?', (req, res, next) => {
-	var id = req.params.id || "0000000";
-	var limit = req.query.limit || 0;
-	var offset = req.query.offset || 0;
-    sql = 'call getUjian(?,?,?);';
-    koneksi.query(sql,[id,limit,offset], (e, r, f) => {
+router.get('/', (req, res, next) => {
+    sql = 'call getUjian("0000000",0,0);';
+    koneksi.query(sql, (e, r, f) => {
+        var hasil = {};
+        if (!e) hasil.status = true;
+        else hasil.status = false;
+        hasil.data = r[0];
+        hasil.row = r[0].length;
+        hasil.error = e;
+        res.json(hasil);
+    });
+});
+router.get('/limit/:lim/offset/:off', (req, res, next) => {
+    var lim = req.params.lim;
+    var off = req.params.off;
+    sql = 'call getUjian("0000000",' + lim + ',' + off + ');';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
@@ -19,7 +30,20 @@ router.get('/:id?', (req, res, next) => {
         res.json(hasil);
     });
 });
-router.post('/', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
+    var id = req.params.id;
+    sql = 'call getUjian("' + id + '",0,0);';
+    koneksi.query(sql, (e, r, f) => {
+        var hasil = {};
+        if (!e) hasil.status = true;
+        else hasil.status = false;
+        hasil.data = r[0];
+        hasil.row = r[0].length;
+        hasil.error = e;
+        res.json(hasil);
+    });
+});
+router.post('/create', (req, res, next) => {
     var data = req.body;
     var hasil = {};
     req.checkBody(checkData);
@@ -52,8 +76,8 @@ router.post('/', (req, res, next) => {
             hasil.error = pesan;
             res.json(hasil);
         } else {
-            sql = 'call createUjian(?,?,?);';
-            koneksi.query(sql,[data.nm_ujian,data.jam,data.menit], function(e, r, f) {
+            sql = 'call createUjian("' + data.nm_ujian + '",' + data.jam + ',' + data.menit + ');';
+            koneksi.query(sql, function(e, r, f) {
                 if (!e) hasil.status = true;
                 else hasil.status = false;
                 hasil.error = e;
@@ -62,11 +86,11 @@ router.post('/', (req, res, next) => {
         }
     });
 });
-router.delete('/:id', (req, res, next) => {
+router.delete('/delete/:id', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
-    sql = 'call deleteUjian(?);';
-    koneksi.query(sql,[id], (e, r, f) => {
+    sql = 'call deleteUjian("' + id + '");';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
@@ -74,7 +98,7 @@ router.delete('/:id', (req, res, next) => {
         res.json(hasil);
     });
 });
-router.put('/:id', (req, res, next) => {
+router.put('/update/:id', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
@@ -108,8 +132,8 @@ router.put('/:id', (req, res, next) => {
             hasil.error = pesan;
             res.json(hasil);
         } else {
-            sql = 'call updateUjian(?,?,?,?);';
-            koneksi.query(sql,[id,data.nm_ujian,data.jam,data.menit], function(e, r, f) {
+            sql = 'call updateUjian("' + id + '","' + data.nm_ujian + '",' + data.jam + ',' + data.menit + ');';
+            koneksi.query(sql, function(e, r, f) {
                 if (!e) hasil.status = true;
                 else hasil.status = false;
                 hasil.error = e;
@@ -121,30 +145,34 @@ router.put('/:id', (req, res, next) => {
 
 //Peserta Ujian
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
-router.get('/:id/peserta/:idPeserta?', (req, res, next) => {
+router.get('/:id/peserta', (req, res, next) => {
     var id = req.params.id;
-    var idPeserta = req.params.idPeserta || 0;
-    var limit = req.query.limit || 0;
-    var offset = req.query.offset || 0;
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
-    if(belumDitambahkan == 0){
-		sql = 'call getPesertaUjian(?,?,?,?);';
-		sqlParam = [id,idPeserta,limit,offset];
-	}else{
-		sql = 'call getNotPesertaUjian(?,?,?);';
-		sqlParam = [id,limit,offset];
-	}
-    koneksi.query(sql,sqlParam, (e, r, f) => {
+    sql = 'call getPesertaUjian("' + id + '",0);';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
         hasil.data = r[0];
-        hasil.row = r[1][0].jumlah;
+        hasil.row = r[0].length;
         hasil.error = e;
         res.json(hasil);
     });
 });
-router.post('/:id/peserta/', (req, res, next) => {
+router.get('/:id/peserta/:id_peserta', (req, res, next) => {
+    var id = req.params.id;
+    var id_peserta = req.params.id_peserta;
+    sql = 'call getPesertaUjian("' + id + '",' + id_peserta + ');';
+    koneksi.query(sql, (e, r, f) => {
+        var hasil = {};
+        if (!e) hasil.status = true;
+        else hasil.status = false;
+        hasil.data = r[0];
+        hasil.row = r[0].length;
+        hasil.error = e;
+        res.json(hasil);
+    });
+});
+router.post('/:id/peserta/create', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
@@ -166,9 +194,9 @@ router.post('/:id/peserta/', (req, res, next) => {
             };
             res.json(hasil);
         } else {
-            sql = 'call createPesertaUjian(?,?);';
+            sql = 'call createPesertaUjian("' + id + '",' + data.id_peserta + ');';
             console.log(sql);
-            koneksi.query(sql,[id,data.id_peserta], function(e, r, f) {
+            koneksi.query(sql, function(e, r, f) {
                 var hasil = {};
                 if (!e) hasil.status = true;
                 else hasil.status = false;
@@ -178,14 +206,14 @@ router.post('/:id/peserta/', (req, res, next) => {
         }
     });
 });
-router.delete('/:id/peserta/:id_pu', (req, res, next) => {
+router.delete('/:id/peserta/delete/:id_pu', (req, res, next) => {
     var id = req.params.id;
     var id_pu = req.params.id_pu;
     var id_peserta_ujian = req.body.id_peserta_ujian;
     console.log(id_peserta_ujian);
     var hasil = {};
-    sql = 'call deletePesertaUjian(?);';
-    koneksi.query(sql,[id_pu], (e, r, f) => {
+    sql = 'call deletePesertaUjian("' + id_pu + '");';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
@@ -198,76 +226,71 @@ router.delete('/:id/peserta/:id_pu', (req, res, next) => {
 
 router.get('/:id/soal', (req, res, next) => {
     var id = req.params.id;
-    var limit = req.query.limit || 0;
-    var offset = req.query.offset || 0;
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
-	sql = 'call getSoalUjian(?,?,?);';
-	sqlParam = [id,limit,offset];
-    koneksi.query(sql,sqlParam, (e, r, f) => {
+    sql = 'call getSoalUjian("' + id + '");';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
-        console.log(r);
         hasil.data = r[0];
-        hasil.row = r[1][0].jumlah;
+        hasil.row = r[0].length;
         hasil.error = e;
         res.json(hasil);
     });
 });
-router.post('/:id/soal/', (req, res, next) => {
-	var data = req.body;
-	var id = req.params.id;
-	var hasil = {};
-	console.log(data);
-	req.checkBody(checkDataSoal);
-	req.getValidationResult().then(function(result){
-	result.useFirstErrorOnly();
-	var pesan = result.mapped();
-	if(result.isEmpty() == false){
-		if(pesan.isi_soal == undefined){
-			pesan.isi_soal ={
-				param : "isi_soal",
-				msg : "",
-				value : data.isi_soal
-			};
-		}
-		if(pesan.jawaban == undefined){
-			pesan.jawaban ={
-				param : "jawaban",
-				msg : "",
-				value : data.jawaban
-			};
-		}
-		hasil.status = false;
-		hasil.error = pesan;
-	console.log(hasil);
-	res.json(hasil); 
-	}
-	else{
-	var sql1 = '';
-	var pg = data.pilihanGanda;
-	for(var x=0;x<pg.length;x++){
-		if(x == 0) sql1 = '(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-		else sql1+= ',(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-	}
-	sql = 'set @id_pg=genIdSoal(); call createSoal(@id_pg,?,?); insert into tbpilihan_ganda (id_soal,huruf,isi_pilihan) values '+sql1+'; call createSoalUjian(?,@id_pg);';
-	koneksi.query(sql,[data.isi_soal,data.jawaban,id], function(e, r, f){
-		if(!e) hasil.status = true;
-		else hasil.status = false;
-		hasil.error = e;
-		console.log(hasil);
-		res.json(hasil);
-		});
-	}
+router.get('/:id/soal/:id_soal', (req, res, next) => {
+    var id = req.params.id;
+    var id_soal = req.params.id_soal;
+    sql = 'call getSoalUjian("' + id + '",' + id_soal + ');';
+    koneksi.query(sql, (e, r, f) => {
+        var hasil = {};
+        if (!e) hasil.status = true;
+        else hasil.status = false;
+        hasil.data = r[0];
+        hasil.row = r[0].length;
+        hasil.error = e;
+        res.json(hasil);
+    });
 });
+router.post('/:id/soal/create', (req, res, next) => {
+    var data = req.body;
+    var id = req.params.id;
+    var hasil = {};
+    req.checkBody(checkDataSoal);
+    req.getValidationResult().then(function(result) {
+        result.useFirstErrorOnly();
+        var pesan = result.mapped();
+        if (result.isEmpty() == false) {
+            if (pesan.id_soal == undefined) {
+                pesan.id_soal = {
+                    param: "id_soal",
+                    msg: "",
+                    value: data.id_soal
+                };
+            }
+            hasil = {
+                status: false,
+                error: pesan
+            };
+            res.json(hasil);
+        } else {
+            sql = 'call createSoalUjian("' + id + '","' + data.id_soal + '");';
+            console.log(sql);
+            koneksi.query(sql, function(e, r, f) {
+                var hasil = {};
+                if (!e) hasil.status = true;
+                else hasil.status = false;
+                hasil.error = e;
+                res.json(hasil);
+            });
+        }
+    });
 });
 router.delete('/:id/soal/:idSoal', (req, res, next) => {
-    var id = req.params.id;
-    var idSoal = req.params.idSoal;
+    var id = req.params.idSoal;
     var data = req.body;
     var hasil = {};
-    sql = 'call deleteSoalUjian(?);';
-    koneksi.query(sql,[idSoal], (e, r, f) => {
+    sql = 'call deleteSoalUjian("' + id + '");';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
@@ -277,18 +300,15 @@ router.delete('/:id/soal/:idSoal', (req, res, next) => {
 });
 
 //HASIL UJIAN
-router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
+router.get('/:id/hasil', (req, res, next) => {
     var id = req.params.id;
-    var id = req.params.idPeserta || 0;
-    var limit = req.query.limit || 0;
-    var offset = req.query.offset || 0;
-    sql = 'call getHasilUjian(?,?,?,?);';
-    koneksi.query(sql,[id,idPeserta,limit,offset], (e, r, f) => {
+    sql = 'call getHasilUjian("' + id + '",0);';
+    koneksi.query(sql, (e, r, f) => {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;
         hasil.data = r[0];
-        hasil.row = r[1][0].jumlah;
+        hasil.row = r[0].length;
         hasil.error = e;
         res.json(hasil);
     });
@@ -296,9 +316,9 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
 router.post('/:id/hasil', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
-    sql = 'call createHasilUjian(?,?,?,?);';
+    sql = 'call createHasilUjian("' + id + '",' + data.id_peserta + ',' + data.benar + ',' + data.salah + ');';
     console.log(sql);
-    koneksi.query(sql,[id,data.id_peserta,data.benar,data.salah], function(e, r, f) {
+    koneksi.query(sql, function(e, r, f) {
         var hasil = {};
         if (!e) hasil.status = true;
         else hasil.status = false;

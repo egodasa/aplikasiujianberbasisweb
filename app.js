@@ -9,14 +9,15 @@ var fileUpload = require('express-fileupload');
 var Promise = require('promise');
 
 mysql = require('mysql');
-/*
+
 koneksi = mysql.createPool({
-		host : 'sql12.freemysqlhosting.net',
-		user : 'sql12189662',
-		password : '2mnJVriMNR',
-		database : 'sql12189662',
+		host : 'sql3.freemysqlhosting.net',
+		user : 'sql3194176',
+		password : 'hGltxyK5je',
+		database : 'sql3194176',
 		multipleStatements : true
-		});*/
+		});
+/*
 koneksi = mysql.createPool({
 		host : 'localhost',
 		user : 'root',
@@ -24,6 +25,7 @@ koneksi = mysql.createPool({
 		database : 'dbujian',
 		multipleStatements : true
 		});
+		*/
 var app = express();
 
 // view engine setup

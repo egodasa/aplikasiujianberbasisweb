@@ -1,41 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/peserta/create_update');
-router.get('/',(req, res, next)=>{
-	sql = 'call getPeserta(0,0,0);';
-	koneksi.query(sql, (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.data = r[0];
-		hasil.row = r[0].length;
-		hasil.error = e;
-		res.json(hasil);
-		});
-	});
-router.get('/limit/:lim/offset/:off',(req, res, next)=>{
-	var lim = req.params.lim;
-	var off = req.params.off;
-	sql = 'call getPeserta(0,'+lim+','+off+');';
-	koneksi.query(sql, (e, r, f)=>{
+router.get('/:id?',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var limit = req.query.limit || 0;
+	var offset = req.query.offset || 0;
+	sql = 'call getPeserta(?,?,?);';
+	koneksi.query(sql,[id,limit,offset], (e, r, f)=>{
 		var hasil = {};
 		if(!e) hasil.status = true;	
 		else hasil.status = false;
 		hasil.data = r[0];
 		hasil.row = r[1][0].jumlah;
-		hasil.error = e;
-		res.json(hasil);
-		});
-	});
-router.get('/:id',(req, res, next)=>{
-	var id = req.params.id;
-	sql = 'call getPeserta('+id+',0,0);';
-	koneksi.query(sql, (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.data = r[0];
-		hasil.row = r[0].length;
 		hasil.error = e;
 		res.json(hasil);
 		});

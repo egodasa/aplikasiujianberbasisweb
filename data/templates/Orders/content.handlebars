@@ -1,0 +1,79 @@
+<!-- 
+Custom server side script is used to fetch data from the remote REST API server,
+handlebars to render html and phantom-pdf recipe to convert html into pdf.
+The template also uses helper function toJSON defined in global helpers asset.
+
+It requires allowed http module in scripts in the configuration file:
+"scripts": { "allowedModules": ["http"] }
+!-->
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/olton/Metro-UI-CSS/master/build/css/metro.min.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js'></script>
+  </head>
+  <body>
+    <h1>{{country}}</h1>
+    
+    <canvas id='orders' style="margin-top:30px"></canvas>
+    <table class="table striped">
+        <thead>
+            <tr>
+                <th>OrderID</th>
+                <th>ShipAddress</th>
+                <th>ShipCity</th>
+                <th>ShipCountry</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr>
+                <td>{{OrderID}}</td>
+                <td>{{ShipAddress}}</td>
+                <td>{{ShipCity}}</td>
+                <td>{{ShipCountry}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    
+    <script>      
+        var data = {{{toJSON this}}}
+        
+        Chart.defaults.global.legend.display = false;
+        
+        new Chart(orders.getContext("2d"), {
+            type: 'bar',
+            data: {
+                labels: Object.keys(data.accumulatedOrders),
+                datasets: [{
+                    fillColor: 'blue',
+                    label: "Orders in time",
+                    backgroundColor: "rgba(27,161,226,0.2)",
+                    borderColor: "rgba(27,161,226,1)",
+                    borderWidth: 1,
+                    hoverBackgroundColor: "rgba(27,161,226,0.4)",
+                    hoverBorderColor: "rgba(27,161,226,1)",
+                    data: Object.keys(data.accumulatedOrders).map(function (o) {
+                        return data.accumulatedOrders[o].value;
+                    })
+                }]
+                
+            },
+            options: {
+                animation: {
+                    onComplete: function () {
+                        // set the PDF printing trigger when the animation is done
+                        // to have this working, the phantom-pdf menu in the left must
+                        // have the wait for printing trigger option selected
+                        window.JSREPORT_READY_TO_START = true
+                    }
+                }
+            }
+        });
+    </script>    
+  </body>
+</html>
+
+
+

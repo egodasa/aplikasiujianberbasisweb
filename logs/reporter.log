@@ -1,0 +1,177 @@
+2017-08-20T13:30:13.070Z - info: Initializing jsreport@1.8.1 in development mode using configuration file dev.config.json
+2017-08-20T13:30:13.077Z - info: Setting process based strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2017-08-20T13:30:13.111Z - info: Searching for available extensions in /run/media/media/Program/web/API Aplikasi Ujian Web/
+2017-08-20T13:30:13.127Z - info: Extensions location cache not found, crawling directories
+2017-08-20T13:30:53.284Z - info: Found 30 extensions
+2017-08-20T13:30:53.466Z - info: Using extension import-export
+2017-08-20T13:30:58.483Z - info: Using extension tags
+2017-08-20T13:30:58.618Z - info: Using extension templates
+2017-08-20T13:30:58.683Z - info: Using extension jsrender
+2017-08-20T13:30:58.722Z - info: Using extension cli
+2017-08-20T13:30:58.727Z - info: Using extension handlebars
+2017-08-20T13:30:58.741Z - info: Using extension debug
+2017-08-20T13:30:58.761Z - info: Using extension express
+2017-08-20T13:31:00.617Z - info: Using extension fop-pdf
+2017-08-20T13:31:00.749Z - info: Using extension phantom-pdf
+2017-08-20T13:31:01.164Z - info: Using extension fs-store
+2017-08-20T13:31:05.545Z - info: Using extension authorization
+2017-08-20T13:31:05.581Z - info: Using extension images
+2017-08-20T13:31:05.685Z - info: Using extension child-templates
+2017-08-20T13:31:05.755Z - info: Using extension browser-client
+2017-08-20T13:31:05.775Z - info: Using extension licensing
+2017-08-20T13:31:06.564Z - info: Using extension data
+2017-08-20T13:31:06.609Z - info: Using extension text
+2017-08-20T13:31:06.641Z - info: Using extension reports
+2017-08-20T13:31:06.727Z - info: Using extension resources
+2017-08-20T13:31:06.760Z - info: Using extension base
+2017-08-20T13:31:06.787Z - info: Using extension studio
+2017-08-20T13:31:08.438Z - info: Using extension html-to-xlsx
+2017-08-20T13:31:10.437Z - info: Using extension scripts
+2017-08-20T13:31:10.456Z - info: Using extension assets
+2017-08-20T13:31:11.417Z - info: Using extension scheduling
+2017-08-20T13:31:12.908Z - info: Using extension xlsx
+2017-08-20T13:31:18.797Z - info: Using extension sample-template
+2017-08-20T13:31:18.841Z - info: Using extension public-templates
+2017-08-20T13:31:18.934Z - info: Initializing fs storage at /run/media/media/Program/web/API Aplikasi Ujian Web/data
+2017-08-20T13:31:20.714Z - info: Creating default express app.
+2017-08-20T13:31:21.748Z - info: jsreport server successfully started on http port: 5488
+2017-08-20T13:31:21.833Z - info: Verifying license key free
+2017-08-20T13:31:21.844Z - info: Using free license
+2017-08-20T13:31:23.339Z - info: reporter initialized
+2017-08-20T14:03:56.679Z - info: Initializing jsreport@1.8.1 in development mode using configuration file dev.config.json
+2017-08-20T14:03:56.685Z - info: Setting process based strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2017-08-20T14:03:56.725Z - info: Searching for available extensions in /run/media/media/Program/web/API Aplikasi Ujian Web/
+2017-08-20T14:03:56.780Z - info: Extensions location cache contains up to date information, skipping crawling in /run/media/media/Program/web/API Aplikasi Ujian Web/node_modules/
+2017-08-20T14:04:00.507Z - info: Found 30 extensions
+2017-08-20T14:04:00.723Z - info: Using extension import-export
+2017-08-20T14:04:02.739Z - info: Using extension tags
+2017-08-20T14:04:02.839Z - info: Using extension templates
+2017-08-20T14:04:02.889Z - info: Using extension jsrender
+2017-08-20T14:04:02.897Z - info: Using extension cli
+2017-08-20T14:04:02.905Z - info: Using extension handlebars
+2017-08-20T14:04:02.918Z - info: Using extension debug
+2017-08-20T14:04:02.924Z - info: Using extension express
+2017-08-20T14:04:03.789Z - info: Using extension fop-pdf
+2017-08-20T14:04:03.902Z - info: Using extension phantom-pdf
+2017-08-20T14:04:04.189Z - info: Using extension fs-store
+2017-08-20T14:04:05.958Z - info: Using extension authorization
+2017-08-20T14:04:05.974Z - info: Using extension images
+2017-08-20T14:04:06.028Z - info: Using extension child-templates
+2017-08-20T14:04:06.058Z - info: Using extension browser-client
+2017-08-20T14:04:06.068Z - info: Using extension licensing
+2017-08-20T14:04:06.388Z - info: Using extension data
+2017-08-20T14:04:06.402Z - info: Using extension text
+2017-08-20T14:04:06.407Z - info: Using extension reports
+2017-08-20T14:04:06.439Z - info: Using extension resources
+2017-08-20T14:04:06.452Z - info: Using extension base
+2017-08-20T14:04:06.457Z - info: Using extension studio
+2017-08-20T14:04:07.267Z - info: Using extension html-to-xlsx
+2017-08-20T14:04:07.907Z - info: Using extension scripts
+2017-08-20T14:04:07.923Z - info: Using extension assets
+2017-08-20T14:04:07.994Z - info: Using extension scheduling
+2017-08-20T14:04:08.163Z - info: Using extension xlsx
+2017-08-20T14:04:09.293Z - info: Using extension sample-template
+2017-08-20T14:04:09.309Z - info: Using extension public-templates
+2017-08-20T14:04:09.355Z - info: Initializing fs storage at /run/media/media/Program/web/API Aplikasi Ujian Web/data
+2017-08-20T14:04:10.564Z - info: Creating default express app.
+2017-08-20T14:04:11.131Z - info: jsreport server successfully started on http port: 5488
+2017-08-20T14:04:11.236Z - info: Verifying license key free
+2017-08-20T14:04:11.258Z - info: Using free license
+2017-08-20T14:04:11.283Z - info: reporter initialized
+2017-08-20T14:05:04.254Z - info: Starting rendering request 1 (user: null) requestId=1
+2017-08-20T14:05:04.274Z - info: Rendering template {shortid:r18kyD83ce, recipe:xlsx,engine:handlebars} requestId=1
+2017-08-20T14:05:14.409Z - info: Rendering request 1 finished in 10159 ms requestId=1
+2017-08-23T03:23:04.217Z - info: Initializing jsreport@1.8.1 in development mode using configuration file dev.config.json
+2017-08-23T03:23:04.227Z - info: Setting process based strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2017-08-23T03:23:04.380Z - info: Searching for available extensions in /media/mandan/media/Program/web/API Aplikasi Ujian Web/
+2017-08-23T03:23:04.400Z - info: Extensions location cache not found, crawling directories
+2017-08-23T03:24:21.528Z - info: Found 30 extensions
+2017-08-23T03:24:21.754Z - info: Using extension import-export
+2017-08-23T03:24:29.238Z - info: Using extension tags
+2017-08-23T03:24:29.406Z - info: Using extension templates
+2017-08-23T03:24:29.488Z - info: Using extension jsrender
+2017-08-23T03:24:29.500Z - info: Using extension cli
+2017-08-23T03:24:29.515Z - info: Using extension handlebars
+2017-08-23T03:24:29.559Z - info: Using extension debug
+2017-08-23T03:24:29.577Z - info: Using extension express
+2017-08-23T03:24:32.267Z - info: Using extension fop-pdf
+2017-08-23T03:24:32.559Z - info: Using extension phantom-pdf
+2017-08-23T03:24:33.367Z - info: Using extension fs-store
+2017-08-23T03:24:43.662Z - info: Using extension authorization
+2017-08-23T03:24:43.740Z - info: Using extension images
+2017-08-23T03:24:43.952Z - info: Using extension child-templates
+2017-08-23T03:24:44.099Z - info: Using extension browser-client
+2017-08-23T03:24:44.157Z - info: Using extension licensing
+2017-08-23T03:24:45.604Z - info: Using extension data
+2017-08-23T03:24:45.695Z - info: Using extension text
+2017-08-23T03:24:45.724Z - info: Using extension reports
+2017-08-23T03:24:45.879Z - info: Using extension resources
+2017-08-23T03:24:45.935Z - info: Using extension base
+2017-08-23T03:24:45.952Z - info: Using extension studio
+2017-08-23T03:24:49.273Z - info: Using extension html-to-xlsx
+2017-08-23T03:24:52.355Z - info: Using extension scripts
+2017-08-23T03:24:52.437Z - info: Using extension assets
+2017-08-23T03:24:52.700Z - info: Using extension scheduling
+2017-08-23T03:24:53.374Z - info: Using extension xlsx
+2017-08-23T03:24:57.913Z - info: Using extension sample-template
+2017-08-23T03:24:57.966Z - info: Using extension public-templates
+2017-08-23T03:24:58.093Z - info: Initializing fs storage at /media/mandan/media/Program/web/API Aplikasi Ujian Web/data
+2017-08-23T03:25:00.204Z - info: Creating default express app.
+2017-08-23T03:25:01.257Z - info: jsreport server successfully started on http port: 5488
+2017-08-23T03:25:01.457Z - info: Verifying license key free
+2017-08-23T03:25:01.566Z - info: Using free license
+2017-08-23T03:25:01.599Z - info: reporter initialized
+2017-08-23T03:26:23.462Z - info: Starting rendering request 1 (user: null) requestId=1
+2017-08-23T03:26:23.482Z - info: Rendering template {shortid:r18kyD83ce, recipe:xlsx,engine:handlebars} requestId=1
+2017-08-23T03:26:30.915Z - error: Error when processing render request Error during rendering report: getaddrinfo EAI_AGAIN jsreport.net:80 Error: getaddrinfo EAI_AGAIN jsreport.net:80
+    at Object.exports._errnoException (util.js:1020:11)
+    at errnoException (dns.js:33:15)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26) requestId=1
+2017-08-23T03:26:30.937Z - error: Error during processing request: http://localhost:5488/api/report/Population details: Error during rendering report: getaddrinfo EAI_AGAIN jsreport.net:80 Error: getaddrinfo EAI_AGAIN jsreport.net:80
+    at Object.exports._errnoException (util.js:1020:11)
+    at errnoException (dns.js:33:15)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+2017-08-23T03:26:40.659Z - info: Starting rendering request 2 (user: null) requestId=2
+2017-08-23T03:26:40.679Z - info: Rendering template {shortid:rkJTnK2ce, recipe:phantom-pdf,engine:handlebars} requestId=2
+2017-08-23T03:28:29.001Z - info: Initializing jsreport@1.8.1 in development mode using configuration file dev.config.json
+2017-08-23T03:28:29.016Z - info: Setting process based strategy for rendering. Please visit http://jsreport.net/learn/configuration for information how to get more performance.
+2017-08-23T03:28:29.078Z - info: Searching for available extensions in /media/mandan/media/Program/web/API Aplikasi Ujian Web/
+2017-08-23T03:28:29.211Z - info: Extensions location cache contains up to date information, skipping crawling in /media/mandan/media/Program/web/API Aplikasi Ujian Web/node_modules/
+2017-08-23T03:28:40.824Z - info: Found 30 extensions
+2017-08-23T03:28:41.034Z - info: Using extension import-export
+2017-08-23T03:28:48.642Z - info: Using extension tags
+2017-08-23T03:28:48.838Z - info: Using extension templates
+2017-08-23T03:28:48.934Z - info: Using extension jsrender
+2017-08-23T03:28:48.945Z - info: Using extension cli
+2017-08-23T03:28:48.954Z - info: Using extension handlebars
+2017-08-23T03:28:48.984Z - info: Using extension debug
+2017-08-23T03:28:49.004Z - info: Using extension express
+2017-08-23T03:28:51.463Z - info: Using extension fop-pdf
+2017-08-23T03:28:51.633Z - info: Using extension phantom-pdf
+2017-08-23T03:28:52.218Z - info: Using extension fs-store
+2017-08-23T03:28:56.961Z - info: Using extension authorization
+2017-08-23T03:28:56.998Z - info: Using extension images
+2017-08-23T03:28:57.089Z - info: Using extension child-templates
+2017-08-23T03:28:57.150Z - info: Using extension browser-client
+2017-08-23T03:28:57.170Z - info: Using extension licensing
+2017-08-23T03:28:57.901Z - info: Using extension data
+2017-08-23T03:28:57.947Z - info: Using extension text
+2017-08-23T03:28:57.954Z - info: Using extension reports
+2017-08-23T03:28:58.010Z - info: Using extension resources
+2017-08-23T03:28:58.031Z - info: Using extension base
+2017-08-23T03:28:58.038Z - info: Using extension studio
+2017-08-23T03:28:59.837Z - info: Using extension html-to-xlsx
+2017-08-23T03:29:01.390Z - info: Using extension scripts
+2017-08-23T03:29:01.422Z - info: Using extension assets
+2017-08-23T03:29:01.569Z - info: Using extension scheduling
+2017-08-23T03:29:01.888Z - info: Using extension xlsx
+2017-08-23T03:29:04.500Z - info: Using extension sample-template
+2017-08-23T03:29:04.540Z - info: Using extension public-templates
+2017-08-23T03:29:04.622Z - info: Initializing fs storage at /media/mandan/media/Program/web/API Aplikasi Ujian Web/data
+2017-08-23T03:29:06.306Z - info: Creating default express app.
+2017-08-23T03:29:07.222Z - info: jsreport server successfully started on http port: 5488
+2017-08-23T03:29:07.290Z - info: Verifying license key free
+2017-08-23T03:29:07.350Z - info: Using free license
+2017-08-23T03:29:07.464Z - info: reporter initialized
+2017-08-23T03:30:34.926Z - info: Starting rendering request 1 (user: null) requestId=1
+2017-08-23T03:30:34.943Z - info: Rendering template {shortid:HyI6U_9d-, recipe:phantom-pdf,engine:handlebars} requestId=1
