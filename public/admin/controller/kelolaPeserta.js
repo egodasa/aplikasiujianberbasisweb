@@ -8,7 +8,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 	$scope.readData = function(x,y){
 		var url;
 		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/peserta';
-		else url = $rootScope.serverBackEnd+'/api/peserta/limit/'+x+'/offset/'+y;
+		else url = $rootScope.serverBackEnd+'/api/peserta?limit='+x+'&offset='+y;
 		$rootScope.showLoading(true);
 		$rootScope.pagination.limit = x;
 		$rootScope.pagination.offset = y;
@@ -52,6 +52,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 			nm_peserta : $scope.Tnm_peserta
 		};
 		data = JSON.stringify(data);
+		$rootScope.tombolSimpan(1);
 		$http({
 			method : 'POST',
 			url : $rootScope.serverBackEnd+'/api/peserta',
@@ -75,7 +76,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 				$rootScope.showPesan('Warning',e);
 			})
 			.finally(function(){
-				
+				$rootScope.tombolSimpan(0);	
 			})
 		};
 		$scope.detailData = function(id){

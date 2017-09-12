@@ -120,11 +120,10 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
     $scope.readData = function(x, y) {
         var url;
         if (x == 0 && y == 0) url = $rootScope.serverBackEnd + '/api/soal';
-        else url = $rootScope.serverBackEnd + '/api/soal/limit/' + x + '/offset/' + y;
+        else url = $rootScope.serverBackEnd + '/api/soal?limit=' + x + '&offset=' + y;
         $rootScope.showLoading(true);
         $rootScope.pagination.limit = x;
         $rootScope.pagination.offset = y;
-        $rootScope.showLoading(true);
         $http.get(url)
             .then(function(res) {
                 $scope.laporanSoal = res.data.data;
@@ -139,7 +138,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
     };
     $scope.deleteData = function(id) {
         $rootScope.showLoading(true);
-        $http.delete($rootScope.serverBackEnd + '/api/soal/delete/' + id)
+        $http.delete($rootScope.serverBackEnd + '/api/soal/' + id)
             .then(function(res) {
                 var result = res.data.status;
                 if (result == true) {
@@ -161,15 +160,14 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
     $scope.createData = function() {
         var data = {
             isi_soal: $scope.Tsoal,
-            pilihan_ganda: $scope.pilihanGanda,
+            pilihanGanda: $scope.pilihanGanda,
             jawaban: $scope.Rjawaban
         };
-        console.log($scope.Rjawaban);
         data = JSON.stringify(data);
-        console.log(data);
+        $rootScope.tombolSimpan(1);
         $http({
                 method: 'POST',
-                url: $rootScope.serverBackEnd + '/api/soal/create',
+                url: $rootScope.serverBackEnd + '/api/soal',
                 data: data,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(res) {
@@ -188,7 +186,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
                 $rootScope.showPesan('Warning', e);
             })
             .finally(function() {
-
+				$rootScope.tombolSimpan(0);
             })
     };
     $scope.detailData = function(id) {
@@ -217,7 +215,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
         data = JSON.stringify(data);
         $http({
                 method: 'PUT',
-                url: $rootScope.serverBackEnd + '/api/soal/update/' + id,
+                url: $rootScope.serverBackEnd + '/api/soal/' + id,
                 data: data,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(res) {

@@ -69,7 +69,7 @@
                 <td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id_soal)" ng-disable="toggleBulkDelete"></td>
                 <td>{{$index+1+pagination.offset}}</td>
                 <td>{{x.isi_soal}}</td>
-                <td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
+                <td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
                     <button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
             </tr>
         </table>

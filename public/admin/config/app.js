@@ -41,12 +41,9 @@ app.config(function($routeProvider) {
 });
 app.run(function($rootScope, $timeout) {
    $rootScope.serverBackEnd = '';
+   //Pencarian data disetiap tabel
    $rootScope.pencarian = function(x){
 		$rootScope.kataKunci = x;
-	};
-	$rootScope.showLoading = function(x){
-		if(x == true) $rootScope.loading = 'display:block;';
-		else $rootScope.loading = 'display:none;';
 	};
 	$rootScope.showLoading(false);
 	$rootScope.pesan = false;
@@ -60,10 +57,12 @@ app.run(function($rootScope, $timeout) {
 	        $timeout.cancel(pesanTimer);
 	    }, 5000);
 	};
+	//Close pesan (alert)
 	$rootScope.closePesan = function(){
 		$rootScope.pesan = false;
 		$rootScope.isiPesan = '';
 	};
+	//Show and hide modal form for create and update
 	$rootScope.createForm = false;
 	$rootScope.updateForm = false;
 	$rootScope.showForm = function(x,y){
@@ -80,6 +79,7 @@ app.run(function($rootScope, $timeout) {
 			$rootScope.updateForm = true;
 			$rootScope.createForm = !$rootScope.updateForm;
 		}
+		$rootScope.tombolSimpan(0);
 	}
 	//PAGINASI
 	$rootScope.pagination = {
@@ -106,6 +106,24 @@ app.run(function($rootScope, $timeout) {
 			}
 		}
 		console.log($rootScope.bulkDelete);		
+	};
+	//Animasi tombol simpan
+	$rootScope.tombolSimpan = function(pilihan = 0){
+		switch(pilihan){
+			case 1 :
+				$rootScope.style = {
+					disable : " w3-disabled",
+					caption : "Menyimpan",
+					spinner : ""
+					};
+				break;
+			default :
+				$rootScope.style = {
+					disable : " w3-disabled",
+					caption : "Simpan",
+					spinner : " w3-hide"
+					};
+		}
 	};
 });
 app.service('loadingScreen', 

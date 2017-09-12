@@ -11,7 +11,7 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 		}
 	}
 	$scope.getPeserta = function(id){
-		$http.get($rootScope.serverBackEnd+'/api/peserta/not/'+id)
+		$http.get($rootScope.serverBackEnd+'/api/ujian/'+id+'/peserta?belumDitambahkan=true')
 		.then(function(res){
 			$scope.peserta = res.data.data;
 		})
@@ -36,7 +36,7 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 		})
 		};
 	$scope.deleteData = function(id){
-		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/delete/'+id)
+		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/'+id)
 		.then(function(res){
 			$scope.result = res.data.status;
 			if($scope.result == true){
@@ -63,7 +63,7 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 		console.log(data);
 		$http({
 			method : 'POST',
-			url : $rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/create',
+			url : $rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta',
 			data : data,
 			contentType : 'application/json; charset=utf-8'
 			})

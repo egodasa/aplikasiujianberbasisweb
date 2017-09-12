@@ -121,7 +121,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
     $scope.readData = function(x, y) {
         var url;
         if (x == 0 && y == 0) url = $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal';
-        else url = $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/limit/' + x + '/offset/' + y;
+        else url = $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal?limit=' + x + '&offset=' + y;
         $rootScope.showLoading(true);
         $rootScope.pagination.limit = x;
         $rootScope.pagination.offset = y;
@@ -140,7 +140,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
     };
     $scope.deleteData = function(id) {
         $rootScope.showLoading(true);
-        $http.delete($rootScope.serverBackEnd + '/api/soal/delete/' + id)
+        $http.delete($rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/'+id)
             .then(function(res) {
                 var result = res.data.status;
                 if (result == true) {
@@ -161,15 +161,13 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
     $scope.createData = function() {
         var data = {
             isi_soal: $scope.Tsoal,
-            pilihan_ganda: $scope.pilihanGanda,
+            pilihanGanda: $scope.pilihanGanda,
             jawaban: $scope.Rjawaban
         };
-        console.log($scope.Rjawaban);
         data = JSON.stringify(data);
-        console.log(data);
         $http({
                 method: 'POST',
-                url: $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/create',
+                url: $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal',
                 data: data,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(res) {
@@ -217,7 +215,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
         data = JSON.stringify(data);
         $http({
                 method: 'PUT',
-                url: $rootScope.serverBackEnd + '/api/soal/update/' + id,
+                url: $rootScope.serverBackEnd + '/api/soal/' + id,
                 data: data,
                 contentType: 'application/json; charset=utf-8'
             }).then(function(res) {

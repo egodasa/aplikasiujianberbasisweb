@@ -26,8 +26,8 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 	};
 	$scope.readData = function(x,y){
 		var url;
-		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/index.php/ujian';
-		else url = $rootScope.serverBackEnd+'/api/ujian/limit/'+x+'/offset/'+y;
+		if(x == 0 && y == 0) url = $rootScope.serverBackEnd+'/api/ujian';
+		else url = $rootScope.serverBackEnd+'/api/ujian?limit='+x+'&offset='+y;
 		$rootScope.showLoading(true);
 		$rootScope.pagination.limit = x;
 		$rootScope.pagination.offset = y;
@@ -46,11 +46,12 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 		$rootScope.showLoading(true);
 		$http({
 		method : 'DELETE',
-		url : $rootScope.serverBackEnd+'/api/ujian/delete/'+id,
-		contentType : 'application/json; charset=utf-8'
+		url : $rootScope.serverBackEnd+'/api/ujian/'+id
 		})
 		.then(function(res){
 			var result = res.data.status;
+			console.log(result);
+			console.log(res.data);
 			if(result == true){
 				$rootScope.showPesan('Success','Data berhasil di<b>Hapus</b> ...');
 				$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
@@ -75,9 +76,10 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			menit : $scope.Tmenit
 		};
 		data = JSON.stringify(data);
+		$rootScope.tombolSimpan(1);
 		$http({
 		method : 'POST',
-		url : $rootScope.serverBackEnd+'/api/ujian/create',
+		url : $rootScope.serverBackEnd+'/api/ujian',
 		data : data,
 		contentType : 'application/json; charset=utf-8'
 		})
@@ -99,7 +101,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			$rootScope.showPesan('Warning',e);
 		})
 		.finally(function(){
-			
+			$rootScope.tombolSimpan(0);
 		});
 		};
 		$scope.detailData = function(id){
@@ -125,7 +127,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			data = JSON.stringify(data);
 			$http({
 				method : 'PUT',
-				url : $rootScope.serverBackEnd+'/api/ujian/update/'+id,
+				url : $rootScope.serverBackEnd+'/api/ujian/'+id,
 				data : data,
 				contentType : 'application/json; charset=utf-8'
 			})

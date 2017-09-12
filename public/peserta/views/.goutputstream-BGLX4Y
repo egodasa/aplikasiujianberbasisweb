@@ -1,0 +1,26 @@
+<div class="w3-row">
+	<div class="w3-col l4 s12">
+		<nav class="w3-blue" >
+				<button type="button" class="w3-button w3-blue-gray w3-hover-blue-gray w3-left-align w3-block w3-mobile"><h3>Info Ujian</h3></button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Id Peserta {{sesiUjian.id_peserta}}</button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Id Ujian {{sesiUjian.id_ujian}}</button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Nama Ujian {{sesiUjian.nm_ujian}}</button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Hari/Tanggal {{ tgl | date : 'fullDate'}}</button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Jam {{ tgl | date : 'HH : mm : ss' }}</button>
+				<button type="button" class="w3-button w3-light-gray w3-hover-light-gray w3-left-align w3-block w3-mobile">Sisa Waktu {{ finishUjian | date : 'HH : mm : ss' }}</button>
+				<button type="button" class="w3-button w3-blue-gray w3-left-align w3-block w3-mobile"><h3>Pilih Soal</h3></button>
+				<button type="button" ng-repeat="x in idSoalUjian" ng-click="showSoalUjian($index)" class="w3-button w3-light-gray w3-left-align w3-block w3-mobile w3-hover-amber">Soal Nomor {{$index+1}}</button>
+				</nav>
+	</div>
+	<div class="w3-col l8 s12">
+		<div class="w3-container">
+			<h2>Soal Nomor {{noSoal}}</h2>
+			<p>{{isiSoal.isi_soal}}</p>
+			Jawaban : 
+			<div ng-repeat="x in isiSoal.pilihanGanda">
+				<input class="w3-radio" ng-model="$parent.jawaban" type="radio" name="Huruf" ng-value='x.huruf' ng-click="simpanJawaban(sesiLjk.no_soal,sesiLjk.id_soal,x.huruf)" /> {{x.isi_pilihan}}
+			</div>
+		</div>
+		<button type="button" class="w3-button w3-red w3-right w3-section" ng-click="kumpulkanUjian()">Kumpulkan Ujian >></button>
+	</div>
+</div>
