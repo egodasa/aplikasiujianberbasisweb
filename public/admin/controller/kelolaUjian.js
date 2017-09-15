@@ -92,9 +92,9 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			$scope.readData($rootScope.pagination.limit,$rootScope.pagination.offset);
 		}
 		else {
-			$scope.ETnm_ujian = hasil.error.nm_ujian.msg;
-			$scope.ETjam = hasil.error.jam.msg;
-			$scope.ETmenit = hasil.error.menit.msg;
+			$scope.ETnm_ujian = hasil.error.nm_ujian.msg || null;
+			$scope.ETjam = hasil.error.jam.msg || null;
+			$scope.ETmenit = hasil.error.menit.msg || null;
 		}
 		})
 		.catch(function(e){

@@ -27,28 +27,7 @@ router.post('/', (req, res, next) => {
         result.useFirstErrorOnly();
         var pesan = result.mapped();
         if (result.isEmpty() == false) {
-            if (pesan.nm_ujian == undefined) {
-                pesan.nm_ujian = {
-                    param: "nm_ujian",
-                    msg: "",
-                    value: data.nm_ujian
-                };
-            }
-            if (pesan.jam == undefined) {
-                pesan.jam = {
-                    param: "jam",
-                    msg: "",
-                    value: data.jam
-                };
-            }
-            if (pesan.menit == undefined) {
-                pesan.menit = {
-                    param: "menit",
-                    msg: "",
-                    value: data.menit
-                };
-            }
-            hasilstatus = false;
+            hasil.status = false;
             hasil.error = pesan;
             res.json(hasil);
         } else {

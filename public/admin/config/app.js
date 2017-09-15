@@ -45,6 +45,15 @@ app.run(function($rootScope, $timeout) {
    $rootScope.pencarian = function(x){
 		$rootScope.kataKunci = x;
 	};
+	//Show animasi loading
+	$rootScope.showLoading = function(x){
+		if(x == true) {
+			$rootScope.loading = 'display:block;';
+		}
+		else {
+			$rootScope.loading = 'display:none;';
+		}
+	};
 	$rootScope.showLoading(false);
 	$rootScope.pesan = false;
 	$rootScope.showPesan= function(tipe,isi){
@@ -126,6 +135,7 @@ app.run(function($rootScope, $timeout) {
 		}
 	};
 });
+/*
 app.service('loadingScreen', 
     ['$q', '$rootScope', '$log', 
     function($q, $rootScope, $log) {
@@ -155,3 +165,4 @@ app.service('loadingScreen',
 app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('loadingScreen');
 }]);
+*/

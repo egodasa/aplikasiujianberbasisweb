@@ -7,27 +7,20 @@ var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var fileUpload = require('express-fileupload');
 var Promise = require('promise');
-
+var url = require('url');
 mysql = require('mysql');
-
-koneksi = mysql.createPool({
-		host : 'sql3.freemysqlhosting.net',
-		user : 'sql3194176',
-		password : 'hGltxyK5je',
-		database : 'sql3194176',
+var urlDb = url.parse(process.env.DATABASE_URL_MYSQL);
+var auth = urlDb.auth.split(":");
+var mysqlSetting = {
+		host : urlDb.hostname,
+		user : auth[0],
+		password : auth[1] || "",
+		database : urlDb.path.substr(1),
 		multipleStatements : true
-		});
-/*
-koneksi = mysql.createPool({
-		host : 'localhost',
-		user : 'root',
-		password : '',
-		database : 'dbujian',
-		multipleStatements : true
-		});
-		*/
+		};
+koneksi = mysql.createPool(mysqlSetting);
 var app = express();
-
+{}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -52,6 +45,18 @@ app.use(validator({
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
 app.use('/api/peserta', require('./routes/peserta'));
+
+/*
+app.get('/test',(req,res,next)=>{
+	console.log(mysqlSetting);
+	res.send({
+		host : urlDb.hostname,
+		user : auth[0],
+		password : auth[1],
+		database : urlDb.path.substr(1)
+		});
+	});
+	*/
 //EOF ROUTES
 
 // catch 404 and forward to error handler

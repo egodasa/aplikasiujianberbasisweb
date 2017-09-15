@@ -16,19 +16,6 @@ router.get('/:id?',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
-router.get('/not/:id',(req, res, next)=>{
-	var id = req.params.id;
-	sql = 'call getNotPesertaUjian("'+id+'");';
-	koneksi.query(sql, (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.data = r[0];
-		hasil.row = r[0].length;
-		hasil.error = e;
-		res.json(hasil);
-		});
-	});
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
@@ -49,8 +36,8 @@ router.post('/',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-	sql = 'call createPeserta("'+data.nm_peserta+'");';
-	koneksi.query(sql, function(e, r, f){
+	sql = 'call createPeserta(?);';
+	koneksi.query(sql,[data.nm_peserta], function(e, r, f){
 		if(!e) hasil.status = true;	
 		else hasil.status = false;
 		hasil.error = e;
@@ -62,9 +49,8 @@ router.post('/',(req,res,next)=>{
 router.delete('/:id',(req,res,next)=>{
 	var id = " "+req.params.id;
 	var hasil = {};
-	//sql = 'call deletePeserta('+id+');';
-	sql = 'DELETE FROM tbpeserta WHERE id_peserta IN ('+id+');';
-	koneksi.query(sql, (e, r, f)=>{
+	sql = 'call deletePeserta(?);';
+	koneksi.query(sql,[id], (e, r, f)=>{
 		if(!e) hasil.status = true;	
 		else hasil.status = false;
 		hasil.error = e;
@@ -92,8 +78,8 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-	sql = 'call updatePeserta('+id+',"'+data.nm_peserta+'");';
-	koneksi.query(sql, function(e, r, f){
+	sql = 'call updatePeserta(?,?);';
+	koneksi.query(sql,[id,data.nm_peserta], function(e, r, f){
 		if(!e) hasil.status = true;	
 		else hasil.status = false;
 		hasil.error = e;

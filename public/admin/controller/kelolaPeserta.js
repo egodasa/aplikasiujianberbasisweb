@@ -72,6 +72,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 				}
 			})
 			.catch(function(e){
+				$scope.ETnm_peserta = hasil.error.nm_peserta.msg;
 				$rootScope.showForm(0,0);
 				$rootScope.showPesan('Warning',e);
 			})
