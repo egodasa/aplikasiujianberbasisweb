@@ -19,6 +19,10 @@ var mysqlSetting = {
 		multipleStatements : true
 		};
 koneksi = mysql.createPool(mysqlSetting);
+db = require('knex')({
+  client: 'mysql',
+  connection: process.env.DATABASE_URL_MYSQL
+});
 var app = express();
 {}
 // view engine setup

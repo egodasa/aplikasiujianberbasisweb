@@ -1,18 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/peserta/create_update');
+
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
-	var limit = req.query.limit || 0;
-	var offset = req.query.offset || 0;
-	sql = 'call getPeserta(?,?,?);';
-	koneksi.query(sql,[id,limit,offset], (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.data = r[0];
-		hasil.row = r[1][0].jumlah;
-		hasil.error = e;
+	var limit = 1*req.query.limit || null;
+	var offset = 1*req.query.offset || null;
+	var hasil = {};
+	var op = null;
+	if(id == 0) op = "!=";
+	else op = "=";
+	db('tbpeserta').select().limit(limit).offset(offset).where('id_peserta',op,id).
+	then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.row = rows.length;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
 		res.json(hasil);
 		});
 	});
@@ -36,11 +43,14 @@ router.post('/',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-	sql = 'call createPeserta(?);';
-	koneksi.query(sql,[data.nm_peserta], function(e, r, f){
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.error = e;
+	db('tbpeserta').insert(data).
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
 		res.json(hasil);
 		});
 	}
@@ -49,11 +59,14 @@ router.post('/',(req,res,next)=>{
 router.delete('/:id',(req,res,next)=>{
 	var id = " "+req.params.id;
 	var hasil = {};
-	sql = 'call deletePeserta(?);';
-	koneksi.query(sql,[id], (e, r, f)=>{
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.error = e;
+	db('tbpeserta').where('id_peserta',id).del().
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
 		res.json(hasil);
 		});
 	});
@@ -78,11 +91,14 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-	sql = 'call updatePeserta(?,?);';
-	koneksi.query(sql,[id,data.nm_peserta], function(e, r, f){
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.error = e;
+	db('tbpeserta').where('id_peserta','=',id).update(data).
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
 		res.json(hasil);
 		});
 	}
