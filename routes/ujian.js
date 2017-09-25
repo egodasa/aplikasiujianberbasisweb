@@ -5,20 +5,26 @@ var checkDataPeserta = require('../validator/peserta_ujian/create_update');
 var checkDataSoal = require('../validator/soal/create_update');
 
 router.get('/:id?', (req, res, next) => {
-	var id = req.params.id || "0000000";
-	var limit = req.query.limit || 0;
-	var offset = req.query.offset || 0;
-    sql = 'call getUjian(?,?,?);';
-    koneksi.query(sql,[id,limit,offset], (e, r, f) => {
-        var hasil = {};
-        if (!e) hasil.status = true;
-        else hasil.status = false;
-        hasil.data = r[0];
-        hasil.row = r[1][0].jumlah;
-        hasil.error = e;
-        res.json(hasil);
+	var id = req.params.id || 0;
+	var limit = 1*req.query.limit || null;
+	var offset = 1*req.query.offset || null;
+	var hasil = {};
+	var op = null;
+	if(id == 0) op = "!=";
+	else op = "=";
+	db('tbujian').select().limit(limit).offset(offset).where('id',op,id).
+	then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.row = rows.length;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
     });
-});
 router.post('/', (req, res, next) => {
     var data = req.body;
     var hasil = {};
@@ -27,31 +33,50 @@ router.post('/', (req, res, next) => {
         result.useFirstErrorOnly();
         var pesan = result.mapped();
         if (result.isEmpty() == false) {
+			if (pesan.nm_ujian == undefined) {
+                pesan.nm_ujian = {
+                    param: "nm_ujian",
+                    msg: "",
+                    value: data.nm_ujian
+                };
+            }
+            if (pesan.jam == undefined) {
+                pesan.jam = {
+                    param: "durasi_ujian",
+                    msg: "",
+                    value: data.durasi_ujian
+                };
+            }
             hasil.status = false;
             hasil.error = pesan;
             res.json(hasil);
         } else {
-            sql = 'call createUjian(?,?,?);';
-            koneksi.query(sql,[data.nm_ujian,data.jam,data.menit], function(e, r, f) {
-                if (!e) hasil.status = true;
-                else hasil.status = false;
-                hasil.error = e;
-                res.json(hasil);
-            });
+			db('tbujian').insert(data).
+			then(function(){
+				hasil.status = true;
+				res.json(hasil);
+				}).
+			catch(function(err){
+				hasil.status = false;
+				hasil.err = err;
+				res.json(hasil);
+				});
         }
     });
 });
 router.delete('/:id', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
-    sql = 'call deleteUjian(?);';
-    koneksi.query(sql,[id], (e, r, f) => {
-        var hasil = {};
-        if (!e) hasil.status = true;
-        else hasil.status = false;
-        hasil.error = e;
-        res.json(hasil);
-    });
+	db('tbujian').where('id',id).del().
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
+		res.json(hasil);
+		});
 });
 router.put('/:id', (req, res, next) => {
     var data = req.body;
@@ -71,29 +96,25 @@ router.put('/:id', (req, res, next) => {
             }
             if (pesan.jam == undefined) {
                 pesan.jam = {
-                    param: "jam",
+                    param: "durasi_ujian",
                     msg: "",
-                    value: data.jam
-                };
-            }
-            if (pesan.menit == undefined) {
-                pesan.menit = {
-                    param: "menit",
-                    msg: "",
-                    value: data.menit
+                    value: data.durasi_ujian
                 };
             }
             hasil.status = false;
             hasil.error = pesan;
             res.json(hasil);
         } else {
-            sql = 'call updateUjian(?,?,?,?);';
-            koneksi.query(sql,[id,data.nm_ujian,data.jam,data.menit], function(e, r, f) {
-                if (!e) hasil.status = true;
-                else hasil.status = false;
-                hasil.error = e;
-                res.json(hasil);
-            });
+           db('tbujian').where('id','=',id).update(data).
+			then(function(){
+				hasil.status = true;
+				res.json(hasil);
+				}).
+			catch(function(err){
+				hasil.status = false;
+				hasil.err = err;
+				res.json(hasil);
+				});
         }
     });
 });

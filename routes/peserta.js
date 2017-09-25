@@ -10,7 +10,7 @@ router.get('/:id?',(req, res, next)=>{
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	db('tbpeserta').select().limit(limit).offset(offset).where('id_peserta',op,id).
+	db('tbpeserta').select().limit(limit).offset(offset).where('id',op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
@@ -43,23 +43,23 @@ router.post('/',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-	db('tbpeserta').insert(data).
-	then(function(){
-		hasil.status = true;
-		res.json(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
-		});
+		db('tbpeserta').insert(data).
+		then(function(){
+			hasil.status = true;
+			res.json(hasil);
+			}).
+		catch(function(err){
+			hasil.status = false;
+			hasil.err = err;
+			res.json(hasil);
+			});
 	}
 	});
 });
 router.delete('/:id',(req,res,next)=>{
 	var id = " "+req.params.id;
 	var hasil = {};
-	db('tbpeserta').where('id_peserta',id).del().
+	db('tbpeserta').where('id',id).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);
@@ -91,16 +91,16 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-	db('tbpeserta').where('id_peserta','=',id).update(data).
-	then(function(){
-		hasil.status = true;
-		res.json(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
-		});
+		db('tbpeserta').where('id','=',id).update(data).
+		then(function(){
+			hasil.status = true;
+			res.json(hasil);
+			}).
+		catch(function(err){
+			hasil.status = false;
+			hasil.err = err;
+			res.json(hasil);
+			});
 	}
 	});
 });

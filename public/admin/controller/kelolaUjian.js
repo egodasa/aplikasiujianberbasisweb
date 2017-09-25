@@ -70,11 +70,11 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 		});
 	};
 	$scope.createData = function(){
+		var durasi_ujian = $scope.Tjam*3600000+$scope.Tmenit*60000;
 		var data = {
 			nm_ujian : $scope.Tnm_ujian,
-			jam : $scope.Tjam,
-			menit : $scope.Tmenit
-		};
+			durasi_ujian : durasi_ujian
+		}
 		data = JSON.stringify(data);
 		$rootScope.tombolSimpan(1);
 		$http({
@@ -119,11 +119,11 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 				});
 		}
 		$scope.updateData = function(id){
+			var durasi_ujian = $scope.UTjam*3600000+$scope.UTmenit*60000;
 			var data = {
 				nm_ujian : $scope.UTnm_ujian,
-				jam : $scope.UTjam,
-				menit : $scope.UTmenit
-			};
+				durasi_ujian : durasi_ujian
+			}
 			data = JSON.stringify(data);
 			$http({
 				method : 'PUT',
