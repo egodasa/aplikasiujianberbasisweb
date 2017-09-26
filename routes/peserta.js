@@ -14,7 +14,11 @@ router.get('/:id?',(req, res, next)=>{
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
-		hasil.row = rows.length;
+		hasil.current_row = rows.length;
+		return db('tbpeserta').count('id as jumlah');
+		}).
+	then((jumlah)=>{
+		hasil.row = jumlah[0].jumlah;
 		res.json(hasil);
 		}).
 	catch(function(err){
