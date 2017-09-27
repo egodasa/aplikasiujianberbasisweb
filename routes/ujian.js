@@ -134,13 +134,21 @@ router.get('/:id/peserta/:idPeserta?', (req, res, next) => {
     var offset = 1*req.query.offset || null;
     var belumDitambahkan = req.query.belumDitambahkan || 0;
     var hasil = {};
-    db('tbpeserta').limit(limit).offset(offset).join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').
-    select('tbpeserta.id as id','tbpeserta.nm_peserta as nm_peserta').where('tbpeserta_ujian.id_ujian',id)
-    .then((rows)=>{
+    if(belumDitambahkan == 0){
+		var query = db('tbpeserta').limit(limit).offset(offset).join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').select('tbpeserta.id as id','tbpeserta.nm_peserta as nm_peserta').where('tbpeserta_ujian.id_ujian',id);
+	}else{
+		var subquery = db('tbpeserta_ujian').select('id_peserta').where('id_ujian',id);
+		var query = db('tbpeserta').limit(limit).offset(offset).select().whereNotIn('id',subquery);
+	}
+    query.then((rows)=>{
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('tbpeserta').join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').count('tbpeserta_ujian.id_peserta as jumlah').where('tbpeserta_ujian.id_ujian',id);
+		if(belumDitambahkan == 0){
+			return db('tbpeserta').join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').count('tbpeserta_ujian.id_peserta as jumlah').where('tbpeserta_ujian.id_ujian',id);
+		}else{
+			return db('tbpeserta').count('id').whereNotIn('id',subquery);
+		}
 		})
 	.then((jumlah)=>{
 		hasil.row = jumlah[0].jumlah;
@@ -156,42 +164,23 @@ router.post('/:id/peserta/', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
-    req.checkBody(checkDataPeserta);
-    req.getValidationResult().then(function(result) {
-        result.useFirstErrorOnly();
-        var pesan = result.mapped();
-        if (result.isEmpty() == false) {
-            if (pesan.id_peserta == undefined) {
-                pesan.id_peserta = {
-                    param: "id_peserta",
-                    msg: "",
-                    value: data.id_peserta
-                };
-            }
-            hasil = {
-                status: false,
-                error: pesan
-            };
-            res.json(hasil);
-        } else {
-            db('tbpeserta_ujian').insert(data)
-            .then(()=>{
-				hasil.status = true;
-				res.send(ha4sil);
-				})
-			.catch((err)=>{
-				hasil.status = true;
-				hasil.error = err;
-				res.send(hasil);
-				});
-        }
-    });
+	console.log(data);
+	db('tbpeserta_ujian').insert(data)
+	.then(()=>{
+		hasil.status = true;
+		res.send(hasil);
+		})
+	.catch((err)=>{
+		hasil.status = true;
+		hasil.error = err;
+		res.send(hasil);
+		});
 });
 router.delete('/:id/peserta/:id_pu', (req, res, next) => {
     var id_ujian = req.params.id;
     var id_peserta = req.params.id_pu;
     var hasil = {};
-    db('tbpeserta_ujian').where('id_peserta',id_peserta).whereAnd('id_ujian',id_ujian).del()
+    db('tbpeserta_ujian').where({id_peserta:id_peserta,id_ujian:id_ujian}).del()
     .then(()=>{
 		hasil.status = true;
 		res.json(hasil);
@@ -263,14 +252,14 @@ router.post('/:id/soal/', (req, res, next) => {
 		jawaban : data.jawaban
 		}).
 	then(function(id){
+		var id_soal = id;
 		var y = data.pilihanGanda.length;
 		for(x=0;x<y;x++){
 			data.pilihanGanda[x].id_soal = id;
 		}
-		return db('tbpilihan_ganda').returning('id_soal').insert(data.pilihanGanda);
+		return db('tbpilihan_ganda').insert(data.pilihanGanda);
 		}).
-	then((id)=>{
-		console.log(id);
+	then(()=>{
 		return db('tbsoal_ujian').insert({id_ujian : id,id_soal:id_soal});
 		}).
 	then(function(){
