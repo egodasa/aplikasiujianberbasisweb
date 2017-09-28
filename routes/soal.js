@@ -36,7 +36,6 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-	console.log(data);
 	req.checkBody(checkData);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
@@ -67,9 +66,10 @@ router.post('/',(req,res,next)=>{
 		jawaban : data.jawaban
 		}).
 	then(function(id){
+		var id_soal = id[0];
 		var y = data.pilihanGanda.length;
 		for(x=0;x<y;x++){
-			data.pilihanGanda[x].id_soal = id;
+			data.pilihanGanda[x].id_soal = id_soal;
 		}
 		return db('tbpilihan_ganda').insert(data.pilihanGanda);
 		}).
