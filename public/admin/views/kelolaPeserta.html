@@ -39,10 +39,10 @@
 			<tr ng-repeat="x in data | filter : kataKunci ">
 				<td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id_peserta)"/ ng-disable="toggleBulkDelete"></td>
 				<td>{{$index+1+pagination.offset}}</td>
-				<td>{{x.id_peserta}}</td>
+				<td>{{x.id}}</td>
 				<td>{{x.nm_peserta}}</td>
-				<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_peserta)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
-				<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_peserta)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
+				<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
+				<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
 			</tr>
 		</table>
 	</div>
