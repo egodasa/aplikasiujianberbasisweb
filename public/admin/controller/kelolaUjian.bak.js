@@ -94,7 +94,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
             jam: $scope.Tjam,
             menit: $scope.Tmenit
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $http({
                 method: 'POST',
                 url: $rootScope.serverBackEnd + '/api/ujian/create',
@@ -140,7 +140,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, uji
             jam: $scope.UTjam,
             menit: $scope.UTmenit
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $http({
                 method: 'PUT',
                 url: $rootScope.serverBackEnd + '/api/ujian/update/' + id,

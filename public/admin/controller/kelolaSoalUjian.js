@@ -138,9 +138,9 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
                 $rootScope.showLoading(false);
             })
     };
-    $scope.deleteData = function(id) {
+    $scope.deleteData = function(id_soal) {
         $rootScope.showLoading(true);
-        $http.delete($rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/'+id)
+        $http.delete($rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal/'+id_soal)
             .then(function(res) {
                 var result = res.data.status;
                 if (result == true) {
@@ -164,7 +164,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
             pilihanGanda: $scope.pilihanGanda,
             jawaban: $scope.Rjawaban
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $http({
                 method: 'POST',
                 url: $rootScope.serverBackEnd + '/api/ujian/'+$scope.id_ujian+'/soal',
@@ -212,7 +212,7 @@ app.controller("kelolaSoalUjian", function($rootScope, $scope, $http, $location,
             pilihanGanda: $scope.pilihanGandaUpdate,
             jawaban: $scope.URjawaban
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $http({
                 method: 'PUT',
                 url: $rootScope.serverBackEnd + '/api/soal/' + id,

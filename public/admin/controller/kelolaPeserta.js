@@ -51,7 +51,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 		var data = {
 			nm_peserta : $scope.Tnm_peserta
 		};
-		data = JSON.stringify(data);
+		data = angular.toJson(data);
 		$rootScope.tombolSimpan(1);
 		$http({
 			method : 'POST',
@@ -84,7 +84,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 		$http.get($rootScope.serverBackEnd+'/api/peserta/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
-				$scope.id = hasil.id_peserta;
+				$scope.id = hasil.id;
 				$scope.UTnm_peserta = hasil.nm_peserta;
 				$rootScope.showForm(1,1);
 			})
@@ -99,7 +99,7 @@ app.controller("kelolaPeserta", function($scope, $rootScope, $http, $location, $
 			var data = {
 				nm_peserta : $scope.UTnm_peserta
 			};
-			data = JSON.stringify(data);
+			data = angular.toJson(data);
 			$http({
 				method : 'PUT',
 				url : $rootScope.serverBackEnd+'/api/peserta/'+id,

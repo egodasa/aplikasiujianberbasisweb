@@ -35,8 +35,8 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 			$rootScope.showLoading(false);
 		})
 		};
-	$scope.deleteData = function(id){
-		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/'+id)
+	$scope.deleteData = function(id_peserta){
+		$http.delete($rootScope.serverBackEnd+'/api/ujian/'+$scope.id_ujian+'/peserta/'+id_peserta)
 		.then(function(res){
 			$scope.result = res.data.status;
 			if($scope.result == true){
@@ -57,9 +57,10 @@ app.controller("kelolaPesertaUjian", function($rootScope, $scope, $http, $locati
 		};
 	$scope.createData = function(id){
 		var data = {
+			id_ujian : $scope.id_ujian,
 			id_peserta : id
 		};
-		data = JSON.stringify(data);
+		data = angular.toJson(data);
 		console.log(data);
 		$http({
 			method : 'POST',

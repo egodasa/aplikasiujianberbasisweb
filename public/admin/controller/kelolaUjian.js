@@ -75,7 +75,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 			nm_ujian : $scope.Tnm_ujian,
 			durasi_ujian : durasi_ujian
 		}
-		data = JSON.stringify(data);
+		data = angular.toJson(data);
 		$rootScope.tombolSimpan(1);
 		$http({
 		method : 'POST',
@@ -108,7 +108,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 		$http.get($rootScope.serverBackEnd+'/api/ujian/'+id)
 			.then(function(res){
 				var hasil = res.data.data[0];
-				$scope.id = hasil.id_ujian;
+				$scope.id = hasil.id;
 				$scope.UTnm_ujian = hasil.nm_ujian;
 				$scope.UTjam = hasil.jam;
 				$scope.UTmenit = hasil.menit;
@@ -124,7 +124,7 @@ app.controller("kelolaUjian", function($rootScope, $scope, $http, $location, $ti
 				nm_ujian : $scope.UTnm_ujian,
 				durasi_ujian : durasi_ujian
 			}
-			data = JSON.stringify(data);
+			data = angular.toJson(data);
 			$http({
 				method : 'PUT',
 				url : $rootScope.serverBackEnd+'/api/ujian/'+id,
