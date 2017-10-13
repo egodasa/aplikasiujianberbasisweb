@@ -15,7 +15,7 @@ router.get('/:id?', (req, res, next) => {
 	var field_ujian = db.raw('??',['tbujian.id']);
 	var subquery1 = db('tbpeserta_ujian').count('tbpeserta_ujian.id_peserta').where('tbpeserta_ujian.id_ujian',field_ujian).as('banyak_peserta');
 	var subquery2 = db('tbsoal_ujian').count('tbsoal_ujian.id_soal').where('tbsoal_ujian.id_ujian',field_ujian).as('banyak_soal');
-	db('tbujian').select('*',subquery1,subquery2).limit(limit).offset(offset).where('id',op,id).
+	db('tbujian').select('id','nm_ujian',db.raw('floor(durasi_ujian/3600000) as jam'),db.raw('mod(floor(durasi_ujian/60000),60) as menit'),subquery1,subquery2).limit(limit).offset(offset).where('id',op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
@@ -33,8 +33,10 @@ router.get('/:id?', (req, res, next) => {
 		});
     });
 router.post('/', (req, res, next) => {
+	console.log(req.header('content-type'));
     var data = req.body;
     var hasil = {};
+    console.log(data);
     req.checkBody(checkData);
     req.getValidationResult().then(function(result) {
         result.useFirstErrorOnly();
@@ -49,16 +51,24 @@ router.post('/', (req, res, next) => {
             }
             if (pesan.jam == undefined) {
                 pesan.jam = {
-                    param: "durasi_ujian",
+                    param: "jam",
                     msg: "",
-                    value: data.durasi_ujian
+                    value: data.jam
+                };
+            }
+            if (pesan.menit == undefined) {
+                pesan.menit = {
+                    param: "menit",
+                    msg: "",
+                    value: data.menit
                 };
             }
             hasil.status = false;
             hasil.error = pesan;
             res.json(hasil);
         } else {
-			db('tbujian').insert(data).
+            data.durasi_ujian = (data.jam*3600000)+(data.menit*60000)
+			db('tbujian').insert({nm_ujian:data.nm_ujian,durasi_ujian:data.durasi_ujian}).
 			then(function(){
 				hasil.status = true;
 				res.json(hasil);
@@ -103,16 +113,24 @@ router.put('/:id', (req, res, next) => {
             }
             if (pesan.jam == undefined) {
                 pesan.jam = {
-                    param: "durasi_ujian",
+                    param: "jam",
                     msg: "",
-                    value: data.durasi_ujian
+                    value: data.jam
+                };
+            }
+            if (pesan.menit == undefined) {
+                pesan.menit = {
+                    param: "menit",
+                    msg: "",
+                    value: data.menit
                 };
             }
             hasil.status = false;
             hasil.error = pesan;
             res.json(hasil);
         } else {
-           db('tbujian').where('id','=',id).update(data).
+           var mili = (data.jam*3600000)+(data.menit*60000)
+           db('tbujian').where('id','=',id).update({nm_ujian:data.nm_ujian,durasi_ujian:mili}).
 			then(function(){
 				hasil.status = true;
 				res.json(hasil);
@@ -132,9 +150,13 @@ router.get('/:id/peserta/:idPeserta?', (req, res, next) => {
     var limit = 1*req.query.limit || null;
     var offset = 1*req.query.offset || null;
     var belumDitambahkan = req.query.belumDitambahkan || 0;
+    var idPeserta = req.params.idPeserta || 0;
+    var op = '';
+    if(idPeserta == 0) op = '!=';
+    else op = '=';
     var hasil = {};
     if(belumDitambahkan == 0){
-		var query = db('tbpeserta').limit(limit).offset(offset).join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').select('tbpeserta.id as id','tbpeserta.nm_peserta as nm_peserta').where('tbpeserta_ujian.id_ujian',id);
+		var query = db('tbpeserta').limit(limit).offset(offset).join('tbpeserta_ujian','tbpeserta.id','tbpeserta_ujian.id_peserta').select('tbpeserta.id as id','tbpeserta.nm_peserta as nm_peserta','tbpeserta_ujian.status as status').where('tbpeserta_ujian.id_ujian',id).andWhere('tbpeserta_ujian.id_peserta',op,idPeserta);
 	}else{
 		var subquery = db('tbpeserta_ujian').select('id_peserta').where('id_ujian',id);
 		var query = db('tbpeserta').limit(limit).offset(offset).select().whereNotIn('id',subquery);
@@ -390,7 +412,7 @@ router.post('/:id/hasil', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
     var nilai = data.benar*(100/(data.benar+data.salah));
-    db('tbhasil_ujian').insert({id_peserta:id_peserta,benar:data.benar,salah:data.salah,nilai:nilai})
+    db('tbhasil_ujian').insert({id_peserta:data.id_peserta,benar:data.benar,salah:data.salah,nilai:nilai})
     .then((id)=>{
 		hasil.status = true;
 		res.json(hasil);
