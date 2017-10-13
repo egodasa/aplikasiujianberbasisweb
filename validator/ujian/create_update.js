@@ -8,7 +8,12 @@ var validasi = {
 			errorMessage : 'Nama ujian harus berisikan minimal 1 karakter dan maksimal 30 karakter ...'
 		}
 	},
-	'durasi_ujian': {
+	'jam': {
+		notEmpty : {
+			errorMessage : 'Durasi ujian harus diisi ...'
+		}
+	},
+	'menit': {
 		notEmpty : {
 			errorMessage : 'Durasi ujian harus diisi ...'
 		}
