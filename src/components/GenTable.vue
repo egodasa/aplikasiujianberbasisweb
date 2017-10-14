@@ -39,6 +39,8 @@
 
 <script>
 import axios from 'axios';
+import { Bus } from '../bus.js';
+
 export default {
   name: 'genTable',
   props : {
@@ -60,7 +62,12 @@ export default {
 				return [10,25,50]
 			}
 		},
-        url : String
+        url : String,
+        baseUrl : {
+            type : String,
+            required : false,
+            default : "/api/"
+        }
 	},
   data () {
     return {
@@ -71,27 +78,24 @@ export default {
     }
   },
   created () {
-		self = this
-        self.getData(self.pageRows,self.pageNumber)
-        /*
-        bus.$on('newData',function () {
-            self.getData(self.pageRows,self.pageNumber)
+        Bus.$on('newData',()=>{
+            this.getData(this.pageRows,this.pageNumber)
             })
-        bus.$emit('newData')*/
+        Bus.$emit('newData')
   },
   computed : {
 		pageNumberList : function () {
 			var pn
 			var pnl = []
-			pn = Math.ceil(self.totalRows/self.pageRows)
+			pn = Math.ceil(this.totalRows/this.pageRows)
 			for(var x=0;x<pn;x++){
-				pnl[x] = x*self.pageRows
+				pnl[x] = x*this.pageRows
 			}
 			return pnl
 		}
 	},
   methods : {
-		miliToString : function (mili) {
+		miliToString (mili) {
 			  var jam,menit
 			  jam = Math.floor(mili/3600000)
 			  menit = mod(mili,60000)
@@ -102,33 +106,33 @@ export default {
 			  mili = (jam*3600000)+(menit*60000)
 			  return mili
 			},
-		getData : function (limit = null,offset = null) {
-			self.pageRows = limit
-			self.pageNumber = offset
-			axios.get('http://localhost:3000/api/'+self.url+'?limit='+limit+'&offset='+offset)
-			.then(function (res) {
-				self.totalRows = res.data.row
-				self.dataTable = res.data.data
+		getData (limit = null,offset = null) {
+			this.pageRows = limit
+			this.pageNumber = offset
+			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset)
+			.then(res=>{
+				this.totalRows = res.data.row
+				this.dataTable = res.data.data
 			})
-			.catch(function (err) {
+			.catch(err=>{
 				console.log(err)
 			})
 		},
-		deleteData : function (id) {
+		deleteData (id) {
 			axios({
 				method : 'DELETE',
-				url :'http://localhost:3000/api/'+this.url+'/'+id
+				url :this.baseUrl+this.url+'/'+id
 				})
-			.then(function (res) {
-				self.getData(self.pageRows,self.pageNumber)
+			.then(res=>{
+				this.getData(this.pageRows,this.pageNumber)
 			})
-			.catch(function (err) {
+			.catch(err=>{
 				console.log(err)
 			})
-		},/*
-        getDataDetail : function (x) {
-            //bus.$emit('getDataDetail',x)
-        }*/
+		},
+        getDataDetail (x) {
+            Bus.$emit('getDataDetail',x)
+        }
 	}
 }
 </script>
