@@ -1,4 +1,13 @@
-# folder module dari nodejs
-/node_modules
-#folder versio terdahulu
-/v1.0.0
+.DS_Store
+node_modules
+dist/build.js
+dist/build.css
+yarn-error.log
+npm-debug.log
+
+# Editor directories and files
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
