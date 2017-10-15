@@ -22,6 +22,10 @@ export default {
           path : '/peserta',
           name : 'Peserta'
       },
+      {
+          path : '/soal',
+          name : 'Bank Soal'
+      }
       ]
     }
   }

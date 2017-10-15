@@ -4,7 +4,12 @@
         <h2>Daftar Ujian</h2>
     </div>
     <gen-form :url="url" :input="listForm"></gen-form>
-    <gen-table :url="url" :header="tableHeader"></gen-table>
+    <gen-table :url="url" :header="tableHeader">
+        <template slot="customAction" scope="ca">
+            <router-link :to="{name:'kelolaPesertaUjian',params:{idUjian:ca.pkData}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Kelola Peserta</b></router-link>
+            <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData}}" class="w3-btn w3-small w3-blue-gray"><i class="fa fa-edit w3-small"></i> <b>Kelola Soal</b></router-link>
+        </template>
+    </gen-table>
     </div>
 </template>
 

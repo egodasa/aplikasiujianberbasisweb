@@ -18,10 +18,17 @@
           <td>{{index+1}}</td>
           <td v-for="td in Object.keys(dataTable[0])" v-if="td != 'id'">{{tr[td]}}</td>
           <td v-if="aksi">
+            <template v-if="tableType != 'list'">
             <button type="button" @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
             </button>
             <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
             </button>
+            </template>
+            <template v-else>
+            <button type="button" @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
+            </button>
+            </template>
+            <slot name="customAction" :pkData="tr[pk]"></slot>
           </td>
         </tr>
       </template>
@@ -67,6 +74,11 @@ export default {
             type : String,
             required : false,
             default : "/api/"
+        },
+        tableType : {
+            type : String,
+            required : false,
+            default : 'not_list'
         }
 	},
   data () {
@@ -132,6 +144,9 @@ export default {
 		},
         getDataDetail (x) {
             Bus.$emit('getDataDetail',x)
+        },
+        toggleFormList (){
+            Bus.$emit('toggleFormList')
         }
 	}
 }
