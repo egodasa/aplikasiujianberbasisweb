@@ -9,7 +9,7 @@
     "serve": "node ./bin/www",
     "dev": "npm-run-all --parallel watchify serve",
     "start": "node ./bin/www",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o public/dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > public/dist/build.js"
   },
   "browserify": {
     "transform": [
@@ -30,6 +30,7 @@
     "express-validator": "^3.2.1",
     "jade": "^1.11.0",
     "knex": "^0.13.0",
+    "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "mysql": "^2.14.1",
     "pg": "^7.3.0",
@@ -37,7 +38,8 @@
     "serve-favicon": "^2.4.3",
     "url": "^0.11.0",
     "vue": "^2.0.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-session": "^0.9.10"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

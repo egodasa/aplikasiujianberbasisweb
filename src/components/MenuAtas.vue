@@ -15,16 +15,28 @@ export default {
           name : 'Beranda'
       },
       {
-          path : '/ujian',
+          path : '/admin/ujian',
           name : 'Ujian'
       },
       {
-          path : '/peserta',
+          path : '/admin/peserta',
           name : 'Peserta'
       },
       {
-          path : '/soal',
+          path : '/admin/soal',
           name : 'Bank Soal'
+      },
+      {
+          path : '/ujian/login',
+          name : 'Login Peserta Ujian'
+      },
+      {
+          path : '/ujian/petunjuk',
+          name : 'Petunjuk Ujian'
+      },
+      {
+          path : '/ujian/soal',
+          name : 'LJK Ujian'
       }
       ]
     }
