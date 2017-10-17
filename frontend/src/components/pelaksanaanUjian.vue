@@ -41,7 +41,7 @@
 </div>
 <div class="w3-container">
     <div class="w3-col s12">
-        <button type="button" class="w3-button w3-red w3-right w3-section w3-right">Kumpulkan Ujian >></button>
+        <button type="button" class="w3-button w3-red w3-right w3-section w3-right" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
     </div>
 </div>
 </div>
@@ -56,10 +56,10 @@ export default {
   data () {
       return {
           infoUjian : {
-                id_peserta : 0,
-                nm_peserta : "Mandan",
-                id_ujian : 1,
-                nm_ujian : "Ujian a ko"
+                id_peserta : null,
+                nm_peserta : null,
+                id_ujian : null,
+                nm_ujian : null
               },
           soalSekarang : {
                 isi_soal : null,
@@ -75,6 +75,7 @@ export default {
         }
   },
   created () {
+    this.infoUjian = this.$session.get('infoUjian')
     this.getListIdSoal()
   },
   methods : {
@@ -99,6 +100,10 @@ export default {
           .catch(err=>{
               console.log(err)
               })
+      },
+      kumpulkanUjian () {
+          this.$session.destroy()
+          this.$router.push({path: '/ujian/login'})
       }
   }
 }

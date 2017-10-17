@@ -32,6 +32,7 @@ export default {
   },
   created () {
     this.getUjian()
+    console.log(this.$session.id())
   },
   methods : {
       getUjian () {
@@ -46,8 +47,19 @@ export default {
       cekPeserta () {
           axios.get('/api/ujian/'+this.listUjian[this.selectedUjian].id+'/peserta/'+this.id_peserta)
           .then(res=>{
-              if(res.data.data.length == 0) console.log('anda tidak terdaftar diujian ini')
-              else this.$router.push({path: '/ujian/petunjuk'})
+              var hasil = res.data
+              if(hasil.data.length == 0) console.log('anda tidak terdaftar diujian ini')
+              else {
+                var infoUjian = {
+                    id_peserta : hasil.data[0].id,
+                    nm_peserta : hasil.data[0].nm_peserta,
+                    id_ujian : this.listUjian[this.selectedUjian].id,
+                    nm_ujian : this.listUjian[this.selectedUjian].nm_ujian
+                }
+                this.$session.set('infoUjian',infoUjian)
+                console.log(this.$session.get('infoUjian'))
+                this.$router.push({path: '/ujian/petunjuk'})
+              }
               })
             .catch(err=>{
                 console.log(err)

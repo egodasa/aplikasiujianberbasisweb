@@ -5,10 +5,10 @@
   "author": "egodasa <egodasa@gmail.com>",
   "private": true,
   "scripts": {
-    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
+    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o ../public/dist/build.js",
     "serve": "node .././bin/www",
     "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../public/dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > ../public/dist/build.js"
   },
   "browserify": {
     "transform": [
