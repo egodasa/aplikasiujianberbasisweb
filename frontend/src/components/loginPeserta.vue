@@ -32,7 +32,6 @@ export default {
   },
   created () {
     this.getUjian()
-    console.log(this.$session.id())
   },
   methods : {
       getUjian () {
