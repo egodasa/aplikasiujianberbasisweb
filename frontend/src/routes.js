@@ -7,6 +7,7 @@ import home from './components/Home.vue';
 import loginPeserta from './components/loginPeserta.vue';
 import petunjukUjian from './components/petunjukUjian.vue';
 import pelaksanaanUjian from './components/pelaksanaanUjian.vue';
+import hasilUjian from './components/hasilUjian.vue';
 
 export default [
   // Redirects to /route-one as the default route.
@@ -27,6 +28,11 @@ export default [
     path: '/admin/ujian/:idUjian/soal',
     name : 'kelolaSoalUjian',
     component: kelolaSoalUjian
+  },
+  {
+    path: '/admin/ujian/:idUjian/hasil',
+    name : 'hasilUjian',
+    component: hasilUjian
   },
   {
     path: '/admin/peserta',
