@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "moment": "^2.19.1",
+    "moment-timezone": "^0.5.13",
     "vue": "^2.0.1",
     "vue-router": "^3.0.1",
     "vue-session": "^0.9.10"
@@ -37,9 +39,11 @@
     "cross-env": "^2.0.0",
     "envify": "^3.4.1",
     "http-server": "^0.9.0",
+    "moment-mini": "^2.18.1",
     "npm-run-all": "^2.3.0",
     "proxyquireify": "^3.0.1",
     "uglify-js": "^2.5.0",
+    "vue-momentjs": "^0.1.1",
     "vueify": "^9.0.0",
     "watchify": "^3.4.0"
   }
