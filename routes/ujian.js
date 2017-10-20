@@ -222,7 +222,7 @@ router.get('/:id/soal', (req, res, next) => {
     var belumDitambahkan = req.query.belumDitambahkan || 0;
     var hasil = {};
     if(belumDitambahkan == 0){
-		var query = db('tbsoal').limit(limit).offset(offset).join('tbsoal_ujian','tbsoal.id','tbsoal_ujian.id_soal').select('tbsoal.id as id','tbsoal.isi_soal as isi_soal').where('tbsoal_ujian.id_ujian',id);
+		var query = db('tbsoal').limit(limit).offset(offset).join('tbsoal_ujian','tbsoal.id','tbsoal_ujian.id_soal').select('tbsoal.id as id','tbsoal.isi_soal as isi_soal','tbsoal.jawaban as jawaban').where('tbsoal_ujian.id_ujian',id);
 	}else{
 		var subquery = db('tbsoal_ujian').select('id_soal').where('id_ujian',id);
 		var query = db('tbsoal').limit(limit).offset(offset).select().whereNotIn('id',subquery);
