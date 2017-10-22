@@ -4,13 +4,10 @@
 import Vue from 'vue'
 import VueSession from 'vue-session'
 import VueRouter from 'vue-router'
-import moment from "moment-timezone";
-import VueMomentJS from "vue-momentjs";
 import App from './App.vue'
 import routes from './routes.js'
 Vue.use(VueRouter);
 Vue.use(VueSession);
-Vue.use(VueMomentJS, moment);
 // We create the router instance here.
 const router = new VueRouter({
   routes: routes

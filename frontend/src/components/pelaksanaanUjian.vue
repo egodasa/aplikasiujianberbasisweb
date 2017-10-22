@@ -62,7 +62,8 @@
 <script>
 import axios from 'axios'
 import _ from 'lodash'
-import moment from 'moment-timezone'
+import formatWaktu from 'date-fns/format'
+import lokalisasi from 'date-fns/locale/id'
 export default {
   name: 'pelaksanaanUjian',
   data () {
@@ -86,24 +87,22 @@ export default {
           ljk : [],
           jawabanHuruf : null,
           hariSekarang : null,
-          waktuSekarang : null
+          waktuSekarang : null,
+          interval : null
         }
   },
   created () {
     if(this.$session.has('infoUjian') === false){
         this.$router.push({path: '/ujian/login'})
     }else{
-        this.$moment.locale('id');
-        this.$moment().tz("Asia/Pontianak")
         this.infoUjian = this.$session.get('infoUjian')  
-        this.hariSekarang = this.$moment().format('LTS')
-        var waktuSekarang = setInterval(this.setWaktu, 1000);
+        this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
         this.genLjk()
     }
   },
   methods : {
       setWaktu () {
-          this.waktuSekarang = this.$moment().format('LL')
+          this.waktuSekarang = formatWaktu(new Date(), 'H : M : S', {locale : lokalisasi})
       },
       showSoal (x,noSoal) {
           this.posisiSoal = noSoal
@@ -155,6 +154,12 @@ export default {
           this.$session.destroy()
           this.$router.push({path: '/ujian/login'})
       }
+  },
+  mounted () {
+      this.interval = setInterval(this.setWaktu, 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   }
 }
 </script>
