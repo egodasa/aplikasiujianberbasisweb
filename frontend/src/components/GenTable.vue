@@ -123,8 +123,12 @@ export default {
 			this.pageNumber = offset
 			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset)
 			.then(res=>{
-				this.totalRows = res.data.row
-				this.dataTable = res.data.data
+                if(res.data.status == true){
+                    this.totalRows = res.data.row
+                    this.dataTable = res.data.data
+                }else{
+                    this.dataTable = []
+                }
 			})
 			.catch(err=>{
 				console.log(err)

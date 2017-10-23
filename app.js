@@ -18,10 +18,10 @@ var mysqlSetting = {
 		database : urlDb.path.substr(1),
 		multipleStatements : true
 		};
-koneksi = mysql.createPool(mysqlSetting);
+//koneksi = mysql.createPool(mysqlSetting);
 db = require('knex')({
-  client: 'mysql',
-  connection: process.env.DATABASE_URL_MYSQL
+  client: 'pg',
+  connection: process.env.DATABASE_URL_PSQL
 });
 var app = express();
 {}
