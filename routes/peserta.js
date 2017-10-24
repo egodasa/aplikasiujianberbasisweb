@@ -3,7 +3,9 @@ var router = express.Router();
 var checkData = require('../validator/peserta/create_update');
 
 router.get('/:id?',(req, res, next)=>{
-	var id = req.params.id || 0;
+	var id_tmp = req.params.id;
+    var id = null;
+    id_tmp == undefined ? id = 0 : id = id_tmp;
 	var limit = 1*req.query.limit || null;
 	var offset = 1*req.query.offset || null;
 	var hasil = {};

@@ -15,7 +15,7 @@ router.get('/:id?', (req, res, next) => {
 	var field_ujian = db.raw('??',['tbujian.id']);
 	var subquery1 = db('tbpeserta_ujian').count('tbpeserta_ujian.id_peserta').where('tbpeserta_ujian.id_ujian',field_ujian).as('banyak_peserta');
 	var subquery2 = db('tbsoal_ujian').count('tbsoal_ujian.id_soal').where('tbsoal_ujian.id_ujian',field_ujian).as('banyak_soal');
-	db('tbujian').select('id','nm_ujian',db.raw('floor(durasi_ujian/3600000) as jam'),db.raw('mod(floor(durasi_ujian/60000),60) as menit'),subquery1,subquery2).limit(limit).offset(offset).where('id',op,id).
+	db('tbujian').select('id','nm_ujian',db.raw('floor(durasi_ujian/3600000) as jam'),db.raw('mod(cast(floor(durasi_ujian/60000) as int),60) as menit'),subquery1,subquery2).limit(limit).offset(offset).where('id',op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;

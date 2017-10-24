@@ -8,6 +8,7 @@ var validator = require('express-validator');
 var fileUpload = require('express-fileupload');
 var Promise = require('promise');
 var url = require('url');
+var knexLogger = require('knex-logger');
 mysql = require('mysql');
 var urlDb = url.parse(process.env.DATABASE_URL_MYSQL);
 var auth = urlDb.auth.split(":");
@@ -31,6 +32,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(knexLogger(db));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
