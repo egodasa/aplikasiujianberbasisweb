@@ -13,30 +13,35 @@
         <th v-for="th in header" v-if="th != 'id'">{{th}}</th>
         <th v-if="aksi">Aksi</th>
       </tr>
-      <template v-if="dataTable.length > 0">
-        <tr class="w3-white" v-for="(tr,index,key) in dataTable">
-          <td>{{index+1}}</td>
-          <td v-for="td in Object.keys(dataTable[0])" v-if="td != 'id'">{{tr[td]}}</td>
-          <td v-if="aksi">
-            <template v-if="tableType != 'list'">
-            <button type="button" @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
-            </button>
-            <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-            </button>
-            </template>
-            <template v-else>
-            <button type="button" @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
-            </button>
-            </template>
-            <slot name="customAction" :pkData="tr[pk]"></slot>
-          </td>
-        </tr>
-      </template>
-      <template v-else>
-        <tr>
-          <td :colspan="header.length">Data kosong</td>
-        </tr>
-      </template>
+        <template v-if="spinStatus == false">
+              <template v-if="dataTable.length > 0">
+                <tr class="w3-white" v-for="(tr,index,key) in dataTable">
+                  <td>{{index+1}}</td>
+                  <td v-for="td in Object.keys(dataTable[0])" v-if="td != 'id'">{{tr[td]}}</td>
+                  <td v-if="aksi">
+                    <template v-if="tableType != 'list'">
+                    <button type="button" @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
+                    </button>
+                    <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </button>
+                    </template>
+                    <template v-else>
+                    <button type="button" @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
+                    </button>
+                    </template>
+                    <slot name="customAction" :pkData="tr[pk]"></slot>
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr class="w3-white">
+                  <td :colspan="header.length+2">Data kosong</td>
+                </tr>
+              </template>
+          </template>
+          <template v-else>
+          <tr class="w3-white"><td :colspan="header.length+2"><i class="fa fa-spinner w3-spin w3-center" style="font-size:30px;"></i></td></tr>
+          </template>
     </table>
     <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
     <br/>
@@ -86,7 +91,8 @@ export default {
       dataTable : [],
       totalRows : 0,
       pageRows : 10,
-      pageNumber : null
+      pageNumber : null,
+      spinStatus : true
     }
   },
   created () {
@@ -119,6 +125,7 @@ export default {
 			  return mili
 			},
 		getData (limit = null,offset = null) {
+            this.spinStatus = true
 			this.pageRows = limit
 			this.pageNumber = offset
 			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset)
@@ -129,9 +136,11 @@ export default {
                 }else{
                     this.dataTable = []
                 }
+                this.spinStatus = false
 			})
 			.catch(err=>{
 				console.log(err)
+                this.spinStatus = false
 			})
 		},
 		deleteData (id) {
