@@ -6,8 +6,13 @@ import VueSession from 'vue-session'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import routes from './routes.js'
+import VeeValidate, { Validator } from 'vee-validate';
+import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
+
+VeeValidate.Validator.addLocale(bahasa)
 Vue.use(VueRouter);
 Vue.use(VueSession);
+Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
 // We create the router instance here.
 const router = new VueRouter({
   routes: routes

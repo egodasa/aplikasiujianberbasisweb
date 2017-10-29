@@ -1,27 +1,31 @@
 <template>
 <div class="w3-container">
   <div class="w3-responsive">
-    <div class="w3-margin">
-      <div class="w3-col l4 s12">
-        <button type="button" @click="getData(pageRows,null)" class="w3-button w3-deep-orange w3-left w3-clear"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
-        <button type="button" v-for="p in pageRowsList" @click="getData(p,0)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo w3-right w3-clear">{{p}}</button>
-      </div>
-    </div>
-    <table class="w3-table-all">
-      <tr class="w3-teal">
-        <th>#</th>
-        <th v-for="th in header" v-if="th != 'id'">{{th}}</th>
-        <th v-if="aksi">Aksi</th>
-      </tr>
         <template v-if="spinStatus == false">
               <template v-if="dataTable.length > 0">
+              <div class="w3-margin">
+              <div class="w3-col l4 s12">
+                <button type="button" @click="getData(pageRows,null)" class="w3-button w3-deep-orange w3-left w3-clear"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
+                <button type="button" v-for="p in pageRowsList" @click="getData(p,0)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo w3-right w3-clear">{{p}}</button>
+              </div>
+            </div>
+              <table :class="tableCenter">
+                <tr class="w3-teal">
+                  <th>#</th>
+                  <th v-for="th in header" v-if="th != 'id'">{{th}}</th>
+                  <th v-if="aksi">Aksi</th>
+                </tr>
                 <tr class="w3-white" v-for="(tr,index,key) in dataTable">
                   <td>{{index+1}}</td>
                   <td v-for="td in Object.keys(dataTable[0])" v-if="td != 'id'">{{tr[td]}}</td>
                   <td v-if="aksi">
-                    <template v-if="tableType != 'list'">
+                    <template v-if="tableType == 'not_list'">
                     <button type="button" @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
                     </button>
+                    <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </button>
+                    </template>
+                    <template v-else-if="tableType == 'data_list'">
                     <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
                     </button>
                     </template>
@@ -32,19 +36,18 @@
                     <slot name="customAction" :pkData="tr[pk]"></slot>
                   </td>
                 </tr>
+                </table>
+                <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
+                <br/>
               </template>
               <template v-else>
-                <tr class="w3-white">
-                  <td :colspan="header.length+2">Data kosong</td>
-                </tr>
+                  Data kosong<br/>
+                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-deep-orange w3-left w3-clear"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
               </template>
           </template>
           <template v-else>
-          <tr class="w3-white"><td :colspan="header.length+2"><i class="fa fa-spinner w3-spin w3-center" style="font-size:30px;"></i></td></tr>
+          <i class="fa fa-spinner w3-spin w3-center" style="font-size:30px;"></i>
           </template>
-    </table>
-    <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
-    <br/>
   </div>
 </div>
 </template>
@@ -102,6 +105,10 @@ export default {
         Bus.$emit('newData')
   },
   computed : {
+        tableCenter : function () {
+            if(this.spinStatus == true || this.dataTable.length < 1) return "w3-table-all w3-centered"
+            else return "w3-table-all"
+        },
 		pageNumberList : function () {
 			var pn
 			var pnl = []
@@ -158,10 +165,13 @@ export default {
         getDataDetail (x) {
             Bus.$emit('getDataDetail',x)
         },
-        toggleFormList (){
-            Bus.$emit('toggleFormList')
+        addDataList (x) {
+            Bus.$emit('addDataList',x)
         }
-	}
+	},
+    destroyed () {
+
+    }
 }
 </script>
 

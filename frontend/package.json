@@ -8,7 +8,7 @@
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o ../public/dist/build.js",
     "serve": "node .././bin/www",
     "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o ../public/dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > ../public/dist/build.js"
   },
   "browserify": {
     "transform": [
@@ -24,6 +24,7 @@
     "date-fns": "^1.29.0",
     "moment": "^2.19.1",
     "moment-timezone": "^0.5.13",
+    "vee-validate": "^2.0.0-rc.19",
     "vue": "^2.0.1",
     "vue-router": "^3.0.1",
     "vue-session": "^0.9.10"

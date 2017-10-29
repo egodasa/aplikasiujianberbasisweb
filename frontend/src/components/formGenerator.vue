@@ -8,30 +8,35 @@
             <span v-for="x in input">
                 <template v-if="x.jenis == 'textField'">
                     <template v-if="x.tipe == 'number'">
-                        <input class="w3-input w3-border"  :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
+                        <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
+                        <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                     </template>
                     <template v-else-if="x.tipe == 'email'">
-                        <input class="w3-input w3-border"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
+                        <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
+                        <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                     </template>
                     <template v-else>
-                        <input class="w3-input w3-border"  :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
+                        <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
+                        <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                     </template>
                     <br/>
                 </template>
                 <template v-else-if="x.jenis == 'radioButton'">
                 <label for="x.name" v-for="(y,index,key) in x.option">
                     <span v-if="index < 1">{{x.caption}}<br/></span>
-                    <input type="radio" :name="x.name" v-bind="output['x.name']" />{{y}}<br/>
+                    <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-bind="output['x.name']" />{{y}}<br/>
+                    <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                 </label>
                 </template>
                 <template v-else="x.jenis == 'selectOption'">
-                <label  for="x.name" >{{x.caption}}</label>
-                <select name="x.name" v-model="output['x.name']">
+                <label for="x.name" >{{x.caption}}</label>
+                <select v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" name="x.name" v-model="output['x.name']">
                     <option v-for="(y,index,key) in x.option" :value="y" >{{y}}</option>
                 </select>
+                <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                 </template>
             </span>
-            <button type="submit" class="w3-button w3-teal w3-section">Simpan</button>
+            <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
             <button type="reset" class="w3-button w3-reset w3-section">Reset</button>
             <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()">Batal</button>
         </form>
@@ -63,9 +68,6 @@ export default {
 		}
 	},
     created () {
-        Bus.$on('toggleFormData',()=>{
-            this.toggleFormData()
-            })
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
@@ -73,12 +75,7 @@ export default {
     },
 	methods : {
         toggleFormData (){
-            //this.idData = x
-            console.log('Sebelum '+ this.showForm)
             this.showForm = !this.showForm
-            console.log('Sesudah '+ this.showForm)
-            //console.log(this.showForm)
-            //if(x != 0) this.getDataDetail(x)
         },
 		submitData (){
             if(this.output.id == undefined){
@@ -101,7 +98,9 @@ export default {
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
-				if(res.data.status == false) console.log(res.data)
+				if(res.data.status == false) {
+                    console.log(res.data)
+                }
 				else {
                     Bus.$emit('newData')
                     this.toggleFormData()
@@ -122,7 +121,10 @@ export default {
                 console.log(err)
             })
 		}
-	}
+	},
+    destroyed () {
+        //Bus.$off('getDataDetail')
+    }
 }
 </script>
 

@@ -8,7 +8,8 @@
         <div class="w3-modal-content w3-animate-top">
         <form class="w3-card-8 w3-container w3-section" id="addData" @submit.prevent="submitData()" name="addData">
             <h3>Tambah Soal</h3>
-            <textarea class="w3-input w3-border" type="text" v-model="dataForm.isi_soal" placeholder="Isi Soal"></textarea>
+            <textarea name="isi_soal" v-validate data-vv-rules="required" data-vv-as="Isi soal" class="w3-input w3-border" type="text" v-model="dataForm.isi_soal" placeholder="Isi Soal"></textarea>
+            <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span>
             <div class="w3-row">
                 <div class="w3-col l1">
                     <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].huruf" :value='x.huruf' placeholder="Huruf" /><label class="w3-label w3-text-red"></label>
@@ -20,10 +21,16 @@
             <button class="w3-btn w3-tiny w3-teal" type="button" @click="addPG()">+</button>
             <button class="w3-btn w3-tiny w3-red" type="button" @click="deletePG()">-</button>
             <br/> Jawaban :
-            <div v-for="x in dataForm.pilihanGanda">
+            <div v-for="(x,index,key) in dataForm.pilihanGanda">
+                <template v-if="index  == 1">
+                <input class="w3-radio" type="radio" name="Huruf" v-validate data-vv-rules="required" data-vv-as="Jawaban" v-model="dataForm.jawaban" :value="x.huruf" /> <label class="w3-label">{{x.huruf}}</label>
+                </template>
+                <template v-else>
                 <input class="w3-radio" type="radio" name="Huruf" v-model="dataForm.jawaban" :value="x.huruf" /> <label class="w3-label">{{x.huruf}}</label>
+                </template>
             </div>
-            <button type="submit" class="w3-button w3-teal w3-section">Simpan</button>
+            <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span>
+            <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
             <button type="button" class="w3-button w3-reset w3-section" @click="resetForm()">Reset</button>
             <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()">Batal</button>
         </form>
@@ -106,6 +113,7 @@ export default {
             else {
                 this.dataForm.id = undefined
                 this.toggleFormData()
+                Bus.$emit("newData")
             }
         })
         .catch(err=>{
@@ -129,6 +137,9 @@ export default {
             console.log(err)
         })
 		}
+  },
+  destroyed () {
+      //Bus.$off('getDataDetail')
   }
 }
 </script>
