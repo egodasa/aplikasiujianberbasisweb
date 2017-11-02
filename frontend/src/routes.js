@@ -3,6 +3,7 @@ import kelolaSoal from './components/kelolaSoal.vue';
 import kelolaPeserta from './components/kelolaPeserta.vue';
 import kelolaPesertaUjian from './components/kelolaPesertaUjian.vue';
 import kelolaSoalUjian from './components/kelolaSoalUjian.vue';
+import kelolaKelas from './components/kelolaKelas.vue';
 import home from './components/Home.vue';
 import loginPeserta from './components/loginPeserta.vue';
 import petunjukUjian from './components/petunjukUjian.vue';
@@ -43,6 +44,11 @@ export default [
     path: '/admin/soal',
     name: 'kelolaSoal',
     component: kelolaSoal
+  },
+  {
+    path: '/admin/kelas',
+    name: 'kelolaKelas',
+    component: kelolaKelas
   },
   {
     path: '/ujian/login',
