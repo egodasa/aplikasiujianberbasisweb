@@ -1,7 +1,7 @@
 <template>
     <div>
     <div class="w3-container w3-blue-gray w3-round">
-        <h2>Daftar Peserta Keseluruhan</h2>
+        <h2>Daftar Mahasiswa</h2>
     </div>
     <gen-form :url="url" :input="listForm"></gen-form>
     <gen-table :url="url" :header="tableHeader"></gen-table>
@@ -11,6 +11,7 @@
 <script>
 import genTable from './GenTable.vue'
 import genForm from './formGenerator.vue'
+import axios from 'axios'
 
 export default {
   name: 'kelolaPeserta',
@@ -22,14 +23,51 @@ export default {
           url : 'peserta',
             listForm : [
                 {
-					caption: "Nama Peserta",
-					name:"nm_peserta",
+					caption: "Nama Mahasiswa",
+					name:"nm_mahasiswa",
 					jenis:"textField",
 					tipe:"text",
-					value:null
-					}
+					value:null,
+                    error : null
+					},
+                {
+					caption: "NOBP",
+					name:"nobp",
+					jenis:"textField",
+					tipe:"text",
+                    min:14,
+                    max:14,
+					value:null,
+                    error : null
+					},
+                {
+					caption: "Kelas Asal",
+					name:"id_kelas",
+					jenis:"selectOption",
+					tipe:"text",
+					value:null,
+                    valueSelect : "id",
+                    captionSelect : "nm_kelas",
+                    option:[{}],
+                    error : null
+					},
+                    
 			],
-            tableHeader : ['Nama Peserta']
+            tableHeader : ['Nama','NOBP','Kelas Asal']
+        }
+  },
+  created () {
+      this.getDataKelas()
+  },
+  methods : {
+        getDataKelas () {
+            axios.get('api/kelas')
+                .then(res=>{
+                    this.listForm[2].option = res.data.data
+                    })
+                .catch((err)=>{
+                    console.log(err)
+                    })
         }
   }
 }

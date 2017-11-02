@@ -51,6 +51,7 @@ app.use(validator({
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
 app.use('/api/peserta', require('./routes/peserta'));
+app.use('/api/kelas', require('./routes/kelas'));
 
 /*
 app.get('/test',(req,res,next)=>{

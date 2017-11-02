@@ -24,17 +24,30 @@
                 <template v-else-if="x.jenis == 'radioButton'">
                 <label for="x.name" v-for="(y,index,key) in x.option">
                     <span v-if="index < 1">{{x.caption}}<br/></span>
-                    <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-bind="output['x.name']" />{{y}}<br/>
+                    <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-bind="output[x.name]" />{{y}}<br/>
                     <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                 </label>
                 </template>
                 <template v-else="x.jenis == 'selectOption'">
-                <label for="x.name" >{{x.caption}}</label>
-                <select v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" name="x.name" v-model="output['x.name']">
-                    <option v-for="(y,index,key) in x.option" :value="y" >{{y}}</option>
+                <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
+                    <template v-if="x.option.length == 1">
+                    <option class="w3-white w3-text-gray" :value="x.value" disabled>{{x.caption}}</option>
+                    </template>
+                    <template v-else>
+                        <template v-for="(y,index,key) in x.option">
+                            <template v-if="index == 0">
+                            <option class="w3-white w3-text-gray" :value="x.value" disabled>{{x.caption}}</option>
+                            <option :value="y[x.valueSelect]">{{y[x.captionSelect]}}</option>
+                            </template>
+                            <template v-else>
+                            <option :value="y[x.valueSelect]">{{y[x.captionSelect]}}</option>
+                            </template>
+                        </template>
+                    </template>
                 </select>
-                <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span><br/>
                 </template>
+            <br/>
             </span>
             <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
             <button type="reset" class="w3-button w3-reset w3-section">Reset</button>
@@ -98,6 +111,7 @@ export default {
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
+                console.log('pantek')
 				if(res.data.status == false) {
                     console.log(res.data)
                 }

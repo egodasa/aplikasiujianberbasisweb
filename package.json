@@ -5,7 +5,7 @@
   "author": "egodasa <egodasa@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "cd frontend; npm run build; cd ..; node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.17.2",

@@ -41,37 +41,26 @@ router.post('/',(req,res,next)=>{
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-		if(pesan.isi_soal == undefined){
-			pesan.isi_soal ={
-				param : "isi_soal",
-				msg : "",
-				value : data.isi_soal
-			};
-		}
-		if(pesan.jawaban == undefined){
-			pesan.jawaban ={
-				param : "jawaban",
-				msg : "",
-				value : data.jawaban
-			};
-		}
 		hasil.status = false;
 		hasil.error = pesan;
-	console.log(hasil);
-	res.json(hasil); 
+        console.log(hasil.error);
+        res.json(hasil); 
 	}
 	else{
 	db('tbsoal').returning('id').insert({
 		isi_soal : data.isi_soal,
-		jawaban : data.jawaban
+		jawaban : data.jawaban,
+        tipe_soal : data.tipe_soal
 		}).
 	then(function(id){
-		var id_soal = id[0];
-		var y = data.pilihanGanda.length;
-		for(x=0;x<y;x++){
-			data.pilihanGanda[x].id_soal = id_soal;
-		}
-		return db('tbpilihan_ganda').insert(data.pilihanGanda);
+		if(data.tipe_soal == 1){
+            var id_soal = id[0];
+            var y = data.pilihanGanda.length;
+            for(x=0;x<y;x++){
+                data.pilihanGanda[x].id_soal = id_soal;
+            }
+            return db('tbpilihan_ganda').insert(data.pilihanGanda);
+        }
 		}).
 	then(function(){
 		hasil.status =true;
