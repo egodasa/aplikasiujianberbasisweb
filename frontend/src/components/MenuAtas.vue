@@ -27,6 +27,10 @@ export default {
           name : 'Bank Soal'
       },
       {
+          path : '/admin/kelas',
+          name : 'Kelas'
+      },
+      {
           path : '/ujian/login',
           name : 'Login Peserta Ujian'
       },
