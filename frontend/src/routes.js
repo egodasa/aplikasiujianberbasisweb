@@ -1,6 +1,6 @@
 import kelolaUjian from './components/kelolaUjian.vue';
 import kelolaSoal from './components/kelolaSoal.vue';
-import kelolaPeserta from './components/kelolaPeserta.vue';
+import kelolaMahasiswa from './components/kelolaMahasiswa.vue';
 import kelolaPesertaUjian from './components/kelolaPesertaUjian.vue';
 import kelolaSoalUjian from './components/kelolaSoalUjian.vue';
 import kelolaKelas from './components/kelolaKelas.vue';
@@ -36,9 +36,9 @@ export default [
     component: hasilUjian
   },
   {
-    path: '/admin/peserta',
-    name : 'kelolaPeserta',
-    component: kelolaPeserta
+    path: '/admin/mahasiswa',
+    name : 'kelolaMahasiswa',
+    component: kelolaMahasiswa
   },
   {
     path: '/admin/soal',

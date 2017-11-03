@@ -9,11 +9,11 @@
         <div class="w3-card-8 w3-container w3-section" >
         <span @click="toggleFormData()" class="w3-closebtn">&times;</span>
             <h3>Tambah Peserta Ujian</h3>
-            <gen-table :url="url+'?belumDitambahkan=ya'" :header="addTableHeader" tableType="list"></gen-table>
+            <gen-table :url="url+'?belumDitambahkan=ya'" :tableContent="tableContentAdd" tableType="list"></gen-table>
         </div>
         </div>
     </div>
-    <gen-table :url="url" :header="tableHeader" tableType="data_list"></gen-table>
+    <gen-table :url="url" :tableContent="tableContent" tableType="hapus"></gen-table>
     </div>
 </template>
 
@@ -29,9 +29,15 @@ export default {
   },
   data () {
       return {
-          url : 'ujian/'+this.$route.params.idUjian+'/peserta',
-          tableHeader : ['Nama Peserta','Status'],
-          addTableHeader : ['Nama Peserta'],
+          url : 'ujian/'+this.$route.params.idUjian+'/mahasiswa',
+          tableContent : {
+                header :  ['Nama Peserta','Status'],
+                content : ['id','nm_mahasiswa','status']
+            },
+          tableContentAdd : {
+                header :  ['Nama Mahasiswa'],
+                content : ['nm_mahasiswa']
+          },
           showForm : false
         }
   },

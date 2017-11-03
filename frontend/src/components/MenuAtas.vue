@@ -19,8 +19,8 @@ export default {
           name : 'Ujian'
       },
       {
-          path : '/admin/peserta',
-          name : 'Peserta'
+          path : '/admin/mahasiswa',
+          name : 'Mahasiswa'
       },
       {
           path : '/admin/soal',

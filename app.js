@@ -50,9 +50,10 @@ app.use(validator({
 //ROUTES
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
-app.use('/api/peserta', require('./routes/peserta'));
+app.use('/api/mahasiswa', require('./routes/mahasiswa'));
 app.use('/api/kelas', require('./routes/kelas'));
 app.use('/api/tipe_soal', require('./routes/tipe_soal'));
+app.use('/api/test', require('./routes/test'));
 
 /*
 app.get('/test',(req,res,next)=>{

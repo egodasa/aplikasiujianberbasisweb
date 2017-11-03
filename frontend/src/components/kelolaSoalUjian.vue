@@ -36,7 +36,7 @@
         </form>
         </div>
     </div>
-    <gen-table :url="url" :header="tableHeader"></gen-table>
+    <gen-table :url="url" :tableContent="tableContent"></gen-table>
     </div>
 </template>
 
@@ -52,7 +52,6 @@ export default {
   },
   data () {
       return {
-          tableHeader : ['Isi Soal','Jawaban'],
           url : 'ujian/'+this.$route.params.idUjian+'/soal',
           showForm : false,
           dataForm : {
@@ -72,7 +71,11 @@ export default {
           {huruf:'C',isi_pilihan:null},
           {huruf:'D',isi_pilihan:null},
           {huruf:'E',isi_pilihan:null}
-          ]
+          ],
+          tableContent : {
+                header :  ['Isi Soal','Jawaban'],
+                content : ['id','isi_soal','jawaban']
+            }
         }
   },
   created () {
