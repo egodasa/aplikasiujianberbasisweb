@@ -52,6 +52,7 @@ app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
 app.use('/api/peserta', require('./routes/peserta'));
 app.use('/api/kelas', require('./routes/kelas'));
+app.use('/api/tipe_soal', require('./routes/tipe_soal'));
 
 /*
 app.get('/test',(req,res,next)=>{

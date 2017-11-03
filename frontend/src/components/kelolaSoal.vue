@@ -47,7 +47,7 @@
         </form>
         </div>
     </div>
-    <gen-table :url="url" :header="tableHeader"></gen-table>
+    <gen-table :url="url" :tableContent="tableContent"></gen-table>
     </div>
 </template>
 
@@ -63,7 +63,10 @@ export default {
   },
   data () {
       return {
-          tableHeader : ['Isi Soal','Jawaban','Tipe Soal'],
+          tableContent : {
+              header : ['Isi Soal','Jawaban','Tipe Soal'],
+              content : ['id','isi_soal','jawaban','tipe_soal']
+          },
           url : 'soal',
           showForm : false,
           dataForm : {
@@ -128,6 +131,7 @@ export default {
                 this.dataForm.id = undefined
                 this.toggleFormData()
                 Bus.$emit("newData")
+                this.resetForm()
             }
         })
         .catch(err=>{

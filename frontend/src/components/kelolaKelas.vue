@@ -4,7 +4,7 @@
         <h2>Daftar Kelas</h2>
     </div>
     <gen-form :url="url" :input="listForm"></gen-form>
-    <gen-table :url="url" :header="tableHeader"></gen-table>
+    <gen-table :url="url" :tableContent="tableContent"></gen-table>
     </div>
 </template>
 
@@ -29,7 +29,10 @@ export default {
 					value:null
 					}
 			],
-            tableHeader : ['Nama Kelas']
+            tableContent : {
+                header :  ['Nama Kelas'],
+                content : ['id','nm_kelas']
+            }
         }
   }
 }

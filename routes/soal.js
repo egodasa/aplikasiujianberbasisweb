@@ -98,20 +98,6 @@ router.put('/:id',(req,res,next)=>{
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-		if(pesan.isi_soal == undefined){
-			pesan.isi_soal ={
-				param : "isi_soal",
-				msg : "",
-				value : data.isi_soal
-			};
-		}
-		if(pesan.jawaban == undefined){
-			pesan.jawaban ={
-				param : "jawaban",
-				msg : "",
-				value : data.jawaban
-			};
-		}
 		hasil.status = false;
 		hasil.error = pesan;
 	res.json(hasil);
@@ -122,14 +108,16 @@ router.put('/:id',(req,res,next)=>{
 		jawaban : data.jawaban
 		}).where('id',id).
 		then(function(){
-			var y = data.pilihanGanda.length;
-			for(x=0;x<y;x++){
-				data.pilihanGanda[x].id_soal = id;
-			}
-			return db('tbpilihan_ganda').where('id_soal',id).del();
+			if(data.tipe_soal == 1){
+                var y = data.pilihanGanda.length;
+                for(x=0;x<y;x++){
+                    data.pilihanGanda[x].id_soal = id;
+                }
+                return db('tbpilihan_ganda').where('id_soal',id).del();
+            }
 			}).
 		then(function(){
-			return db('tbpilihan_ganda').insert(data.pilihanGanda);
+			if(data.tipe_soal == 1) return db('tbpilihan_ganda').insert(data.pilihanGanda);
 			}).
 		then(function(){
 			hasil.status =true;

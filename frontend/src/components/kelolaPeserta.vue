@@ -4,7 +4,7 @@
         <h2>Daftar Mahasiswa</h2>
     </div>
     <gen-form :url="url" :input="listForm"></gen-form>
-    <gen-table :url="url" :header="tableHeader"></gen-table>
+    <gen-table :url="url" :table-content="tableContent"></gen-table>
     </div>
 </template>
 
@@ -53,7 +53,10 @@ export default {
 					},
                     
 			],
-            tableHeader : ['Nama','NOBP','Kelas Asal']
+            tableContent : {
+                header : ['Nama','NOBP','Kelas Asal'],
+                content : ['id','nm_mahasiswa','nobp','nm_kelas']
+            }
         }
   },
   created () {
