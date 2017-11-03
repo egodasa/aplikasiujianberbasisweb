@@ -12,28 +12,33 @@
               <table :class="tableCenter">
                 <tr class="w3-teal">
                   <th>#</th>
-                  <th v-for="th in header" v-if="th != 'id'">{{th}}</th>
+                  <th v-for="th in tableContent.header" v-if="th != 'id'">{{th}}</th>
                   <th v-if="aksi">Aksi</th>
                 </tr>
                 <tr class="w3-white" v-for="(tr,index,key) in dataTable">
                   <td>{{index+1}}</td>
-                  <td v-for="td in Object.keys(dataTable[0])" v-if="td != 'id'">{{tr[td]}}</td>
+                  <td v-for="td in tableContent.content" v-if="td != 'id'">{{tr[td]}}</td>
                   <td v-if="aksi">
+                    <div class="w3-dropdown-click">
+                    <button class="w3-button w3-teal" @click="toggleAksi()">Pilihan </button>
+                      <div :class="showPilihan ? 'w3-dropdown-content w3-border w3-show' : 'w3-dropdown-content w3-border'">
                     <template v-if="tableType == 'not_list'">
-                    <button type="button" @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
-                    </button>
-                    <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </button>
+                    <a @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
+                    </a>
+                    <a @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </a>
                     </template>
                     <template v-else-if="tableType == 'data_list'">
-                    <button type="button" @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </button>
+                    <a @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </a>
                     </template>
                     <template v-else>
-                    <button type="button" @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
-                    </button>
+                    <a @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
+                    </a>
                     </template>
                     <slot name="customAction" :pkData="tr[pk]"></slot>
+                    </div>
+                    </div>
                   </td>
                 </tr>
                 </table>
@@ -59,7 +64,6 @@ import { Bus } from '../bus.js';
 export default {
   name: 'genTable',
   props : {
-		header : Array,
 		aksi : {
 			type : Boolean,
 			required : false,
@@ -87,6 +91,16 @@ export default {
             type : String,
             required : false,
             default : 'not_list'
+        },
+        tableContent : {
+            type : Object,
+            required : true,
+            default : function(){
+                    return {
+                    header : [],
+                    content : []
+                }
+            }
         }
 	},
   data () {
@@ -95,7 +109,8 @@ export default {
       totalRows : 0,
       pageRows : 10,
       pageNumber : null,
-      spinStatus : true
+      spinStatus : true,
+      showPilihan : false
     }
   },
   created () {
@@ -120,6 +135,9 @@ export default {
 		}
 	},
   methods : {
+        toggleAksi () {
+            this.showPilihan = !this.showPilihan
+        },
 		miliToString (mili) {
 			  var jam,menit
 			  jam = Math.floor(mili/3600000)
