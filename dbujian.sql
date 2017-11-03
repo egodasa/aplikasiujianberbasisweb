@@ -1,276 +1,195 @@
--- Adminer 4.3.1 MySQL dump
+-- Adminer 4.3.1 PostgreSQL dump
 
-SET NAMES utf8;
-SET time_zone = '+00:00';
-SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+DROP TABLE IF EXISTS "tbujian";
+CREATE SEQUENCE tbujian_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 12 CACHE 1;
 
-USE `dbujian`;
+CREATE TABLE "public"."tbujian" (
+    "id" integer DEFAULT nextval('tbujian_id_seq') NOT NULL,
+    "nm_ujian" character varying(100) NOT NULL,
+    "durasi_ujian" integer NOT NULL,
+    "tipe_soal" smallint DEFAULT 1,
+    CONSTRAINT "tbujian_id" PRIMARY KEY ("id")
+) WITH (oids = false);
 
-DROP TABLE IF EXISTS `tbhasil_ujian`;
-CREATE TABLE `tbhasil_ujian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_ujian` int(11) NOT NULL,
-  `id_peserta` int(11) NOT NULL,
-  `benar` int(3) NOT NULL,
-  `salah` int(3) NOT NULL,
-  `nilai` decimal(4,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_peserta` (`id_peserta`),
-  KEY `id_ujian` (`id_ujian`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+INSERT INTO "tbujian" ("id", "nm_ujian", "durasi_ujian", "tipe_soal") VALUES
+(10,	'refesf',	7260000,	1),
+(11,	'deefddsff',	3600000,	1);
 
-INSERT INTO `tbhasil_ujian` (`id`, `id_ujian`, `id_peserta`, `benar`, `salah`, `nilai`) VALUES
-(1,	1,	1,	1,	7,	12.50),
-(2,	1,	4,	2,	4,	33.33),
-(4,	1,	3,	1,	6,	14.28),
-(5,	2,	1,	1,	0,	99.99),
-(6,	2,	2,	0,	1,	0.00),
-(8,	1,	1,	3,	4,	42.85),
-(9,	4,	6,	8,	3,	72.72),
-(10,	2,	6,	8,	6,	57.14),
-(11,	2,	6,	7,	4,	63.63),
-(12,	1,	6,	3,	8,	27.27),
-(13,	1,	9,	8,	4,	66.66);
+DROP TABLE IF EXISTS "tbtipe_soal";
+CREATE SEQUENCE tipe_ujian_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 2 CACHE 1;
 
-DROP TABLE IF EXISTS `tbjawaban_ljk`;
-CREATE TABLE `tbjawaban_ljk` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_jawaban_ljk` varchar(9) NOT NULL,
-  `id_soal` varchar(7) NOT NULL,
-  `jawaban` varchar(5) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE "public"."tbtipe_soal" (
+    "id" integer DEFAULT nextval('tipe_ujian_id_seq') NOT NULL,
+    "nm_tipe" character varying(20),
+    CONSTRAINT "tipe_ujian_pkey" PRIMARY KEY ("id")
+) WITH (oids = false);
 
+INSERT INTO "tbtipe_soal" ("id", "nm_tipe") VALUES
+(1,	'Pilihan Ganda'),
+(2,	'Essai');
 
-DROP TABLE IF EXISTS `tbljk_ujian`;
-CREATE TABLE `tbljk_ujian` (
-  `id_ljk` varchar(7) NOT NULL,
-  `id_ujian` varchar(7) NOT NULL,
-  `id_peserta` int(11) NOT NULL,
-  `id_jawaban_ljk` varchar(9) NOT NULL,
-  PRIMARY KEY (`id_ljk`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS "tbsoal";
+CREATE SEQUENCE tbsoal_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 23 CACHE 1;
 
+CREATE TABLE "public"."tbsoal" (
+    "id" integer DEFAULT nextval('tbsoal_id_seq') NOT NULL,
+    "isi_soal" text NOT NULL,
+    "jawaban" text NOT NULL,
+    "tipe_soal" smallint,
+    CONSTRAINT "tbsoal_id" PRIMARY KEY ("id")
+) WITH (oids = false);
 
-DROP TABLE IF EXISTS `tbpeserta`;
-CREATE TABLE `tbpeserta` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nm_peserta` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+INSERT INTO "tbsoal" ("id", "isi_soal", "jawaban", "tipe_soal") VALUES
+(20,	'jelaskan tentang anu',	'anu adalah anu anu anu',	NULL),
+(21,	'jelaskan tentang anu',	'anu adalah anu anu anu',	NULL),
+(23,	'fdfecdcc',	'A',	1),
+(22,	'essai gundulmu',	'gundulmu essai',	2);
 
-INSERT INTO `tbpeserta` (`id`, `nm_peserta`) VALUES
-(1,	'Afwan'),
-(2,	'Antum'),
-(3,	'Archlinux'),
-(4,	'Manjaro'),
-(6,	'regiza dafma'),
-(7,	'Ubuntu'),
-(8,	'LXDE'),
-(9,	'Gnome'),
-(10,	'XFCE');
+DROP TABLE IF EXISTS "tbpilihan_ganda";
+CREATE SEQUENCE tbpilihan_ganda_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 58 CACHE 1;
 
-DROP TABLE IF EXISTS `tbpeserta_ujian`;
-CREATE TABLE `tbpeserta_ujian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_peserta` int(11) NOT NULL,
-  `id_ujian` int(11) NOT NULL,
-  `status` enum('Sudah','Belum') NOT NULL DEFAULT 'Belum',
-  PRIMARY KEY (`id`),
-  KEY `id_peserta_hasil_ujian` (`id_peserta`) USING BTREE,
-  KEY `id_ujian` (`id_ujian`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+CREATE TABLE "public"."tbpilihan_ganda" (
+    "id" integer DEFAULT nextval('tbpilihan_ganda_id_seq') NOT NULL,
+    "id_soal" integer NOT NULL,
+    "huruf" character varying(5) NOT NULL,
+    "isi_pilihan" text NOT NULL,
+    CONSTRAINT "tbpilihan_ganda_id" PRIMARY KEY ("id")
+) WITH (oids = false);
 
-INSERT INTO `tbpeserta_ujian` (`id`, `id_peserta`, `id_ujian`, `status`) VALUES
-(7,	4,	1,	'Sudah'),
-(9,	3,	1,	'Sudah'),
-(11,	6,	1,	'Sudah'),
-(16,	6,	2,	'Sudah'),
-(18,	9,	1,	'Sudah');
+CREATE INDEX "tbpilihan_ganda_id_soal" ON "public"."tbpilihan_ganda" USING btree ("id_soal");
 
-DROP TABLE IF EXISTS `tbpilihan_ganda`;
-CREATE TABLE `tbpilihan_ganda` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_soal` int(11) NOT NULL,
-  `huruf` varchar(5) NOT NULL,
-  `isi_pilihan` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_soal` (`id_soal`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=latin1;
+INSERT INTO "tbpilihan_ganda" ("id", "id_soal", "huruf", "isi_pilihan") VALUES
+(1,	3,	'A',	'10'),
+(2,	3,	'B',	'12'),
+(3,	3,	'C',	'13'),
+(4,	4,	'A',	'10'),
+(5,	4,	'B',	'12'),
+(6,	4,	'C',	'13'),
+(7,	5,	'A',	'asdas'),
+(8,	5,	'B',	'asda'),
+(9,	5,	'C',	'asd'),
+(10,	6,	'A',	'vv'),
+(11,	6,	'B',	'cd'),
+(12,	6,	'C',	'ed'),
+(13,	7,	'A',	'bb'),
+(14,	7,	'B',	'cdbb'),
+(15,	8,	'A',	'qq'),
+(16,	8,	'B',	'cdwwe'),
+(19,	9,	'B',	'mdms'),
+(20,	9,	'C',	'ewe'),
+(21,	10,	'A',	'cdcd'),
+(22,	10,	'B',	'sxs'),
+(23,	10,	'C',	'sxwwx'),
+(26,	11,	'A',	'qww1'),
+(27,	11,	'B',	's2w2'),
+(28,	11,	'C',	'vf'),
+(29,	12,	'A',	'fv'),
+(30,	12,	'B',	'fv'),
+(31,	12,	'C',	'vf'),
+(32,	13,	'A',	'sdsa'),
+(33,	13,	'B',	'cdc'),
+(34,	13,	'C',	'dcds'),
+(35,	14,	'A',	'adc'),
+(36,	14,	'B',	'sd'),
+(37,	14,	'C',	'cd'),
+(38,	15,	'A',	'22'),
+(39,	15,	'B',	'222'),
+(40,	15,	'C',	'222'),
+(46,	16,	'A',	'333'),
+(47,	16,	'B',	'333'),
+(48,	17,	'A',	'vfvfv'),
+(49,	17,	'B',	'vfvfvf'),
+(50,	18,	'A',	'vfvfvf'),
+(51,	18,	'B',	'vfvff'),
+(52,	18,	'C',	'vfvfv'),
+(53,	18,	'D',	'vfvfv'),
+(54,	19,	'A',	'fed'),
+(55,	19,	'B',	'fed'),
+(56,	19,	'C',	'fed'),
+(57,	23,	'A',	'scds'),
+(58,	23,	'B',	'cdc');
 
-INSERT INTO `tbpilihan_ganda` (`id`, `id_soal`, `huruf`, `isi_pilihan`) VALUES
-(89,	1,	'A',	'12'),
-(90,	1,	'B',	'11'),
-(91,	1,	'C',	'10'),
-(92,	2,	'A',	'20'),
-(93,	2,	'B',	'16'),
-(94,	2,	'C',	'18'),
-(95,	3,	'A',	'100'),
-(96,	3,	'B',	'1000'),
-(97,	3,	'C',	'10000'),
-(98,	4,	'A',	'12'),
-(99,	4,	'B',	'144'),
-(100,	4,	'C',	'200'),
-(104,	6,	'A',	'2'),
-(105,	6,	'B',	'20'),
-(106,	6,	'C',	'10'),
-(107,	7,	'A',	'24cm2'),
-(108,	7,	'B',	'64cm2'),
-(109,	7,	'C',	'128cm2'),
-(110,	8,	'A',	'20cm2'),
-(111,	8,	'B',	'45cm2'),
-(112,	8,	'C',	'25m2'),
-(113,	9,	'A',	'1230 gram'),
-(114,	9,	'B',	'12300 gram'),
-(115,	9,	'C',	'123000 gram'),
-(116,	10,	'A',	'6.28'),
-(117,	10,	'B',	'5.12'),
-(118,	10,	'C',	'7.28'),
-(119,	11,	'A',	'1600 detik'),
-(120,	11,	'B',	'7200 detik'),
-(121,	11,	'C',	'10800 detik'),
-(122,	12,	'A',	'Tumbuhan'),
-(123,	12,	'B',	'Daging'),
-(124,	12,	'C',	'Segalanya'),
-(125,	13,	'A',	'Gas'),
-(126,	13,	'B',	'Cair'),
-(127,	13,	'C',	'Padat'),
-(128,	14,	'A',	'Trakea'),
-(129,	14,	'B',	'Paru-paru'),
-(130,	14,	'C',	'Bronkitis'),
-(131,	15,	'A',	'Siput'),
-(132,	15,	'B',	'Semut'),
-(133,	15,	'C',	'Cicak'),
-(134,	16,	'A',	'Kertas'),
-(135,	16,	'B',	'Besi'),
-(136,	16,	'C',	'Air'),
-(137,	17,	'A',	'100C'),
-(138,	17,	'B',	'80C'),
-(139,	17,	'C',	'0C'),
-(140,	18,	'A',	'Gaya gravitasi matahari'),
-(141,	18,	'B',	'Gaya gravitasi bulan'),
-(142,	18,	'C',	'Gaya gravitasi mars'),
-(143,	19,	'A',	'Ilmu Pengetahuan Alam'),
-(144,	19,	'B',	'Ilmu Pengetahuan Ayam'),
-(145,	19,	'C',	'Ilmu Pengetahuan Anda'),
-(146,	20,	'A',	'Kuping'),
-(147,	20,	'B',	'Hidung'),
-(148,	20,	'C',	'Lidah'),
-(149,	21,	'A',	'Aides Properti'),
-(150,	21,	'B',	'Aides Aigyepty'),
-(151,	21,	'C',	'Aides Adios'),
-(152,	22,	'A',	'Hati'),
-(153,	22,	'B',	'Ginjal'),
-(154,	22,	'C',	'Jantung'),
-(185,	24,	'A',	'Hutan gundul'),
-(186,	24,	'B',	'Saluran air tersumbat'),
-(187,	24,	'C',	'Populasi jangkrik meningkat'),
-(188,	5,	'A',	'144'),
-(189,	5,	'B',	'12'),
-(190,	5,	'C',	'6'),
-(197,	26,	'A',	'40'),
-(198,	26,	'B',	'50'),
-(199,	26,	'C',	'60'),
-(203,	28,	'A',	'1'),
-(204,	28,	'B',	'2'),
-(205,	28,	'C',	'3'),
-(206,	29,	'A',	'3'),
-(207,	29,	'B',	'4'),
-(208,	29,	'C',	'5'),
-(212,	30,	'A',	'3'),
-(213,	30,	'B',	'5'),
-(214,	30,	'C',	'96'),
-(218,	36,	'A',	'menyiram kucing'),
-(219,	36,	'B',	'menyiram anjing'),
-(220,	36,	'C',	'menyiram teman sendiri');
+DROP TABLE IF EXISTS "books";
+CREATE TABLE "public"."books" (
+    "id" integer,
+    "data" json
+) WITH (oids = false);
 
-DROP TABLE IF EXISTS `tbsoal`;
-CREATE TABLE `tbsoal` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `isi_soal` varchar(750) NOT NULL,
-  `jawaban` varchar(5) NOT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+INSERT INTO "books" ("id", "data") VALUES
+(1,	'{ "name": "Book the First", "author": { "first_name": "Bob", "last_name": "White" } }'),
+(2,	'{ "name": "Book the Second", "author": { "first_name": "Charles", "last_name": "Xavier" } }'),
+(3,	'{ "name": "Book the Third", "author": { "first_name": "Jim", "last_name": "Brown" } }'),
+(NULL,	NULL),
+(5,	'{"pantek":"kau"}');
 
-INSERT INTO `tbsoal` (`id`, `isi_soal`, `jawaban`) VALUES
-(1,	'100 - 89',	'B'),
-(2,	'5 X 4 - 4',	'B'),
-(3,	'1 ton = .... kg',	'B'),
-(4,	'12 lusin = .... buah',	'B'),
-(5,	'12 / 2',	'C'),
-(6,	'100/50',	'B'),
-(7,	'Luas dari persegi yang memiliki panjang sisi 8cm adalah',	'B'),
-(8,	'Jika diketahui panjang alas dari sebuah segitiga 10m dan tingginya adalah 500cm, maka berapakah luas segitiga tersebut?',	'C'),
-(9,	'123kg = .... gram',	'C'),
-(10,	'3.14 X 2',	'A'),
-(11,	'2 jam = .... detik',	'B'),
-(12,	'Karnivora adalah sebutan untuk hewan pemakan?',	'B'),
-(13,	'Pada suhu 0C, air akan berbubah wujud menjadi?',	'C'),
-(14,	'Kucing bernafas menggunakan?',	'B'),
-(15,	'Cacing hati biasanya menyebar melalui hewan lain yaitu?',	'A'),
-(16,	'Berikut adalah benda penghantar panas yang buruk',	'A'),
-(17,	'Panas akan mengubah air menjadi gas pada suhu?',	'A'),
-(18,	'Air mengalami pasang surut akibat adanya?',	'B'),
-(19,	'Kepanjangan dari IPA adalah?',	'A'),
-(20,	'Alat indra manusia yang berguna untuk mengecap rasa adalah?',	'C'),
-(21,	'Nyamuk yang menyebarkan penyakit DBD adalah?',	'B'),
-(22,	'Bagian dalam tubuh manusia yang bertugas menyaring darah adalah?',	'B'),
-(23,	'Salah satu penyebab banjir adalah KECUALI?',	'C'),
-(24,	'120 : 2 = ....',	'C'),
-(25,	'1 + 1 = ...',	'B'),
-(26,	'2 + 2 = ...',	'B'),
-(27,	'Bara anak si skil?',	'B'),
-(28,	'Salah satu penyebab datangnya hujan adalah?',	'A'),
-(29,	'Salah satu penyebab datangnya hujan adalah?',	'A'),
-(30,	'Salah satu penyebab datangnya hujan adalah?',	'A'),
-(31,	'Salah satu penyebab datangnya hujan adalah?',	'A'),
-(32,	'Salah satu penyebab datangnya hujan adalah?',	'A'),
-(33,	'Salah satu penyebab hujan adalah?',	'A');
+DROP TABLE IF EXISTS "tbmahasiswa";
+CREATE SEQUENCE tbpeserta_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 20 CACHE 1;
 
-DROP TABLE IF EXISTS `tbsoal_ujian`;
-CREATE TABLE `tbsoal_ujian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_ujian` int(11) NOT NULL,
-  `id_soal` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_soal_soal_ujian` (`id_soal`),
-  KEY `id_ujian` (`id_ujian`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+CREATE TABLE "public"."tbmahasiswa" (
+    "id" integer DEFAULT nextval('tbpeserta_id_seq') NOT NULL,
+    "nm_mahasiswa" character varying(100) NOT NULL,
+    "nobp" character(14) NOT NULL,
+    "id_kelas" integer NOT NULL,
+    CONSTRAINT "tbpeserta_id" PRIMARY KEY ("id")
+) WITH (oids = false);
 
-INSERT INTO `tbsoal_ujian` (`id`, `id_ujian`, `id_soal`) VALUES
-(40,	1,	1),
-(41,	1,	2),
-(42,	1,	3),
-(43,	1,	4),
-(44,	1,	5),
-(45,	1,	6),
-(46,	1,	7),
-(47,	1,	8),
-(48,	1,	9),
-(51,	2,	12),
-(52,	2,	13),
-(53,	2,	14),
-(54,	2,	15),
-(55,	2,	16),
-(56,	2,	17),
-(57,	2,	18),
-(58,	2,	19),
-(59,	2,	20),
-(60,	2,	21),
-(61,	2,	22),
-(63,	1,	26);
+INSERT INTO "tbmahasiswa" ("id", "nm_mahasiswa", "nobp", "id_kelas") VALUES
+(20,	'dasd',	'14101152610565',	1);
 
-DROP TABLE IF EXISTS `tbujian`;
-CREATE TABLE `tbujian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nm_ujian` varchar(30) NOT NULL,
-  `durasi_ujian` bigint(20) NOT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS "tbpeserta_ujian";
+CREATE SEQUENCE tbpeserta_ujian_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 95 CACHE 1;
 
-INSERT INTO `tbujian` (`id`, `nm_ujian`, `durasi_ujian`) VALUES
-(1,	'Matematika',	300000),
-(2,	'Ilmu Pengetahuan Alam',	300000);
+CREATE TABLE "public"."tbpeserta_ujian" (
+    "id" integer DEFAULT nextval('tbpeserta_ujian_id_seq') NOT NULL,
+    "id_mahasiswa" integer NOT NULL,
+    "id_ujian" integer NOT NULL,
+    "status" character varying(10) DEFAULT Belum,
+    CONSTRAINT "tbpeserta_ujian_pkey" PRIMARY KEY ("id")
+) WITH (oids = false);
 
--- 2017-09-25 12:54:38
+CREATE INDEX "tbpeserta_ujian_id_peserta" ON "public"."tbpeserta_ujian" USING btree ("id_mahasiswa");
+
+CREATE INDEX "tbpeserta_ujian_id_ujian" ON "public"."tbpeserta_ujian" USING btree ("id_ujian");
+
+INSERT INTO "tbpeserta_ujian" ("id", "id_mahasiswa", "id_ujian", "status") VALUES
+(83,	1,	2,	'Belum'),
+(84,	1,	3,	'Belum'),
+(86,	2,	2,	'Belum'),
+(87,	4,	3,	'Belum'),
+(88,	1,	5,	'Belum'),
+(89,	4,	5,	'Belum'),
+(90,	2,	3,	'Belum'),
+(91,	4,	2,	'Belum'),
+(92,	6,	3,	'Belum'),
+(93,	1,	9,	'Belum'),
+(94,	2,	9,	'Belum'),
+(95,	5,	3,	'Belum');
+
+DROP TABLE IF EXISTS "tbsoal_ujian";
+CREATE SEQUENCE tbsoal_ujian_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 5 CACHE 1;
+
+CREATE TABLE "public"."tbsoal_ujian" (
+    "id" integer DEFAULT nextval('tbsoal_ujian_id_seq') NOT NULL,
+    "id_soal" integer NOT NULL,
+    "id_ujian" integer NOT NULL,
+    CONSTRAINT "tbsoal_ujian_pkey" PRIMARY KEY ("id")
+) WITH (oids = false);
+
+INSERT INTO "tbsoal_ujian" ("id", "id_soal", "id_ujian") VALUES
+(1,	15,	2),
+(2,	16,	3);
+
+DROP TABLE IF EXISTS "tbkelas";
+CREATE SEQUENCE tbkelas_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 3 CACHE 1;
+
+CREATE TABLE "public"."tbkelas" (
+    "id" integer DEFAULT nextval('tbkelas_id_seq') NOT NULL,
+    "nm_kelas" character varying(10) NOT NULL,
+    CONSTRAINT "tbkelas_id" PRIMARY KEY ("id")
+) WITH (oids = false);
+
+INSERT INTO "tbkelas" ("id", "nm_kelas") VALUES
+(1,	'SI-10'),
+(3,	'SI-1');
+
+-- 2017-11-03 23:31:41.808285+07
