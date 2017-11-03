@@ -12,12 +12,12 @@ router.get('/:id?',(req, res, next)=>{
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	db('tbmahasiswa').select('tbmahasiswa.id','tbmahasiswa.nm_mahasiswa','tbmahasiswa.nobp','tbkelas.nm_kelas').innerJoin('tbkelas','tbmahasiswa.id_kelas','tbkelas.id').limit(limit).offset(offset).where('tbmahasiswa.id',op,id).
+	db('books').select().limit(limit).offset(offset).where('books.id',op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('tbmahasiswa').count('id as jumlah');
+		return db('books').count('id as jumlah');
 		}).
 	then((jumlah)=>{
 		hasil.row = jumlah[0].jumlah;
@@ -43,7 +43,7 @@ router.post('/',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-		db('tbmahasiswa').insert(data).
+		db('books').insert(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
@@ -59,7 +59,7 @@ router.post('/',(req,res,next)=>{
 router.delete('/:id',(req,res,next)=>{
 	var id = " "+req.params.id;
 	var hasil = {};
-	db('tbmahasiswa').where('id',id).del().
+	db('books').where('id',id).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);
@@ -84,7 +84,7 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-		db('tbmahasiswa').where('id','=',id).update(data).
+		db('books').where('id','=',id).update(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
