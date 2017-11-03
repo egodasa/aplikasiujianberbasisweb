@@ -19,26 +19,28 @@
                   <td>{{index+1}}</td>
                   <td v-for="td in tableContent.content" v-if="td != 'id'">{{tr[td]}}</td>
                   <td v-if="aksi">
-                    <div class="w3-dropdown-click">
-                    <button class="w3-button w3-teal" @click="toggleAksi()">Pilihan </button>
-                      <div :class="showPilihan ? 'w3-dropdown-content w3-border w3-show' : 'w3-dropdown-content w3-border'">
-                    <template v-if="tableType == 'not_list'">
-                    <a @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
-                    </a>
-                    <a @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </a>
+                    <template v-if="tableType == 'edit_hapus'">
+                    <button @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
+                    </button>
+                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </button>
                     </template>
-                    <template v-else-if="tableType == 'data_list'">
-                    <a @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </a>
+                    <template v-else-if="tableType == 'edit'">
+                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </button>
+                    </template>
+                    <template v-else-if="tableType == 'hapus'">
+                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
+                    </button>
+                    </template>
+                    <template v-else-if="tableType == 'tambahkan'">
+                    <button @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
+                    </button>
                     </template>
                     <template v-else>
-                    <a @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
-                    </a>
+                    
                     </template>
                     <slot name="customAction" :pkData="tr[pk]"></slot>
-                    </div>
-                    </div>
                   </td>
                 </tr>
                 </table>
@@ -90,7 +92,7 @@ export default {
         tableType : {
             type : String,
             required : false,
-            default : 'not_list'
+            default : 'edit_hapus'
         },
         tableContent : {
             type : Object,
