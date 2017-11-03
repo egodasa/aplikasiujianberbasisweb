@@ -24,9 +24,9 @@
                 <template v-else-if="x.jenis == 'radioButton'">
                 <label for="x.name" v-for="(y,index,key) in x.option">
                     <span v-if="index < 1">{{x.caption}}<br/></span>
-                    <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-bind="output[x.name]" />{{y}}<br/>
-                    <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                    <input class="w3-radio" v-validate data-vv-rules="required" :value="y[x.valueSelect]" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-model="output[x.name]" /> {{y[x.captionSelect]}}<br/>
                 </label>
+                <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                 </template>
                 <template v-else="x.jenis == 'selectOption'">
                 <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
