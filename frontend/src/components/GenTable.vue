@@ -12,12 +12,12 @@
               <table :class="tableCenter">
                 <tr class="w3-teal">
                   <th>#</th>
-                  <th v-for="th in tableContent.header" v-if="th != 'id'">{{th}}</th>
+                  <th v-for="th in tableContent.header" v-if="th != pk">{{th}}</th>
                   <th v-if="aksi">Aksi</th>
                 </tr>
                 <tr class="w3-white" v-for="(tr,index,key) in dataTable">
                   <td>{{index+1}}</td>
-                  <td v-for="td in tableContent.content" v-if="td != 'id'">{{tr[td]}}</td>
+                  <td v-for="td in tableContent.content" v-if="td != pk">{{tr[td]}}</td>
                   <td v-if="aksi">
                     <template v-if="tableType == 'edit_hapus'">
                     <button @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
@@ -84,6 +84,11 @@ export default {
 			}
 		},
         url : String,
+        urlQuery : {
+            type : String,
+            required : false,
+            default : ""
+        },
         baseUrl : {
             type : String,
             required : false,
@@ -155,7 +160,7 @@ export default {
             this.spinStatus = true
 			this.pageRows = limit
 			this.pageNumber = offset
-			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset)
+			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery)
 			.then(res=>{
                 if(res.data.status == true){
                     this.totalRows = res.data.row

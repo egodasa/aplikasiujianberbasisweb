@@ -30,7 +30,7 @@
                 </template>
                 <template v-else="x.jenis == 'selectOption'">
                 <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
-                    <template v-if="x.option.length == 1">
+                    <template v-if="x.option.length == 0">
                     <option class="w3-white w3-text-gray" :value="x.value" disabled>{{x.caption}}</option>
                     </template>
                     <template v-else>
@@ -91,12 +91,12 @@ export default {
             this.showForm = !this.showForm
         },
 		submitData (){
-            if(this.output.id == undefined){
+            if(this.output[this.pk] == undefined){
                 var method = 'POST'
                 var url = ""
             }else {
                 var method = 'PUT'
-                var url = '/'+this.output.id
+                var url = '/'+this.output[this.pk]
             }
             var field = Object.keys(this.output)
             var field_length = field.length

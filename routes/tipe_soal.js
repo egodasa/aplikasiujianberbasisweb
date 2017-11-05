@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/tipe_soal/create_update');
-
+var pk = 'id_tsoal';
+var tbl = 'tbtipe_soal';
 router.get('/:id?',(req, res, next)=>{
 	var id_tmp = req.params.id;
     var id = null;
@@ -12,12 +13,12 @@ router.get('/:id?',(req, res, next)=>{
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	db('tbtipe_soal').select().limit(limit).offset(offset).where('id',op,id).
+	db(tbl).select().limit(limit).offset(offset).where(pk,op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('tbtipe_soal').count('id as jumlah');
+		return db(tbl).count(pk+' as jumlah');
 		}).
 	then((jumlah)=>{
 		hasil.row = jumlah[0].jumlah;
@@ -43,7 +44,7 @@ router.post('/',(req,res,next)=>{
 		res.json(hasil); 
 	}
 	else{
-		db('tbtipe_soal').insert(data).
+		db(tbl).insert(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
@@ -59,7 +60,7 @@ router.post('/',(req,res,next)=>{
 router.delete('/:id',(req,res,next)=>{
 	var id = " "+req.params.id;
 	var hasil = {};
-	db('tbtipe_soal').where('id',id).del().
+	db(tbl).where(pk,id).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);
@@ -84,7 +85,7 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-		db('tbtipe_soal').where('id','=',id).update(data).
+		db(tbl).where(pk,'=',id).update(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);

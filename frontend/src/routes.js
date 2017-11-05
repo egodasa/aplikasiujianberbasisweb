@@ -1,9 +1,16 @@
-import kelolaUjian from './components/kelolaUjian.vue';
-import kelolaSoal from './components/kelolaSoal.vue';
-import kelolaMahasiswa from './components/kelolaMahasiswa.vue';
-import kelolaPesertaUjian from './components/kelolaPesertaUjian.vue';
-import kelolaSoalUjian from './components/kelolaSoalUjian.vue';
-import kelolaKelas from './components/kelolaKelas.vue';
+import kelolaUjian from './components/page/kelolaUjian.vue';
+import kelolaSoal from './components/page/kelolaSoal.vue';
+import kelolaMahasiswa from './components/page/kelolaMahasiswa.vue';
+import kelolaPesertaUjian from './components/page/kelolaPesertaUjian.vue';
+import kelolaSoalUjian from './components/page/kelolaSoalUjian.vue';
+import kelolaKelas from './components/page/kelolaKelas.vue';
+import kelolaMatkul from './components/page/kelolaMatkul.vue';
+import kelolaTipeSoal from './components/page/kelolaTipeSoal.vue';
+import kelolaJenisUjian from './components/page/kelolaJenisUjian.vue';
+import kelolaDosen from './components/page/kelolaDosen.vue';
+import kelolaKuliah from './components/page/kelolaKuliah.vue';
+import kelolaKuliahMahasiswa from './components/page/kelolaKuliahMahasiswa.vue';
+
 import home from './components/Home.vue';
 import loginPeserta from './components/loginPeserta.vue';
 import petunjukUjian from './components/petunjukUjian.vue';
@@ -49,6 +56,36 @@ export default [
     path: '/admin/kelas',
     name: 'kelolaKelas',
     component: kelolaKelas
+  },
+  {
+    path: '/admin/matkul',
+    name: 'kelolaMatkul',
+    component: kelolaMatkul
+  },
+  {
+    path: '/admin/kuliah',
+    name: 'kelolaKuliah',
+    component: kelolaKuliah
+  },
+  {
+    path: '/admin/kuliah/:idKuliah',
+    name: 'kelolaKuliahMahasiswa',
+    component: kelolaKuliahMahasiswa
+  },
+  {
+    path: '/admin/jenis-ujian',
+    name: 'kelolaJenisUjian',
+    component: kelolaJenisUjian
+  },
+  {
+    path: '/admin/tipe-soal',
+    name: 'kelolaTipeSoal',
+    component: kelolaTipeSoal
+  },
+  {
+    path: '/admin/dosen',
+    name: 'kelolaDosen',
+    component: kelolaDosen
   },
   {
     path: '/ujian/login',

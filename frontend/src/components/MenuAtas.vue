@@ -31,6 +31,26 @@ export default {
           name : 'Kelas'
       },
       {
+          path : '/admin/matkul',
+          name : 'Matkul'
+      },
+      {
+          path : '/admin/tipe-soal',
+          name : 'Tipe Soal'
+      },
+      {
+          path : '/admin/jenis-ujian',
+          name : 'Jenis Ujian'
+      },
+      {
+          path : '/admin/dosen',
+          name : 'Dosen'
+      },
+      {
+          path : '/admin/kuliah',
+          name : 'Kuliah'
+      },
+      {
           path : '/ujian/login',
           name : 'Login Peserta Ujian'
       },
