@@ -31,12 +31,12 @@
                 <template v-else="x.jenis == 'selectOption'">
                 <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
                     <template v-if="x.option.length == 0">
-                    <option class="w3-white w3-text-gray" :value="x.value" disabled>{{x.caption}}</option>
+                    <option class="w3-white w3-text-gray" value="null" disabled>{{x.caption}}</option>
                     </template>
                     <template v-else>
                         <template v-for="(y,index,key) in x.option">
                             <template v-if="index == 0">
-                            <option class="w3-white w3-text-gray" :value="x.value" disabled>{{x.caption}}</option>
+                            <option class="w3-white w3-text-gray" value="null" disabled>{{x.caption}}</option>
                             <option :value="y[x.valueSelect]">{{y[x.captionSelect]}}</option>
                             </template>
                             <template v-else>

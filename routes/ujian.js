@@ -12,15 +12,12 @@ router.get('/:id?', (req, res, next) => {
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	var field_ujian = db.raw('??',['tbujian.id']);
-	var subquery1 = db('tbpeserta_ujian').count('tbpeserta_ujian.id_mahasiswa').where('tbpeserta_ujian.id_ujian',field_ujian).as('banyak_peserta');
-	var subquery2 = db('tbsoal_ujian').count('tbsoal_ujian.id_soal').where('tbsoal_ujian.id_ujian',field_ujian).as('banyak_soal');
-	db('tbujian').select('id','nm_ujian','tipe_soal',db.raw('floor(durasi_ujian/3600000) as jam'),db.raw('mod(cast(floor(durasi_ujian/60000) as int),60) as menit'),subquery1,subquery2).limit(limit).offset(offset).where('id',op,id).
-	then(function(rows){
+	db('lap_ujian').select().where('id_ujian',op,id).
+    then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('tbujian').count('id as jumlah');
+		return db('lap_ujian').count('id_ujian as jumlah');
 		}).
 	then((jumlah)=>{
 		hasil.row = jumlah[0].jumlah;
@@ -36,55 +33,28 @@ router.post('/', (req, res, next) => {
 	console.log(req.header('content-type'));
     var data = req.body;
     var hasil = {};
-    console.log(data);
-    req.checkBody(checkData);
-    req.getValidationResult().then(function(result) {
-        result.useFirstErrorOnly();
-        var pesan = result.mapped();
-        if (result.isEmpty() == false) {
-			if (pesan.nm_ujian == undefined) {
-                pesan.nm_ujian = {
-                    param: "nm_ujian",
-                    msg: "",
-                    value: data.nm_ujian
-                };
-            }
-            if (pesan.jam == undefined) {
-                pesan.jam = {
-                    param: "jam",
-                    msg: "",
-                    value: data.jam
-                };
-            }
-            if (pesan.menit == undefined) {
-                pesan.menit = {
-                    param: "menit",
-                    msg: "",
-                    value: data.menit
-                };
-            }
-            hasil.status = false;
-            hasil.error = pesan;
-            res.json(hasil);
-        } else {
-            data.durasi_ujian = (data.jam*3600000)+(data.menit*60000)
-			db('tbujian').insert({nm_ujian:data.nm_ujian,durasi_ujian:data.durasi_ujian,tipe_soal:data.tipe_soal}).
-			then(function(){
-				hasil.status = true;
-				res.json(hasil);
-				}).
-			catch(function(err){
-				hasil.status = false;
-				hasil.err = err;
-				res.json(hasil);
-				});
-        }
+    data.durasi_ujian = (data.jam*3600000)+(data.menit*60000)
+    db('tbujian').insert({
+        id_kuliah : data.id_kuliah,
+        id_tsoal : data.id_tsoal,
+        id_jujian : data.id_jujian,
+        durasi_ujian : data.durasi_ujian,
+        deskripsi : data.deskripsi
+        }).
+    then(function(){
+        hasil.status = true;
+        res.json(hasil);
+        }).
+    catch(function(err){
+        hasil.status = false;
+        hasil.err = err;
+        res.json(hasil);
+        });
     });
-});
 router.delete('/:id', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
-	db('tbujian').where('id',id).del().
+	db('tbujian').where('id_ujian',id).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);
@@ -99,119 +69,18 @@ router.put('/:id', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
-    req.checkBody(checkData);
-    req.getValidationResult().then(function(result) {
-        result.useFirstErrorOnly();
-        var pesan = result.mapped();
-        if (result.isEmpty() == false) {
-            if (pesan.nm_ujian == undefined) {
-                pesan.nm_ujian = {
-                    param: "nm_ujian",
-                    msg: "",
-                    value: data.nm_ujian
-                };
-            }
-            if (pesan.jam == undefined) {
-                pesan.jam = {
-                    param: "jam",
-                    msg: "",
-                    value: data.jam
-                };
-            }
-            if (pesan.menit == undefined) {
-                pesan.menit = {
-                    param: "menit",
-                    msg: "",
-                    value: data.menit
-                };
-            }
-            hasil.status = false;
-            hasil.error = pesan;
-            res.json(hasil);
-        } else {
-           var mili = (data.jam*3600000)+(data.menit*60000)
-           db('tbujian').where('id','=',id).update({nm_ujian:data.nm_ujian,durasi_ujian:mili}).
-			then(function(){
-				hasil.status = true;
-				res.json(hasil);
-				}).
-			catch(function(err){
-				hasil.status = false;
-				hasil.err = err;
-				res.json(hasil);
-				});
-        }
+    var mili = (data.jam*3600000)+(data.menit*60000)
+   db('tbujian').where('id_ujian','=',id).update({nm_ujian:data.nm_ujian,durasi_ujian:mili}).
+    then(function(){
+        hasil.status = true;
+        res.json(hasil);
+        }).
+    catch(function(err){
+        hasil.status = false;
+        hasil.err = err;
+        res.json(hasil);
+        });
     });
-});
-
-//Peserta Ujian
-router.get('/:id/mahasiswa/:idMahasiswa?', (req, res, next) => {
-    var id = req.params.id;
-    var limit = 1*req.query.limit || null;
-    var offset = 1*req.query.offset || null;
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
-    var idMahasiswa = req.params.idMahasiswa || 0;
-    var op = '';
-    if(idMahasiswa == 0) op = '!=';
-    else op = '=';
-    var hasil = {};
-    if(belumDitambahkan == 0){
-		var query = db('tbmahasiswa').limit(limit).offset(offset).join('tbmahasiswa_ujian','tbmahasiswa.id','tbmahasiswa_ujian.id_mahasiswa').select('tbmahasiswa.id as id','tbmahasiswa.nm_mahasiswa as nm_mahasiswa','tbmahasiswa_ujian.status as status').where('tbmahasiswa_ujian.id_ujian',id).andWhere('tbmahasiswa_ujian.id_mahasiswa',op,idMahasiswa);
-	}else{
-		var subquery = db('tbmahasiswa_ujian').select('id_mahasiswa').where('id_ujian',id);
-		var query = db('tbmahasiswa').limit(limit).offset(offset).select().whereNotIn('id',subquery);
-	}
-    query.then((rows)=>{
-		hasil.status = true;
-		hasil.data = rows;
-		hasil.current_row = rows.length;
-		if(belumDitambahkan == 0){
-			return db('tbmahasiswa').join('tbmahasiswa_ujian','tbmahasiswa.id','tbmahasiswa_ujian.id_mahasiswa').count('tbmahasiswa_ujian.id_mahasiswa as jumlah').where('tbmahasiswa_ujian.id_ujian',id);
-		}else{
-			return db('tbmahasiswa').count('id').whereNotIn('id',subquery);
-		}
-		})
-	.then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
-		res.json(hasil);
-		})
-	.catch((err)=>{
-		hasil.status = false;
-		hasil.error = err;
-		res.json(err);
-		});
-    });
-router.post('/:id/mahasiswa/', (req, res, next) => {
-    var data = req.body;
-    var id = req.params.id;
-    var hasil = {};
-	console.log(data);
-	db('tbmahasiswa_ujian').insert(data)
-	.then(()=>{
-		hasil.status = true;
-		res.send(hasil);
-		})
-	.catch((err)=>{
-		hasil.status = true;
-		hasil.error = err;
-		res.send(hasil);
-		});
-});
-router.delete('/:id/mahasiswa/:id_pu', (req, res, next) => {
-    var id_ujian = req.params.id;
-    var id_mahasiswa = req.params.id_pu;
-    var hasil = {};
-    db('tbmahasiswa_ujian').where({id_mahasiswa:id_mahasiswa,id_ujian:id_ujian}).del()
-    .then(()=>{
-		hasil.status = true;
-		res.json(hasil);
-		})
-	.catch((err)=>{
-		hasil.status = false;
-		hasil.error = err;
-		res.json(hasil);
-		});
-});
 
 //Soal Ujian
 
