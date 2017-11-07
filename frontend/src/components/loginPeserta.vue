@@ -9,9 +9,9 @@
         -->
         <h2>Login Peserta Ujian</h2>
         <select class="w3-select w3-section" name="ujian" v-model="selectedUjian">
-            <option v-for="(x,index,key) in listUjian" :value="index">{{x.nm_ujian}}</option>
+            <option v-for="(x,index,key) in listUjian" :value="index">{{x.nm_matkul + ' - ' + x.nm_dosen + ' - ' + x.nm_kelas}}</option>
         </select>
-        <input class="w3-input w3-section" placeholder="Nomor Peserta" v-model="id_peserta"/>
+        <input class="w3-input w3-section" placeholder="NOBP" v-model="nobp"/>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
 	</div>
 	</form>
@@ -20,13 +20,13 @@
 
 <script>
 import axios from 'axios'
-
+import _ from 'lodash'
 export default {
   name: 'loginPeserta',
   data () {
       return {
           listUjian : [{}],
-          id_peserta : 0,
+          nobp : 0,
           selectedUjian : 0
         }
   },
@@ -44,21 +44,33 @@ export default {
               })
       },
       cekPeserta () {
-          axios.get('/api/ujian/'+this.listUjian[this.selectedUjian].id+'/peserta/'+this.id_peserta)
+          axios.get('/api/kuliah/'+this.listUjian[this.selectedUjian].id_kuliah+'/mahasiswa')
           .then(res=>{
-              var hasil = res.data
-              if(hasil.data.length == 0) console.log('anda tidak terdaftar diujian ini')
-              else {
-                var infoUjian = {
-                    id_peserta : hasil.data[0].id,
-                    nm_peserta : hasil.data[0].nm_peserta,
-                    id_ujian : this.listUjian[this.selectedUjian].id,
-                    nm_ujian : this.listUjian[this.selectedUjian].nm_ujian
+            var y = null
+            if(res.data.status == true){
+                var hasil = res.data.data
+                var x = 0
+                _.forEach(hasil, (value,key)=>{
+                    if(value.nobp == this.nobp){
+                      x++
+                      y = key
+                    }
+                })
+                if(x != 1) console.log('tidak terdaftar')
+                else{
+                    var a = res.data.data[y]
+                    var b = this.listUjian[this.selectedUjian]
+                    var infoUjian = Object.assign(a,b)
+                    infoUjian.nobp = hasil[y].nobp,
+                    infoUjian.nm_peserta = hasil[y].nm_peserta,
+                    this.$session.set('infoUjian',infoUjian)
+                    console.log(this.$session.get('infoUjian'))
+                    this.$router.push({path: '/ujian/petunjuk'})
                 }
-                this.$session.set('infoUjian',infoUjian)
-                console.log(this.$session.get('infoUjian'))
-                this.$router.push({path: '/ujian/petunjuk'})
-              }
+            }
+            else{
+                console.log('tidak dapat mengecek peserta')
+            }
               })
             .catch(err=>{
                 console.log(err)

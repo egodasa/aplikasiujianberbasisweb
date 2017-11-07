@@ -5,9 +5,6 @@
     </div>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table pk="id_matkul" :url="url" :tableContent="tableContent">
-        <template slot="customAction" scope="ca">
-            <router-link :to="{name:'kelolaMatkulDosen',params:{idMatkul:ca.pkData}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Dosen Pengampu</b></router-link>
-        </template>
     </gen-table>
     </div>
 </template>

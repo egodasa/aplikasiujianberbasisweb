@@ -41,9 +41,14 @@
     <div class="w3-col l6 s12 w3-large">
         <div class="w3-padding">
             <p>{{posisiSoal}}. {{soalSekarang.isi_soal}}</p>
+            <template v-if="infoUjian.id_tsoal == 1">
             <label for="jawaban" v-for="x in soalSekarang.pilihanGanda">
                 <input class="w3-radio" type="radio" name="jawaban" @click="jawabLjk(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawabanHuruf"/> {{x.isi_pilihan}}<br/>
             </label>
+            </template>
+            <template v-else>
+            <textarea class="w3-input" v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea>
+            </template>
         </div>
     </div>
     <div class="w3-col l6 s12 w3-large">
@@ -72,8 +77,10 @@ export default {
                 id_peserta : null,
                 nm_peserta : null,
                 id_ujian : null,
-                nm_ujian : null
+                nm_ujian : null,
+                id_tsoal : null,
               },
+          listSoal : [{}],
           soalSekarang : {
                 isi_soal : null,
                 pilihanGanda : [
@@ -88,7 +95,8 @@ export default {
           jawabanHuruf : null,
           hariSekarang : null,
           waktuSekarang : null,
-          interval : null
+          interval : null,
+          id_
         }
   },
   created () {
@@ -117,7 +125,6 @@ export default {
               })
       },
       genLjk () {
-          console.log(this.ljk)
           if(!this.$session.has('ljk')){
               axios.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
               .then(res=>{

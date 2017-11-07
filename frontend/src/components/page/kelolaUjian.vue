@@ -4,7 +4,11 @@
         <h2>Daftar Ujian</h2>
     </div>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
+        <template slot="customAction" scope="ca">
+            <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Soal</b></router-link>
+        </template>
+    </gen-table>
     </div>
 </template>
 

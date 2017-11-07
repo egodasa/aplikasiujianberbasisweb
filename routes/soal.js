@@ -9,23 +9,12 @@ router.get('/:id?',(req, res, next)=>{
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	db('tbsoal').select().limit(limit).offset(offset).where('id',op,id).
+	db('lap_soal').select().limit(limit).offset(offset).where('id_soal',op,id).
 	then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('tbsoal').count('id as jumlah');
-		}).
-	then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
-		return db('tbpilihan_ganda').select('huruf','isi_pilihan').where('id_soal',id);
-		}).
-	then((pg)=>{
-		if(pg.length < 1) res.send(hasil);
-		else{
-			hasil.data[0].pilihanGanda = pg;
-			res.send(hasil);
-		}
+        res.send(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
@@ -36,6 +25,7 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
+    console.log(data)
 	req.checkBody(checkData);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
@@ -47,22 +37,13 @@ router.post('/',(req,res,next)=>{
         res.json(hasil); 
 	}
 	else{
-	db('tbsoal').returning('id').insert({
-		isi_soal : data.isi_soal,
-		jawaban : data.jawaban,
-        tipe_soal : data.tipe_soal
-		}).
-	then(function(id){
-		if(data.tipe_soal == 1){
-            var id_soal = id[0];
-            var y = data.pilihanGanda.length;
-            for(x=0;x<y;x++){
-                data.pilihanGanda[x].id_soal = id_soal;
-            }
-            return db('tbpilihan_ganda').insert(data.pilihanGanda);
-        }
-		}).
-	then(function(){
+	db('tbsoal').insert({
+        isi_soal:data.isi_soal,
+        jawaban:data.jawaban,
+        pilihanGanda:JSON.stringify(data.pilihanGanda),
+        id_tsoal:data.id_tsoal,
+        bobot:data.bobot
+        }).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
 		res.send(hasil);
@@ -72,13 +53,13 @@ router.post('/',(req,res,next)=>{
 		hasil.err = err;
 		res.json(hasil);
 		});
-	}
-	});
+    }
+    });
 });
 router.delete('/:id',(req,res,next)=>{
 	var id = req.params.id;
     var hasil = {};
-	db('tbsoal').where('id',id).del().
+	db('tbsoal').where('id_soal',id).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);
@@ -104,21 +85,12 @@ router.put('/:id',(req,res,next)=>{
 	}
 	else{
 		db('tbsoal').update({
-		isi_soal : data.isi_soal,
-		jawaban : data.jawaban
-		}).where('id',id).
-		then(function(){
-			if(data.tipe_soal == 1){
-                var y = data.pilihanGanda.length;
-                for(x=0;x<y;x++){
-                    data.pilihanGanda[x].id_soal = id;
-                }
-                return db('tbpilihan_ganda').where('id_soal',id).del();
-            }
-			}).
-		then(function(){
-			if(data.tipe_soal == 1) return db('tbpilihan_ganda').insert(data.pilihanGanda);
-			}).
+        isi_soal:data.isi_soal,
+        jawaban:data.jawaban,
+        pilihanGanda:JSON.stringify(data.pilihanGanda),
+        id_tsoal:data.id_tsoal,
+        bobot:data.bobot
+        }).where('id_soal',id).
 		then(function(){
 			hasil.status =true;
 			hasil.error = null;
