@@ -195,6 +195,59 @@ router.delete('/:id/soal/:idSoal', (req, res, next) => {
 		});
 });
 
+//JAWABAN PESERTA ESSSAI
+router.get('/:id/jawaban/:idPeserta',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var idPeserta = req.params.idPeserta || 0;
+	var limit = 1*req.query.limit || null;
+	var offset = 1*req.query.offset || null;
+	var hasil = {};
+	var op = null;
+	if(id == 0) op = "!=";
+	else op = "=";
+	db('tbjawaban').select().limit(limit).offset(offset).where({'id_ujian' : id,'id_peserta':idPeserta}).
+	then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+        res.send(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
+router.post('/:id/jawaban',(req,res,next)=>{
+	var data = req.body;
+	var hasil = {};
+    console.log(data)
+	db('tbjawaban').insert(data).then(()=>{
+		hasil.status =true;
+		hasil.error = null;
+		res.send(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
+		res.json(hasil);
+		});
+    });
+router.delete('/:id',(req,res,next)=>{
+	var id = req.params.id;
+    var hasil = {};
+	db('tbjawaban').where('id_jawaban',id).del().
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
+		res.json(hasil);
+		});
+	});
+
 //HASIL UJIAN
 router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
     var id = req.params.id;
@@ -226,8 +279,8 @@ router.post('/:id/hasil', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
-    var nilai = data.benar*(100/(data.benar+data.salah));
-    db('tbhasil_ujian').insert({id_mahasiswa:data.id_mahasiswa,benar:data.benar,salah:data.salah,nilai:nilai})
+    //var nilai = data.benar*(100/(data.benar+data.salah));
+    db('tbhasil_ujian').insert(data)
     .then((id)=>{
 		hasil.status = true;
 		res.json(hasil);
