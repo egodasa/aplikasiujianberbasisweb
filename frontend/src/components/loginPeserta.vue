@@ -44,34 +44,23 @@ export default {
               })
       },
       cekPeserta () {
-          axios.get('/api/kuliah/'+this.listUjian[this.selectedUjian].id_kuliah+'/mahasiswa')
+          axios.get('/api/cek/'+this.listUjian[this.selectedUjian].id_tsoal+'/ujian/'+this.listUjian[this.selectedUjian].id_ujian+'/peserta/'+this.nobp)
           .then(res=>{
-            var y = null
-            if(res.data.status == true){
-                var hasil = res.data.data
-                var x = 0
-                _.forEach(hasil, (value,key)=>{
-                    if(value.nobp == this.nobp){
-                      x++
-                      y = key
-                    }
-                })
-                if(x != 1) console.log('tidak terdaftar')
+            var hasil = res.data.data
+            console.log(hasil.length)
+            if(hasil.length > 0){
+                if(hasil[0].status == true) console.log('anda sudah ujian')
                 else{
-                    var a = res.data.data[y]
+                    console.log('anda belum ujian')
+                    hasil = hasil[0]
                     var b = this.listUjian[this.selectedUjian]
-                    var infoUjian = Object.assign(a,b)
-                    infoUjian.nobp = hasil[y].nobp,
-                    infoUjian.nm_peserta = hasil[y].nm_peserta,
+                    var infoUjian = Object.assign(hasil,b)
                     this.$session.set('infoUjian',infoUjian)
                     console.log(this.$session.get('infoUjian'))
                     this.$router.push({path: '/ujian/petunjuk'})
                 }
-            }
-            else{
-                console.log('tidak dapat mengecek peserta')
-            }
-              })
+            }else console.log('anda tidak terdaftar')
+            })
             .catch(err=>{
                 console.log(err)
                 })
