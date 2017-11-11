@@ -255,37 +255,20 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
     var limit = 1*req.query.limit || null;
     var offset = 1*req.query.offset || null;
     var hasil = {};
-	db('tbmahasiswa').limit(limit).offset(offset).select('tbmahasiswa.nm_peserta','tbhasil_ujian.benar','tbhasil_ujian.salah','tbhasil_ujian.nilai')
-	.where('tbhasil_ujian.id_ujian',id).join('tbhasil_ujian','tbhasil_ujian.id_mahasiswa','tbmahasiswa.id')
-    .then((rows)=>{
+	var query = db('lap_hasil_ujian').select().where('id_ujian',id) 
+    query.limit(limit).offset(offset).then((rows)=>{
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
 		})
 	.then(()=>{
-		return db('tbhasil_ujian').count('id_mahasiswa as jumlah').where('id_ujian',id);
+		return query.count('* as jumlah');
 		})
 	.then((jumlah)=>{
 		hasil.row = jumlah[0].jumlah;
 		res.json(hasil); 
 		})
 	.catch((err)=>{
-		hasil.status = false;
-		hasil.error = err;
-		res.json(hasil);
-		});
-});
-router.post('/:id/hasil', (req, res, next) => {
-    var data = req.body;
-    var id = req.params.id;
-    var hasil = {};
-    //var nilai = data.benar*(100/(data.benar+data.salah));
-    db('tbhasil_ujian').insert(data)
-    .then((id)=>{
-		hasil.status = true;
-		res.json(hasil);
-		})
-    .catch((err)=>{
 		hasil.status = false;
 		hasil.error = err;
 		res.json(hasil);
