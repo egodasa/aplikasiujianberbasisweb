@@ -58,6 +58,8 @@ app.use('/api/tipe_soal', require('./routes/tipe_soal'));
 app.use('/api/dosen', require('./routes/dosen'));
 app.use('/api/kuliah', require('./routes/kuliah'));
 app.use('/api/test', require('./routes/test'));
+app.use('/api/cek', require('./routes/cekPesertaUjian'));
+
 
 /*
 app.get('/test',(req,res,next)=>{

@@ -28,7 +28,7 @@
                 </label>
                 <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                 </template>
-                <template v-else="x.jenis == 'selectOption'">
+                <template v-else-if="x.jenis == 'selectOption'">
                 <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
                     <template v-if="x.option.length == 0">
                     <option class="w3-white w3-text-gray" value="null" disabled>{{x.caption}}</option>
@@ -46,6 +46,9 @@
                     </template>
                 </select>
                 <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span><br/>
+                </template>
+                <template v-else-if="x.jenis == 'select2'">
+                    <v-select :value="output[x.name].value" :placeholder="x.placeholder" :options="x.option"></v-select>
                 </template>
             <br/>
             </span>

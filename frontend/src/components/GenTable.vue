@@ -40,7 +40,7 @@
                     <template v-else>
                     
                     </template>
-                    <slot name="customAction" :pkData="tr[pk]"></slot>
+                    <slot name="customAction" :pkData="tr"></slot>
                   </td>
                 </tr>
                 </table>

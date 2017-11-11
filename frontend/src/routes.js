@@ -10,12 +10,12 @@ import kelolaJenisUjian from './components/page/kelolaJenisUjian.vue';
 import kelolaDosen from './components/page/kelolaDosen.vue';
 import kelolaKuliah from './components/page/kelolaKuliah.vue';
 import kelolaKuliahMahasiswa from './components/page/kelolaKuliahMahasiswa.vue';
+import hasilUjian from './components/page/hasilUjian.vue';
 
 import home from './components/Home.vue';
 import loginPeserta from './components/loginPeserta.vue';
 import petunjukUjian from './components/petunjukUjian.vue';
 import pelaksanaanUjian from './components/pelaksanaanUjian.vue';
-import hasilUjian from './components/hasilUjian.vue';
 
 export default [
   // Redirects to /route-one as the default route.

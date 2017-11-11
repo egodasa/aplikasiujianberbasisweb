@@ -6,7 +6,7 @@
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent">
         <template slot="customAction" scope="ca">
-            <router-link :to="{name:'kelolaKuliahMahasiswa',params:{idKuliah:ca.pkData}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Mahasiswa</b></router-link>
+            <router-link :to="{name:'kelolaKuliahMahasiswa',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Mahasiswa</b></router-link>
         </template>
     </gen-table>
     </div>
@@ -16,7 +16,7 @@
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
 import axios from 'axios'
-
+import _ from 'lodash'
 export default {
   name: 'kelolaMahasiswa',
   components : {
@@ -46,6 +46,7 @@ export default {
                     valueSelect : "id_dosen",
                     captionSelect : "nm_dosen",
                     option:[{}],
+                    placeholder : "Cari atau Pilih Dosen  ...",
                     error : null
 					},
                 {
@@ -85,7 +86,14 @@ export default {
         getDataDosen () {
             axios.get('api/dosen')
                 .then(res=>{
-                    this.listForm[1].option = res.data.data
+                    var hasil = res.data.data
+                    /*var hasil_tmp = []
+                    _.forEach(hasil,(v,k)=>{
+                      hasil_tmp.push({label : v.nm_dosen,value : v.id_dosen})  
+                        })
+                    this.listForm[1].option = hasil_tmp*/
+                    this.listForm[1].option = hasil
+                    console.log(this.listForm[1].option)
                     })
                 .catch((err)=>{
                     console.log(err)

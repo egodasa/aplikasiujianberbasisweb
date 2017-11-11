@@ -26,8 +26,12 @@
     "moment-timezone": "^0.5.13",
     "vee-validate": "^2.0.0-rc.19",
     "vue": "^2.0.1",
+    "vue-multiselect": "^2.0.6",
     "vue-router": "^3.0.1",
-    "vue-session": "^0.9.10"
+    "vue-search-select": "^2.4.0",
+    "vue-select": "^2.3.0",
+    "vue-session": "^0.9.10",
+    "vuejs-paginate": "^1.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
