@@ -1,6 +1,6 @@
 <template>
-<header class="w3-col s12 w3-black" style="height:auto;">
-    <router-link v-for="m in listMenu" class="w3-button w3-blue-gray w3-hover-green w3-mobile" :to="m.path">{{m.name}}</router-link>
+<header class="w3-col s12 w3-blue-grey w3-border-bottom w3-border-blue" style="height:auto;">
+    <router-link v-for="m in listMenu" class="w3-button w3-blue-grey w3-hover-blue w3-mobile" :to="m.path">{{m.name}}</router-link>
 </header>
 </template>
 

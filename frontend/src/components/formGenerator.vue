@@ -48,7 +48,7 @@
                 <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span><br/>
                 </template>
                 <template v-else-if="x.jenis == 'select2'">
-                    <v-select :value="output[x.name].value" :placeholder="x.placeholder" :options="x.option"></v-select>
+                    <v-select :valueSelect="x.valueSelect" v-model="output[x.name]" :label="x.captionSelect" :placeholder="x.placeholder" :options="x.option"></v-select>
                 </template>
             <br/>
             </span>

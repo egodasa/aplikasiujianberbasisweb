@@ -3,7 +3,7 @@
     <div class="w3-container w3-blue-gray w3-round">
         <h2>Hasil Ujian</h2>
     </div>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain" :aksi.boolean="false"></gen-table>
     </div>
 </template>
 

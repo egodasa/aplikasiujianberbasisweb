@@ -3,7 +3,7 @@
     <div class="w3-container w3-blue-gray w3-round">
         <h2>Laporan Hasil Ujian</h2>
     </div>
-    <gen-table :url="url" :header="tableHeader" :aksi.Boolean="false"></gen-table>
+    <gen-table :url="url" :header="tableHeader" :aksi.Boolean="false" tableType="lain"></gen-table>
     </div>
 </template>
 

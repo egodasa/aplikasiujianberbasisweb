@@ -243,7 +243,7 @@ router.post('/:id/jawaban',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	db('tbjawaban').insert(data).then(()=>{
+	db('tbhasil_ujian').insert(data).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
 		res.send(hasil);
@@ -254,20 +254,6 @@ router.post('/:id/jawaban',(req,res,next)=>{
 		res.json(hasil);
 		});
     });
-router.delete('/:id',(req,res,next)=>{
-	var id = req.params.id;
-    var hasil = {};
-	db('tbjawaban').where('id_jawaban',id).del().
-	then(function(){
-		hasil.status = true;
-		res.json(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
-		});
-	});
 
 //HASIL UJIAN
 router.get('/:id/hasil/:idPeserta?', (req, res, next) => {

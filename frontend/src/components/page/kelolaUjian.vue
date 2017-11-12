@@ -8,7 +8,7 @@
         <template slot="customAction" scope="ca">
             <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Soal</b></router-link>
             <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue" v-if="ca.pkData.id_tsoal == 2 ? true : false"><i class="fa fa-edit w3-small"></i> <b>Periksa Jawaban</b></router-link>
-            <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue" v-if="ca.pkData.id_tsoal == 1 ? true : false"><i class="fa fa-edit w3-small"></i> <b>Hasil Ujian</b></router-link>
+            <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue" ><i class="fa fa-edit w3-small"></i> <b>Hasil Ujian</b></router-link>
         </template>
     </gen-table>
     </div>

@@ -1,7 +1,7 @@
 <template>
 <div class="w3-row">
     <menu-atas></menu-atas>
-    <div class="w3-main w3-light-blue w3-col s12">
+    <div class="w3-main w3-pale-blue w3-col s12">
         <div class="w3-card-8 w3-margin w3-light-gray w3-round-large">
         <!--
         <div class="w3-container w3-blue-gray w3-round">
