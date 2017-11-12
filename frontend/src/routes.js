@@ -11,6 +11,8 @@ import kelolaDosen from './components/page/kelolaDosen.vue';
 import kelolaKuliah from './components/page/kelolaKuliah.vue';
 import kelolaKuliahMahasiswa from './components/page/kelolaKuliahMahasiswa.vue';
 import hasilUjian from './components/page/hasilUjian.vue';
+import jawabanUjian from './components/page/jawabanUjian.vue';
+
 
 import home from './components/Home.vue';
 import loginPeserta from './components/loginPeserta.vue';
@@ -41,6 +43,11 @@ export default [
     path: '/admin/ujian/:idUjian/hasil',
     name : 'hasilUjian',
     component: hasilUjian
+  },
+  {
+    path: '/admin/ujian/:idUjian/jawaban',
+    name : 'jawabanUjian',
+    component: jawabanUjian
   },
   {
     path: '/admin/mahasiswa',

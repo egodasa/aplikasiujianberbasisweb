@@ -196,22 +196,43 @@ router.delete('/:id/soal/:idSoal', (req, res, next) => {
 });
 
 //JAWABAN PESERTA ESSSAI
-router.get('/:id/jawaban/:idPeserta',(req, res, next)=>{
-	var id = req.params.id || 0;
+router.get('/:id/jawaban',(req, res, next)=>{
+	var id_ujian = req.params.id || 0;
 	var idPeserta = req.params.idPeserta || 0;
-	var limit = 1*req.query.limit || null;
+    var limit = 1*req.query.limit || null;
 	var offset = 1*req.query.offset || null;
-	var hasil = {};
-	var op = null;
-	if(id == 0) op = "!=";
-	else op = "=";
-	db('tbjawaban').select().limit(limit).offset(offset).where({'id_ujian' : id,'id_peserta':idPeserta}).
-	then(function(rows){
+    var hasil = {}
+	db.raw("SELECT lap_peserta_ujian.id_mahasiswa, lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN true ELSE false END AS status, hasil_ujian.id_tsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.id_peserta) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.id_peserta, tbjawaban.jawaban, tbujian.id_tsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.id_mahasiswa = hasil_ujian.id_peserta))) where lap_peserta_ujian.id_ujian=? LIMIT ? OFFSET ?",[id_ujian,id_ujian,limit,offset])
+	.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows.rows;
+        hasil.current_row = rows.rows.length;
+        return db.raw("SELECT lap_peserta_ujian.id_mahasiswa, lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN true ELSE false END AS status, hasil_ujian.id_tsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.id_peserta) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.id_peserta, tbjawaban.jawaban, tbujian.id_tsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.id_mahasiswa = hasil_ujian.id_peserta))) where lap_peserta_ujian.id_ujian=?",[id_ujian,id_ujian])
+		})
+    .then((rows)=>{
+        hasil.row = rows.rows.length
+        res.send(hasil);
+        }).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
+router.get('/:id/jawaban/:idPeserta?',(req, res, next)=>{
+	var id_ujian = req.params.id || 0;
+	var idPeserta = req.params.idPeserta || 0;
+    var limit = 1*req.query.limit || null;
+	var offset = 1*req.query.offset || null;
+    var hasil = {}
+	var query = db('lap_jawaban').select().where({id_ujian : id_ujian,id_peserta:idPeserta})
+    query.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
-		hasil.current_row = rows.length;
+        hasil.current_row = rows.length;
+        hasil.row = rows.length
         res.send(hasil);
-		}).
+        }).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
@@ -274,4 +295,5 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
 		res.json(hasil);
 		});
 });
+
 module.exports = router;
