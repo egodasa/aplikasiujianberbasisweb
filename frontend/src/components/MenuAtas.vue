@@ -15,6 +15,10 @@ export default {
           name : 'Beranda'
       },
       {
+          path : '/login',
+          name : 'Login'
+      },
+      {
           path : '/admin/ujian',
           name : 'Ujian'
       },

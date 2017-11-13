@@ -13,6 +13,7 @@ import kelolaKuliahMahasiswa from './components/page/kelolaKuliahMahasiswa.vue';
 import hasilUjian from './components/page/hasilUjian.vue';
 import jawabanUjian from './components/page/jawabanUjian.vue';
 import cekJawaban from './components/page/cekJawaban.vue';
+import loginPengguna from './components/page/loginPengguna.vue';
 
 
 import home from './components/Home.vue';
@@ -25,6 +26,10 @@ export default [
   {
     path: '/',
     component : home
+  },
+  {
+    path: '/login',
+    component : loginPengguna
   },
   {
     path: '/admin/ujian',
