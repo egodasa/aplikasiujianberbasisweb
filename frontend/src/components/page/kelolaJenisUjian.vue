@@ -1,21 +1,19 @@
 <template>
-    <div>
-    <div class="w3-container w3-blue-gray w3-round">
-        <h2>Daftar Tipe Soal</h2>
-    </div>
+<admin judul="Daftar Jenis Ujian">
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
-    </div>
+</admin>
 </template>
 
 <script>
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
+import admin from './halamanAdmin.vue'
 
 export default {
   name: 'kelolaJenisUjian',
   components : {
-      genTable, genForm
+      genTable, genForm, admin
   },
   data () {
       return {

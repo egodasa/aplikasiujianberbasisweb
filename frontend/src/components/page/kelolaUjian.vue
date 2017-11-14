@@ -1,28 +1,31 @@
 <template>
-    <div>
-    <div class="w3-container w3-blue-gray w3-round">
-        <h2>Daftar Ujian</h2>
-    </div>
+<admin judul="Daftar Ujian">
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" scope="ca">
-            <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Soal</b></router-link>
-            <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue" v-if="ca.pkData.id_tsoal == 2 ? true : false"><i class="fa fa-edit w3-small"></i> <b>Periksa Jawaban</b></router-link>
-            <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue" ><i class="fa fa-edit w3-small"></i> <b>Hasil Ujian</b></router-link>
+            <span class="hint--top" aria-label="Daftar Soal">
+                <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
+            </span>
+            <span class="hint--top" aria-label="Periksa Ujian">
+                <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_tsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
+            </span>
+            <span class="hint--top" aria-label="Hasil Ujian">
+                <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" ><i class="fa fa-list-ol "></i></router-link>
+            </span>
         </template>
     </gen-table>
-    </div>
+</admin>
 </template>
 
 <script>
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
+import admin from './halamanAdmin.vue'
 import axios from 'axios'
-
 export default {
   name: 'kelolaUjian',
   components : {
-      genTable, genForm
+      genTable, genForm, admin
   },
   data () {
       return {

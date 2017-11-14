@@ -1,6 +1,5 @@
 <template>
 <div id="genForm">
-    <button type="button" @click="toggleFormData()" class="w3-button w3-blue">Tambah Data</button>
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content w3-animate-top">
         <form class="w3-card-8 w3-container w3-section" v-if="showForm" id="addData" @submit.prevent="submitData()" name="addData" method="POST">
@@ -86,6 +85,9 @@ export default {
     created () {
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
+        })
+        Bus.$on('toggleFormData', () =>{
+            this.toggleFormData()
         })
         this.showForm = false
     },

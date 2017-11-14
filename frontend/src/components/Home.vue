@@ -1,5 +1,6 @@
 <template>
 <div>
+    <sec-header></sec-header>
     <div class="w3-container w3-blue-gray">
         <h2>Aplikasi Ujian Berbasis Web</h2>
     </div>
@@ -21,8 +22,13 @@
 </template>
 
 <script>
+import secHeader from './header.vue'
+
 export default {
   name: 'home',
+  components : {
+      secHeader
+      },
   data () {
     return {
       

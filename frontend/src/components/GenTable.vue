@@ -3,12 +3,14 @@
   <div class="w3-responsive">
         <template v-if="spinStatus == false">
               <template v-if="dataTable.length > 0">
-              <div class="w3-margin">
-              <div class="w3-col l4 s12">
-                <button type="button" @click="getData(pageRows,null)" class="w3-button w3-deep-orange w3-left w3-clear"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
-                <button type="button" v-for="p in pageRowsList" @click="getData(p,0)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo w3-right w3-clear">{{p}}</button>
-              </div>
-            </div>
+              <span class="w3-left">
+              <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-plus"></i> Tambah Data</button>
+              <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
+              </span>
+              <span class="w3-right">
+              <input type="search" class="w3-class w3-bordered w3-big" /> 
+              <button type="button" class="w3-button w3-green w3-hover-blue-gray w3-small"><i class="fa fa-search"></i></button>
+              </span>
               <table :class="tableCenter">
                 <tr class="w3-teal">
                   <th>#</th>
@@ -20,22 +22,22 @@
                   <td v-for="td in tableContent.content" v-if="td != pk">{{tr[td]}}</td>
                   <td v-if="aksi">
                     <template v-if="tableType == 'edit_hapus'">
-                    <button @click="getDataDetail(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Edit</b>
-                    </button>
-                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </button>
+                    <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(tr[pk])"><i class="fa fa-edit"></i> 
+                    </button></span>
+                    <span class="hint--top" aria-label="Hapus"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
+                    </button></span>
                     </template>
                     <template v-else-if="tableType == 'edit'">
-                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </button>
+                    <span class="hint--top" aria-label="Hapus"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
+                    </button></span>
                     </template>
                     <template v-else-if="tableType == 'hapus'">
-                    <button @click="deleteData(tr[pk])" class="w3-btn w3-small w3-red"><i class="fa fa-close w3-small"></i> <b>Hapus</b>
-                    </button>
+                    <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
+                    </button></span>
                     </template>
                     <template v-else-if="tableType == 'tambahkan'">
-                    <button @click="addDataList(tr[pk])" class="w3-btn w3-small w3-teal"><i class="fa fa-edit w3-small"></i> <b>Tambahkan</b>
-                    </button>
+                    <span class="hint--top" aria-label="Tambahkan ..."><button class="w3-button w3-hover-white w3-white" @click="addDataList(tr[pk])"><i class="fa fa-edit"></i> <b>Tambahkan</b>
+                    </button></span>
                     </template>
                     <template v-else>
                     
@@ -44,7 +46,14 @@
                   </td>
                 </tr>
                 </table>
-                <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
+                <div class="w3-section w3-left">
+                    Halaman <br/>
+                    <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
+                </div>
+                <div class="w3-section w3-right">
+                    Banyak data perhalaman <br/>
+                    <button type="button" v-for="p in pageRowsList" @click="getData(p,0)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo w3-right w3-clear">{{p}}</button>
+                </div>
                 <br/>
               </template>
               <template v-else>
@@ -80,7 +89,7 @@ export default {
 			type : Array,
 			required : false,
 			default : function(){
-				return [10,25,50]
+				return [100,50,25,10]
 			}
 		},
         url : String,
@@ -192,6 +201,9 @@ export default {
         },
         addDataList (x) {
             Bus.$emit('addDataList',x)
+        },
+        toggleFormData () {
+            Bus.$emit('toggleFormData')
         }
 	},
     destroyed () {
