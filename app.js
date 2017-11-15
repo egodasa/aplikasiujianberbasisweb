@@ -10,19 +10,9 @@ var Promise = require('promise');
 var url = require('url');
 var knexLogger = require('knex-logger');
 mysql = require('mysql');
-var urlDb = url.parse(process.env.DATABASE_URL_MYSQL);
-var auth = urlDb.auth.split(":");
-var mysqlSetting = {
-		host : urlDb.hostname,
-		user : auth[0],
-		password : auth[1] || "",
-		database : urlDb.path.substr(1),
-		multipleStatements : true
-		};
-//koneksi = mysql.createPool(mysqlSetting);
 db = require('knex')({
   client: 'pg',
-  connection: process.env.DATABASE_URL_PSQL
+  connection: process.env.DATABASE_URL
 });
 var app = express();
 {}
