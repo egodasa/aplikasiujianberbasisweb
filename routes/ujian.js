@@ -6,21 +6,37 @@ var checkDataSoal = require('../validator/soal/create_update');
 
 router.get('/:id?', (req, res, next) => {
 	var id = req.params.id || 0;
+	var nidn = req.query.nidn || 0;
 	var limit = 1*req.query.limit || null;
 	var offset = 1*req.query.offset || null;
 	var hasil = {};
 	var op = null;
 	if(id == 0) op = "!=";
 	else op = "=";
-	db('lap_ujian').select().where('id_ujian',op,id).
-    then(function(rows){
+    let query
+    let query_count
+    if(id == 0){
+        if(nidn == 0) query_count = db('lap_ujian').select()
+        else query_count = db('lap_ujian').select().where('nidn',nidn)
+    }
+    else{
+        query_count = db('lap_ujian').select()
+        if(nidn == 0){
+            query_count = query_count.where('id_ujian',id)
+        }else{
+            query_count = query_count.where({id_ujian: id,nidn: nidn})
+        }
+    }
+    if(limit == null && offset == null) query = query_count
+    else query = query_count.limit(limit).offset(offset)
+	query.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('lap_ujian').count('id_ujian as jumlah');
+		return query_count;
 		}).
-	then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
+	then((rows)=>{
+		hasil.row = rows.length
 		res.json(hasil);
 		}).
 	catch(function(err){

@@ -1,20 +1,20 @@
 <template>
-<admin judul="Daftar Kuliah">
+<div class="w3-container">
+    <h2>Daftar Mahasiswa</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
-</admin>
+</div>
 </template>
 
 <script>
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
 import axios from 'axios'
-import admin from './halamanAdmin.vue'
 
 export default {
   name: 'kelolaMahasiswa',
   components : {
-      genTable, genForm, admin
+      genTable, genForm
   },
   data () {
       return {

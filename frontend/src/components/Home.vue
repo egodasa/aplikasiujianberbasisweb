@@ -1,10 +1,6 @@
 <template>
-<div>
-    <sec-header></sec-header>
-    <div class="w3-container w3-blue-gray">
-        <h2>Aplikasi Ujian Berbasis Web</h2>
-    </div>
-    <div class="w3-container">
+<div class="w3-container">
+        <h2>Aplikasi CAT</h2>
     Changelog :<br/>
     <b>v2.0.0</b><br/>
     - Mengganti module mysql pada Backend dengan query builder KnexJS<br/>
@@ -17,7 +13,6 @@
         <li>Fitur manajemen Soal</li>
         <li>Fitur manajemen Peserta</li>
     </ul>
-    </div>
 </div>
 </template>
 

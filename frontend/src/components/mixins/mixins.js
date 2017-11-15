@@ -1,4 +1,4 @@
-export const adminData = {
+export const userConf = {
     data () {
         return {
             adminMenu : [
@@ -72,7 +72,24 @@ export const adminData = {
                   name : 'LJK Ujian',
               icon : 'fa-eye fa-fw'
               }
-            ]
+            ],
+            dosenMenu : [
+            {
+              path : '/',
+              name : 'Beranda',
+              icon : 'fa-eye fa-fw'
+              },
+            {
+              path : '/dosen/ujian',
+              name : 'Daftar Ujian',
+              icon : 'fa-eye fa-fw'
+            }],
+            userMenu :[
+            {
+              path : '/',
+              name : 'Beranda',
+              icon : 'fa-eye fa-fw'
+              }]
         }
     }
 }

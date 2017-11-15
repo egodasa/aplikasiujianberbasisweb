@@ -20,6 +20,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import md5 from 'md5'
+import { Bus } from '../../bus.js';
 export default {
   name: 'loginPengguna',
   data () {
@@ -38,7 +39,11 @@ export default {
           .then(res=>{
               let hasil = res.data.data
               if(hasil.length == 0) console.log('username atau password salah')
-              else console.log('login berhasil')
+              else {
+                  this.$session.set('user',hasil[0])
+                  Bus.$emit('setMenu',hasil[0].id_tipe)
+                  this.$router.push({path: '/'})
+              }
               })
           .catch(err=>{
               console.log(err)

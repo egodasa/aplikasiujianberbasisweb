@@ -1,20 +1,20 @@
 <template>
-<admin judul="Daftar Kuliah">
+<div class="w3-container">
+    <h2>Daftar Mata Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table pk="id_matkul" :url="url" :tableContent="tableContent">
     </gen-table>
-</admin>
+</div>
 </template>
 
 <script>
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
-import admin from './halamanAdmin.vue'
 
 export default {
   name: 'kelolaMatkul',
   components : {
-      genTable, genForm, admin
+      genTable, genForm
   },
   data () {
       return {

@@ -14,6 +14,8 @@ import hasilUjian from './components/page/hasilUjian.vue';
 import jawabanUjian from './components/page/jawabanUjian.vue';
 import cekJawaban from './components/page/cekJawaban.vue';
 import loginPengguna from './components/page/loginPengguna.vue';
+import dashboardAdmin from './components/page/dashboardAdmin.vue';
+import dosenKelolaUjian from './components/page/dosenKelolaUjian.vue';
 
 
 import home from './components/Home.vue';
@@ -26,6 +28,10 @@ export default [
   {
     path: '/',
     component : home
+  },
+  {
+    path: '/admin',
+    component : dashboardAdmin
   },
   {
     path: '/login',
@@ -119,5 +125,10 @@ export default [
     path: '/ujian/soal',
     name: 'pelaksanaanUjian',
     component: pelaksanaanUjian
+  },
+  {
+    path: '/dosen/ujian',
+    name: 'dosenKelolaUjian',
+    component: dosenKelolaUjian
   }
 ];

@@ -1,12 +1,13 @@
 <template>
-<admin judul="Daftar Kuliah">
+<div class="w3-container">
+    <h2>Daftar Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent">
         <template slot="customAction" scope="ca">
             <router-link :to="{name:'kelolaKuliahMahasiswa',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-btn w3-small w3-blue"><i class="fa fa-edit w3-small"></i> <b>Daftar Mahasiswa</b></router-link>
         </template>
     </gen-table>
-</admin>
+</div>
 </template>
 
 <script>
@@ -14,12 +15,11 @@ import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
 import axios from 'axios'
 import _ from 'lodash'
-import admin from './halamanAdmin.vue'
 
 export default {
   name: 'kelolaMahasiswa',
   components : {
-      genTable, genForm, admin
+      genTable, genForm
   },
   data () {
       return {

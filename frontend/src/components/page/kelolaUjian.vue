@@ -1,5 +1,6 @@
 <template>
-<admin judul="Daftar Ujian">
+<div class="w3-container">
+    <h2>Kelola Ujian</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" scope="ca">
@@ -14,18 +15,17 @@
             </span>
         </template>
     </gen-table>
-</admin>
+</div>
 </template>
 
 <script>
 import genTable from '../GenTable.vue'
 import genForm from '../formGenerator.vue'
-import admin from './halamanAdmin.vue'
 import axios from 'axios'
 export default {
   name: 'kelolaUjian',
   components : {
-      genTable, genForm, admin
+      genTable, genForm
   },
   data () {
       return {
