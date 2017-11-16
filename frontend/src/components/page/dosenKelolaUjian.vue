@@ -1,7 +1,7 @@
 <template>
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain">
         <template slot="customAction" scope="ca">
             <span class="hint--top" aria-label="Daftar Soal">
                 <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>

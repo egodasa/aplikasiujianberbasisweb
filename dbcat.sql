@@ -590,7 +590,7 @@ CREATE TABLE "public"."tbjawaban" (
     "id_ujian" integer NOT NULL,
     "id_soal" integer NOT NULL,
     "id_peserta" integer NOT NULL,
-    "jawaban" text DEFAULT Tidak Dijawab,
+    "jawaban" text DEFAULT 'Tidak Dijawab',
     CONSTRAINT "tbjawaban_id_jawaban" PRIMARY KEY ("id_jawaban"),
     CONSTRAINT "tbjawaban_id_peserta_fkey" FOREIGN KEY (id_peserta) REFERENCES tbmahasiswa(id_mahasiswa) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE,
     CONSTRAINT "tbjawaban_id_soal_fkey" FOREIGN KEY (id_soal) REFERENCES tbsoal(id_soal) ON UPDATE CASCADE NOT DEFERRABLE,
