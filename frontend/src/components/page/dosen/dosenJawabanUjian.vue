@@ -1,7 +1,7 @@
 <template>
 <dosen>
     <div>
-    <div class="w3-container w3-blue-gray w3-round">
+    <div class="w3-container">
         <h2>Daftar Mahasiswa</h2>
     </div>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain" :formButton.Boolean="false">

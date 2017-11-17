@@ -1,7 +1,7 @@
 <template>
     <dosen>
 <div>
- <div class="w3-container w3-blue-gray w3-round">
+ <div class="w3-container">
     <h2>{{'Pemeriksaan Jawaban Ujian '+infoUjian.nm_matkul}}</h2>
 </div>
 <div class="w3-container">
