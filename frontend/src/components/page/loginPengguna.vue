@@ -1,5 +1,11 @@
 <template>
-<div class="w3-section">
+<div class="w3-container">
+<div class="w3-modal" style="display:block;">
+<div class="w3-modal-content w3-card-4">
+<div class="w3-container w3-blue-gray w3-center">
+  <h2>Login Pengguna</h2>
+</div>
+<div class="w3-container">
 	<form method="POST" @submit.prevent="cekUser()">
 	<div class="w3-center" style="margin:0 auto;width:75%;">
         <!--<div class="w3-panel w3-red" ng-show="pesanWarning">
@@ -7,12 +13,14 @@
              <p>{{isiPesan}}</p>
         </div>
         -->
-        <h2>Login Pengguna</h2>
         <input class="w3-input w3-section" placeholder="username" type="text" v-model="username"/>
         <input class="w3-input w3-section" placeholder="Password" type="password" v-model="password"/>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
 	</div>
 	</form>
+</div>
+</div>
+</div>
 </div>
 </template>
 
@@ -42,7 +50,7 @@ export default {
               else {
                   this.$session.set('user',hasil[0])
                   Bus.$emit('setMenu',hasil[0].id_tipe)
-                  this.$router.push({path: '/'})
+                  this.$router.push({path: hasil[0].id_tipe == 1 ? '/admin' : '/dosen'})
               }
               })
           .catch(err=>{

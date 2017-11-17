@@ -3,18 +3,36 @@ var router = express.Router();
 var checkData = require('../validator/soal/create_update');
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
-	var limit = 1*req.query.limit || null;
-	var offset = 1*req.query.offset || null;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
-	var op = null;
-	if(id == 0) op = "!=";
-	else op = "=";
-	db('lap_soal').select().limit(limit).offset(offset).where('id_soal',op,id).
-	then(function(rows){
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(id == 0){
+        query.count = db('lap_soal').select('id_soal')
+        query.tmp = db('lap_soal').select()
+    }else{
+        query.count = db('lap_soal').select().where('id_soal',id)
+        query.tmp = db('lap_soal').select().where('id_soal',id)
+    }
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-        res.send(hasil);
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false

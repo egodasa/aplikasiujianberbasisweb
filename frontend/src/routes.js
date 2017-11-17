@@ -1,27 +1,34 @@
-import kelolaUjian from './components/page/kelolaUjian.vue';
-import kelolaSoal from './components/page/kelolaSoal.vue';
-import kelolaMahasiswa from './components/page/kelolaMahasiswa.vue';
-import kelolaPesertaUjian from './components/page/kelolaPesertaUjian.vue';
-import kelolaSoalUjian from './components/page/kelolaSoalUjian.vue';
-import kelolaKelas from './components/page/kelolaKelas.vue';
-import kelolaMatkul from './components/page/kelolaMatkul.vue';
-import kelolaTipeSoal from './components/page/kelolaTipeSoal.vue';
-import kelolaJenisUjian from './components/page/kelolaJenisUjian.vue';
-import kelolaDosen from './components/page/kelolaDosen.vue';
-import kelolaKuliah from './components/page/kelolaKuliah.vue';
-import kelolaKuliahMahasiswa from './components/page/kelolaKuliahMahasiswa.vue';
-import hasilUjian from './components/page/hasilUjian.vue';
-import jawabanUjian from './components/page/jawabanUjian.vue';
-import cekJawaban from './components/page/cekJawaban.vue';
+import kelolaUjian from './components/page/admin/kelolaUjian.vue';
+import kelolaSoal from './components/page/admin/kelolaSoal.vue';
+import kelolaMahasiswa from './components/page/admin/kelolaMahasiswa.vue';
+import kelolaPesertaUjian from './components/page/admin/kelolaPesertaUjian.vue';
+import kelolaSoalUjian from './components/page/admin/kelolaSoalUjian.vue';
+import kelolaKelas from './components/page/admin/kelolaKelas.vue';
+import kelolaMatkul from './components/page/admin/kelolaMatkul.vue';
+import kelolaTipeSoal from './components/page/admin/kelolaTipeSoal.vue';
+import kelolaJenisUjian from './components/page/admin/kelolaJenisUjian.vue';
+import kelolaDosen from './components/page/admin/kelolaDosen.vue';
+import kelolaKuliah from './components/page/admin/kelolaKuliah.vue';
+import kelolaKuliahMahasiswa from './components/page/admin/kelolaKuliahMahasiswa.vue';
+import hasilUjian from './components/page/admin/hasilUjian.vue';
+import jawabanUjian from './components/page/admin/jawabanUjian.vue';
+import cekJawaban from './components/page/admin/cekJawaban.vue';
 import loginPengguna from './components/page/loginPengguna.vue';
-import dashboardAdmin from './components/page/dashboardAdmin.vue';
-import dosenKelolaUjian from './components/page/dosenKelolaUjian.vue';
+import dashboardAdmin from './components/page/admin/dashboardAdmin.vue';
+import dashboardDosen from './components/page/dosen/dashboardDosen.vue';
 
+import dosenKelolaUjian from './components/page/dosen/dosenKelolaUjian.vue';
+import dosenKelolaKuliah from './components/page/dosen/dosenKelolaKuliah.vue';
+import dosenKelolaKuliahMahasiswa from './components/page/dosen/dosenKelolaKuliahMahasiswa.vue';
+import dosenHasilUjian from './components/page/dosen/dosenHasilUjian.vue';
+import dosenKelolaSoalUjian from './components/page/dosen/dosenKelolaSoalUjian.vue';
+import dosenCekJawaban from './components/page/dosen/dosenCekJawaban.vue';
+import dosenJawabanUjian from './components/page/dosen/dosenJawabanUjian.vue';
 
 import home from './components/Home.vue';
-import loginPeserta from './components/loginPeserta.vue';
-import petunjukUjian from './components/petunjukUjian.vue';
-import pelaksanaanUjian from './components/pelaksanaanUjian.vue';
+import loginPeserta from './components/page/peserta/loginPeserta.vue';
+import petunjukUjian from './components/page/peserta/petunjukUjian.vue';
+import pelaksanaanUjian from './components/page/peserta/pelaksanaanUjian.vue';
 
 export default [
   // Redirects to /route-one as the default route.
@@ -32,6 +39,10 @@ export default [
   {
     path: '/admin',
     component : dashboardAdmin
+  },
+  {
+    path: '/dosen',
+    component : dashboardDosen
   },
   {
     path: '/login',
@@ -130,5 +141,35 @@ export default [
     path: '/dosen/ujian',
     name: 'dosenKelolaUjian',
     component: dosenKelolaUjian
+  },
+  {
+    path: '/dosen/kuliah',
+    name: 'dosenKelolaKuliah',
+    component: dosenKelolaKuliah
+  },
+  {
+    path: '/dosen/kuliah/:idKuliah',
+    name: 'dosenKelolaKuliahMahasiswa',
+    component: dosenKelolaKuliahMahasiswa
+  },
+  {
+    path: '/dosen/ujian/:idUjian/hasil',
+    name : 'dosenHasilUjian',
+    component: dosenHasilUjian
+  },
+  {
+    path: '/dosen/ujian/:idUjian/soal',
+    name : 'dosenKelolaSoalUjian',
+    component: dosenKelolaSoalUjian
+  },
+  {
+    path: '/dosen/ujian/:idUjian/jawaban/:idPeserta',
+    name : 'dosenCekJawaban',
+    component: dosenCekJawaban
+  },
+  {
+    path: '/dosen/ujian/:idUjian/jawaban',
+    name : 'dosenJawabanUjian',
+    component: dosenJawabanUjian
   }
 ];

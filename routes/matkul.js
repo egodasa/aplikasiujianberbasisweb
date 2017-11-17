@@ -7,8 +7,8 @@ router.get('/:id?',(req, res, next)=>{
 	var id_tmp = req.params.id;
     var id = null;
     id_tmp == undefined ? id = 0 : id = id_tmp;
-	var limit = 1*req.query.limit || null;
-	var offset = 1*req.query.offset || null;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
 	var op = null;
 	if(id == 0) op = "!=";
@@ -102,8 +102,8 @@ router.put('/:id',(req,res,next)=>{
 //Matkul Dosen
 router.get('/:idMatkul/dosen',(req, res, next)=>{
 	var id_matkul = req.params.idMatkul;
-	var limit = 1*req.query.limit || null;
-	var offset = 1*req.query.offset || null;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
     var belumDitambahkan = req.query.belumDitambahkan || 0;
     if(belumDitambahkan == 'ya'){

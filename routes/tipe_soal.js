@@ -4,24 +4,36 @@ var checkData = require('../validator/tipe_soal/create_update');
 var pk = 'id_tsoal';
 var tbl = 'tbtipe_soal';
 router.get('/:id?',(req, res, next)=>{
-	var id_tmp = req.params.id;
-    var id = null;
-    id_tmp == undefined ? id = 0 : id = id_tmp;
-	var limit = 1*req.query.limit || null;
-	var offset = 1*req.query.offset || null;
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
-	var op = null;
-	if(id == 0) op = "!=";
-	else op = "=";
-	db(tbl).select().limit(limit).offset(offset).where(pk,op,id).
-	then(function(rows){
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(id == 0){
+        query.count = db('tbtipe_soal').select('id_tsoal')
+        query.tmp = db('tbtipe_soal').select()
+    }else{
+        query.count = db('tbtipe_soal').select().where('id_tsoal',id)
+        query.tmp = db('tbtipe_soal').select().where('id_tsoal',id)
+    }
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db(tbl).count(pk+' as jumlah');
+		return query.count
 		}).
-	then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
+	then((rows)=>{
+		hasil.row = rows.length
 		res.json(hasil);
 		}).
 	catch(function(err){

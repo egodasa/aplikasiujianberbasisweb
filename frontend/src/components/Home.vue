@@ -17,13 +17,9 @@
 </template>
 
 <script>
-import secHeader from './header.vue'
 
 export default {
   name: 'home',
-  components : {
-      secHeader
-      },
   data () {
     return {
       

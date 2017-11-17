@@ -4,22 +4,35 @@ var checkData = require('../validator/user/create_update');
 let md5 = require('md5')
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
-	var limit = 1*req.query.limit || null;
-	var offset = 1*req.query.offset || null;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
-	var op = null;
-	if(id == 0) op = "!=";
-	else op = "=";
-    let query = db('lap_user').select()
-	query.limit(limit).offset(offset).where('id_user',op,id).
-	then(function(rows){
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(id == 0){
+        query.count = db('lap_user').select('id_user')
+        query.tmp = db('lap_user').select()
+    }else{
+        query.count = db('lap_user').select().where('id_user',id)
+        query.tmp = db('lap_user').select().where('id_user',id)
+    }
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return query;
+		return query.count
 		}).
 	then((rows)=>{
-		hasil.row = rows.length;
+		hasil.row = rows.length
 		res.json(hasil);
 		}).
 	catch(function(err){

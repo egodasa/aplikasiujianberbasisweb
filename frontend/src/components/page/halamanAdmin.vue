@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import secHeader from '../header.vue'
-import secFooter from '../footer.vue'
-import secContent from '../content.vue'
-import secSidebar from '../sidebar.vue'
+import secHeader from '../template/header.vue'
+import secFooter from '../template/footer.vue'
+import secContent from '../template/content.vue'
+import secSidebar from '../template/sidebar.vue'
 import { adminData } from '../mixins/mixins.js'
 export default {
   name: 'halamanAdmin',
