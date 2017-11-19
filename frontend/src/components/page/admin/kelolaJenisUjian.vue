@@ -23,7 +23,7 @@ export default {
             listForm : [
                 {
 					caption: "Nama Jenis Ujian",
-					name:"nm_jenis",
+					name:"nm_jujian",
 					jenis:"textField",
 					tipe:"text",
 					value:null
@@ -31,7 +31,7 @@ export default {
 			],
             tableContent : {
                 header :  ['Nama Jenis Ujian'],
-                content : ['id_jujian','nm_jenis']
+                content : ['id_jujian','nm_jujian']
             }
         }
   }

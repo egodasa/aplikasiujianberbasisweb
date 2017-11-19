@@ -20,11 +20,11 @@ export default {
   },
   data () {
       return {
-          url : 'tipe_soal',
+          url : 'jenis_soal',
             listForm : [
                 {
 					caption: "Nama Tipe Soal",
-					name:"nm_tipe",
+					name:"nm_jsoal",
 					jenis:"textField",
 					tipe:"text",
 					value:null
@@ -32,7 +32,7 @@ export default {
 			],
             tableContent : {
                 header :  ['Nama Tipe Soal'],
-                content : ['id_tsoal','nm_tipe']
+                content : ['id_jsoal','nm_jsoal']
             }
         }
   }

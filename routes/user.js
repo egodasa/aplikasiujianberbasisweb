@@ -15,6 +15,7 @@ router.get('/:id?',(req, res, next)=>{
     if(id == 0){
         query.count = db('lap_user').select('id_user')
         query.tmp = db('lap_user').select()
+        //query.tmp = db('lap_user').select().where(req.query)
     }else{
         query.count = db('lap_user').select().where('id_user',id)
         query.tmp = db('lap_user').select().where('id_user',id)

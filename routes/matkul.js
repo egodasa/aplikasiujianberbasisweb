@@ -1,27 +1,41 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/matkul/create_update');
-var pk = 'id_matkul';
+var pk = 'kd_matkul';
 var tbl = 'tbmatkul';
 router.get('/:id?',(req, res, next)=>{
-	var id_tmp = req.params.id;
-    var id = null;
-    id_tmp == undefined ? id = 0 : id = id_tmp;
+	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
+    console.log(req.query)
 	var hasil = {};
-	var op = null;
-	if(id == 0) op = "!=";
-	else op = "=";
-	db(tbl).select().limit(limit).offset(offset).where(pk,op,id).
-	then(function(rows){
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(id == 0){
+        query.count = db('tbmatkul').select('kd_matkul')
+        //query.tmp = db('tbmatkul').select().where(req.query)
+        query.tmp = db('tbmatkul').select()
+    }else{
+        query.count = db('tbmatkul').select().where('kd_matkul',id)
+        query.tmp = db('tbmatkul').select().where('kd_matkul',id)
+    }
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db(tbl).count(pk+' as jumlah');
+		return query.count
 		}).
-	then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
+	then((rows)=>{
+		hasil.row = rows.length
 		res.json(hasil);
 		}).
 	catch(function(err){
@@ -101,24 +115,32 @@ router.put('/:id',(req,res,next)=>{
 
 //Matkul Dosen
 router.get('/:idMatkul/dosen',(req, res, next)=>{
-	var id_matkul = req.params.idMatkul;
+	var id = req.params.idMatkul || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
+    console.log(req.query)
 	var hasil = {};
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
-    if(belumDitambahkan == 'ya'){
-        var query = db('lap_matkul_dosen').select("id_dosen").limit(limit).offset(offset).where('id_matkul','=',id_matkul);
-        query = db('tbdosen').select().whereNotIn("id_dosen",query)
-    }else var query = db('lap_matkul_dosen').select().limit(limit).offset(offset).where('id_matkul','=',id_matkul);
-    query.
-	then(function(rows){
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_matkul_dosen').select('kd_matkul')
+    query.tmp = db('lap_matkul_dosen').select().where({kd_matkul:id})
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return db('lap_matkul_dosen').count(pk+' as jumlah');
+		return query.count
 		}).
-	then((jumlah)=>{
-		hasil.row = jumlah[0].jumlah;
+	then((rows)=>{
+		hasil.row = rows.length
 		res.json(hasil);
 		}).
 	catch(function(err){

@@ -8,7 +8,7 @@
                 <router-link :to="{name:'dosenKelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
             </span>
             <span class="hint--top" aria-label="Periksa Ujian">
-                <router-link :to="{name:'dosenJawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_tsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
+                <router-link :to="{name:'dosenJawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_jsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
             </span>
             <span class="hint--top" aria-label="Hasil Ujian">
                 <router-link :to="{name:'dosenHasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" ><i class="fa fa-list-ol "></i></router-link>
@@ -34,7 +34,7 @@ export default {
           url : 'ujian?nidn='+this.$session.get('user').username+'&',
             tableContent : {
                 header :  ['Matkul','Jenis','Kelas','Tipe Ujian'],
-                content : ['id_ujian','nm_matkul','nm_jenis','nm_kelas','nm_tipe']
+                content : ['id_ujian','nm_matkul','nm_jujian','nm_kelas','jsoal']
             }
         }
   },

@@ -1,5 +1,5 @@
 var validasi = {
-	'nm_jenis': {
+	'nm_jujian': {
 		notEmpty : {
 			errorMessage : 'Nama jenis Soal harus diisi ...'
 		},

@@ -40,23 +40,12 @@ export default {
                     max:14,
 					value:null,
                     error : null
-					},
-                {
-					caption: "Kelas Asal",
-					name:"id_kelas",
-					jenis:"selectOption",
-					tipe:"text",
-					value:null,
-                    valueSelect : "id_kelas",
-                    captionSelect : "nm_kelas",
-                    option:[{}],
-                    error : null
-					},
+					}
                     
 			],
             tableContent : {
-                header : ['Nama','NOBP','Kelas Asal'],
-                content : ['id_mahasiswa','nm_mahasiswa','nobp','nm_kelas']
+                header : ['Nama','NOBP'],
+                content : ['id','nm_mahasiswa','nobp']
             }
         }
   },

@@ -1,20 +1,22 @@
 <template>
-<div class="w3-section">
-	<form method="POST" @submit.prevent="cekPeserta()">
+<div class="w3-container">
+<div class="w3-modal" style="display:block;">
+<div class="w3-modal-content w3-card-4">
+<div class="w3-container w3-blue-gray w3-center">
+  <h2>Silahkan Pilih Ujian</h2>
+</div>
+<div class="w3-container">
+	<form method="POST" @submit.prevent="masukUjian()">
 	<div class="w3-center" style="margin:0 auto;width:75%;">
-        <!--<div class="w3-panel w3-red" ng-show="pesanWarning">
-             <span class="w3-closebtn" ng-click="closeWarning()">X</span>
-             <p>{{isiPesan}}</p>
-        </div>
-        -->
-        <h2>Login Peserta Ujian</h2>
         <select class="w3-select w3-section" name="ujian" v-model="selectedUjian">
             <option v-for="(x,index,key) in listUjian" :value="index">{{x.nm_matkul + ' - ' + x.nm_dosen + ' - ' + x.nm_kelas}}</option>
         </select>
-        <input class="w3-input w3-section" placeholder="NOBP" v-model="nobp"/>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
 	</div>
 	</form>
+</div>
+</div>
+</div>
 </div>
 </template>
 
@@ -35,7 +37,7 @@ export default {
   },
   methods : {
       getUjian () {
-          axios.get('/api/ujian')
+          axios.get('/api/ujian/peserta?nobp='+this.$session.get('infoUjian').username)
           .then(res=>{
               this.listUjian = res.data.data
               })
@@ -43,27 +45,9 @@ export default {
               console.log(err)
               })
       },
-      cekPeserta () {
-          axios.get('/api/cek/'+this.listUjian[this.selectedUjian].id_tsoal+'/ujian/'+this.listUjian[this.selectedUjian].id_ujian+'/peserta/'+this.nobp)
-          .then(res=>{
-            var hasil = res.data.data
-            console.log(hasil.length)
-            if(hasil.length > 0){
-                if(hasil[0].status == true) console.log('anda sudah ujian')
-                else{
-                    console.log('anda belum ujian')
-                    hasil = hasil[0]
-                    var b = this.listUjian[this.selectedUjian]
-                    var infoUjian = Object.assign(hasil,b)
-                    this.$session.set('infoUjian',infoUjian)
-                    console.log(this.$session.get('infoUjian'))
-                    this.$router.push({path: '/ujian/petunjuk'})
-                }
-            }else console.log('anda tidak terdaftar')
-            })
-            .catch(err=>{
-                console.log(err)
-                })
+      masukUjian(){
+          this.$session.set('infoUjian',this.listUjian[this.selectedUjian])
+          this.$router.push({path : '/ujian/petunjuk'})
       }
   }
 }

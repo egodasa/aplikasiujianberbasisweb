@@ -4,7 +4,6 @@ var pk = 'id_kuliah';
 var tbl = 'tbkuliah';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
-	var nidn = req.query.nidn || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
@@ -14,23 +13,13 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        if(nidn == 0){
-             query.count = db('lap_kuliah').select()
-             query.tmp = db('lap_kuliah').select()
-         }
-        else {
-            query.count = db('lap_kuliah').select().where('nidn',nidn)
-            query.tmp = db('lap_kuliah').select().where('nidn',nidn)
-        }
+         query.count = db('lap_kuliah').select()
+         //query.tmp = db('lap_kuliah').select().where(req.query)
+         query.tmp = db('lap_kuliah').select()
     }
     else{
-        if(nidn == 0){
-            query.count = db('lap_kuliah').select().where('id_kuliah',id)
-            query.tmp = db('lap_kuliah').select().where('id_kuliah',id)
-        }else{
-            query.count = db('lap_kuliah').select().where({id_kuliah: id,nidn: nidn})
-            query.tmp = db('lap_kuliah').select().where({id_kuliah: id,nidn: nidn})
-        }
+        query.count = db('lap_kuliah').select().where('id_kuliah',id)
+        query.tmp = db('lap_kuliah').select().where('id_kuliah',id)
     }
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)
@@ -103,10 +92,10 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
     var limit = parseInt(parseInt(req.query.limit)) || null;
 	var offset = parseInt(parseInt(req.query.offset)) || null;
     var belumDitambahkan = req.query.belumDitambahkan || 0;
-    if(belumDitambahkan == 0) var query = db('lap_kuliah_mhs').select().where('id_kuliah',id)
+    if(belumDitambahkan == 0) var query = db('lap_kuliah_mahasiswa').select().where('id_kuliah',id)
     else {
-        var query = db('lap_kuliah_mhs').select('id_mahasiswa').where('id_kuliah',id)
-        query = db('tbmahasiswa').select().whereNotIn('id_mahasiswa',query)
+        var query = db('lap_kuliah_mahasiswa').select('nobp').where('id_kuliah',id)
+        query = db('tbmahasiswa').select().whereNotIn('nobp',query)
     }
 	query.limit(limit).offset(offset).
 	then(function(rows){

@@ -7,10 +7,10 @@
         <div class="w3-modal-content w3-animate-top">
         <form class="w3-card-8 w3-container w3-section" id="addData" @submit.prevent="submitData()" name="addData">
             <h3>Tambah Soal</h3>
-                <input class="w3-radio" type="hidden" name="id_tsoal" v-model="dataForm.id_tsoal" />
+                <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
             <textarea name="isi_soal" v-validate data-vv-rules="required" data-vv-as="Isi soal" class="w3-input w3-border" type="text" v-model="dataForm.isi_soal" placeholder="Isi Soal"></textarea>
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
-            <template v-if="dataForm.id_tsoal == 1">
+            <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
                 <div class="w3-col l1">
                     <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].huruf" :value='x.huruf' placeholder="Huruf" /><label class="w3-label w3-text-red"></label>
@@ -78,7 +78,7 @@ export default {
                   {huruf:'D',isi_pilihan:null},
                   {huruf:'E',isi_pilihan:null}
                 ],
-            id_tsoal : 1,
+            id_jsoal : 1,
             bobot : undefined
           },
           pilihanGandaDef : [
@@ -107,7 +107,7 @@ export default {
           .then(res=>{
               console.log(res.data)
               this.detailUjian = res.data.data[0]
-              this.dataForm.id_tsoal = this.detailUjian.id_tsoal
+              this.dataForm.id_jsoal = this.detailUjian.id_jsoal
               })
           .catch(err=>{
               console.log(err)
@@ -127,11 +127,11 @@ export default {
           this.dataForm.jawaban = null
           this.dataForm.id_soal = undefined
           this.dataForm.pilihanGanda = this.pilihanGandaDef
-          this.id_tsoal = 1
+          this.id_jsoal = 1
           this.bobot = undefined
       },
       submitData () {
-          if(this.dataForm.id_tsoal == 2) this.dataForm.pilihanGanda = undefined
+          if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
           console.log(this.dataForm)
           if(this.dataForm.id_soal == undefined || this.dataForm.id_soal == null){
               var method = 'POST'

@@ -16,11 +16,6 @@ var validasi = {
 			options : [{min : 14,max : 14}],
 			errorMessage : 'NOBP tidak benar ...'
 		}
-	},
-	'id_kelas': {
-		notEmpty : {
-			errorMessage : 'Kelas harus diisi ...'
-		}
 	}
     
 };

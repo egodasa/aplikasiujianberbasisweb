@@ -48,9 +48,18 @@ export default {
               let hasil = res.data.data
               if(hasil.length == 0) console.log('username atau password salah')
               else {
-                  this.$session.set('user',hasil[0])
-                  Bus.$emit('setMenu',hasil[0].id_tipe)
-                  this.$router.push({path: hasil[0].id_tipe == 1 ? '/admin' : '/dosen'})
+                  var x = {}
+                  if(hasil[0].id_juser == 1){
+                      this.$session.set('user',hasil[0])
+                      x = {path : '/admin'}
+                  }else if(hasil[0].id_juser == 2){
+                      this.$session.set('user',hasil[0])
+                      x = {path : '/dosen'}
+                  }else if(hasil[0].id_juser == 3){
+                      this.$session.set('infoUjian',hasil[0])
+                      x = {path : '/ujian/login'}
+                  }else this.$router.push({path: '/'})
+                  this.$router.push(x)
               }
               })
           .catch(err=>{

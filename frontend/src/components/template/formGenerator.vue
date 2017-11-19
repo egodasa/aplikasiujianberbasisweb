@@ -1,7 +1,7 @@
 <template>
 <div id="genForm">
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
-        <div class="w3-modal-content w3-animate-top">
+        <div class="w3-modal-content">
         <form class="w3-card-8 w3-container w3-section" v-if="showForm" id="addData" @submit.prevent="submitData()" name="addData" method="POST">
             <h3>Tambah Data</h3>
             <span v-for="x in input">
@@ -119,6 +119,7 @@ export default {
                 console.log('pantek')
 				if(res.data.status == false) {
                     console.log(res.data)
+                    this.output[this.pk] = undefined
                 }
 				else {
                     Bus.$emit('newData')

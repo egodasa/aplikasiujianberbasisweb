@@ -21,7 +21,7 @@ export default {
   methods : {
       batalkanUjian () {
           this.$session.destroy()
-          this.$router.push({path: '/ujian/login'})
+          this.$router.push({path: '/login'})
       }
   }
 }

@@ -41,7 +41,7 @@
     <div class="w3-col l6 s12 w3-large">
         <div class="w3-padding">
             <p>{{posisiSoal+1}}. {{listSoal[posisiSoal].isi_soal}}</p>
-            <template v-if="infoUjian.id_tsoal == 1">
+            <template v-if="infoUjian.id_jsoal == 1">
             <label for="jawaban" v-for="x in listSoal[posisiSoal].pilihanGanda">
                 <input class="w3-radio" type="radio" name="jawaban" @click="simpanJawaban(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawaban"/> {{x.isi_pilihan}}<br/>
             </label>
@@ -131,7 +131,7 @@ export default {
            }
       },
       kumpulkanUjian () {
-          if(this.infoUjian.id_tsoal == 1){
+          if(this.infoUjian.id_jsoal == 1){
               var benar = 0
               var salah = 0
               console.log(this.ljk)
@@ -151,7 +151,7 @@ export default {
               .catch(err=>{
                   console.log(err)
                   })
-          }else if(this.infoUjian.id_tsoal == 2){
+          }else if(this.infoUjian.id_jsoal == 2){
               var hasil = []
               _.forEach(this.jawabanPeserta, (v,k)=>{
                   hasil.push({
@@ -170,7 +170,7 @@ export default {
                   })
           }
           this.$session.destroy()
-          this.$router.push({path: '/ujian/login'})
+          this.$router.push({path: '/'})
       },
       simpanJawaban (x,jawaban){
           this.jawabanPeserta[x].jawaban = jawaban

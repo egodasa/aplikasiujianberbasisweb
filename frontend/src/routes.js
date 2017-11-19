@@ -34,7 +34,7 @@ export default [
   // Redirects to /route-one as the default route.
   {
     path: '/',
-    component : home
+    component : loginPengguna
   },
   {
     path: '/admin',

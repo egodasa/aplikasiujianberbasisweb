@@ -9,7 +9,7 @@
                 <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
             </span>
             <span class="hint--top" aria-label="Periksa Ujian">
-                <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_tsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
+                <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_jsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
             </span>
             <span class="hint--top" aria-label="Hasil Ujian">
                 <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" ><i class="fa fa-list-ol "></i></router-link>
@@ -36,12 +36,12 @@ export default {
             listForm : [
 				{
 					caption: "Tipe Soal Ujian",
-					name:"id_tsoal",
+					name:"id_jsoal",
 					jenis:"radioButton",
 					tipe:"text",
 					value:null,
-                    valueSelect : "id_tsoal",
-                    captionSelect : "nm_tipe"
+                    valueSelect : "id_jsoal",
+                    captionSelect : "jsoal"
 					},
                 {
 					caption: "Mata Kuliah",
@@ -59,22 +59,22 @@ export default {
 					tipe:"text",
 					value:null,
                     valueSelect : "id_jujian",
-                    captionSelect : "nm_jenis",
+                    captionSelect : "nm_jujian",
 					},
                 {
-					caption: "Jam",
-					name:"jam",
+					caption: "Jam Mulai",
+					name:"mulai",
 					jenis:"textField",
-					tipe:"number",
+					tipe:"selectOption",
 					value:null,
 					min:0,
 					max:60
 					},
 				{
-					caption: "Menit",
-					name:"menit",
+					caption: "Jam Selesai",
+					name:"selesai",
 					jenis:"textField",
-					tipe:"number",
+					tipe:"selectOption",
 					value:null ,
 					min:0,
 					max:60
@@ -91,13 +91,13 @@ export default {
 			],
             tableContent : {
                 header :  ['Matkul','Jenis','Kelas','Tipe Ujian'],
-                content : ['id_ujian','nm_matkul','nm_jenis','nm_kelas','nm_tipe']
+                content : ['id_ujian','nm_matkul','nm_jujian','nm_kelas','nm_jsoal']
             }
         }
   },
   created () {
       this.getDataSelect('kuliah',1)
-      this.getDataSelect('tipe_soal',0)
+      this.getDataSelect('jenis_soal',0)
       this.getDataSelect('jenis_ujian',2)
   },
   methods : {

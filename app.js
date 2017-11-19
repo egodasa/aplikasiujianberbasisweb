@@ -44,7 +44,7 @@ app.use('/api/mahasiswa', require('./routes/mahasiswa'));
 app.use('/api/matkul', require('./routes/matkul'));
 app.use('/api/kelas', require('./routes/kelas'));
 app.use('/api/jenis_ujian', require('./routes/jenis_ujian'));
-app.use('/api/tipe_soal', require('./routes/tipe_soal'));
+app.use('/api/jenis_soal', require('./routes/tipe_soal'));
 app.use('/api/dosen', require('./routes/dosen'));
 app.use('/api/kuliah', require('./routes/kuliah'));
 app.use('/api/test', require('./routes/test'));

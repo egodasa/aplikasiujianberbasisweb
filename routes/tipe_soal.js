@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/tipe_soal/create_update');
-var pk = 'id_tsoal';
-var tbl = 'tbtipe_soal';
+var pk = 'id_jsoal';
+var tbl = 'tbjenis_soal';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -14,11 +14,11 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('tbtipe_soal').select('id_tsoal')
-        query.tmp = db('tbtipe_soal').select()
+        query.count = db('tbjenis_soal').select('id_jsoal')
+        query.tmp = db('tbjenis_soal').select()
     }else{
-        query.count = db('tbtipe_soal').select().where('id_tsoal',id)
-        query.tmp = db('tbtipe_soal').select().where('id_tsoal',id)
+        query.count = db('tbjenis_soal').select().where('id_jsoal',id)
+        query.tmp = db('tbjenis_soal').select().where('id_jsoal',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp

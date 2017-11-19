@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/dosen/create_update');
-var pk = 'id_dosen';
+var pk = 'id';
 var tbl = 'tbdosen';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
@@ -14,11 +14,11 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('tbdosen').select('id_dosen')
+        query.count = db('tbdosen').select('nidn')
         query.tmp = db('tbdosen').select()
     }else{
-        query.count = db('tbdosen').select().where('id_dosen',id)
-        query.tmp = db('tbdosen').select().where('id_dosen',id)
+        query.count = db('tbdosen').select().where('id',id)
+        query.tmp = db('tbdosen').select().where('id',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp
@@ -110,5 +110,77 @@ router.put('/:id',(req,res,next)=>{
 	}
 	});
 });
+
+//lihat matkul yg diampu dosen
+router.get('/:id/matkul',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_matkul_dosen').select().where('nidn',id)
+    query.tmp = db('lap_matkul_dosen').select().where('nidn',id)
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
+    
+//lihat ujian yg diampu dosen
+router.get('/:id/ujian',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_ujian').select().where('nidn',id)
+    query.tmp = db('lap_ujian').select().where('nidn',id)
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
 
 module.exports = router;

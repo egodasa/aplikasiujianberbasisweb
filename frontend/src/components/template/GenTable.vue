@@ -18,7 +18,12 @@
                 </tr>
                 <tr class="w3-white" v-for="(tr,index,key) in dataTable">
                   <td>{{index+1}}</td>
-                  <td v-for="td in tableContent.content" v-if="td != pk">{{tr[td]}}</td>
+                  <template v-if="showPk == true">
+                    <td v-for="td in tableContent.content">{{tr[td]}}</td>
+                  </template>
+                  <template v-else>
+                    <td v-for="td in tableContent.content" v-if="td != pk">{{tr[td]}}</td>
+                  </template>
                   <td v-if="aksi">
                     <template v-if="tableType == 'edit_hapus'">
                     <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(tr[pk])"><i class="fa fa-edit"></i> 
@@ -120,6 +125,11 @@ export default {
             type : Boolean,
             required : false,
             default : true
+        },
+        showPk : {
+            type : Boolean,
+            required : false,
+            default : false
         }
 	},
   data () {

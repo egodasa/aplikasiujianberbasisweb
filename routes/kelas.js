@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/kelas/create_update');
 var pk = 'id_kelas';
-var tbl = 'tbkelas';
+var tbl = 'tbnama_kelas';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -14,11 +14,11 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('tbkelas').select('id_kelas')
-        query.tmp = db('tbkelas').select()
+        query.count = db('tbnama_kelas').select('id_kelas')
+        query.tmp = db('tbnama_kelas').select()
     }else{
-        query.count = db('tbkelas').select().where('id_kelas',id)
-        query.tmp = db('tbkelas').select().where('id_kelas',id)
+        query.count = db('tbnama_kelas').select().where('id_kelas',id)
+        query.tmp = db('tbnama_kelas').select().where('id_kelas',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp

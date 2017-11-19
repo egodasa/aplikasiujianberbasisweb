@@ -16,23 +16,12 @@ router.get('/:id?', (req, res, next) => {
         tmp : null
     }
     if(id == 0){
-        if(nidn == 0){
-             query.count = db('lap_ujian').select()
-             query.tmp = db('lap_ujian').select()
-         }
-        else {
-            query.count = db('lap_ujian').select().where('nidn',nidn)
-            query.tmp = db('lap_ujian').select().where('nidn',nidn)
-        }
+         query.count = db('lap_ujian').select()
+         query.tmp = db('lap_ujian').select()
     }
     else{
-        if(nidn == 0){
-            query.count = db('lap_ujian').select().where('id_ujian',id)
-            query.tmp = db('lap_ujian').select().where('id_ujian',id)
-        }else{
-            query.count = db('lap_ujian').select().where({id_ujian: id,nidn: nidn})
-            query.tmp = db('lap_ujian').select().where({id_ujian: id,nidn: nidn})
-        }
+        query.count = db('lap_ujian').select().where('id_ujian',id)
+        query.tmp = db('lap_ujian').select().where('id_ujian',id)
     }
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)
