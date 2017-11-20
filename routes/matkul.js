@@ -152,17 +152,16 @@ router.get('/:idMatkul/dosen',(req, res, next)=>{
 router.post('/:id/dosen',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
-    db('tbmatkul_dosen').insert(data).
-    then(function(){
-        hasil.status = true;
-        res.json(hasil);
-        }).
-    catch(function(err){
-        hasil.status = false;
-        hasil.err = err;
-        res.json(hasil);
-        });
+		db('tbmatkul_dosen').insert(data).
+		then(function(){
+			hasil.status = true;
+			res.json(hasil);
+			}).
+		catch(function(err){
+			hasil.status = false;
+			hasil.err = err;
+			res.json(hasil);
+			});
 	});
 router.delete('/:id/dosen/:id_dosen',(req,res,next)=>{
 	var id_dosen = req.params.id_dosen;

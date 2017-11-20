@@ -61,8 +61,12 @@
                 <br/>
               </template>
               <template v-else>
-                  Data kosong<br/>
-                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-deep-orange w3-left w3-clear"><i class="fa fa-refresh" style="font-size:17px"></i> Refresh</button>
+                  <span class="w3-left">
+                  <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
+                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
+                  Data kosong
+                  </span><br/>
+                  
               </template>
           </template>
           <template v-else>

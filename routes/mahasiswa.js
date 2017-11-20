@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/mahasiswa/create_update');
-var pk = 'id';
+var pk = 'id_mahasiswa';
 var tbl = 'tbmahasiswa';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
@@ -15,12 +15,12 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('tbmahasiswa').select('id')
+        query.count = db('tbmahasiswa').select('id_mahasiswa')
         //query.tmp = db('tbmahasiswa').select().where(req.query)
         query.tmp = db('tbmahasiswa').select()
     }else{
-        query.count = db('tbmahasiswa').select().where('id',id)
-        query.tmp = db('tbmahasiswa').select().where('id',id)
+        query.count = db('tbmahasiswa').select().where('id_mahasiswa',id)
+        query.tmp = db('tbmahasiswa').select().where('id_mahasiswa',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp

@@ -147,6 +147,34 @@ router.get('/:id/matkul',(req, res, next)=>{
 		});
 	});
     
+router.post('/:id/matkul',(req,res,next)=>{
+	var data = req.body;
+	var hasil = {};
+		db('tbmatkul_dosen').insert(data).
+		then(function(){
+			hasil.status = true;
+			res.json(hasil);
+			}).
+		catch(function(err){
+			hasil.status = false;
+			hasil.err = err;
+			res.json(hasil);
+			});
+	});
+router.delete('/:id/matkul/:id_matkul',(req,res,next)=>{
+	var id = req.params.id_matkul;
+	var hasil = {}
+	db('tbmatkul_dosen').where('id_mdosen',id).del().
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
+		res.json(hasil);
+		});
+	});
 //lihat ujian yg diampu dosen
 router.get('/:id/ujian',(req, res, next)=>{
 	var id = req.params.id || 0;

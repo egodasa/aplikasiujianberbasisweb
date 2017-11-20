@@ -25,6 +25,7 @@ import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
 import axios from 'axios'
+import _ from 'lodash'
 export default {
   name: 'kelolaUjian',
   components : {
@@ -35,24 +36,15 @@ export default {
           url : 'ujian',
             listForm : [
 				{
-					caption: "Tipe Soal Ujian",
-					name:"id_jsoal",
-					jenis:"radioButton",
-					tipe:"text",
-					value:null,
-                    valueSelect : "id_jsoal",
-                    captionSelect : "jsoal"
-					},
-                {
 					caption: "Mata Kuliah",
 					name:"id_kuliah",
 					jenis:"selectOption",
 					tipe:"text",
 					value:null,
                     valueSelect : "id_kuliah",
-                    captionSelect : "nm_matkul"
+                    captionSelect : "captionSelect"
 					},
-				{
+                    {
 					caption: "Jenis Ujian",
 					name:"id_jujian",
 					jenis:"selectOption",
@@ -61,6 +53,43 @@ export default {
                     valueSelect : "id_jujian",
                     captionSelect : "nm_jujian",
 					},
+                    {
+					caption: "Jenis Soal Ujian",
+					name:"id_jsoal",
+					jenis:"radioButton",
+					tipe:"text",
+					value:null,
+                    valueSelect : "id_jsoal",
+                    captionSelect : "nm_jsoal"
+					},
+                    {
+					caption: "Waktu Ujian",
+					name:"hari",
+					jenis:"textField",
+					tipe:"text",
+					value:"2017-12-30",
+					},
+                    {
+					caption: "Jam Mulai",
+					name:"mulai",
+					jenis:"textField",
+					tipe:"text",
+					value:"12:00",
+					},
+                    {
+					caption: "Jam Berakhir",
+					name:"selesai",
+					jenis:"textField",
+					tipe:"text",
+					value:"14:00",
+					},
+                    {
+					caption: "Keterangan Ujian",
+					name:"deskripsi",
+					jenis:"textArea",
+					tipe:"text"
+					}
+                    /*
                 {
 					caption: "Jam Mulai",
 					name:"mulai",
@@ -87,7 +116,7 @@ export default {
 					value:null ,
 					min:0,
 					max:60
-					}
+					}*/
 			],
             tableContent : {
                 header :  ['Matkul','Jenis','Kelas','Tipe Ujian'],
@@ -96,15 +125,27 @@ export default {
         }
   },
   created () {
-      this.getDataSelect('kuliah',1)
-      this.getDataSelect('jenis_soal',0)
-      this.getDataSelect('jenis_ujian',2)
+      this.getDataKuliah('kuliah',0)
+      this.getDataSelect('jenis_ujian',1)
+      this.getDataSelect('jenis_soal',2)
   },
   methods : {
         getDataSelect (x,y) {
             axios.get('api/'+x)
                 .then(res=>{
                     this.listForm[y].option = res.data.data
+                    })
+                .catch((err)=>{
+                    console.log(err)
+                    })
+        },
+        getDataKuliah () {
+            axios.get('api/kuliah')
+                .then(res=>{
+                    this.listForm[0].option = res.data.data
+                    _.forEach(this.listForm[0].option, (v,k)=>{
+                        v.captionSelect = v.nm_dosen +' - '+ v.nm_matkul + ' - ' + v.nm_kelas
+                        })
                     })
                 .catch((err)=>{
                     console.log(err)

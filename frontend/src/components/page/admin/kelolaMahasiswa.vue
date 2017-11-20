@@ -45,7 +45,7 @@ export default {
 			],
             tableContent : {
                 header : ['Nama','NOBP'],
-                content : ['id','nm_mahasiswa','nobp']
+                content : ['id_mahasiswa','nm_mahasiswa','nobp']
             }
         }
   },

@@ -3,7 +3,13 @@
 <div class="w3-container">
     <h2>Daftar Dosen</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent">
+        <template slot="customAction" scope="ca">
+            <span class="hint--top" aria-label="Matkul Diampu">
+                <router-link :to="{name:'kelolaDosenMatkul',params:{nidn:ca.pkData.nidn}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
+            </span>
+        </template>
+    </gen-table>
 </div>
 </admin>
 </template>

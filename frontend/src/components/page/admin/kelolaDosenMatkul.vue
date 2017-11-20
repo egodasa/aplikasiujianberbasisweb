@@ -4,16 +4,16 @@
     <h2>Daftar Dosen Pengampu</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
         <h2>Tambah Data</h2>
-        <label>Pilih Dosen</label>
+        <label>Pilih Mata Kuliah</label>
         <span class="w3-container">
-        <v-select v-model="dosen" multiple :options="listDosen" label="nm_dosen"></v-select>
+        <v-select v-model="matkul" multiple :options="listMatkul" label="nm_matkul"></v-select>
         </span>
         <span class="w3-container">
         <button class="w3-button w3-blue " @click="submitData()">Tambahkan</button>
         <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
         </span>
     </gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" tableType="hapus" :tableContent="tableContent">
+    <gen-table :pk="tableContent.content[0]" tableType="hapus" :url="url" :tableContent="tableContent">
     </gen-table>
 </div>
 </admin>
@@ -23,34 +23,34 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
+import axios from 'axios'
 import _ from 'lodash'
 import { Bus } from '../../../bus.js';
-import axios from 'axios'
 
 export default {
-  name: 'kelolaMatkulDosen',
+  name: 'kelolaDosenMatkul',
   components : {
       genTable, genForm, admin
   },
   data () {
       return {
-          url : 'matkul/'+this.$route.params.kdMatkul+'/dosen',
+          url : 'dosen/'+this.$route.params.nidn+'/matkul',
           tableContent : {
-            header :  ['NIDN','Nama Dosen'],
-            content : ['id_mdosen','nidn','nm_dosen']
+            header :  ['Kode MK','Nama Matkul'],
+            content : ['id_mdosen','kd_matkul','nm_matkul']
             },
-            dosen : null,
-            listDosen : []
-            }
+          matkul : null,
+          listMatkul : []
+        }
     },
     created () {
-        this.getListDosen()
+        this.getListMatkul()
     },
     methods : {
         submitData (){
             var tmp = []
-            _.forEach(this.dosen, (v,k)=>{
-                tmp.push({id_mdosen:v.nidn+""+this.$route.params.kdMatkul ,nidn:v.nidn,kd_matkul:this.$route.params.kdMatkul})
+            _.forEach(this.matkul, (v,k)=>{
+                tmp.push({id_mdosen:this.$route.params.nidn+""+v.kd_matkul ,nidn:this.$route.params.nidn,kd_matkul:v.kd_matkul})
                 })
             axios.post('api/'+this.url,tmp)
             .then(res=>{
@@ -63,10 +63,10 @@ export default {
                 })
             
         },
-        getListDosen () {
-            axios.get('api/dosen')
+        getListMatkul () {
+            axios.get('api/matkul')
             .then(res=>{
-                this.listDosen = res.data.data
+                this.listMatkul = res.data.data
                 })
             .catch(err=>{
                 })
@@ -74,7 +74,7 @@ export default {
         toggleFormData() {
             Bus.$emit('toggleFormData')
         }
-}
+    }
 }
 </script>
 

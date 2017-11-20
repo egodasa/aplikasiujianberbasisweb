@@ -5,9 +5,11 @@ import kelolaPesertaUjian from './components/page/admin/kelolaPesertaUjian.vue';
 import kelolaSoalUjian from './components/page/admin/kelolaSoalUjian.vue';
 import kelolaKelas from './components/page/admin/kelolaKelas.vue';
 import kelolaMatkul from './components/page/admin/kelolaMatkul.vue';
+import kelolaMatkulDosen from './components/page/admin/kelolaMatkulDosen.vue';
 import kelolaTipeSoal from './components/page/admin/kelolaTipeSoal.vue';
 import kelolaJenisUjian from './components/page/admin/kelolaJenisUjian.vue';
 import kelolaDosen from './components/page/admin/kelolaDosen.vue';
+import kelolaDosenMatkul from './components/page/admin/kelolaDosenMatkul.vue';
 import kelolaKuliah from './components/page/admin/kelolaKuliah.vue';
 import kelolaKuliahMahasiswa from './components/page/admin/kelolaKuliahMahasiswa.vue';
 import hasilUjian from './components/page/admin/hasilUjian.vue';
@@ -98,6 +100,11 @@ export default [
     component: kelolaMatkul
   },
   {
+    path: '/admin/matkul/:kdMatkul/dosen',
+    name: 'kelolaMatkulDosen',
+    component: kelolaMatkulDosen
+  },
+  {
     path: '/admin/kuliah',
     name: 'kelolaKuliah',
     component: kelolaKuliah
@@ -121,6 +128,11 @@ export default [
     path: '/admin/dosen',
     name: 'kelolaDosen',
     component: kelolaDosen
+  },
+  {
+    path: '/admin/dosen/:nidn/matkul',
+    name: 'kelolaDosenMatkul',
+    component: kelolaDosenMatkul
   },
   {
     path: '/ujian/login',

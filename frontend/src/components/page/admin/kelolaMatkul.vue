@@ -4,6 +4,11 @@
     <h2>Daftar Mata Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table pk="id_matkul" :url="url" :tableContent="tableContent">
+        <template slot="customAction" scope="ca">
+            <span class="hint--top" aria-label="Dosen Pengampu">
+                <router-link :to="{name:'kelolaMatkulDosen',params:{kdMatkul:ca.pkData.kd_matkul}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
+            </span>
+        </template>
     </gen-table>
 </div>
 </admin>
