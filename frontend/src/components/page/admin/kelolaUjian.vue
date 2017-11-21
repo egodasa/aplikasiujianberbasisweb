@@ -89,38 +89,10 @@ export default {
 					jenis:"textArea",
 					tipe:"text"
 					}
-                    /*
-                {
-					caption: "Jam Mulai",
-					name:"mulai",
-					jenis:"textField",
-					tipe:"selectOption",
-					value:null,
-					min:0,
-					max:60
-					},
-				{
-					caption: "Jam Selesai",
-					name:"selesai",
-					jenis:"textField",
-					tipe:"selectOption",
-					value:null ,
-					min:0,
-					max:60
-					},
-				{
-					caption: "Detail Ujian",
-					name:"deskripsi",
-					jenis:"textField",
-					tipe:"text",
-					value:null ,
-					min:0,
-					max:60
-					}*/
 			],
             tableContent : {
-                header :  ['Matkul','Jenis','Kelas','Tipe Ujian'],
-                content : ['id_ujian','nm_matkul','nm_jujian','nm_kelas','nm_jsoal']
+                header :  ['Matkul','Kelas',],
+                content : ['id_ujian','nm_matkul','nm_kelas']
             }
         }
   },

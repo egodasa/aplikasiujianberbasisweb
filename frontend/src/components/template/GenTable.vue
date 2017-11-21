@@ -7,8 +7,9 @@
               <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
               </span>
               <span class="w3-right">
-              <input type="search" class="w3-class w3-bordered w3-big" /> 
-              <button type="button" class="w3-button w3-green w3-hover-blue-gray w3-small"><i class="fa fa-search"></i></button>
+              <input type="search" class="w3-class w3-bordered w3-big" v-model="cari" /> 
+              <button type="button" class="w3-button w3-green w3-hover-blue-gray w3-small" @click="cariData()"><i class="fa fa-search"></i></button>
+              <button type="button" class="w3-button w3-red w3-hover-blue-gray w3-small" @click="resetCariData()"><i class="fa fa-close  "></i></button>
               </span>
               <table :class="tableCenter">
                 <tr class="w3-teal">
@@ -16,7 +17,7 @@
                   <th v-for="th in tableContent.header" v-if="th != pk">{{th}}</th>
                   <th v-if="aksi">Aksi</th>
                 </tr>
-                <tr class="w3-white" v-for="(tr,index,key) in dataTable">
+                <tr class="w3-white w3-hover-light-gray" v-for="(tr,index,key) in dataTable">
                   <td>{{index+1}}</td>
                   <template v-if="showPk == true">
                     <td v-for="td in tableContent.content">{{tr[td]}}</td>
@@ -143,7 +144,9 @@ export default {
       pageRows : 10,
       pageNumber : null,
       spinStatus : true,
-      showPilihan : false
+      showPilihan : false,
+      pencarian : false,
+      cari : null
     }
   },
   created () {
@@ -186,7 +189,11 @@ export default {
             this.spinStatus = true
 			this.pageRows = limit
 			this.pageNumber = offset
-			axios.get(this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery)
+            var url
+            if(this.pencarian == true){
+                url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
+            }else url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
+			axios.get(url)
 			.then(res=>{
                 if(res.data.status == true){
                     this.totalRows = res.data.row
@@ -221,6 +228,14 @@ export default {
         },
         toggleFormData () {
             Bus.$emit('toggleFormData')
+        },
+        cariData () {
+            this.pencarian = true
+            this.getData(10,0)
+        },
+        resetCariData () {
+            this.pencarian = false
+            this.getData(10,0)
         }
 	},
     destroyed () {

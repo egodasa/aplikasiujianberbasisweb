@@ -42,17 +42,9 @@ router.get('/:id?', (req, res, next) => {
 		});
     });
 router.post('/', (req, res, next) => {
-	console.log(req.header('content-type'));
     var data = req.body;
     var hasil = {};
-    data.durasi_ujian = (data.jam*3600000)+(data.menit*60000)
-    db('tbujian').insert({
-        id_kuliah : data.id_kuliah,
-        id_tsoal : data.id_tsoal,
-        id_jujian : data.id_jujian,
-        durasi_ujian : data.durasi_ujian,
-        deskripsi : data.deskripsi
-        }).
+    db('lap_ujian').insert(data).
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -138,10 +130,10 @@ router.post('/:id/soal/', (req, res, next) => {
         isi_soal:data.isi_soal,
         jawaban:data.jawaban,
         pilihanGanda:JSON.stringify(data.pilihanGanda),
-        id_tsoal:data.id_tsoal,
+        id_jsoal:data.id_jsoal,
         bobot:data.bobot
         }).returning('id_soal').then((id)=>{
-		return db('tbsoal_ujian').insert({id_ujian:id_ujian,id_soal:1*id+0})
+		return db('tbsoal_ujian').insert({id_ujian:id_ujian,id_soal:parseInt(id)})
 		}).
     then(()=>{
         hasil.status =true;

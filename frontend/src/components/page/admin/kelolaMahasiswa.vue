@@ -48,20 +48,6 @@ export default {
                 content : ['id_mahasiswa','nm_mahasiswa','nobp']
             }
         }
-  },
-  created () {
-      this.getDataKelas()
-  },
-  methods : {
-        getDataKelas () {
-            axios.get('api/kelas')
-                .then(res=>{
-                    this.listForm[2].option = res.data.data
-                    })
-                .catch((err)=>{
-                    console.log(err)
-                    })
-        }
   }
 }
 </script>

@@ -1,10 +1,7 @@
 <template>
-    <admin>
-    <div>
-    <div class="w3-container w3-blue-gray w3-round">
-        <h2>Soal Ujian {{detailUjian.nm_matkul || null}}</h2>
-    </div>
-    <button type="button" @click="toggleFormData()" class="w3-button w3-blue">Tambah Data</button>
+<admin>
+<div class="w3-container">
+<h2>Daftar Soal {{detailUjian.nm_matkul}}</h2>
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content w3-animate-top">
         <form class="w3-card-8 w3-container w3-section" id="addData" @submit.prevent="submitData()" name="addData">
@@ -80,7 +77,7 @@ export default {
                   {huruf:'D',isi_pilihan:null},
                   {huruf:'E',isi_pilihan:null}
                 ],
-            id_jsoal : 1,
+            id_jsoal : null,
             bobot : undefined
           },
           pilihanGandaDef : [
@@ -97,6 +94,9 @@ export default {
       Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
+      Bus.$on('toggleFormData',()=>{
+          this.toggleFormData()
+          })
       this.getDetailUjian()
   },
   methods : {

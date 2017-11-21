@@ -118,7 +118,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-    db('tbkuliah_mhs').insert(data).
+    db('tbkuliah_mahasiswa').insert(data).
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -132,7 +132,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
 router.delete('/:id/mahasiswa/:idMhs',(req,res,next)=>{
 	var id_mhs = req.params.idMhs;
 	var hasil = {};
-	db('tbkuliah_mhs').where('id_kmhs',id_mhs).del().
+	db('tbkuliah_mahasiswa').where('id_kmhs',id_mhs).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);

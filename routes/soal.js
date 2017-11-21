@@ -59,7 +59,7 @@ router.post('/',(req,res,next)=>{
         isi_soal:data.isi_soal,
         jawaban:data.jawaban,
         pilihanGanda:JSON.stringify(data.pilihanGanda),
-        id_tsoal:data.id_tsoal,
+        id_jsoal:data.id_jsoal,
         bobot:data.bobot
         }).then(()=>{
 		hasil.status =true;

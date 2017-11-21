@@ -44,6 +44,40 @@ router.get('/:id?',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
+router.get('/cari/:cari',(req, res, next)=>{
+	var cari = req.params.cari;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('tbmatkul').select('kd_matkul').where('kd_matkul','like','%'+cari+'%').orWhere(db.raw('lower(nm_matkul)'),'like','%'+cari+'%')
+    query.tmp = db('tbmatkul').select().where('kd_matkul','like','%'+cari+'%').orWhere(db.raw('lower(nm_matkul)'),'like','%'+cari+'%')
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
