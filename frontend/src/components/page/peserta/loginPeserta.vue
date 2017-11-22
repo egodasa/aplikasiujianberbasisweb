@@ -37,7 +37,7 @@ export default {
   },
   methods : {
       getUjian () {
-          axios.get('/api/ujian/peserta?nobp='+this.$session.get('infoUjian').username)
+          axios.get('/api/mahasiswa/'+this.$session.get('infoUjian').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               })

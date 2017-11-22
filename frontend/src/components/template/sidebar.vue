@@ -11,13 +11,15 @@
     </div>
   </div>
   <hr>
-  <div class="w3-container">
-    <h5>{{title}}</h5>
-  </div>
-  <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <router-link v-for="x in listMenu" :to="x.path" class="w3-bar-item w3-button w3-padding"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
-  </div>
+  <slot>
+      <div class="w3-container">
+        <h5>{{title}}</h5>
+      </div>
+      <div class="w3-bar-block">
+        <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+        <router-link v-for="x in listMenu" :to="x.path" class="w3-bar-item w3-button w3-padding"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
+      </div>
+   </slot>
 </nav>
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 </div>
@@ -33,7 +35,7 @@ export default {
       },
       listMenu : {
           type : Array,
-          required : true,
+          required : false,
           default : function () {
               return [{}]
               }

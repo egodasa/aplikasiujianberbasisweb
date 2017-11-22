@@ -44,7 +44,7 @@ router.get('/:id?', (req, res, next) => {
 router.post('/', (req, res, next) => {
     var data = req.body;
     var hasil = {};
-    db('lap_ujian').insert(data).
+    db('tbujian').insert(data).
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -86,8 +86,45 @@ router.put('/:id', (req, res, next) => {
         });
     });
 
-//Soal Ujian
+//daftar peserta ujian
+//daftar ujian yang diikuti peserta
+router.get('/:id/mahasiswa',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+    console.log(req.query)
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_peserta_ujian').select('nobp').where('id_ujian',id)
+    query.tmp = db('lap_peserta_ujian').select('nobp','nm_mahasiswa').where('id_ujian',id)
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
 
+//Soal Ujian
 router.get('/:id/soal', (req, res, next) => {
     var id = req.params.id;
     var limit = parseInt(req.query.limit) || null;

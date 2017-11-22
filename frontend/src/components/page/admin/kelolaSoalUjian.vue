@@ -62,8 +62,8 @@ export default {
   data () {
       return {
           tableContent : {
-              header : ['Isi Soal'],
-              content : ['id_soal','isi_soal']
+              header : ['Isi Soal','Bobot'],
+              content : ['id_soal','isi_soal','bobot']
           },
           url : 'ujian/'+this.$route.params.idUjian+'/soal',
           showForm : false,

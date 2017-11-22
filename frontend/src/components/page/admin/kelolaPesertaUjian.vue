@@ -1,85 +1,80 @@
 <template>
     <admin>
-    <div>
-    <div class="w3-container w3-blue-gray w3-round">
-        <h2>Daftar Peserta Ujian</h2>
-    </div>
-    <button type="button" @click="toggleFormData()" class="w3-button w3-blue">Tambah Data</button>
-    <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
-        <div class="w3-modal-content w3-animate-top">
-        <div class="w3-card-8 w3-container w3-section" >
-        <span @click="toggleFormData()" class="w3-closebtn">&times;</span>
-            <h3>Tambah Peserta Ujian</h3>
-            <gen-table :url="url+'?belumDitambahkan=ya'" :tableContent="tableContentAdd" tableType="list"></gen-table>
-        </div>
-        </div>
-    </div>
-    <gen-table :url="url" :tableContent="tableContent" tableType="hapus"></gen-table>
-    </div>
+<div class="w3-container">
+    <h2>Daftar Mahasiswa</h2>
+    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
+        <h2>Tambah Data</h2>
+        <label>Pilih Mahasiswa</label>
+        <span class="w3-container">
+        <v-select v-model="mahasiswa" multiple :options="listMahasiswa" label="nm_mahasiswa"></v-select>
+        </span>
+        <span class="w3-container">
+        <button class="w3-button w3-blue " @click="submitData()">Tambahkan</button>
+        <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
+        </span>
+    </gen-form>
+    <gen-table :pk="tableContent.content[0]" :url="url" tableType="hapus" :tableContent="tableContent">
+    </gen-table>
+</div>
 </admin>
 </template>
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import { Bus } from '../../../bus.js';
-import axios from 'axios';
+import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
+import _ from 'lodash'
+import { Bus } from '../../../bus.js';
+import axios from 'axios'
 
 export default {
-  name: 'kelolaPesertaUjian',
+  name: 'kelolaKuliahMahasiswa',
   components : {
-      genTable, admin
+      genTable, admin, genForm
   },
   data () {
       return {
-          url : 'ujian/'+this.$route.params.idUjian+'/mahasiswa',
+          url : 'kuliah/'+this.$route.params.idKuliah+'/mahasiswa',
           tableContent : {
-                header :  ['Nama Peserta','Status'],
-                content : ['id','nm_mahasiswa','status']
-            },
-          tableContentAdd : {
                 header :  ['Nama Mahasiswa'],
-                content : ['nm_mahasiswa']
-          },
-          showForm : false
+                content : ['id_kmhs','nm_mahasiswa']
+            },
+            mahasiswa : null,
+            listMahasiswa : []
         }
   },
   created () {
-      Bus.$on('addDataList', (x)=>{
-          this.addData(x)
-          })
+      this.getListMahasiswa()
   },
   methods : {
-    toggleFormData () {
-           this.showForm = !this.showForm
+    submitData (){
+            var tmp = []
+            _.forEach(this.mahasiswa, (v,k)=>{
+                tmp.push({id_kuliah:this.$route.params.idKuliah,nobp:v.nobp})
+                })
+            axios.post('api/'+this.url,tmp)
+            .then(res=>{
+                Bus.$emit('toggleFormData')
+                Bus.$emit('newData')
+                this.mahasiswa = null
+                })
+            .catch(err=>{
+                console.log(err)
+                })
+            
         },
-    addData (id) {
-            console.log('adddata run')
-            var data = {id_peserta : id,id_ujian:this.$route.params.idUjian}
-            console.log(data)
-            axios({
-				method : 'POST',
-				url :'api/'+this.url,
-                data : data
-				})
-			.then(res=>{
-                if(res.data.status == true) {
-                    this.toggleFormData()
-                    Bus.$emit('newData')
-                }
-                else console.log(res.data.error)
-			})
-			.catch(err=>{
-				console.log(err)
-			})
+        getListMahasiswa () {
+            axios.get('api/mahasiswa')
+            .then(res=>{
+                this.listMahasiswa = res.data.data
+                })
+            .catch(err=>{
+                })
+        },
+        toggleFormData() {
+            Bus.$emit('toggleFormData')
         }
-  },
-  deactivated () {
-      console.log('non aktif')
-  },
-  destroyed () {
-      Bus.$off('addDataList')
-  }
+    }
 }
 </script>
 

@@ -55,7 +55,7 @@ export default [
     component: kelolaUjian
   },
   {
-    path: '/admin/ujian/:idUjian/peserta',
+    path: '/admin/ujian/:idUjian/mahasiswa',
     name : 'kelolaPesertaUjian',
     component: kelolaPesertaUjian
   },

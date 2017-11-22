@@ -1,77 +1,100 @@
 <template>
 <div>
-<div class="w3-container w3-light-gray">
-    <div class="w3-row-padding">
-        <div class="w3-col s12">
-            <div class="w3-center">
-                <h1>Informasi Ujian</h1>
-            </div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-right-align">Nama Peserta : </div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-left-align">{{infoUjian.nm_mahasiswa}}</div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-right-align">Nama Ujian : </div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-left-align">{{infoUjian.nm_matkul}}</div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-right-align">Hari/Tanggal : </div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-left-align">{{hariSekarang}}</div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-right-align">Waktu : </div>
-        </div>
-        <div class="w3-col l6 s12">
-            <div class="w3-left-align">{{waktuSekarang}}</div>
-        </div>
-        <div class="w3-col s12">
-            <div class="w3-border"></div>
-            <div class="w3-medium"><i><b>Jawablah soal dibawah ini dengan benar!</b></i></div>
-        </div>
-    </div>
+<div class="w3-col l3 s12">
+a
 </div>
-<div class="w3-container">
-    <div class="w3-col l6 s12 w3-large">
-        <div class="w3-padding">
-            <p>{{posisiSoal+1}}. {{listSoal[posisiSoal].isi_soal}}</p>
-            <template v-if="infoUjian.id_jsoal == 1">
-            <label for="jawaban" v-for="x in listSoal[posisiSoal].pilihanGanda">
-                <input class="w3-radio" type="radio" name="jawaban" @click="simpanJawaban(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawaban"/> {{x.isi_pilihan}}<br/>
-            </label>
-            </template>
-            <template v-else>
-            <textarea class="w3-input" v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea><br/>
-            <button type="button" class="w3-button w3-blue w3-right w3-section w3-right" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
-            </template>
-        </div>
-    </div>
-    <div class="w3-col l6 s12 w3-large">
-        <h3>Pilih Soal</h3>
-        <button type="button" class="w3-button w3-blue" style="margin-right:5px;" v-for="(y,index,key) in listSoal" @click="showSoal(index)">{{index+1}}</button>
-    </div>
+<div class="w3-col l6 s12">
+   <div class="w3-container">
+      <h3>Informasi Ujian</h3>
+      <div class="w3-col l2 s12">
+         Nama Peserta 
+      </div>
+      <div class="w3-col l10 s12">
+         {{infoUjian.nm_mahasiswa}}
+      </div>
+      <div class="w3-col l2 s12">
+         Nama Ujian 
+      </div>
+      <div class="w3-col l10 s12">
+         {{infoUjian.nm_matkul}}
+      </div>
+      <div class="w3-col l2 s12">
+         Hari/Tanggal 
+      </div>
+      <div class="w3-col l10 s12">
+         {{hariSekarang}}
+      </div>
+      <div class="w3-col l2 s12">
+         Waktu 
+      </div>
+      <div class="w3-col l10 s12">
+         {{waktuSekarang}}
+      </div>
+      <div class="w3-col s12">
+         <div class="w3-border"></div>
+         <div class="w3-medium"><i><b>Jawablah soal dibawah ini dengan benar!</b></i></div>
+      </div>
+   </div>
+   <div class="w3-container">
+      <p>{{posisiSoal+1}}. {{listSoal[posisiSoal].isi_soal}}</p>
+      <template v-if="infoUjian.id_jsoal == 1">
+         <label for="jawaban" v-for="x in listSoal[posisiSoal].pilihanGanda">
+         <input class="w3-radio" type="radio" name="jawaban" @click="simpanJawaban(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawaban"/> {{x.isi_pilihan}}<br/>
+         </label>
+   <div class="w3-col s12">
+   <div class="w3-border"></div>
+   </div>
+   <br/>
+   <div class="w3-col l2 s12">
+       <button type="button" :disabled="posisiSoal == 0" class="w3-button w3-blue w3-small w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal-1)"><< </button>
+   </div>
+   <div class="w3-col l8 s12">
+        <button type="button" class="w3-button w3-blue w3-small w3-border w3-border-light-gray" v-for="(y,index,key) in listSoal" @click="showSoal(index)">{{index+1}}</button>
+   </div>
+   <div class="w3-col l2 s12">
+       <button type="button" :disabled="posisiSoal+1 == listSoal.length" class="w3-button w3-small w3-blue w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal+1)"> >> </button>
+   </div>
+   <hr/>
+    <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
+   </template>
+   <template v-else>
+      <textarea class="w3-input" v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea>
+      <br/>
+      <div class="w3-col l6 s12">
+         <span class="w3-left">
+         <button type="button" class="w3-button w3-red w3-right" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
+         </span>
+      </div>
+      <div class="w3-col l6 s12">
+         <span class="w3-right">
+         <button type="button" class="w3-button w3-blue w3-right" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
+         </span>
+      </div>
+   </template>
+   </div>
+   
 </div>
-<div class="w3-container">
-    <div class="w3-col s12">
-        <button type="button" class="w3-button w3-red w3-right w3-section w3-right" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
-    </div>
+<div class="w3-col l3 s12">
+a
 </div>
 </div>
 </template>
-
 <script>
 import axios from 'axios'
 import _ from 'lodash'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
+import peserta from './halamanUjian.vue'
+import secHeader from '../../template/header.vue'
+import secFooter from '../../template/footer.vue'
+import secContent from '../../template/content.vue'
+import secSidebar from '../../template/sidebar.vue'
+
 export default {
   name: 'pelaksanaanUjian',
+  components : {
+      peserta, secHeader, secFooter, secContent, secSidebar
+  },
   data () {
       return {
           infoUjian : {},
@@ -130,7 +153,7 @@ export default {
                this.showSoal(this.posisiSoal)
            }
       },
-      kumpulkanUjian () {
+      kumpulkanUjian () {/*
           if(this.infoUjian.id_jsoal == 1){
               var benar = 0
               var salah = 0
@@ -168,7 +191,7 @@ export default {
               .catch(err=>{
                   console.log(err)
                   })
-          }
+          }*/
           this.$session.destroy()
           this.$router.push({path: '/'})
       },

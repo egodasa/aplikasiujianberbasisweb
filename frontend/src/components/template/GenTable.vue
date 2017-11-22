@@ -1,7 +1,7 @@
 <template>
   <div class="w3-responsive">
         <template v-if="spinStatus == false">
-              <template v-if="dataTable.length > 0">
+              <template v-if="dataTable.data.length > 0">
               <span class="w3-left">
               <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
               <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
@@ -17,8 +17,8 @@
                   <th v-for="th in tableContent.header" v-if="th != pk">{{th}}</th>
                   <th v-if="aksi">Aksi</th>
                 </tr>
-                <tr class="w3-white w3-hover-light-gray" v-for="(tr,index,key) in dataTable">
-                  <td>{{index+1}}</td>
+                <tr class="w3-white w3-hover-light-gray" v-for="(tr,index,key) in dataTable.data">
+                  <td v-if="rowNumber">{{index+1}}</td>
                   <template v-if="showPk == true">
                     <td v-for="td in tableContent.content">{{tr[td]}}</td>
                   </template>
@@ -49,6 +49,9 @@
                     </template>
                     <slot name="customAction" :pkData="tr"></slot>
                   </td>
+                </tr>
+                <tr>
+                    <td :colspan="columnTotal" class="w3-center w3-teal"><b>Total Data : {{dataTable.row}} baris</b></td>
                 </tr>
                 </table>
                 <div class="w3-section w3-left">
@@ -135,11 +138,16 @@ export default {
             type : Boolean,
             required : false,
             default : false
+        },
+        rowNumber : {
+            type : Boolean,
+            required : false,
+            default : true
         }
 	},
   data () {
     return {
-      dataTable : [],
+      dataTable : {},
       totalRows : 0,
       pageRows : 10,
       pageNumber : null,
@@ -157,7 +165,7 @@ export default {
   },
   computed : {
         tableCenter : function () {
-            if(this.spinStatus == true || this.dataTable.length < 1) return "w3-table-all w3-centered"
+            if(this.spinStatus == true || this.dataTable.data.length < 1) return "w3-table-all w3-centered"
             else return "w3-table-all"
         },
 		pageNumberList : function () {
@@ -168,7 +176,14 @@ export default {
 				pnl[x] = x*this.pageRows
 			}
 			return pnl
-		}
+		},
+        columnTotal : function(){
+            var aksi,pk,numb
+            this.aksi ? aksi=1 : aksi = 0
+            this.showPk ? pk=1 : pk = 0
+            this.rowNumber ? numb=1 : numb = 0
+            return this.tableContent.header.length+numb+aksi+pk
+        }
 	},
   methods : {
         toggleAksi () {
@@ -197,9 +212,9 @@ export default {
 			.then(res=>{
                 if(res.data.status == true){
                     this.totalRows = res.data.row
-                    this.dataTable = res.data.data
+                    this.dataTable = res.data
                 }else{
-                    this.dataTable = []
+                    this.dataTable = {}
                 }
                 this.spinStatus = false
 			})
