@@ -1,86 +1,58 @@
 <template>
 <div>
-<div class="w3-col l3 s12">
-a
-</div>
-<div class="w3-col l6 s12">
-   <div class="w3-container">
-      <h3>Informasi Ujian</h3>
-      <div class="w3-col l2 s12">
-         Nama Peserta 
-      </div>
-      <div class="w3-col l10 s12">
+    <sec-header onTop.Boolean="false"></sec-header>
+    <sec-sidebar>
+    <div class="w3-container">
+        <h3>Pilih Soal</h3>
+    <button type="button" class="w3-button w3-blue w3-small w3-border" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
+    </div>
+    <div class="w3-container">
+        <h3>Informasi Ujian</h3>
+         <i class="fa fa-user"></i> 
          {{infoUjian.nm_mahasiswa}}
-      </div>
-      <div class="w3-col l2 s12">
-         Nama Ujian 
-      </div>
-      <div class="w3-col l10 s12">
+      <br/>
+         <i class="fa fa-newspaper-o"></i> 
          {{infoUjian.nm_matkul}}
-      </div>
-      <div class="w3-col l2 s12">
-         Hari/Tanggal 
-      </div>
-      <div class="w3-col l10 s12">
+         <br/>
+        <i class="fa fa-calendar"></i> 
          {{hariSekarang}}
-      </div>
-      <div class="w3-col l2 s12">
-         Waktu 
-      </div>
-      <div class="w3-col l10 s12">
+         <br/>
+        <i class="fa fa-clock-o"></i> 
          {{waktuSekarang}}
-      </div>
-      <div class="w3-col s12">
-         <div class="w3-border"></div>
-         <div class="w3-medium"><i><b>Jawablah soal dibawah ini dengan benar!</b></i></div>
-      </div>
+
+      <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
    </div>
+    </sec-sidebar>
+<sec-content>
    <div class="w3-container">
       <p>{{posisiSoal+1}}. {{listSoal[posisiSoal].isi_soal}}</p>
       <template v-if="infoUjian.id_jsoal == 1">
          <label for="jawaban" v-for="x in listSoal[posisiSoal].pilihanGanda">
          <input class="w3-radio" type="radio" name="jawaban" @click="simpanJawaban(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawaban"/> {{x.isi_pilihan}}<br/>
          </label>
-   <div class="w3-col s12">
-   <div class="w3-border"></div>
-   </div>
    <br/>
-   <div class="w3-col l2 s12">
-       <button type="button" :disabled="posisiSoal == 0" class="w3-button w3-blue w3-small w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal-1)"><< </button>
-   </div>
-   <div class="w3-col l8 s12">
-        <button type="button" class="w3-button w3-blue w3-small w3-border w3-border-light-gray" v-for="(y,index,key) in listSoal" @click="showSoal(index)">{{index+1}}</button>
-   </div>
-   <div class="w3-col l2 s12">
-       <button type="button" :disabled="posisiSoal+1 == listSoal.length" class="w3-button w3-small w3-blue w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal+1)"> >> </button>
-   </div>
-   <hr/>
-    <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
    </template>
    <template v-else>
       <textarea class="w3-input" v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea>
-      <br/>
-      <div class="w3-col l6 s12">
-         <span class="w3-left">
-         <button type="button" class="w3-button w3-red w3-right" @click="kumpulkanUjian()">Kumpulkan Ujian >></button>
-         </span>
-      </div>
-      <div class="w3-col l6 s12">
-         <span class="w3-right">
-         <button type="button" class="w3-button w3-blue w3-right" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
-         </span>
-      </div>
+     <button type="button" class="w3-button w3-blue w3-right w3-block" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
    </template>
+   <div class="w3-col l6 s6">
+       <button type="button" :disabled="posisiSoal == 0" class="w3-button w3-blue w3-small w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal-1)"><< </button>
    </div>
-   
-</div>
-<div class="w3-col l3 s12">
-a
-</div>
+
+   <div class="w3-col l6 s6">
+       <button type="button" :disabled="posisiSoal+1 == listSoal.length" class="w3-button w3-small w3-blue w3-block w3-border w3-border-light-gray" style="margin-right:5px;" @click="showSoal(posisiSoal+1)"> >> </button>
+   </div>
+    <hr/>
+   <hr/>
+   <hr/>
+   </div>
+</sec-content>
 </div>
 </template>
 <script>
 import axios from 'axios'
+import { Bus } from '../../../bus.js';
 import _ from 'lodash'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
@@ -127,6 +99,9 @@ export default {
     }
   },
   methods : {
+      toggleMenu () {
+          Bus.$emit('toggleMenu')
+      },
       setWaktu () {
           this.waktuSekarang = formatWaktu(new Date(), 'H : M : S', {locale : lokalisasi})
       },

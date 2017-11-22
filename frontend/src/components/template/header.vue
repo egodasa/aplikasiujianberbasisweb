@@ -1,12 +1,8 @@
 <template>
 <!-- Top container -->
-<div class="w3-bar w3-black w3-top w3-large" style="z-index:4">
-  <span class="w3-bar-item w3-left">{{title}}</span>
-  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-  <span class="w3-bar-item w3-right">
-      <router-link class="w3-button w3-black w3-hover-black w3-small" to="/login" >Login</router-link>
-      <button class="w3-button w3-black w3-hover-black w3-small" @click="logout()" >Logout</button>
-  </span>
+<div class="w3-bar w3-black w3-large" style="z-index:4">
+  <span class="w3-bar-item w3-left w3-hide-small">{{title}}</span>
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" @click="toggleMenu()"><i class="fa fa-bars"></i>  Menu</button>
 </div>
 </template>
 <script>
@@ -18,6 +14,11 @@ export default {
           type : String,
           required : false,
           default : 'Universitas Putra Indonesia YPTK Padang'
+      },
+      onTop : {
+          type : Boolean,
+          required : false,
+          default : true
       }
   },
   methods : {
@@ -25,6 +26,9 @@ export default {
           this.$session.destroy()
           Bus.$emit('setMenu',3)
           this.$router.push({path: '/login'})
+      },
+      toggleMenu (){
+          Bus.$emit('toggleMenu')
       }
   }
 }
