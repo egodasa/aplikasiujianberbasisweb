@@ -8,9 +8,9 @@
 <div class="w3-container">
 	<form method="POST" @submit.prevent="masukUjian()">
 	<div class="w3-center" style="margin:0 auto;width:75%;">
-        <select class="w3-select w3-section" name="ujian" v-model="selectedUjian">
-            <option v-for="(x,index,key) in listUjian" :value="index">{{x.nm_matkul + ' - ' + x.nm_dosen + ' - ' + x.nm_kelas}}</option>
-        </select>
+        <span class="w3-container">
+            <v-select v-model="selectedUjian" :options="listUjian" label="nm_matkul"></v-select>
+        </span>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
 	</div>
 	</form>
@@ -27,10 +27,13 @@ export default {
   name: 'loginPeserta',
   data () {
       return {
-          listUjian : [{}],
+          listUjian : [],
           nobp : 0,
-          selectedUjian : 0
+          selectedUjian : null
         }
+  },
+  beforeCreated (){
+      if(this.$session.has('infoUjian')) this.$router.push({path : '/ujian/petunjuk'})
   },
   created () {
     this.getUjian()
@@ -42,11 +45,12 @@ export default {
               this.listUjian = res.data.data
               })
           .catch(err=>{
+              this.listUjian = []
               console.log(err)
               })
       },
       masukUjian(){
-          this.$session.set('infoUjian',this.listUjian[this.selectedUjian])
+          this.$session.set('infoUjian',this.selectedUjian)
           this.$router.push({path : '/ujian/petunjuk'})
       }
   }

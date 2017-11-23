@@ -280,11 +280,11 @@ router.get('/:id/jawaban/:idPeserta?',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
-router.post('/:id/jawaban',(req,res,next)=>{
+router.post('/jawaban',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	db('tbhasil_ujian').insert(data).then(()=>{
+	db('tbjawaban').insert(data).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
 		res.send(hasil);
@@ -322,5 +322,18 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
 		res.json(hasil);
 		});
 });
-
+router.post('/hasil', (req, res, next) => {
+    var data = req.body;
+    var hasil = {};
+    db('tbhasil_ujian').insert(data).
+    then(function(){
+        hasil.status = true;
+        res.json(hasil);
+        }).
+    catch(function(err){
+        hasil.status = false;
+        hasil.err = err;
+        res.json(hasil);
+        });
+    });
 module.exports = router;
