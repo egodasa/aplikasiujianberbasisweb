@@ -34,6 +34,100 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: tbhasil_ujian; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbhasil_ujian (
+    id_hasil integer NOT NULL,
+    id_ujian integer NOT NULL,
+    nobp character varying(14) NOT NULL,
+    nilai smallint NOT NULL
+);
+
+
+ALTER TABLE tbhasil_ujian OWNER TO mandan;
+
+--
+-- Name: tbmahasiswa; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbmahasiswa (
+    nobp character varying(15) NOT NULL,
+    nm_mahasiswa character varying(100) NOT NULL,
+    status boolean DEFAULT true NOT NULL,
+    id_mahasiswa integer NOT NULL
+);
+
+
+ALTER TABLE tbmahasiswa OWNER TO mandan;
+
+--
+-- Name: lap_hasil_ujian; Type: VIEW; Schema: public; Owner: mandan
+--
+
+CREATE VIEW lap_hasil_ujian AS
+ SELECT tbhasil_ujian.id_hasil,
+    tbhasil_ujian.id_ujian,
+    tbhasil_ujian.nobp,
+    tbmahasiswa.nm_mahasiswa,
+    tbhasil_ujian.nilai
+   FROM (tbhasil_ujian
+     JOIN tbmahasiswa ON (((tbhasil_ujian.nobp)::text = (tbmahasiswa.nobp)::text)));
+
+
+ALTER TABLE lap_hasil_ujian OWNER TO mandan;
+
+--
+-- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbjawaban (
+    id_jawaban integer NOT NULL,
+    id_ujian integer NOT NULL,
+    nobp character varying(15) NOT NULL,
+    jawaban text NOT NULL,
+    id_soal integer NOT NULL
+);
+
+
+ALTER TABLE tbjawaban OWNER TO mandan;
+
+--
+-- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbsoal (
+    id_soal integer NOT NULL,
+    isi_soal text NOT NULL,
+    "pilihanGanda" json,
+    id_jsoal smallint NOT NULL,
+    bobot smallint DEFAULT '1'::smallint NOT NULL,
+    jawaban text NOT NULL
+);
+
+
+ALTER TABLE tbsoal OWNER TO mandan;
+
+--
+-- Name: lap_jawaban; Type: VIEW; Schema: public; Owner: mandan
+--
+
+CREATE VIEW lap_jawaban AS
+ SELECT tbjawaban.id_jawaban,
+    tbjawaban.nobp,
+    tbjawaban.id_ujian,
+    tbjawaban.id_soal,
+    tbsoal.isi_soal,
+    tbsoal.jawaban,
+    tbjawaban.jawaban AS jawaban_peserta,
+    tbsoal.bobot
+   FROM (tbjawaban
+     JOIN tbsoal ON ((tbjawaban.id_soal = tbsoal.id_soal)));
+
+
+ALTER TABLE lap_jawaban OWNER TO mandan;
+
+--
 -- Name: tbdosen; Type: TABLE; Schema: public; Owner: mandan
 --
 
@@ -154,20 +248,6 @@ CREATE TABLE tbkuliah_mahasiswa (
 ALTER TABLE tbkuliah_mahasiswa OWNER TO mandan;
 
 --
--- Name: tbmahasiswa; Type: TABLE; Schema: public; Owner: mandan
---
-
-CREATE TABLE tbmahasiswa (
-    nobp character varying(15) NOT NULL,
-    nm_mahasiswa character varying(100) NOT NULL,
-    status boolean DEFAULT true NOT NULL,
-    id_mahasiswa integer NOT NULL
-);
-
-
-ALTER TABLE tbmahasiswa OWNER TO mandan;
-
---
 -- Name: lap_kuliah_mahasiswa; Type: VIEW; Schema: public; Owner: mandan
 --
 
@@ -185,6 +265,30 @@ CREATE VIEW lap_kuliah_mahasiswa AS
 
 
 ALTER TABLE lap_kuliah_mahasiswa OWNER TO mandan;
+
+--
+-- Name: tbjenis_soal; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbjenis_soal (
+    id_jsoal integer NOT NULL,
+    nm_jsoal character varying(20) NOT NULL
+);
+
+
+ALTER TABLE tbjenis_soal OWNER TO mandan;
+
+--
+-- Name: tbjenis_ujian; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbjenis_ujian (
+    id_jujian integer NOT NULL,
+    nm_jujian character varying(10) NOT NULL
+);
+
+
+ALTER TABLE tbjenis_ujian OWNER TO mandan;
 
 --
 -- Name: tbujian; Type: TABLE; Schema: public; Owner: mandan
@@ -212,7 +316,9 @@ CREATE VIEW lap_ujian AS
  SELECT a.id_ujian,
     a.hari,
     a.id_jujian,
+    c.nm_jujian,
     a.id_jsoal,
+    d.nm_jsoal,
     a.mulai,
     a.selesai,
     b.id_kuliah,
@@ -224,8 +330,10 @@ CREATE VIEW lap_ujian AS
     b.id_kelas,
     b.nm_kelas,
     b.tahun_akademik
-   FROM (tbujian a
-     JOIN lap_kuliah b ON ((a.id_kuliah = b.id_kuliah)));
+   FROM (((tbujian a
+     JOIN lap_kuliah b ON ((a.id_kuliah = b.id_kuliah)))
+     JOIN tbjenis_ujian c ON ((a.id_jujian = c.id_jujian)))
+     JOIN tbjenis_soal d ON ((a.id_jsoal = d.id_jsoal)));
 
 
 ALTER TABLE lap_ujian OWNER TO mandan;
@@ -259,20 +367,22 @@ CREATE VIEW lap_peserta_ujian AS
 ALTER TABLE lap_peserta_ujian OWNER TO mandan;
 
 --
--- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
+-- Name: lap_soal; Type: VIEW; Schema: public; Owner: mandan
 --
 
-CREATE TABLE tbsoal (
-    id_soal integer NOT NULL,
-    isi_soal text NOT NULL,
-    "pilihanGanda" json,
-    id_jsoal smallint NOT NULL,
-    bobot smallint DEFAULT '1'::smallint NOT NULL,
-    jawaban text NOT NULL
-);
+CREATE VIEW lap_soal AS
+ SELECT tbsoal.id_soal,
+    tbsoal.isi_soal,
+    tbsoal."pilihanGanda",
+    tbsoal.id_jsoal,
+    tbsoal.bobot,
+    tbsoal.jawaban,
+    tbjenis_soal.nm_jsoal
+   FROM (tbsoal
+     JOIN tbjenis_soal ON ((tbsoal.id_jsoal = tbjenis_soal.id_jsoal)));
 
 
-ALTER TABLE tbsoal OWNER TO mandan;
+ALTER TABLE lap_soal OWNER TO mandan;
 
 --
 -- Name: tbsoal_ujian; Type: TABLE; Schema: public; Owner: mandan
@@ -369,30 +479,46 @@ ALTER SEQUENCE tbdosen_id_seq OWNED BY tbdosen.id_dosen;
 
 
 --
--- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE; Schema: public; Owner: mandan
 --
 
-CREATE TABLE tbjawaban (
-    id_jawaban integer NOT NULL,
-    id_soal integer NOT NULL,
-    nobp character varying(15) NOT NULL,
-    id_ujian integer NOT NULL
-);
+CREATE SEQUENCE tbhasil_ujian_id_hasil_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE tbjawaban OWNER TO mandan;
+ALTER TABLE tbhasil_ujian_id_hasil_seq OWNER TO mandan;
 
 --
--- Name: tbjenis_soal; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mandan
 --
 
-CREATE TABLE tbjenis_soal (
-    id_jsoal integer NOT NULL,
-    nm_jsoal character varying(20) NOT NULL
-);
+ALTER SEQUENCE tbhasil_ujian_id_hasil_seq OWNED BY tbhasil_ujian.id_hasil;
 
 
-ALTER TABLE tbjenis_soal OWNER TO mandan;
+--
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+--
+
+CREATE SEQUENCE tbjawaban_id_jawaban_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tbjawaban_id_jawaban_seq OWNER TO mandan;
+
+--
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mandan
+--
+
+ALTER SEQUENCE tbjawaban_id_jawaban_seq OWNED BY tbjawaban.id_jawaban;
+
 
 --
 -- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -414,18 +540,6 @@ ALTER TABLE tbjenis_soal_id_jsoal_seq OWNER TO mandan;
 
 ALTER SEQUENCE tbjenis_soal_id_jsoal_seq OWNED BY tbjenis_soal.id_jsoal;
 
-
---
--- Name: tbjenis_ujian; Type: TABLE; Schema: public; Owner: mandan
---
-
-CREATE TABLE tbjenis_ujian (
-    id_jujian integer NOT NULL,
-    nm_jujian character varying(10) NOT NULL
-);
-
-
-ALTER TABLE tbjenis_ujian OWNER TO mandan;
 
 --
 -- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -663,6 +777,20 @@ ALTER SEQUENCE tbuser_id_user_seq OWNED BY tbuser.id_user;
 --
 
 ALTER TABLE ONLY tbdosen ALTER COLUMN id_dosen SET DEFAULT nextval('tbdosen_id_seq'::regclass);
+
+
+--
+-- Name: id_hasil; Type: DEFAULT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbhasil_ujian ALTER COLUMN id_hasil SET DEFAULT nextval('tbhasil_ujian_id_hasil_seq'::regclass);
+
+
+--
+-- Name: id_jawaban; Type: DEFAULT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjawaban ALTER COLUMN id_jawaban SET DEFAULT nextval('tbjawaban_id_jawaban_seq'::regclass);
 
 
 --
@@ -1111,11 +1239,51 @@ SELECT pg_catalog.setval('tbdosen_id_seq', 348, true);
 
 
 --
+-- Data for Name: tbhasil_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
+--
+
+COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
+1	4	14101152610565	33
+2	4	14101152610550	100
+3	4	14101152610544	66
+4	6	14101152610565	34
+5	6	14101152610544	49
+\.
+
+
+--
+-- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+--
+
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 5, true);
+
+
+--
 -- Data for Name: tbjawaban; Type: TABLE DATA; Schema: public; Owner: mandan
 --
 
-COPY tbjawaban (id_jawaban, id_soal, nobp, id_ujian) FROM stdin;
+COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
+1	6	14101152610565	jawaban 1	6
+2	6	14101152610565	jawaban 2	7
+3	6	14101152610565	jawaban 3	8
+4	6	14101152610544	dsdasdas	6
+5	6	14101152610544	sadsax	7
+6	6	14101152610544	asxsx	8
+7	5	13101152610342	ideologi negara	3
+8	5	13101152610342	jawaban 2	4
+9	5	13101152610342	jawaban 3	5
+10	5	14101152610561	msmdmadksmkd	3
+11	5	14101152610561	msmxmzmlxlml	4
+12	5	14101152610561	kkdskcdckcl;	5
+13	5	14101152610561	<ol><li>sadssasd</li><li>asdasds</li><li>asdsadsad</li></ol>	13
 \.
+
+
+--
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+--
+
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 13, true);
 
 
 --
@@ -1383,6 +1551,9 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 8	Soal 3	\N	2	20	jawaban 3
 9	PC?	[{"huruf":"A","isi_pilihan":"Personal Compuoter"},{"huruf":"B","isi_pilihan":"Personal Computer"}]	1	1	B
 10	WWW	[{"huruf":"A","isi_pilihan":"Wordl Wide Web"},{"huruf":"B","isi_pilihan":"World Wide Web"}]	1	1	B
+11	Bilangan biner terdiri atas?	[{"huruf":"A","isi_pilihan":"1 dan 2"},{"huruf":"B","isi_pilihan":"0 dan 1"}]	1	1	B
+12	CPU kependekan dari?	[{"huruf":"A","isi_pilihan":"Core Processing Unit"},{"huruf":"B","isi_pilihan":"Computer Processing Unit"}]	1	1	A
+13	<b>taba<i> miring</i></b><div><ol><li><b><i>dsdsaax</i></b></li><li><b><i>dsasxas</i></b></li></ol></div>	\N	2	1	<ol><li>xasxsaxsa</li><li>xaxxx</li></ol>
 \.
 
 
@@ -1390,7 +1561,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 10, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 13, true);
 
 
 --
@@ -1407,6 +1578,9 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 7	6	8
 8	4	9
 9	4	10
+10	4	11
+11	4	12
+12	5	13
 \.
 
 
@@ -1414,7 +1588,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq', 9, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq', 12, true);
 
 
 --
@@ -1833,6 +2007,14 @@ ALTER TABLE ONLY tbdosen
 
 ALTER TABLE ONLY tbdosen
     ADD CONSTRAINT tbdosen_nidn UNIQUE (nidn);
+
+
+--
+-- Name: tbhasil_ujian_id_hasil; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbhasil_ujian
+    ADD CONSTRAINT tbhasil_ujian_id_hasil PRIMARY KEY (id_hasil);
 
 
 --
