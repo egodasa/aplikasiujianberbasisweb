@@ -1480,6 +1480,10 @@ de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
 
+debounce@latest:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
+
 debug@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
@@ -1589,6 +1593,10 @@ diffie-hellman@^5.0.0:
 domain-browser@~1.1.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
+
+dropzone@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.2.0.tgz#2fdf6ac6472f4c62d03d3e9fc22aaa0229d299de"
 
 duplexer2@^0.1.2, duplexer2@~0.1.0, duplexer2@~0.1.2:
   version "0.1.4"
@@ -4214,6 +4222,10 @@ vue-multiselect@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.0.6.tgz#7ca80e6c53db41e414bf76a66b9377ddf4659ebd"
 
+vue-nav-tabs@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/vue-nav-tabs/-/vue-nav-tabs-0.5.4.tgz#2cac400fc83a66bd6cd9c36d2c863187846d0cba"
+
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
@@ -4230,6 +4242,10 @@ vue-session@^0.9.10:
   version "0.9.10"
   resolved "https://registry.yarnpkg.com/vue-session/-/vue-session-0.9.10.tgz#0bf5a2dc4e6e6421651ea0aefa68faf6ebc3febc"
 
+vue-tabs-component@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/vue-tabs-component/-/vue-tabs-component-1.3.0.tgz#00e39b579a0bb22c1778d1a9668f2e72e130a231"
+
 vue-template-compiler@^2.0.0-alpha.8:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.3.tgz#ab631b0694e211a6aaf0d800102b37836aae36a4"
@@ -4241,9 +4257,28 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
+vue-wysiwyg@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/vue-wysiwyg/-/vue-wysiwyg-1.2.7.tgz#7a749955bdafc52f068b4aec6dceb3777b470f7a"
+  dependencies:
+    debounce latest
+    vue latest
+    vue2-dropzone latest
+    wolfy87-eventemitter "^5.1.0"
+
+vue2-dropzone@latest:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-3.0.0.tgz#f0635509c5ea9f6c5cf8812fe60f8867ac32f774"
+  dependencies:
+    dropzone "^5.2.0"
+
 vue@^2.0.1:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.3.tgz#e1a3b1f49b6e93e574ce040b95cbc873912fecc1"
+
+vue@latest:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.8.tgz#f855c1c27255184a82225f4bef225473e8faf15b"
 
 vueify@^9.0.0:
   version "9.4.1"
@@ -4299,6 +4334,10 @@ wide-align@^1.1.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+wolfy87-eventemitter@^5.1.0:
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.2.4.tgz#5021d2952d3611cbcd195149711d9b595cd11d48"
 
 wordwrap@0.0.2:
   version "0.0.2"

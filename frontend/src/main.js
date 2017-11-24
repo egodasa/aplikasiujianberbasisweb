@@ -9,6 +9,8 @@ import routes from './routes.js'
 import VeeValidate, { Validator } from 'vee-validate';
 import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
 import vSelect from 'vue-select'
+import wysiwyg from "vue-wysiwyg";
+Vue.use(wysiwyg, {});
 
 Vue.component('v-select', vSelect)
 VeeValidate.Validator.addLocale(bahasa)

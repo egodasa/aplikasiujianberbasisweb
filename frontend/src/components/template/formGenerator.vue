@@ -60,6 +60,9 @@
                     <template v-else-if="x.jenis == 'select2'">
                         <v-select :valueSelect="x.valueSelect" v-model="output[x.name]" :label="x.captionSelect" :placeholder="x.placeholder" :options="x.option"></v-select>
                     </template>
+                    <template v-else-if="x.jenis == 'richEditor'">
+                        <wysiwyg v-model="output[x.name]" />
+                    </template>
                 <br/>
                 </span>
                 <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>

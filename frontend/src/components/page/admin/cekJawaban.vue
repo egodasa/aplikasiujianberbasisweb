@@ -1,36 +1,51 @@
 <template>
-    <admin>
-<div>
- <div class="w3-container w3-blue-gray w3-round">
+<admin>
+ <div class="w3-container">
     <h2>{{'Pemeriksaan Jawaban Ujian '+infoUjian.nm_matkul}}</h2>
-</div>
-<div class="w3-container">
-    <div class="w3-col l6 s12 w3-large">
-        <div class="w3-padding">
-            <h3>Soal </h3>
-            {{listJawaban[posisiSoal].isi_soal}}
-            <h3>Jawaban</h3>
-            {{listJawaban[posisiSoal].jawaban}}
-            <h3>Jawaban Peserta</h3>
-            {{listJawaban[posisiSoal].jawaban_peserta}}
-            <h3>Bobot</h3>
-            {{listJawaban[posisiSoal].bobot}}
-            <h3>Bobot Yang Diberikan</h3>
-            <input class="w3-input" type="number" min=0 :max.number="listJawaban[posisiSoal].bobot" v-model.number="bobot" />
-            <button type="button" class="w3-button w3-blue" @click="simpanNilai(bobot)">Simpan</button>
-        </div>
-    </div>
-    <div class="w3-col l6 s12 w3-large">
-        <h3>Pilih Soal</h3>
-        <button type="button" class="w3-button w3-blue" style="margin-right:5px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)">{{index+1}}</button>
-        <h3>{{'Total Bobot Diberikan : '+totalBobot}}</h3>
-    </div>
+    <table class="w3-table w3-border w3-bordered w3-pale-blue">
+        <tr>
+            <td style="width:30%;">
+                <h4>Nilai Akhir</h4>
+                {{'Total Bobot Peserta : '+totalBobot}}
+            </td>
+            <td style="width:70%;">
+                <h4>Soal</h4>
+                <span v-html="listJawaban[posisiSoal].isi_soal"></span>
+                </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Pilih Soal</h4>
+                <button type="button" class="w3-button w3-blue" style="margin-right:5px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)">{{index+1}}</button>
+            </td>
+            <td>
+                <h4>Jawaban Dosen</h4>
+                <span v-html="listJawaban[posisiSoal].jawaban"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Ketentuan Penilaian</h4>
+                
+                Bobot Maksimal : {{listJawaban[posisiSoal].bobot}}
+                <h4>Bobot Yang Diberikan</h4>
+                <form @submit.prevent="simpanNilai(bobot)">
+                <input class="w3-input w3-border" type="number" min=0 :max.number="listJawaban[posisiSoal].bobot" v-model.number="bobot" />
+                <button type="submit" class="w3-button w3-blue">Simpan</button>
+                </form>
+            </td>
+            <td>
+                <h4>Jawaban Peserta</h4>
+                <span v-html="listJawaban[posisiSoal].jawaban_peserta"></span>
+                <br/>
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="w3-container">
     <div class="w3-col s12">
-        <button type="button" class="w3-button w3-red w3-right w3-section w3-right" @click="simpanPeriksa()">Simpan Hasil Pemeriksaan >></button>
+        <button type="button" class="w3-button w3-red w3-right" @click="simpanPeriksa()">Simpan Hasil Pemeriksaan</button>
     </div>
-</div>
 </div>
 </admin>
 </template>
@@ -44,6 +59,18 @@ export default {
   name: 'cekJawaban',
   components : {
       admin
+  },
+  beforeCreated () {
+      axios.get('api/ujian/'+this.$route.params.idUjian+'/hasil/'+this.$route.params.idPeserta)
+      .then(res=>{
+          if(res.data.data.length == 1) {
+              console.log('dup')
+              this.$router.push({path:'/admin/ujian'})
+          }else  console.log('ntek')
+          })
+      .catch(err=>{
+          console.log(err)
+          })
   },
   data () {
       return {
@@ -101,13 +128,13 @@ export default {
       simpanPeriksa (){
           var data = {
               id_ujian : this.infoUjian.id_ujian,
-              id_peserta : this.$route.params.idPeserta,
+              nobp : this.$route.params.idPeserta,
               nilai : this.totalBobot
               }
-          axios.post('api/ujian/'+this.$route.params.idUjian+'/jawaban',data)
+          axios.post('api/ujian/hasil',data)
           .then(res=>{
               console.log(res)
-              this.$router.push({path: '/admin/ujian/'+this.$route.params.idUjian+'/jawaban/'})
+              this.$router.push({path: '/admin/ujian/'+this.$route.params.idUjian})
               })
           .catch(err=>{
               console.log(err)

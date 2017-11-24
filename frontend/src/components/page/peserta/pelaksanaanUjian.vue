@@ -69,7 +69,7 @@
    <b><i>Jawablah soal dibawah ini dengan benar!</i></b>
    </div>
    <div class="w3-container">
-      <p>{{posisiSoal+1}}. {{listSoal[posisiSoal].isi_soal}}</p>
+      <p>{{posisiSoal+1}}. <span v-html="listSoal[posisiSoal].isi_soal"></span></p>
       <template v-if="infoUjian.id_jsoal == 1">
          <label for="jawaban" v-for="x in listSoal[posisiSoal].pilihanGanda">
          <input class="w3-radio" type="radio" name="jawaban" @click="simpanJawaban(posisiSoal,x.huruf)" :value="x.huruf" v-model="jawaban"/> {{x.isi_pilihan}}<br/>
@@ -77,7 +77,8 @@
    <br/>
    </template>
    <template v-else>
-      <textarea class="w3-input" v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea>
+      <label>Jawaban Anda</label>
+      <wysiwyg v-model="jawaban" placeholder="Ketik jawaban disini ..." /><br/>
      <button type="button" class="w3-button w3-blue w3-right w3-block" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
    </template>
    <div class="w3-col l6 s6">
@@ -219,6 +220,7 @@ export default {
                       jawaban : v.jawaban
                       })
                   })
+              console.log(hasil)
               axios.post('api/ujian/jawaban',hasil)
               .then(res=>{
                   console.log(res.data)
@@ -251,6 +253,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style src="../../../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css">
 
 </style>

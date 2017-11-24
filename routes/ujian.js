@@ -243,12 +243,12 @@ router.get('/:id/jawaban',(req, res, next)=>{
     var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
     var hasil = {}
-	db.raw("SELECT lap_peserta_ujian.id_mahasiswa, lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN true ELSE false END AS status, hasil_ujian.id_tsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.id_peserta) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.id_peserta, tbjawaban.jawaban, tbujian.id_tsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.id_mahasiswa = hasil_ujian.id_peserta))) where lap_peserta_ujian.id_ujian=? LIMIT ? OFFSET ?",[id_ujian,id_ujian,limit,offset])
+	db.raw("SELECT lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN 1 ELSE 0 END AS status, hasil_ujian.id_jsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.nobp) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.nobp, tbjawaban.jawaban, tbujian.id_jsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.nobp = hasil_ujian.nobp))) left join (select * from tbhasil_ujian where id_ujian=?) a on lap_peserta_ujian.nobp=a.nobp where lap_peserta_ujian.id_ujian=? and a.nilai IS NULL order by status desc LIMIT ? OFFSET ?",[id_ujian,id_ujian,id_ujian,limit,offset])
 	.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows.rows;
         hasil.current_row = rows.rows.length;
-        return db.raw("SELECT lap_peserta_ujian.id_mahasiswa, lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN true ELSE false END AS status, hasil_ujian.id_tsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.id_peserta) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.id_peserta, tbjawaban.jawaban, tbujian.id_tsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.id_mahasiswa = hasil_ujian.id_peserta))) where lap_peserta_ujian.id_ujian=?",[id_ujian,id_ujian])
+        return db.raw("SELECT lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN 1 ELSE 0 END AS status, hasil_ujian.id_jsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.nobp) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.nobp, tbjawaban.jawaban, tbujian.id_jsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.nobp = hasil_ujian.nobp))) left join (select * from tbhasil_ujian where id_ujian=?) a on lap_peserta_ujian.nobp=a.nobp where lap_peserta_ujian.id_ujian=? and a.nilai IS NULL order by status desc",[id_ujian,id_ujian,id_ujian])
 		})
     .then((rows)=>{
         hasil.row = rows.rows.length
@@ -266,7 +266,7 @@ router.get('/:id/jawaban/:idPeserta?',(req, res, next)=>{
     var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
     var hasil = {}
-	var query = db('lap_jawaban').select().where({id_ujian : id_ujian,id_peserta:idPeserta})
+	var query = db('lap_jawaban').select().where({id_ujian : id_ujian,nobp:idPeserta})
     query.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
@@ -303,7 +303,11 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
     var limit = parseInt(req.query.limit) || null;
     var offset = parseInt(req.query.offset) || null;
     var hasil = {};
-	var query = db('lap_hasil_ujian').select().where('id_ujian',id) 
+    if(id_mahasiswa == 0){
+        var query = db('lap_hasil_ujian').select().where('id_ujian',id) 
+    }else{
+        var query = db('lap_hasil_ujian').select().where({id_ujian:id,nobp:id_mahasiswa}) 
+    }
     query.limit(limit).offset(offset).then((rows)=>{
 		hasil.status = true;
 		hasil.data = rows;

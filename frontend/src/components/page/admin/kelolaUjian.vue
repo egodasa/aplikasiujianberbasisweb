@@ -5,17 +5,8 @@
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" scope="ca">
-            <span class="hint--top" aria-label="Daftar Soal">
-                <router-link :to="{name:'kelolaSoalUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-list-alt "></i></router-link>
-            </span>
-            <span class="hint--top" aria-label="Daftar Peserta">
-                <router-link :to="{name:'kelolaPesertaUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
-            </span>
-            <span class="hint--top" aria-label="Periksa Ujian">
-                <router-link :to="{name:'jawabanUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" v-if="ca.pkData.id_jsoal == 2 ? true : false"><i class="fa fa-check-square-o "></i></router-link>
-            </span>
-            <span class="hint--top" aria-label="Hasil Ujian">
-                <router-link :to="{name:'hasilUjian',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white" ><i class="fa fa-list-ol "></i></router-link>
+            <span class="hint--top" aria-label="Kelola Ujian">
+                <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
         </template>
     </gen-table>

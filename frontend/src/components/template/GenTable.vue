@@ -4,7 +4,7 @@
               <template v-if="dataTable.data.length > 0">
               <span class="w3-left">
               <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
-              <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
+              <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
               </span>
               <span class="w3-right">
               <input type="search" class="w3-class w3-bordered w3-big" v-model="cari" /> 
@@ -23,7 +23,7 @@
                     <td v-for="td in tableContent.content">{{tr[td]}}</td>
                   </template>
                   <template v-else>
-                    <td v-for="td in tableContent.content" v-if="td != pk">{{tr[td]}}</td>
+                    <td v-html="tr[td]" v-for="td in tableContent.content" v-if="td != pk"></td>
                   </template>
                   <td v-if="aksi">
                     <template v-if="tableType == 'edit_hapus'">
@@ -65,11 +65,17 @@
                 <br/>
               </template>
               <template v-else>
-                  <span class="w3-left">
-                  <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
-                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small"><i class="fa fa-refresh"></i> Refresh</button>
-                  Data kosong
-                  </span><br/>
+                  <div class="w3-display-container" style="height:300px;">
+                  <div class="w3-display-middle">
+                      <div class="w3-jumbo w3-text-light-gray">Tidak ada data</div><br/>
+                      <div class="w3-center">
+                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-pale-blue w3-hover-blue-grey" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
+                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center  w3-pale-blue w3-hover-blue-gren"><i class="fa fa-refresh"></i> Refresh</button>
+                  
+                      </div>
+                    </div>
+                  </div>
+                  <br/>
                   
               </template>
           </template>
@@ -134,6 +140,11 @@ export default {
             required : false,
             default : true
         },
+        refreshButton : {
+            type : Boolean,
+            required : false,
+            default : true
+        },
         showPk : {
             type : Boolean,
             required : false,
@@ -147,7 +158,7 @@ export default {
 	},
   data () {
     return {
-      dataTable : {},
+      dataTable : [],
       totalRows : 0,
       pageRows : 10,
       pageNumber : null,
@@ -214,12 +225,12 @@ export default {
                     this.totalRows = res.data.row
                     this.dataTable = res.data
                 }else{
-                    this.dataTable = {}
+                    this.dataTable = []
                 }
                 this.spinStatus = false
 			})
 			.catch(err=>{
-				console.log(err)
+				this.dataTable = []
                 this.spinStatus = false
 			})
 		},

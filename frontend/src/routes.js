@@ -1,4 +1,6 @@
+import kelolaUjianDetail from './components/page/admin/kelolaUjianDetail.vue';
 import kelolaUjian from './components/page/admin/kelolaUjian.vue';
+
 import kelolaSoal from './components/page/admin/kelolaSoal.vue';
 import kelolaMahasiswa from './components/page/admin/kelolaMahasiswa.vue';
 import kelolaPesertaUjian from './components/page/admin/kelolaPesertaUjian.vue';
@@ -58,6 +60,11 @@ export default [
     path: '/admin/ujian/:idUjian/mahasiswa',
     name : 'kelolaPesertaUjian',
     component: kelolaPesertaUjian
+  },
+  {
+    path: '/admin/ujian/:idUjian',
+    name : 'kelolaUjianDetail',
+    component: kelolaUjianDetail
   },
   {
     path: '/admin/ujian/:idUjian/soal',
