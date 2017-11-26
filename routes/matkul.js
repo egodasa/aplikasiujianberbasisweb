@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var checkData = require('../validator/matkul/create_update');
-var pk = 'kd_matkul';
+var pk = 'id_matkul';
 var tbl = 'tbmatkul';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
@@ -15,12 +15,12 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('tbmatkul').select('kd_matkul')
+        query.count = db('tbmatkul').select('id_matkul')
         //query.tmp = db('tbmatkul').select().where(req.query)
         query.tmp = db('tbmatkul').select()
     }else{
-        query.count = db('tbmatkul').select().where('kd_matkul',id)
-        query.tmp = db('tbmatkul').select().where('kd_matkul',id)
+        query.count = db('tbmatkul').select().where('id_matkul',id)
+        query.tmp = db('tbmatkul').select().where('id_matkul',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp

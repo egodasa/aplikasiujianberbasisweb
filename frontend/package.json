@@ -34,7 +34,9 @@
     "vue-select": "^2.3.0",
     "vue-session": "^0.9.10",
     "vue-tabs-component": "^1.3.0",
+    "vue-timepicker": "^0.0.3",
     "vue-wysiwyg": "^1.2.7",
+    "vuejs-datepicker": "^0.9.20",
     "vuejs-paginate": "^1.4.0"
   },
   "devDependencies": {

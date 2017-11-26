@@ -3,6 +3,24 @@ var router = express.Router();
 var checkData = require('../validator/dosen/create_update');
 var pk = 'id_dosen';
 var tbl = 'tbdosen';
+var json2csv = require('json2csv')
+
+router.get('/cetak/csv',(req,res,next)=>{
+    db('tbdosen').select()
+    .then(function(rows){
+        console.log(rows)
+        var data = rows
+        var fields = ['id_dosen','nm_dosen','nidn','status']
+        json2csv({ data: data, fields: fields }, function(err, csv) {
+          if (err) console.log(err);
+          console.log(csv);
+          res.header('Content-type','text/csv').send(csv)
+		})
+        }).
+	catch(function(err){
+		res.json(hasil);
+		});
+    });
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;

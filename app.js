@@ -51,18 +51,6 @@ app.use('/api/test', require('./routes/test'));
 app.use('/api/cek', require('./routes/cekPesertaUjian'));
 app.use('/api/user', require('./routes/user'));
 
-
-/*
-app.get('/test',(req,res,next)=>{
-	console.log(mysqlSetting);
-	res.send({
-		host : urlDb.hostname,
-		user : auth[0],
-		password : auth[1],
-		database : urlDb.path.substr(1)
-		});
-	});
-	*/
 //EOF ROUTES
 
 // catch 404 and forward to error handler

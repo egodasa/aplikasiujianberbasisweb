@@ -2,6 +2,8 @@
 <admin>
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
+    <div class="w3-border"></div>
+    <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" scope="ca">
@@ -59,9 +61,11 @@ export default {
                     {
 					caption: "Waktu Ujian",
 					name:"hari",
-					jenis:"textField",
+					jenis:"datePick",
 					tipe:"text",
-					value:"2017-12-30",
+					value : function (){
+                        return new Date('now')
+                        }
 					},
                     {
 					caption: "Jam Mulai",

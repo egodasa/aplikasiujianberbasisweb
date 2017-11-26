@@ -5,6 +5,7 @@
               <span class="w3-left">
               <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
               <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
+              <a :href="exportUrl" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="exportButton"><i class="fa fa-save"></i> Export</a>
               </span>
               <span class="w3-right">
               <input type="search" class="w3-class w3-bordered w3-big" v-model="cari" /> 
@@ -67,7 +68,7 @@
               <template v-else>
                   <div class="w3-display-container" style="height:300px;">
                   <div class="w3-display-middle">
-                      <div class="w3-jumbo w3-text-light-gray">Tidak ada data</div><br/>
+                      <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">Tidak ada data</div><br/>
                       <div class="w3-center">
                       <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-pale-blue w3-hover-blue-grey" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
                   <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center  w3-pale-blue w3-hover-blue-gren"><i class="fa fa-refresh"></i> Refresh</button>
@@ -144,6 +145,16 @@ export default {
             type : Boolean,
             required : false,
             default : true
+        },
+        exportButton : {
+            type : Boolean,
+            required : false,
+            default : false
+        },
+        exportUrl : {
+            type : String,
+            required : false,
+            default : '/cetak'
         },
         showPk : {
             type : Boolean,

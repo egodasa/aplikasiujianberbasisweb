@@ -63,6 +63,14 @@
                     <template v-else-if="x.jenis == 'richEditor'">
                         <wysiwyg v-model="output[x.name]" />
                     </template>
+                    <template v-else-if="x.jenis == 'datePick'">
+                        <label>{{x.caption}}</label>
+                        <datepicker v-model="output[x.name]"></datepicker>
+                    </template>
+                    <template v-else-if="x.jenis == 'timePick'">
+                        <label>{{x.caption}}</label>
+                        <time-picker v-model="output[x.name]"></time-picker>
+                    </template>
                 <br/>
                 </span>
                 <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
@@ -82,6 +90,8 @@
 <script>
 import axios from 'axios';
 import { Bus } from '../../bus.js';
+import Datepicker from 'vuejs-datepicker';
+import TimePicker from 'vue-timepicker'
 
 export default {
     name : 'genForm',
@@ -106,6 +116,9 @@ export default {
             output : {}
 		}
 	},
+    components: {
+        Datepicker, TimePicker
+    },
     created () {
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)

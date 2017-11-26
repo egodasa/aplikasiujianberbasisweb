@@ -2,6 +2,7 @@
     <admin>
 <div class="w3-container">
     <h2>Daftar Mahasiswa</h2>
+    <div class="w3-border"></div>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
         <h2>Tambah Data</h2>
         <label>Pilih Mahasiswa</label>

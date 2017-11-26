@@ -41,11 +41,18 @@ export default {
 					jenis:"textField",
 					tipe:"number",
 					value:null
+					},
+                {
+					caption: "Semester",
+					name:"smt",
+					jenis:"textField",
+					tipe:"number",
+					value:null
 					}
 			],
             tableContent : {
-                header :  ['Nama Matkul','SKS'],
-                content : ['id_matkul','nm_matkul','sks']
+                header :  ['Kode Matkul','Nama Matkul','Semester','SKS'],
+                content : ['kd_matkul','nm_matkul','smt','sks']
             }
         }
   }

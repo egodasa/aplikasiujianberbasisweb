@@ -3,6 +3,7 @@ var router = express.Router();
 var checkData = require('../validator/ujian/create_update');
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
 var checkDataSoal = require('../validator/soal/create_update');
+var json2csv = require('json2csv')
 
 router.get('/:id?', (req, res, next) => {
 	var id = req.params.id || 0;
@@ -339,5 +340,24 @@ router.post('/hasil', (req, res, next) => {
         hasil.err = err;
         res.json(hasil);
         });
+    });
+router.get('/:idUjian/hasil/cetak/csv',(req,res,next)=>{
+    let id_ujian = req.params.idUjian
+    db('lap_hasil_ujian').select().where('id_ujian',id_ujian)
+    .then(function(rows){
+        var data = rows
+        var fields = ['nobp','nm_mahasiswa','nilai']
+        var fieldsName = ['NOBP','Nama Mahasiswa','Nilai']
+        json2csv({ data: data, fields: fields, fieldNames : fieldsName }, function(err, csv) {
+          if (err) console.log(err);
+          res
+            .header('Content-type','text/csv')
+            .header("Content-Disposition", "attachment;filename=laporan_nilai.csv")
+            .send(csv)
+		})
+        }).
+	catch(function(err){
+		res.json(err);
+		});
     });
 module.exports = router;

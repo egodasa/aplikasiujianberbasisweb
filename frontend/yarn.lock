@@ -4257,6 +4257,10 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
+vue-timepicker@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/vue-timepicker/-/vue-timepicker-0.0.3.tgz#307077fc132b1bb05d6dc1ae3a67253a1f8192bc"
+
 vue-wysiwyg@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/vue-wysiwyg/-/vue-wysiwyg-1.2.7.tgz#7a749955bdafc52f068b4aec6dceb3777b470f7a"
@@ -4298,6 +4302,10 @@ vueify@^9.0.0:
     vue-hot-reload-api "^2.0.1"
     vue-template-compiler "^2.0.0-alpha.8"
     vue-template-es2015-compiler "^1.2.2"
+
+vuejs-datepicker@^0.9.20:
+  version "0.9.20"
+  resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-0.9.20.tgz#88ae3db157fea7509541b10e26fdb66f9118e79c"
 
 vuejs-paginate@^1.4.0:
   version "1.4.0"

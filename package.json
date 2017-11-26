@@ -16,6 +16,7 @@
     "express-validator": "^3.2.1",
     "heroku-cli": "^6.14.37",
     "jade": "^1.11.0",
+    "json2csv": "^3.11.5",
     "knex": "^0.13.0",
     "knex-logger": "^0.1.0",
     "lodash": "^4.17.4",
