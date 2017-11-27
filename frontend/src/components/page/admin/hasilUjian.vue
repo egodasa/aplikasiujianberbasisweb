@@ -18,7 +18,7 @@ export default {
                 header :  ['NOBP','Nama Mahasiswa','Nilai'],
                 content : ['id_hasil','nobp','nm_mahasiswa','nilai']
             },
-            exportUrl : 'http://localhost:3000/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv'
+            exportUrl : '/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv'
         }
   }
 }
