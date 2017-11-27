@@ -73,9 +73,9 @@
                     </template>
                 <br/>
                 </span>
-                <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
-                <button type="reset" class="w3-button w3-reset w3-section">Reset</button>
-                <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()">Batal</button>
+                <button type="submit" :disabled="Bsimpan.disabled" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
+                <button type="reset" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
+                <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()" :disabled="Bbatal.disabled"><span v-html="Bbatal.caption"></span></button>
             </form>
         </template>
         <template v-else>
@@ -113,7 +113,19 @@ export default {
 		return {
             showForm : false,
             idData : null,
-            output : {}
+            output : {},
+              Bsimpan : {
+                  disabled : false,
+                  caption : '<i class="fa fa-save w3-small"></i> Simpan',
+              },
+              Bbatal : {
+                  disabled : false,
+                  caption : '<i class="fa fa-remove w3-small"></i> Batal'
+              },
+              Breset : {
+                  disabled : false,
+                  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
+              }
 		}
 	},
     components: {
@@ -129,6 +141,19 @@ export default {
         this.showForm = false
     },
 	methods : {
+        buttonSubmit (x) {
+            if(x == 1){
+                Bsimpan.disabled = true
+                Bsimpan.caption = '<i class="fa fa-spinner w3-spin w3-small"></i> Menyimpan Data'
+                Breset.disabled = true
+                Bbatal.disabled = true
+            }else{
+                Bsimpan.disabled = false
+                Bsimpan.caption = 'Simpan'
+                Breset.disabled = false
+                Bbatal.disabled = false
+            }
+        },
         toggleFormData (){
             this.showForm = !this.showForm
         },
