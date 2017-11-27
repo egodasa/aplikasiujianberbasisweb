@@ -1,5 +1,10 @@
 <template>
 <div class="w3-container">
+<modal>
+<slot name="content">
+Loading
+</slot>
+</modal>
 <div class="w3-modal" style="display:block;">
 <div class="w3-modal-content w3-card-4">
 <div class="w3-container w3-blue-gray w3-center">
@@ -15,7 +20,7 @@
         -->
         <input class="w3-input w3-section" placeholder="username" type="text" v-model="username"/>
         <input class="w3-input w3-section" placeholder="Password" type="password" v-model="password"/>
-        <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
+        <button type="submit" class="w3-btn w3-blue w3-section" :disabled="Blogin.disabled">{{Blogin.caption}}</button>
 	</div>
 	</form>
 </div>
@@ -29,22 +34,38 @@ import axios from 'axios'
 import _ from 'lodash'
 import md5 from 'md5'
 import { Bus } from '../../bus.js';
+import modal from '../template/modal.vue'
 export default {
   name: 'loginPengguna',
+  components : {
+    modal
+  },
   data () {
       return {
       username : null,
-      password : null
+      password : null,
+      Blogin : {
+        disabled : false,
+        caption : "login"
+      }
     }
+  },
+  created (){
+      Bus.$emit('toggleModal')
   },
   methods : {
       cekUser () {
+          this.Blogin.disabled = true
+          this.Blogin.caption = "Mengecek"
           var data = {
               username : this.username,
-              password : md5(this.password)
+              password : md5(this.password || "password")
           }
           axios.post('api/user/cek',data)
           .then(res=>{
+              this.Blogin.disabled = false
+              this.Blogin.caption = "Login"
+              console.log(this.Blogin)
               let hasil = res.data.data
               if(hasil.length == 0) console.log('username atau password salah')
               else {
@@ -63,6 +84,8 @@ export default {
               }
               })
           .catch(err=>{
+              this.Blogin.disabled = false
+              this.Blogin.caption = "Login"
               console.log(err)
               })
       }
