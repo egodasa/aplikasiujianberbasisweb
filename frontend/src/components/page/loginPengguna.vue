@@ -10,7 +10,17 @@ Loading
 <div class="w3-container w3-blue-gray w3-center">
   <h2>Login Pengguna</h2>
 </div>
-<div class="w3-container">
+<div class="w3-display-container" :style="Blogin.disabled ? 'display:block;height:250px;':'display:none;height:300px;'">
+<div class="w3-display-middle">
+    Mengecek Login Pengguna
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+</div>
+<div class="w3-container" :style="!Blogin.disabled ? 'display:block;':'display:none;'">
 	<form method="POST" @submit.prevent="cekUser()">
 	<div class="w3-center" style="margin:0 auto;width:75%;">
         <!--<div class="w3-panel w3-red" ng-show="pesanWarning">
@@ -20,7 +30,7 @@ Loading
         -->
         <input class="w3-input w3-section" placeholder="username" type="text" v-model="username"/>
         <input class="w3-input w3-section" placeholder="Password" type="password" v-model="password"/>
-        <button type="submit" class="w3-btn w3-blue w3-section" :disabled="Blogin.disabled">{{Blogin.caption}}</button>
+        <button type="submit" class="w3-btn w3-blue w3-section">{{Blogin.caption}}</button>
 	</div>
 	</form>
 </div>
