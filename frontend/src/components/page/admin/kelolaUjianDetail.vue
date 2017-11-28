@@ -58,9 +58,6 @@
 <button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('soalUjian')">Soal Ujian</button>
 <button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
 <button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
-<template v-if="periksaSoal">
-<button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('jawabanUjian')">Jawaban Ujian Peserta</button>
-</template>
 </span>
 <br/>
     <keep-alive>
@@ -81,7 +78,6 @@ import _ from 'lodash'
 import hasilUjian from './hasilUjian.vue'
 import soalUjian from './kelolaSoalUjian.vue'
 import kelolaPesertaUjian from './kelolaPesertaUjian.vue'
-import jawabanUjian from './jawabanUjian.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 
@@ -93,7 +89,6 @@ export default {
       'admin' : admin,
       'hasilUjian' : hasilUjian,
       'soalUjian' : soalUjian,
-      'jawabanUjian' : jawabanUjian,
       'pesertaUjian' : kelolaPesertaUjian
   },
   data () {

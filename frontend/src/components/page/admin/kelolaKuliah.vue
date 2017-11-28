@@ -29,13 +29,7 @@
             </span>
         </form>
     </gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent">
-        <template slot="customAction" scope="ca">
-            <span class="hint--top" aria-label="Daftar Mahasiswa">
-                <router-link :to="{name:'kelolaKuliahMahasiswa',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-small w3-white"><i class="fa fa-users w3-small"></i></router-link>
-            </span>
-        </template>
-    </gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent"></gen-table>
 </div>
 </admin>
 </template>

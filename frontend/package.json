@@ -25,6 +25,7 @@
     "md5": "^2.2.1",
     "moment": "^2.19.1",
     "moment-timezone": "^0.5.13",
+    "spinkit": "^1.2.5",
     "vee-validate": "^2.0.0-rc.19",
     "vue": "^2.0.1",
     "vue-multiselect": "^2.0.6",

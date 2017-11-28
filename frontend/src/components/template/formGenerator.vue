@@ -10,36 +10,36 @@
                     <template v-if="x.jenis == 'textField'">
                         <template v-if="x.tipe == 'number'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else-if="x.tipe == 'email'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else>
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <br/>
                     </template>
                     <template v-else-if="x.jenis == 'textArea'">
                     <label>{{x.caption}}</label>
-                    <textarea v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" :name="x.name" v-model="output[x.name]" />{{x.value}}</textarea>
+                    <textarea v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" :name="x.name" v-model="output[x.name]" />{{x.value}}</textarea>
                     <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>    
                     </template>
                     <template v-else-if="x.jenis == 'radioButton'">
                     <label for="x.name" v-for="(y,index,key) in x.option">
                         <span v-if="index < 1">{{x.caption}}<br/></span>
-                        <input class="w3-radio" v-validate data-vv-rules="required" :value="y[x.valueSelect]" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-model="output[x.name]" /> {{y[x.captionSelect]}}<br/>
+                        <input class="w3-radio" :disabled="x.disabled || false" v-validate data-vv-rules="required" :value="y[x.valueSelect]" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-model="output[x.name]" /> {{y[x.captionSelect]}}<br/>
                     </label>
                     <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                     </template>
                     <template v-else-if="x.jenis == 'selectOption'">
                     <label>{{x.caption}}</label>
-                    <select class="w3-select w3-white w3-border w3-text-gray" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
+                    <select class="w3-select w3-white w3-border w3-text-gray" :disabled="x.disabled || false" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
                         <template v-if="x.option.length == 0">
                         <option class="w3-white w3-text-gray" value="null" disabled>{{x.caption}}</option>
                         </template>

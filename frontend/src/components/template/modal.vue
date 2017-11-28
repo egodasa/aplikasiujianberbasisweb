@@ -1,6 +1,6 @@
 <template>
 <div class="w3-modal">
-  <div class="w3-modal-content">
+  <div class="w3-modal-content" :style="'display:'+display+';'">
     <header class="w3-container w3-teal">
     <span class="w3-closebtn">&times;</span>
       <slot name="header"></slot>
@@ -19,13 +19,24 @@
 </template>
 
 <script>
-
+import { Bus } from '../../bus.js';
 export default {
   name: 'modal',
   data () {
       return {
-          
+          display : "none"
         }
+  },
+  methods : {
+    toggleModal () {
+        if(this.display == "none") this.display = "block"
+        else this.display = "none"
+    }
+  },
+  created () {
+      Bus.$on('toggleModal', ()=>{
+          this.toggleModal()
+          })
   }
 }
 </script>

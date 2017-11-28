@@ -32,13 +32,24 @@ export default {
           url : 'ujian',
             listForm : [
 				{
-					caption: "Mata Kuliah",
-					name:"id_kuliah",
+					caption: "Pilih Mata Kuliah",
+					name:"kd_matkul",
 					jenis:"selectOption",
 					tipe:"text",
 					value:null,
-                    valueSelect : "id_kuliah",
-                    captionSelect : "captionSelect"
+                    valueSelect : "kd_matkul",
+                    captionSelect : "nm_matkul",
+                    option : []
+					},
+                    {
+					caption: "Pilih Dosen",
+					name:"nidn",
+					jenis:"selectOption",
+					tipe:"text",
+					value:null,
+                    valueSelect : "nidn",
+                    captionSelect : "nm_dosen",
+                    option : []
 					},
                     {
 					caption: "Jenis Ujian",
@@ -48,6 +59,7 @@ export default {
 					value:null,
                     valueSelect : "id_jujian",
                     captionSelect : "nm_jujian",
+                    option : []
 					},
                     {
 					caption: "Jenis Soal Ujian",
@@ -56,7 +68,8 @@ export default {
 					tipe:"text",
 					value:null,
                     valueSelect : "id_jsoal",
-                    captionSelect : "nm_jsoal"
+                    captionSelect : "nm_jsoal",
+                    option : []
 					},
                     {
 					caption: "Waktu Ujian",
@@ -82,6 +95,23 @@ export default {
 					value:"14:00",
 					},
                     {
+					caption: "Tahun Akademik",
+					name:"tahun_akademik",
+					jenis:"textField",
+					tipe:"text",
+					value:null,
+					},
+                    {
+					caption: "Kelas",
+					name:"id_kelas",
+					jenis:"selectOption",
+					tipe:"text",
+					value:null,
+                    valueSelect : "id_kelas",
+                    captionSelect : "nm_kelas",
+                    option : []
+					},
+                    {
 					caption: "Keterangan Ujian",
 					name:"deskripsi",
 					jenis:"textArea",
@@ -95,27 +125,17 @@ export default {
         }
   },
   created () {
-      this.getDataKuliah('kuliah',0)
-      this.getDataSelect('jenis_ujian',1)
-      this.getDataSelect('jenis_soal',2)
+      this.getDataSelect('dosen',1)
+      this.getDataSelect('matkul',0)
+      this.getDataSelect('kelas',8)
+      this.getDataSelect('jenis_ujian',2)
+      this.getDataSelect('jenis_soal',3)
   },
   methods : {
         getDataSelect (x,y) {
             axios.get('api/'+x)
                 .then(res=>{
                     this.listForm[y].option = res.data.data
-                    })
-                .catch((err)=>{
-                    console.log(err)
-                    })
-        },
-        getDataKuliah () {
-            axios.get('api/kuliah')
-                .then(res=>{
-                    this.listForm[0].option = res.data.data
-                    _.forEach(this.listForm[0].option, (v,k)=>{
-                        v.captionSelect = v.nm_dosen +' - '+ v.nm_matkul + ' - ' + v.nm_kelas
-                        })
                     })
                 .catch((err)=>{
                     console.log(err)

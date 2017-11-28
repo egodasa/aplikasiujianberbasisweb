@@ -70,8 +70,8 @@
                   <div class="w3-display-middle">
                       <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">Tidak ada data</div><br/>
                       <div class="w3-center">
-                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-pale-blue w3-hover-blue-grey" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
-                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center  w3-pale-blue w3-hover-blue-gren"><i class="fa fa-refresh"></i> Refresh</button>
+                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
+                  <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center w3-blue-grey"><i class="fa fa-refresh"></i> Refresh</button>
                   
                       </div>
                     </div>
@@ -81,7 +81,15 @@
               </template>
           </template>
           <template v-else>
-          <i class="fa fa-spinner w3-spin w3-center" style="font-size:30px;"></i>
+              <div class="w3-display-container" style="height:300px;">
+                  <div class="w3-display-middle">
+                      <div class="sk-three-bounce">
+                        <div class="sk-child sk-bounce1"></div>
+                        <div class="sk-child sk-bounce2"></div>
+                        <div class="sk-child sk-bounce3"></div>
+                      </div>
+                    </div>
+                  </div>
           </template>
   </div>
 </template>
@@ -282,5 +290,38 @@ export default {
 </script>
 
 <style scoped>
+.sk-three-bounce {
+  margin: 40px auto;
+  width: 80px;
+  text-align: center; }
+  .sk-three-bounce .sk-child {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
+            animation: sk-three-bounce 1.4s ease-in-out 0s infinite both; }
+  .sk-three-bounce .sk-bounce1 {
+    -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s; }
+  .sk-three-bounce .sk-bounce2 {
+    -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s; }
 
+@-webkit-keyframes sk-three-bounce {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  40% {
+    -webkit-transform: scale(1);
+            transform: scale(1); } }
+
+@keyframes sk-three-bounce {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  40% {
+    -webkit-transform: scale(1);
+            transform: scale(1); } }
 </style>

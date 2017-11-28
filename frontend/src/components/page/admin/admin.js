@@ -47,26 +47,26 @@ export const adminConf = {
                   name : 'Dosen',
               icon : 'fa-user-md fa-fw'
               },
-              {
-                  path : '/admin/kuliah',
-                  name : 'Kuliah',
-              icon : 'fa-institution fa-fw'
-              },
-              {
-                  path : '/ujian/login',
-                  name : 'Login Peserta Ujian',
-              icon : 'fa-eye fa-fw'
-              },
-              {
-                  path : '/ujian/petunjuk',
-                  name : 'Petunjuk Ujian',
-              icon : 'fa-eye fa-fw'
-              },
-              {
-                  path : '/ujian/soal',
-                  name : 'LJK Ujian',
-              icon : 'fa-book fa-fw'
-              }
+          //    {
+            //      path : '/admin/kuliah',
+              //    name : 'Kuliah',
+            //  icon : 'fa-institution fa-fw'
+          //    },
+         //     {
+        //          path : '/ujian/login',
+       //           name : 'Login Peserta Ujian',
+       //       icon : 'fa-eye fa-fw'
+       //       },
+             // {
+       //           path : '/ujian/petunjuk',
+         //         name : 'Petunjuk Ujian',
+           //   icon : 'fa-eye fa-fw'
+          //    },
+          //    {
+          //        path : '/ujian/soal',
+          //        name : 'LJK Ujian',
+          //    icon : 'fa-book fa-fw'
+          //    }
             ]
         }
     }
