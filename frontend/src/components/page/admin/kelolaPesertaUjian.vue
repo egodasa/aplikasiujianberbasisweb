@@ -2,6 +2,12 @@
     <div class="w3-container">
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
         <h2>Tambah Data</h2>
+        <span class="w3-container">
+            <label>Pilih Kelas</label>
+            <select class="w3-select w3-border" v-model="id_kelas">
+                <option v-for='x in listKelas' :value="x.id_kelas">{{x.nm_kelas}}</option>
+            </select>
+        </span>
         <label>Pilih Mahasiswa</label>
         <span class="w3-container">
         <v-select v-model="mahasiswa" multiple :options="listMahasiswa" label="nm_mahasiswa"></v-select>
@@ -50,11 +56,14 @@ export default {
                 content : ['id_mahasiswa','nobp','nm_mahasiswa','nm_status_peserta','nm_status_upeserta']
             },
             mahasiswa : null,
-            listMahasiswa : []
+            id_kelas : null,
+            listMahasiswa : [],
+            listKelas : []
         }
   },
   created () {
-        this.getListMahasiswa()
+        this.getDataSelect('mahasiswa','listMahasiswa')
+        this.getDataSelect('kelas','listKelas')
   },
   methods : {
         submitData (){
@@ -73,13 +82,14 @@ export default {
                 })
             
         },
-        getListMahasiswa () {
-            axios.get('api/mahasiswa')
-            .then(res=>{
-                this.listMahasiswa = res.data.data
-                })
-            .catch(err=>{
-                })
+        getDataSelect (x,y) {
+            axios.get('api/'+x)
+                .then(res=>{
+                    this[y] = res.data.data
+                    })
+                .catch((err)=>{
+                    this[y] = []
+                    })
         },
         toggleFormData() {
             Bus.$emit('toggleFormData')

@@ -23,6 +23,7 @@
     "md5": "^2.2.1",
     "morgan": "^1.8.2",
     "mysql": "^2.14.1",
+    "node-excel-export": "^1.4.2",
     "pg": "^7.3.0",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.3",

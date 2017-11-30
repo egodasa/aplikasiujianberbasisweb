@@ -11,7 +11,9 @@ import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
 import vSelect from 'vue-select'
 import wysiwyg from "vue-wysiwyg";
 Vue.use(wysiwyg, {});
+import Notifications from 'vue-notification'
 
+Vue.use(Notifications)
 Vue.component('v-select', vSelect)
 VeeValidate.Validator.addLocale(bahasa)
 Vue.use(VueRouter);

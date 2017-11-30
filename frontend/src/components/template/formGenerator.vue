@@ -1,5 +1,6 @@
 <template>
 <div id="genForm">
+    <notifications group="foo" />
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content">
         <div class="w3-card-8 w3-container w3-section">
@@ -10,17 +11,17 @@
                     <template v-if="x.jenis == 'textField'">
                         <template v-if="x.tipe == 'number'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
+                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else-if="x.tipe == 'email'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
+                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else>
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
+                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <br/>
@@ -90,6 +91,7 @@
 <script>
 import axios from 'axios';
 import { Bus } from '../../bus.js';
+import pengaturan from '../../pengaturan.json';
 import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
 
@@ -111,6 +113,7 @@ export default {
 	},
 	data () {
 		return {
+            msg : pengaturan,
             showForm : false,
             idData : null,
             output : {},
@@ -132,6 +135,13 @@ export default {
         Datepicker, TimePicker
     },
     created () {
+        this.$notify({
+  group: 'foo',
+  title: 'Important message',
+  text: 'Hello user! This is a notification!',
+  duration : -9,
+  position : 'bottom right'
+});
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
@@ -178,19 +188,19 @@ export default {
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
-                console.log('pantek')
 				if(res.data.status == false) {
-                    console.log(res.data)
+                    console.log(this.msg.err[res.data.err])
                     this.output[this.pk] = undefined
                 }
 				else {
+                    
+                    console.log(this.msg.err[res.data.err])
                     Bus.$emit('newData')
                     this.toggleFormData()
-					console.log('berhasil ' + res)
 				}
 			})
 			.catch(err=>{
-				console.log(err)
+                console.log(this.msg.err[err.data.err])
 			})
 		},
         getDataDetail : function(x){

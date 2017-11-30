@@ -4,6 +4,7 @@ var checkData = require('../validator/ujian/create_update');
 var checkDataPeserta = require('../validator/peserta_ujian/create_update');
 var checkDataSoal = require('../validator/soal/create_update');
 var json2csv = require('json2csv')
+const excel = require('node-excel-export');
 
 router.get('/:id?', (req, res, next) => {
 	var id = req.params.id || 0;
@@ -44,27 +45,39 @@ router.get('/:id?', (req, res, next) => {
     });
 router.post('/', (req, res, next) => {
     var data = req.body;
+    console.log(data)
     var hasil = {};
-    db('tbujian').insert({
-        id_ujian : data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik,
-        kd_matkul : data.kd_matkul,
-        nidn : data.nidn,
-        hari : data.hari,
-        mulai : data.mulai,
-        selesai : data.selesai,
-        deskripsi : data.deskripsi,
-        id_jujian : data.id_jujian,
-        id_jsoal : data.id_jsoal,
-        tahun_akademik : data.tahun_akademik,
-        id_kelas : data.id_kelas
-        }).
-    then(function(){
+    db('tbujian').select('id_ujian').where('id_ujian',data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik+'-'+data.id_jujian)
+    .then(rows=>{
+        if(rows.length != 0){
+            hasil.status = false
+            hasil.err = 2
+            reject(res.json(hasil));
+        }else return db.transaction(trx=>{
+            return trx('tbujian').insert({
+                id_ujian : data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik+'-'+data.id_jujian,
+                kd_matkul : data.kd_matkul,
+                nidn : data.nidn,
+                hari : data.hari,
+                mulai : data.mulai,
+                selesai : data.selesai,
+                deskripsi : data.deskripsi,
+                id_jujian : data.id_jujian,
+                id_jsoal : data.id_jsoal,
+                tahun_akademik : data.tahun_akademik
+                }).then(()=>{
+                    return db('tbkelas_ujian').insert(data.kelas)
+                })
+            })
+        })
+    .then(function(){
         hasil.status = true;
+        hasil.err = 0
         res.json(hasil);
         }).
     catch(function(err){
         hasil.status = false;
-        hasil.err = err;
+        hasil.err = 1;
         res.json(hasil);
         });
     });
@@ -391,6 +404,54 @@ router.get('/:idUjian/hasil/cetak/csv',(req,res,next)=>{
             .header("Content-Disposition", "attachment;filename=laporan_nilai.csv")
             .send(csv)
 		})
+        }).
+	catch(function(err){
+		res.json(err);
+		});
+    });
+router.get('/:idUjian/hasil/cetak/excel',(req,res,next)=>{
+    let id_ujian = req.params.idUjian
+    let header = {
+        fill: {
+          fgColor: {
+            rgb: 'E0E0E0'
+          }
+        },
+        font: {
+          sz: 12,
+          bold: true
+        }
+    }
+    const dataConf = {
+      nobp: { // <- the key should match the actual data key 
+        displayName: 'NOBP', // <- Here you specify the column header 
+        headerStyle: header
+      },
+      nm_mahasiswa: { // <- the key should match the actual data key 
+        displayName: 'Nama Mahasiswa', // <- Here you specify the column header 
+        headerStyle: header
+      },
+      nilai: { // <- the key should match the actual data key 
+        displayName: 'Nilai', // <- Here you specify the column header 
+        headerStyle: header
+      }
+    }
+    db('lap_hasil_ujian').select().where('id_ujian',id_ujian)
+    .then(function(rows){
+          const report = excel.buildExport(
+          [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report 
+            {
+              name: 'Report', // <- Specify sheet name (optional) 
+              //heading: heading, // <- Raw heading array (optional) 
+              //merges: merges, // <- Merge cell ranges 
+              specification: dataConf, // <- Report specification 
+              data: rows // <-- Report data 
+            }
+          ]
+        );
+        res.header('Content-type','application/vnd.ms-excel')
+        .header("Content-Disposition", "attachment;filename=laporan_nilai.xlsx")
+        .send(report)
         }).
 	catch(function(err){
 		res.json(err);

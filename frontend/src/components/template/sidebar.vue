@@ -29,7 +29,7 @@ export default {
       welcomeMessage : {
           type : String,
           required : false,
-          default : 'Welcome'
+          default : ''
       },
       listMenu : {
           type : Array,
