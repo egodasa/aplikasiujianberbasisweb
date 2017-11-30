@@ -80,6 +80,7 @@ import soalUjian from './kelolaSoalUjian.vue'
 import kelolaPesertaUjian from './kelolaPesertaUjian.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
+import { Bus } from '../../../bus.js';
 
 export default {
   name: 'kelolaUjianDetail',
@@ -99,7 +100,7 @@ export default {
               title : ['Mata Kuliah','Dosen','Kelas','TA','Hari','Jenis Ujian','Jenis Soal','Mulai','Selesai'],
               content : ['nm_matkul','nm_dosen','nm_kelas','tahun_akademik','hari','nm_jujian','nm_jsoal','mulai','selesai']
           },
-          currentTabs : 'hasilUjian',
+          currentTabs : 'pesertalUjian',
           periksaSoal : false
         }
     },
@@ -114,6 +115,8 @@ export default {
           axios.get('api/ujian/'+this.$route.params.idUjian)
             .then(res=>{
                 this.infoUjian = res.data.data[0]
+                console.log(this.infoUjian.nm_kelas)
+                Bus.$emit('getKelas',this.infoUjian.nm_kelas)
                 this.infoUjian.hari = formatWaktu(new Date(this.infoUjian.hari), 'DD MMMM YYYY', {locale : lokalisasi})
                 this.periksaSoal = this.infoUjian.id_jsoal == 2
                 })

@@ -63,13 +63,15 @@ export default {
   },
   created () {
         this.getDataSelect('mahasiswa','listMahasiswa')
-        this.getDataSelect('kelas','listKelas')
+        Bus.$on('getkelas',x=>{
+            this.getKelas(x)
+            })
   },
   methods : {
         submitData (){
             var tmp = []
             _.forEach(this.mahasiswa, (v,k)=>{
-                tmp.push({id_peserta:v.nobp+'-'+this.$route.params.idUjian,id_ujian:this.$route.params.idUjian,nobp:v.nobp})
+                tmp.push({id_peserta:v.nobp+'-'+this.$route.params.idUjian,id_ujian:this.$route.params.idUjian,nobp:v.nobp,id_kelas:this.id_kelas})
                 })
             axios.post('api/'+this.url,tmp)
             .then(res=>{
@@ -93,6 +95,11 @@ export default {
         },
         toggleFormData() {
             Bus.$emit('toggleFormData')
+        },
+        getKelas (x) {
+            console.log(x)
+            this.listKelas = x.split(",")
+            console.log(this.listKelas)
         }
   }
 }
