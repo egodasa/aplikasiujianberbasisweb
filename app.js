@@ -9,6 +9,8 @@ var fileUpload = require('express-fileupload');
 var Promise = require('promise');
 var url = require('url');
 var knexLogger = require('knex-logger');
+const expressGraphQL = require('express-graphql');
+const sMahasiswa = require('./schema/mahasiswa.js');
 mysql = require('mysql');
 db = require('knex')({
   client: 'pg',
@@ -50,7 +52,10 @@ app.use('/api/kuliah', require('./routes/kuliah'));
 app.use('/api/test', require('./routes/test'));
 app.use('/api/cek', require('./routes/cekPesertaUjian'));
 app.use('/api/user', require('./routes/user'));
-
+app.use('/api/v2/mahasiswa', expressGraphQL({
+  schema: sMahasiswa,
+  graphiql: true,
+}));
 //EOF ROUTES
 
 // catch 404 and forward to error handler

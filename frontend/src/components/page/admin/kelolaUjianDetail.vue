@@ -63,11 +63,11 @@
         </template>
     </div>
     
-<div class="w3-section w3-border w3-white">
-<span class="w3-bar w3-teal ">
-<button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('soalUjian')">Soal Ujian</button>
-<button type="button" :class="currentTabs != 'pesertaUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
-<button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
+<div class="w3-section w3-border w3-white w3-mobile">
+<span class="w3-bar w3-teal">
+<button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('soalUjian')">Soal Ujian</button>
+<button type="button" :class="currentTabs != 'pesertaUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
+<button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
 </span>
 <br/>
     <keep-alive>

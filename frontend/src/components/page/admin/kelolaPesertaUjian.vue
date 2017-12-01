@@ -4,7 +4,7 @@
         <h2>Tambah Data</h2>
         <span class="w3-container">
             <label>Pilih Kelas</label>
-            <select class="w3-select w3-border" v-model="id_kelas">
+            <select class="w3-select w3-border" v-model="id_kelas" @change="getDataSelect('mahasiswa','listMahasiswa','mahasiswaNotInKelasUjian',{id_kelas:id_kelas,id_ujian:$route.params.idUjian})">
                 <option v-for='x in listKelas' :value="x.id_kelas">{{x.nm_kelas}}</option>
             </select>
         </span>
@@ -71,7 +71,6 @@ export default {
         }
   },
   created () {
-        this.getDataSelect('mahasiswa','listMahasiswa')
         this.getKelas(this.infoUjian.kelas)
   },
   methods : {
@@ -84,19 +83,25 @@ export default {
             .then(res=>{
                 Bus.$emit('toggleFormData')
                 Bus.$emit('newData')
-                this.mahasiswa = null
+                this.mahasiswa = null,
+                this.id_kelas = null
                 })
             .catch(err=>{
                 console.log(err)
                 })
             
         },
-        getDataSelect (x,y) {
-            axios.get('api/'+x)
+        getDataSelect (x,y,name,args) {
+            var hp = axios.create({"Content-Type":"application/json","Accept":"application/json"})
+            let query = `query mahasiswaNotInKelasUjian($id_kelas : Int, $id_ujian : String) {mahasiswaNotInKelasUjian(id_kelas: $id_kelas, id_ujian : $id_ujian){nobp,nm_mahasiswa}}`
+            let kueri = {query:query, variables : {id_kelas : this.id_kelas,id_ujian : this.$route.params.idUjian}}
+            console.log(kueri)
+            axios.post('api/v2/'+x,kueri)
                 .then(res=>{
-                    this[y] = res.data.data
+                    this[y] = res.data.data[name]
                     })
                 .catch((err)=>{
+                    console.log(err)
                     this[y] = []
                     })
         },

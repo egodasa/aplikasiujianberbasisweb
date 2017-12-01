@@ -13,8 +13,8 @@
         <h5>{{title}}</h5>
       </div>
       <div class="w3-bar-block">
-        <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" @click="toggleMenu()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-        <router-link v-for="x in listMenu" :to="x.path" class="w3-bar-item w3-button w3-padding"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
+        <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" @click="toggleMenu()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Tutup Menu</a>
+        <router-link v-for="x in listMenu" :to="x.path" :class="$route.fullPath == x.path ? 'w3-bar-item w3-button w3-padding w3-gray' : 'w3-bar-item w3-button w3-padding'"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
       </div>
    </slot>
 </nav>
