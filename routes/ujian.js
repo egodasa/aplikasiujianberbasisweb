@@ -124,7 +124,6 @@ router.put('/:id', (req, res, next) => {
     });
 
 //daftar peserta ujian
-//daftar ujian yang diikuti peserta
 router.get('/:id/mahasiswa',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -137,7 +136,7 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
         tmp : null
     }
     query.count = db('lap_peserta_ujian').select('nobp').where('id_ujian',id)
-    query.tmp = db('lap_peserta_ujian').select().where('id_ujian',id)
+    query.tmp = db('lap_peserta_ujian').select().where('id_ujian',id).orderByRaw('nm_kelas,nm_mahasiswa asc')
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
@@ -285,30 +284,6 @@ router.delete('/:id/soal/:idSoal', (req, res, next) => {
 		res.json(hasil);
 		});
 });
-//peserta ujian
-router.get('/:id/peserta',(req, res, next)=>{
-	var id_ujian = req.params.id || 0;
-	var idPeserta = req.params.idPeserta || 0;
-    var limit = parseInt(req.query.limit) || null;
-	var offset = parseInt(req.query.offset) || null;
-    var hasil = {}
-	db.raw("SELECT lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN 1 ELSE 0 END AS status, hasil_ujian.id_jsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.nobp) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.nobp, tbjawaban.jawaban, tbujian.id_jsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.nobp = hasil_ujian.nobp))) left join (select * from tbhasil_ujian where id_ujian=?) a on lap_peserta_ujian.nobp=a.nobp where lap_peserta_ujian.id_ujian=? order by status desc LIMIT ? OFFSET ?",[id_ujian,id_ujian,id_ujian,limit,offset])
-	.then(function(rows){
-		hasil.status = true;
-		hasil.data = rows.rows;
-        hasil.current_row = rows.rows.length;
-        return db.raw("SELECT lap_peserta_ujian.nobp, lap_peserta_ujian.nm_mahasiswa, CASE WHEN (hasil_ujian.jawaban IS NOT NULL) THEN 1 ELSE 0 END AS status, hasil_ujian.id_jsoal FROM (lap_peserta_ujian LEFT JOIN ( SELECT distinct on (tbjawaban.nobp) tbjawaban.id_jawaban, tbjawaban.id_ujian, tbjawaban.nobp, tbjawaban.jawaban, tbujian.id_jsoal FROM (tbjawaban JOIN tbujian ON ((tbjawaban.id_ujian = tbujian.id_ujian))) WHERE (tbjawaban.id_ujian = ?)) hasil_ujian ON ((lap_peserta_ujian.nobp = hasil_ujian.nobp))) left join (select * from tbhasil_ujian where id_ujian=?) a on lap_peserta_ujian.nobp=a.nobp where lap_peserta_ujian.id_ujian=? order by status desc",[id_ujian,id_ujian,id_ujian])
-		})
-    .then((rows)=>{
-        hasil.row = rows.rows.length
-        res.send(hasil);
-        }).
-	catch(function(err){
-		hasil.status = false
-		hasil.error = err;
-		res.json(hasil);
-		});
-	});
 //JAWABAN PESERTA ESSSAI
 router.get('/:id/jawaban/:idPeserta?',(req, res, next)=>{
 	var id_ujian = req.params.id || 0;

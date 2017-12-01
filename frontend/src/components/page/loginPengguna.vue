@@ -1,10 +1,5 @@
 <template>
 <div class="w3-container">
-<modal>
-<slot name="content">
-Loading
-</slot>
-</modal>
 <div class="w3-modal" style="display:block;">
 <div class="w3-modal-content w3-card-4">
 <div class="w3-container w3-blue-gray w3-center">

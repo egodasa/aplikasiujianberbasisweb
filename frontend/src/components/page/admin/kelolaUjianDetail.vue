@@ -2,7 +2,16 @@
 <admin>
 <div class="w3-container">
     <h2>Detail Ujian</h2>
-    <div id="infoUjian">
+        <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
+        <div class="w3-big w3-margin-top">Mengecek Login Pengguna
+        <div class="sk-three-bounce">
+        <div class="sk-child sk-bounce1"></div>
+        <div class="sk-child sk-bounce2"></div>
+        <div class="sk-child sk-bounce3"></div>
+        </div>
+        </div>
+        </div>
+    <div id="infoUjian" :style="!loading ? 'display:block;':'display:none;height:300px;'">
         <template v-if="infoUjian == null">
             Tidak Dapat Menampilkan Info Ujian<br/>
             <button type="button" class="w3-button w3-blue" @click="detailUjian()">Refresh</button>
@@ -17,7 +26,8 @@
                         </tr>
                         <tr>
                         <td class="w3-white">Kelas</td>
-                        <td class="w3-white">{{infoUjian.nm_kelas}}</td>
+                        <td class="w3-white">
+                            <template v-for="x in infoUjian.kelas">{{' '+x.nm_kelas}}</template></td>
                         </tr>
                         <tr>
                         <td class="w3-white">Hari</td>
@@ -55,13 +65,13 @@
     
 <div class="w3-section w3-border w3-white">
 <span class="w3-bar w3-teal ">
-<button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('soalUjian')">Soal Ujian</button>
-<button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
-<button type="button" class="w3-button w3-bar-item w3-teal" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
+<button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('soalUjian')">Soal Ujian</button>
+<button type="button" :class="currentTabs != 'pesertaUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
+<button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-teal' : 'w3-button w3-hover-white w3-bar-item w3-white'" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
 </span>
 <br/>
     <keep-alive>
-        <components :is="currentTabs">
+        <components :is="currentTabs" :infoUjian="infoUjian">
         </components>
     </keep-alive>
 </div>
@@ -100,8 +110,9 @@ export default {
               title : ['Mata Kuliah','Dosen','Kelas','TA','Hari','Jenis Ujian','Jenis Soal','Mulai','Selesai'],
               content : ['nm_matkul','nm_dosen','nm_kelas','tahun_akademik','hari','nm_jujian','nm_jsoal','mulai','selesai']
           },
-          currentTabs : 'pesertalUjian',
-          periksaSoal : false
+          currentTabs : 'soalUjian',
+          periksaSoal : false,
+          loading : false
         }
     },
   created (){

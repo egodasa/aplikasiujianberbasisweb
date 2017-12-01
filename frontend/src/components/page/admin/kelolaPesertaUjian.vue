@@ -8,8 +8,8 @@
                 <option v-for='x in listKelas' :value="x.id_kelas">{{x.nm_kelas}}</option>
             </select>
         </span>
-        <label>Pilih Mahasiswa</label>
         <span class="w3-container">
+        <label>Pilih Mahasiswa</label>
         <v-select v-model="mahasiswa" multiple :options="listMahasiswa" label="nm_mahasiswa"></v-select>
         </span>
         <span class="w3-container">
@@ -48,12 +48,21 @@ export default {
   components : {
       genTable, genForm
   },
+  props : {
+      infoUjian : {
+          required : true,
+          type : Object,
+          default : function(){
+              return {}
+          }
+      }
+  },
   data () {
       return {
           url : 'ujian/'+this.$route.params.idUjian+'/mahasiswa',
             tableContent : {
-                header :  ['NOBP','Nama','Status Peserta','Status Ujian'],
-                content : ['id_mahasiswa','nobp','nm_mahasiswa','nm_status_peserta','nm_status_upeserta']
+                header :  ['NOBP','Nama','Kelas','Status Peserta','Status Ujian'],
+                content : ['id_mahasiswa','nobp','nm_mahasiswa','nm_kelas','nm_status_peserta','nm_status_upeserta']
             },
             mahasiswa : null,
             id_kelas : null,
@@ -63,9 +72,7 @@ export default {
   },
   created () {
         this.getDataSelect('mahasiswa','listMahasiswa')
-        Bus.$on('getkelas',x=>{
-            this.getKelas(x)
-            })
+        this.getKelas(this.infoUjian.kelas)
   },
   methods : {
         submitData (){
@@ -97,9 +104,7 @@ export default {
             Bus.$emit('toggleFormData')
         },
         getKelas (x) {
-            console.log(x)
-            this.listKelas = x.split(",")
-            console.log(this.listKelas)
+            this.listKelas = x
         }
   }
 }
