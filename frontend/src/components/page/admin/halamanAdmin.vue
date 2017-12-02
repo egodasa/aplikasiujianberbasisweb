@@ -27,6 +27,13 @@ export default {
          menu : []
       }
   },
+  beforeCreated (){
+      if(this.$session.has('user')){
+          if(this.$session.get('user').id_juser != 1) this.$router.push({path:'/admin'})
+      }else{
+        this.$router.push({path:'/'})
+      }
+  },
   created () {
       this.menu = this.adminMenu
   }

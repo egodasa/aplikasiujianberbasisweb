@@ -15,10 +15,6 @@
             <v-select v-model="matkul" :options="listMatkul" label="nm_matkul"></v-select>
         </span>
         <span class="w3-container">
-            <label>Pilih Dosen</label>
-            <v-select v-model="dosen" :options="listDosen" label="nm_dosen"></v-select>
-        </span>
-        <span class="w3-container">
             <label>Pilih Jenis Ujian</label>
             <select class="w3-select w3-border" v-model="id_jujian">
                 <option v-for='x in listJujian' :value="x.id_jujian">{{x.nm_jujian}}</option>
@@ -80,22 +76,21 @@ import pengaturan from '../../../pengaturan.json'
 import { Bus } from '../../../bus.js';
 
 export default {
-  name: 'kelolaUjian',
+  name: 'DkelolaUjian',
   components : {
       genTable, genForm, dosen, Datepicker
   },
   data () {
       return {
           id_ujian : null,
-          url : 'ujian',
+          url : 'dosen/'+this.$session.get('user').username+'/ujian',
             tableContent : {
-                header :  ['Matkul','Kelas',],
-                content : ['id_ujian','nm_matkul','nm_kelas']
+                header :  ['Matkul','Jenis Ujian',],
+                content : ['id_ujian','nm_matkul','nm_jujian']
             },
             conf : pengaturan,
             tahun_akademik : pengaturan.tahun_akademik,
             matkul : null,
-            dosen : null,
             id_jujian : null,
             id_jsoal : null,
             hari : null,
@@ -103,29 +98,29 @@ export default {
             selesai : null,
             kelas : null,
             deskripsi : null,
-            listDosen : [],
             listMatkul : [],
             listKelas : [],
             listJujian : [],
-            listJsoal : []
+            listJsoal : [],
+            infoDosen : {}
         }
   },
   created () {
-      this.getDataSelect('dosen','listDosen')
       this.getDataSelect('matkul','listMatkul')
       this.getDataSelect('kelas','listKelas')
       this.getDataSelect('jenis_soal','listJsoal')
       this.getDataSelect('jenis_ujian','listJujian')
+      this.infoDosen = this.$session.get('user')
   },
   methods : {
         submitData (){
             var kelas_tmp = []
             _.forEach(this.kelas,(v,k)=>{
-                kelas_tmp.push({id_ujian : this.matkul.kd_matkul+'-'+this.dosen.nidn+'-'+this.tahun_akademik+'-'+this.id_jujian,id_kelas : v.id_kelas})
+                kelas_tmp.push({id_ujian : this.matkul.kd_matkul+'-'+this.infoDosen.username+'-'+this.tahun_akademik+'-'+this.id_jujian,id_kelas : v.id_kelas})
                 })
             var tmp = {
                 kd_matkul : this.matkul.kd_matkul,
-                nidn : this.dosen.nidn,
+                nidn : this.infoDosen.username,
                 hari : this.hari,
                 mulai : this.mulai,
                 selesai : this.selesai,

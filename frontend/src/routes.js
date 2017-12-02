@@ -21,13 +21,8 @@ import loginPengguna from './components/page/loginPengguna.vue';
 import dashboardAdmin from './components/page/admin/dashboardAdmin.vue';
 import dashboardDosen from './components/page/dosen/dashboardDosen.vue';
 
-import dosenKelolaUjian from './components/page/dosen/dosenKelolaUjian.vue';
-import dosenKelolaKuliah from './components/page/dosen/dosenKelolaKuliah.vue';
-import dosenKelolaKuliahMahasiswa from './components/page/dosen/dosenKelolaKuliahMahasiswa.vue';
-import dosenHasilUjian from './components/page/dosen/dosenHasilUjian.vue';
-import dosenKelolaSoalUjian from './components/page/dosen/dosenKelolaSoalUjian.vue';
-import dosenCekJawaban from './components/page/dosen/dosenCekJawaban.vue';
-import dosenJawabanUjian from './components/page/dosen/dosenJawabanUjian.vue';
+import DkelolaUjian from './components/page/dosen/kelolaUjian.vue';
+import DkelolaUjianDetail from './components/page/dosen/kelolaUjianDetail.vue';
 
 import home from './components/Home.vue';
 import loginPeserta from './components/page/peserta/loginPeserta.vue';
@@ -107,21 +102,6 @@ export default [
     component: kelolaMatkul
   },
   {
-    path: '/admin/matkul/:kdMatkul/dosen',
-    name: 'kelolaMatkulDosen',
-    component: kelolaMatkulDosen
-  },
-  {
-    path: '/admin/kuliah',
-    name: 'kelolaKuliah',
-    component: kelolaKuliah
-  },
-  {
-    path: '/admin/kuliah/:idKuliah',
-    name: 'kelolaKuliahMahasiswa',
-    component: kelolaKuliahMahasiswa
-  },
-  {
     path: '/admin/jenis-ujian',
     name: 'kelolaJenisUjian',
     component: kelolaJenisUjian
@@ -135,11 +115,6 @@ export default [
     path: '/admin/dosen',
     name: 'kelolaDosen',
     component: kelolaDosen
-  },
-  {
-    path: '/admin/dosen/:nidn/matkul',
-    name: 'kelolaDosenMatkul',
-    component: kelolaDosenMatkul
   },
   {
     path: '/ujian/login',
@@ -158,37 +133,12 @@ export default [
   },
   {
     path: '/dosen/ujian',
-    name: 'dosenKelolaUjian',
-    component: dosenKelolaUjian
+    name : 'DkelolaUjian',
+    component: DkelolaUjian
   },
   {
-    path: '/dosen/kuliah',
-    name: 'dosenKelolaKuliah',
-    component: dosenKelolaKuliah
-  },
-  {
-    path: '/dosen/kuliah/:idKuliah',
-    name: 'dosenKelolaKuliahMahasiswa',
-    component: dosenKelolaKuliahMahasiswa
-  },
-  {
-    path: '/dosen/ujian/:idUjian/hasil',
-    name : 'dosenHasilUjian',
-    component: dosenHasilUjian
-  },
-  {
-    path: '/dosen/ujian/:idUjian/soal',
-    name : 'dosenKelolaSoalUjian',
-    component: dosenKelolaSoalUjian
-  },
-  {
-    path: '/dosen/ujian/:idUjian/jawaban/:idPeserta',
-    name : 'dosenCekJawaban',
-    component: dosenCekJawaban
-  },
-  {
-    path: '/dosen/ujian/:idUjian/jawaban',
-    name : 'dosenJawabanUjian',
-    component: dosenJawabanUjian
+    path: '/dosen/ujian/:idUjian',
+    name : 'DkelolaUjianDetail',
+    component: DkelolaUjianDetail
   }
 ];

@@ -89,8 +89,8 @@ export default {
           id_ujian : null,
           url : 'ujian',
             tableContent : {
-                header :  ['Matkul','Kelas',],
-                content : ['id_ujian','nm_matkul','nm_kelas']
+                header :  ['Matkul','Dosen','Jenis Ujian',],
+                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian']
             },
             conf : pengaturan,
             tahun_akademik : pengaturan.tahun_akademik,

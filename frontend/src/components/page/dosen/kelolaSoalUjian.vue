@@ -1,14 +1,12 @@
 <template>
-    <dosen>
-    <div class="w3-container">
-        <h2>Soal Ujian {{detailUjian.nm_matkul || null}}</h2>
-    <button type="button" @click="toggleFormData()" class="w3-button w3-blue">Tambah Data</button>
+<div class="w3-container">
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content w3-animate-top">
         <form class="w3-card-8 w3-container w3-section" id="addData" @submit.prevent="submitData()" name="addData">
             <h3>Tambah Soal</h3>
                 <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
-            <textarea name="isi_soal" v-validate data-vv-rules="required" data-vv-as="Isi soal" class="w3-input w3-border" type="text" v-model="dataForm.isi_soal" placeholder="Isi Soal"></textarea>
+            <label>Isi Soal</label>
+            <wysiwyg v-model="dataForm.isi_soal" />
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
             <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
@@ -21,7 +19,7 @@
             </div>
             <button class="w3-btn w3-tiny w3-teal" type="button" @click="addPG()">+</button>
             <button class="w3-btn w3-tiny w3-red" type="button" @click="deletePG()">-</button>
-            <br/> Jawaban :
+            <br/> <label>Jawaban</label>
                 <div v-for="(x,index,key) in dataForm.pilihanGanda">
                     <template v-if="index  == 1">
                     <input class="w3-radio" type="radio" name="Huruf" v-validate data-vv-rules="required" data-vv-as="Jawaban" v-model="dataForm.jawaban" :value="x.huruf" /> <label class="w3-label">{{x.huruf}}</label>
@@ -32,8 +30,10 @@
                 </div>
             </template>
             <template v-else>
-            <textarea name="jawaban" v-validate data-vv-rules="required" data-vv-as="Jawaban" class="w3-input w3-border" type="text" v-model="dataForm.jawaban" placeholder="Jawaban"></textarea>
+            <label>Jawaban</label>
+            <wysiwyg v-model="dataForm.jawaban" />
             <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
+            <label>Bobot Nilai</label>
             <input class="w3-input w3-border" v-validate data-vv-rules="required" data-vv-as="Bobot Soal" type="number" name="bobot" v-model="dataForm.bobot" placeholder="Bobot Nilai Soal" />
             <span class="w3-text-red" v-if="errors.has('bobot')">{{ errors.first('bobot') }}</span>
             </template>
@@ -47,24 +47,22 @@
     <gen-table :pk="tableContent
     .content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus"></gen-table>
     </div>
-</dosen>
 </template>
 
 <script>
 import genTable from '../../template/GenTable.vue'
 import axios from 'axios'
 import { Bus } from '../../../bus.js';
-import dosen from './halamanDosen.vue'
 export default {
-  name: 'dosenKelolaSoalUjian',
+  name: 'kelolaSoalUjian',
   components : {
-      genTable, dosen
+      genTable
   },
   data () {
       return {
           tableContent : {
-              header : ['Isi Soal'],
-              content : ['id_soal','isi_soal']
+              header : ['Isi Soal','Bobot'],
+              content : ['id_soal','isi_soal','bobot']
           },
           url : 'ujian/'+this.$route.params.idUjian+'/soal',
           showForm : false,
@@ -78,7 +76,7 @@ export default {
                   {huruf:'D',isi_pilihan:null},
                   {huruf:'E',isi_pilihan:null}
                 ],
-            id_jsoal : 1,
+            id_jsoal : null,
             bobot : undefined
           },
           pilihanGandaDef : [
@@ -95,6 +93,9 @@ export default {
       Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
+      Bus.$on('toggleFormData',()=>{
+          this.toggleFormData()
+          })
       this.getDetailUjian()
   },
   methods : {
@@ -181,6 +182,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style src="../../../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css">
 
 </style>

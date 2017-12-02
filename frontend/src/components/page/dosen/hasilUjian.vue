@@ -1,19 +1,15 @@
 <template>
-    <dosen>
 <div class="w3-container">
-    <h2>Laporan Hasil Ujian</h2>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain" :aksi.boolean="false" :formButton.Boolean="false"></gen-table>
+    <gen-table :exportUrl="exportUrl" :exportButton.Boolean="true" :pk="tableContent.content[0]" :refreshButton.Boolean="false" :formButton.Boolean="false" :url="url" :tableContent="tableContent" tableType="lain" :aksi.boolean="false"></gen-table>
 </div>
-</dosen>
 </template>
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import dosen from './halamanDosen.vue'
 export default {
-  name: 'dosenHasilUjian',
+  name: 'DhasilUjian',
   components : {
-      genTable, dosen
+      genTable
   },
   data () {
       return {
@@ -21,7 +17,8 @@ export default {
             tableContent : {
                 header :  ['NOBP','Nama Mahasiswa','Nilai'],
                 content : ['id_hasil','nobp','nm_mahasiswa','nilai']
-            }
+            },
+            exportUrl : '/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv'
         }
   }
 }

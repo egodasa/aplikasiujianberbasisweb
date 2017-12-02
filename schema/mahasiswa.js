@@ -50,14 +50,11 @@ const RootQuery = new GraphQLObjectType({
       args : {
           id_ujian : {
               type : GraphQLString
-          },
-          id_kelas : {
-              type : GraphQLInt
           }
       },
       resolve(parentValue, args) {
         return db('tbmahasiswa').select()
-        .whereNotIn("nobp",db.raw("select nobp from lap_peserta_ujian where id_kelas=? and id_ujian=?",[args.id_kelas,args.id_ujian]))
+        .whereNotIn("nobp",db.raw("select nobp from lap_peserta_ujian where id_ujian=?",[args.id_ujian]))
             .where("status_mahasiswa",1).orderBy("nm_mahasiswa","asc")
       }
     }
