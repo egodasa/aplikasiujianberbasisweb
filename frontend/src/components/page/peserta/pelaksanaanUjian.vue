@@ -41,8 +41,8 @@
    </div>
     </sec-sidebar>
 <sec-content>
-   <div class="w3-container">
-   <div class="w3-row">
+   <div class="w3-container" style="margin-top:30px;">
+   <div class="w3-row" style="margin-top:30px;">
     <div class="w3-col l6 md6 s6">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
             Total Soal : {{listSoal.length}}

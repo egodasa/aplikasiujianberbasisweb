@@ -1,37 +1,14 @@
 <template>
     <div class="w3-container">
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" :contentType="lain">
-        <h2>Tambah Data</h2>
+        <h2>Pengaturan</h2>
         <span class="w3-container">
-            <label>Pilih Kelas</label>
-            <select class="w3-select w3-border" v-model="id_kelas" @change="getDataSelect('mahasiswa','listMahasiswa','mahasiswaNotInKelasUjian',{id_ujian:$route.params.idUjian})">
-                <option v-for='x in listKelas' :value="x.id_kelas">{{x.nm_kelas}}</option>
-            </select>
-        </span>
-        <span class="w3-container">
-        <label>Pilih Mahasiswa</label>
-        <v-select v-model="mahasiswa" multiple :options="listMahasiswa" label="nm_mahasiswa"></v-select>
-        </span>
+                <label>Tahun Akademik</label>
+                <input type="text" class="w3-input w3-border" v-model="tahun" />
+            </span>
         <span class="w3-container">
         <button class="w3-button w3-blue " @click="submitData()">Tambahkan</button>
         <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
         </span>
-    </gen-form>
-    <gen-table :formButton.Boolean="false"  :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain">
-        <template slot="customAction" scope="ca">
-            <template v-if="ca.pkData.status_ujian_peserta == 3">
-                <button class="w3-button w3-small w3-red" disabled="true">Tidak Ada</button>
-            </template>
-            <template v-else-if="ca.pkData.status_ujian_peserta == 4">
-                <router-link tag="button" :to="{name:'cekJawaban',params:{idUjian:$route.params.idUjian,idPeserta:ca.pkData.nobp}}" class="w3-btn w3-small w3-blue">
-                    <i class="fa fa-edit w3-small"></i> <b>Periksa Jawaban</b>
-                </router-link>
-            </template>
-            <template v-else-if="ca.pkData.status_ujian_peserta == 5">
-                <button class="w3-button w3-small w3-blue" disabled="true">Tidak Ada</button>
-            </template>
-        </template>
-    </gen-table>
     </div>
 </template>
 

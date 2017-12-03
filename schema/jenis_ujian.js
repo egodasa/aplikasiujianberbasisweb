@@ -9,17 +9,13 @@ const {
   GraphQLScalarType
 } = require('graphql');
 
-const daftarMahasiswa = new GraphQLObjectType({
-  name: 'Mahasiswa',
+const daftarJujian = new GraphQLObjectType({
+  name: 'Jujian',
   fields: () => ({
-    id_mahasiswa: { 
+    id_jujian: { 
         type: GraphQLInt
     },
-    nobp: { 
-        type: GraphQLString
-    },
-    nm_mahasiswa: { type: GraphQLString },
-    status_mahasiswa: { type: GraphQLInt }
+    nm_jujian: { type: GraphQLString }
   })
 });
 const hasil = new GraphQLScalarType({
@@ -39,23 +35,22 @@ const hasil = new GraphQLScalarType({
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    mahasiswa: {
-      type: new GraphQLList(daftarMahasiswa),
+    jenis_ujian: {
+      type: new GraphQLList(daftarJujian),
       resolve(parentValue, args) {
-        return db('tbmahasiswa').select()
+        return db('tbjenis_ujian').select()
       }
     },
-    mahasiswaNotInKelasKuliah: {
-      type: new GraphQLList(daftarMahasiswa),
+    jenisUjianTersedia: {
+      type: new GraphQLList(daftarJujian),
       args : {
           id_kuliah : {
               type : GraphQLString
           }
       },
       resolve(parentValue, args) {
-        return db('tbmahasiswa').select()
-        .whereNotIn("nobp",db.raw("select nobp from lap_peserta_kuliah where id_kuliah=?",[args.id_kuliah]))
-            .where("status_mahasiswa",1).orderBy("nm_mahasiswa","asc")
+        return db('tbjenis_ujian').select()
+        .whereNotIn("id_jujian",db.raw("select id_jujian from tbujian where id_kuliah=?",[args.id_kuliah]))
       }
     }
   }

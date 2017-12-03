@@ -12,8 +12,13 @@ import kelolaTipeSoal from './components/page/admin/kelolaTipeSoal.vue';
 import kelolaJenisUjian from './components/page/admin/kelolaJenisUjian.vue';
 import kelolaDosen from './components/page/admin/kelolaDosen.vue';
 import kelolaDosenMatkul from './components/page/admin/kelolaDosenMatkul.vue';
+
 import kelolaKuliah from './components/page/admin/kelolaKuliah.vue';
-import kelolaKuliahMahasiswa from './components/page/admin/kelolaKuliahMahasiswa.vue';
+import kelolaKuliahDetail from './components/page/admin/kelolaKuliahDetail.vue';
+
+import DkelolaKuliah from './components/page/dosen/kelolaKuliah.vue';
+import DkelolaKuliahDetail from './components/page/dosen/kelolaKuliahDetail.vue';
+
 import hasilUjian from './components/page/admin/hasilUjian.vue';
 import jawabanUjian from './components/page/admin/jawabanUjian.vue';
 import cekJawaban from './components/page/admin/cekJawaban.vue';
@@ -46,6 +51,15 @@ export default [
   {
     path: '/login',
     component : loginPengguna
+  },
+  {
+    path: '/admin/kuliah',
+    component: kelolaKuliah
+  },
+  {
+    path: '/admin/kuliah/:idKuliah',
+    name : 'kelolaKuliahDetail',
+    component: kelolaKuliahDetail
   },
   {
     path: '/admin/ujian',
@@ -140,5 +154,15 @@ export default [
     path: '/dosen/ujian/:idUjian',
     name : 'DkelolaUjianDetail',
     component: DkelolaUjianDetail
-  }
+  },
+  {
+    path: '/dosen/kuliah',
+    name : "DkelolaKuliah",
+    component: DkelolaKuliah
+  },
+  {
+    path: '/dosen/kuliah/:idKuliah',
+    name : 'DkelolaKuliahDetail',
+    component: DkelolaKuliahDetail
+  },
 ];

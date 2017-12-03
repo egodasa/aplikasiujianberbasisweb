@@ -163,8 +163,8 @@ router.put('/:id',(req,res,next)=>{
 	});
 });
 
-//lihat matkul yg diampu dosen
-router.get('/:id/matkul',(req, res, next)=>{
+//lihat kuliah yg diampu dosen
+router.get('/:id/kuliah',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
@@ -174,8 +174,8 @@ router.get('/:id/matkul',(req, res, next)=>{
         count : null,
         tmp : null
     }
-    query.count = db('lap_matkul_dosen').select().where('nidn',id)
-    query.tmp = db('lap_matkul_dosen').select().where('nidn',id)
+    query.count = db('lap_kuliah').select().where('nidn',id)
+    query.tmp = db('lap_kuliah').select().where('nidn',id)
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
@@ -198,20 +198,47 @@ router.get('/:id/matkul',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
+router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
+	var idKuliah = req.params.idKuliah
+    var id = req.params.id || 0;
+    hasil = {}
+	db('tbkuliah').where('id_kuliah',idKuliah).del().
+    then(rows=>{
+        return db('tbkelas_kuliah').where('id_kuliah',idKuliah).del()
+        }).
+	then(function(){
+		hasil.status = true;
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.err = err;
+		res.json(hasil);
+		});
+	});
     
-router.post('/:id/matkul',(req,res,next)=>{
+router.post('/:id/kuliah',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-		db('tbmatkul_dosen').insert(data).
-		then(function(){
-			hasil.status = true;
-			res.json(hasil);
-			}).
-		catch(function(err){
-			hasil.status = false;
-			hasil.err = err;
-			res.json(hasil);
-			});
+    console.log(data)
+    db(tbl).insert({
+        id_kuliah : data.id_kuliah,
+        nidn : data.nidn,
+        kd_matkul : data.kd_matkul,
+        tahun_akademik : data.tahun_akademik,
+        }).
+    then((rows)=>{
+        return db('tbkelas_kuliah').insert(data.kelas)
+        }).
+    then(function(){
+        hasil.status = true;
+        res.json(hasil);
+        }).
+    catch(function(err){
+        hasil.status = false;
+        hasil.err = err;
+        res.json(hasil);
+        });
 	});
 router.delete('/:id/matkul/:id_matkul',(req,res,next)=>{
 	var id = req.params.id_matkul;

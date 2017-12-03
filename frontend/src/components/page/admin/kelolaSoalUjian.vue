@@ -6,7 +6,7 @@
             <h3>Tambah Soal</h3>
                 <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
             <label>Isi Soal</label>
-            <wysiwyg v-model="dataForm.isi_soal" />
+            <textarea class="w3-input w3-border" v-model="dataForm.isi_soal"></textarea>
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
             <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
@@ -31,7 +31,7 @@
             </template>
             <template v-else>
             <label>Jawaban</label>
-            <wysiwyg v-model="dataForm.jawaban" />
+            <textarea class="w3-input w3-border" v-model="dataForm.jawaban"></textarea>
             <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
             <label>Bobot Nilai</label>
             <input class="w3-input w3-border" v-validate data-vv-rules="required" data-vv-as="Bobot Soal" type="number" name="bobot" v-model="dataForm.bobot" placeholder="Bobot Nilai Soal" />

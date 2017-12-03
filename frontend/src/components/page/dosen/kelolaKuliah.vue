@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    <dosen>
 <div class="w3-container">
     <h2>Daftar Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
@@ -7,21 +7,15 @@
         <form id="addData" @submit.prevent="submitData()" name="addData">
             <span class="w3-container">
                 <label>Pilih Mata Kuliah</label>
-                <v-select v-model="matkul" :on-change="getDataDosen" :options="listMatkul" label="nm_matkul"></v-select>
+                <v-select v-model="matkul" :options="listMatkul" label="nm_matkul"></v-select>
             </span>
             <span class="w3-container">
-                <label>Pilih Dosen</label>
-                <v-select v-model="dosen" :options="listDosen" label="nm_dosen"></v-select>
-            </span>
-            <span class="w3-container">
-                <label>Pilih Kelas</label>
-                <select class="w3-input" v-model="kelas">
-                    <option v-for="x in listKelas" :value="x.id_kelas">{{x.nm_kelas}}</option>
-                </select>
+                <label>Tentukan Kelas</label>
+                <v-select v-model="kelas" multiple :options="listKelas" label="nm_kelas"></v-select>
             </span>
             <span class="w3-container">
                 <label>Tahun Akademik</label>
-                <input type="text" class="w3-input w3-border" v-model="tahun" />
+                <input type="text" class="w3-input w3-border" v-model="tahun_akademik" />
             </span>
             <span class="w3-container">
                 <button type="submit" class="w3-button w3-blue">Simpan</button>
@@ -32,12 +26,12 @@
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus">
     <template slot="customAction" scope="ca">
         <span class="hint--top" aria-label="Kelola Kuliah">
-            <router-link :to="{name:'kelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+            <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
         </span>
     </template>
     </gen-table>
 </div>
-</admin>
+</dosen>
 </template>
 
 <script>
@@ -45,27 +39,27 @@ import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import axios from 'axios'
 import _ from 'lodash'
-import admin from './halamanAdmin.vue'
+import dosen from './halamanDosen.vue'
 import { Bus } from '../../../bus.js';
 
 export default {
   name: 'kelolaKuliah',
   components : {
-      genTable, genForm, admin
+      genTable, genForm, dosen
   },
   data () {
       return {
-          url : 'kuliah',
+          url : 'dosen/'+this.$session.get('user').username+'/kuliah',
             tableContent : {
-                header : ['Mata Kuliah','Dosen','Tahun Akademik'],
-                content : ['id_kuliah','nm_matkul','nm_dosen','tahun_akademik']
+                header : ['Mata Kuliah','Tahun Akademik','Kelas'],
+                content : ['id_kuliah','nm_matkul','tahun_akademik','nm_kelas']
             },
             listMatkul : [],
-            listDosen : [],
             listKelas : [],
             matkul : null,
-            dosen : null,
-            kelas : null
+            kelas : null,
+            tahun_akademik : null,
+            edit : false
         }
   },
   created () {
@@ -74,15 +68,32 @@ export default {
   },
   methods : {
         toggleFormData() {
+            this.edit = false
             Bus.$emit('toggleFormData')
         },
         submitData (){
-            var data = {
-                id_mdosen : this.dosen.nidn+""+this.dosen.kd_matkul,
-                id_kelas : this.kelas,
-                tahun_akademik : this.tahun
+            var method
+            var url
+            if(this.edit = false){
+                method = 'post'
+                url = "api/kuliah"
+            }else {
+                method = 'put'
+                url = "api/kuliah/"+this.matkul.kd_matkul+'-'+this.$session.get('user').username+"-"+this.tahun_akademik
             }
-            axios.post('api/kuliah',data)
+            var kelas = []
+            _.forEach(this.kelas,(v,k)=>{
+                kelas.push({id_kuliah: this.matkul.kd_matkul+'-'+this.$session.get('user').username+"-"+this.tahun_akademik,id_kelas:v.id_kelas})
+                })
+            var data = {
+                id_kuliah : this.matkul.kd_matkul+'-'+this.$session.get('user').username+"-"+this.tahun_akademik,
+                nidn : this.$session.get('user').username,
+                kd_matkul : this.matkul.kd_matkul,
+                tahun_akademik : this.tahun_akademik,
+                kelas : kelas
+            }
+            console.log(data)
+            axios[method](url,data)
             .then(res=>{
                 console.log('ok')
                 this.toggleFormData()
@@ -93,19 +104,24 @@ export default {
                 this.toggleFormData()
                 })
         },
+        getDetailKuliah (id){
+            this.edit = true
+            axios.get('api/kuliah/'+id)
+            .then(res=>{
+                var d = res.data.data[0]
+                this.matkul = d.nm_matkul
+                this.kelas = d.nm_kelas
+                this.tahun_akademik = d.tahun_akademik
+                this.toggleFormData()
+                })
+            .catch(err=>{
+                console.log(err)
+                })
+        },
         getDataMatkul () {
             axios.get('api/matkul')
                 .then(res=>{
                     this.listMatkul = res.data.data
-                    })
-                .catch((err)=>{
-                    console.log(err)
-                    })
-        },
-        getDataDosen (v) {
-            axios.get('api/matkul/'+v.kd_matkul+'/dosen')
-                .then(res=>{
-                    this.listDosen = res.data.data
                     })
                 .catch((err)=>{
                     console.log(err)

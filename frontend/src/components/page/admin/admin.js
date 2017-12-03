@@ -47,11 +47,11 @@ export const adminConf = {
                   name : 'Dosen',
               icon : 'fa-user-md fa-fw'
               },
-          //    {
-            //      path : '/admin/kuliah',
-              //    name : 'Kuliah',
-            //  icon : 'fa-institution fa-fw'
-          //    },
+              {
+                  path : '/admin/kuliah',
+                  name : 'Kuliah',
+              icon : 'fa-institution fa-fw'
+              }
          //     {
         //          path : '/ujian/login',
        //           name : 'Login Peserta Ujian',

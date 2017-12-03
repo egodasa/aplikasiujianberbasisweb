@@ -11,6 +11,7 @@ var url = require('url');
 var knexLogger = require('knex-logger');
 const expressGraphQL = require('express-graphql');
 const sMahasiswa = require('./schema/mahasiswa.js');
+const sJujian = require('./schema/jenis_ujian.js');
 mysql = require('mysql');
 db = require('knex')({
   client: 'pg',
@@ -54,6 +55,10 @@ app.use('/api/cek', require('./routes/cekPesertaUjian'));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/v2/mahasiswa', expressGraphQL({
   schema: sMahasiswa,
+  graphiql: true,
+}));
+app.use('/api/v2/jenis_ujian', expressGraphQL({
+  schema: sJujian,
   graphiql: true,
 }));
 //EOF ROUTES

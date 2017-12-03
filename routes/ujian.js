@@ -47,25 +47,14 @@ router.post('/', (req, res, next) => {
     var data = req.body;
     console.log(data)
     var hasil = {};
-    db('tbujian').select('id_ujian').where('id_ujian',data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik+'-'+data.id_jujian)
+    db('tbujian').select('id_ujian').where('id_ujian',data.id_ujian)
     .then(rows=>{
         if(rows.length != 0){
             hasil.status = false
             hasil.err = 2
             reject(res.json(hasil));
         }else return db.transaction(trx=>{
-            return trx('tbujian').insert({
-                id_ujian : data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik+'-'+data.id_jujian,
-                kd_matkul : data.kd_matkul,
-                nidn : data.nidn,
-                hari : data.hari,
-                mulai : data.mulai,
-                selesai : data.selesai,
-                deskripsi : data.deskripsi,
-                id_jujian : data.id_jujian,
-                id_jsoal : data.id_jsoal,
-                tahun_akademik : data.tahun_akademik
-                }).then(()=>{
+            return trx('tbujian').insert(data).then(()=>{
                     return db('tbkelas_ujian').insert(data.kelas)
                 })
             })
@@ -329,9 +318,9 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
     var offset = parseInt(req.query.offset) || null;
     var hasil = {};
     if(id_mahasiswa == 0){
-        var query = db('lap_hasil_ujian').select().where('id_ujian',id) 
+        var query = db(db.raw("getHasilUjian('"+id+"')")).select().where('id_ujian',id) 
     }else{
-        var query = db('lap_hasil_ujian').select().where({id_ujian:id,nobp:id_mahasiswa}) 
+        var query = db(db.raw("getHasilUjian('"+id+"')")).select().where({id_ujian:id,nobp:id_mahasiswa}) 
     }
     query.limit(limit).offset(offset).then((rows)=>{
 		hasil.status = true;
@@ -367,7 +356,7 @@ router.post('/hasil', (req, res, next) => {
     });
 router.get('/:idUjian/hasil/cetak/csv',(req,res,next)=>{
     let id_ujian = req.params.idUjian
-    db('lap_hasil_ujian').select().where('id_ujian',id_ujian)
+    db(db.raw("getHasilUjian('"+id_ujian+"')")).select('nobp','nm_mahasiswa','nilai').orderBy('nm_mahasiswa','asc')
     .then(function(rows){
         var data = rows
         var fields = ['nobp','nm_mahasiswa','nilai']
@@ -411,7 +400,7 @@ router.get('/:idUjian/hasil/cetak/excel',(req,res,next)=>{
         headerStyle: header
       }
     }
-    db('lap_hasil_ujian').select().where('id_ujian',id_ujian)
+    db(db.raw("getHasilUjian('"+id_ujian+"')")).select('nobp','nm_mahasiswa','nilai').orderBy('nm_mahasiswa','asc')
     .then(function(rows){
           const report = excel.buildExport(
           [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report 
@@ -425,7 +414,7 @@ router.get('/:idUjian/hasil/cetak/excel',(req,res,next)=>{
           ]
         );
         res.header('Content-type','application/vnd.ms-excel')
-        .header("Content-Disposition", "attachment;filename=laporan_nilai.xlsx")
+        .header("Content-Disposition", "attachment;filename=laporan_nilai_"+id_ujian+".xlsx")
         .send(report)
         }).
 	catch(function(err){

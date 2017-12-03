@@ -43,7 +43,15 @@ router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-    db(tbl).insert(data).
+    db(tbl).insert({
+        id_kuliah : data.id_kuliah,
+        nidn : data.nidn,
+        kd_matkul : data.kd_matkul,
+        tahun_akademik : data.tahun_akademik,
+        }).
+    then((rows)=>{
+        return db('tbkelas_kuliah').insert(data.kelas)
+        }).
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -59,7 +67,11 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-    db(tbl).update(data).where(pk,id)
+    db(tbl).update({
+        nidn : data.nidn,
+        kd_matkul : data.kd_matkul,
+        tahun_akademik : data.tahun_akademik,
+        }).where('id_kuliah',data.id_kuliah)
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -92,9 +104,9 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
     var limit = parseInt(parseInt(req.query.limit)) || null;
 	var offset = parseInt(parseInt(req.query.offset)) || null;
     var belumDitambahkan = req.query.belumDitambahkan || 0;
-    if(belumDitambahkan == 0) var query = db('lap_kuliah_mahasiswa').select().where('id_kuliah',id)
+    if(belumDitambahkan == 0) var query = db('lap_peserta_kuliah').select().where('id_kuliah',id)
     else {
-        var query = db('lap_kuliah_mahasiswa').select('nobp').where('id_kuliah',id)
+        var query = db('lap_peserta_kuliah').select('nobp').where('id_kuliah',id)
         query = db('tbmahasiswa').select().whereNotIn('nobp',query)
     }
 	query.limit(limit).offset(offset).
@@ -118,7 +130,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-    db('tbkuliah_mahasiswa').insert(data).
+    db('tbpeserta_kuliah').insert(data).
     then(function(){
         hasil.status = true;
         res.json(hasil);
@@ -132,7 +144,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
 router.delete('/:id/mahasiswa/:idMhs',(req,res,next)=>{
 	var id_mhs = req.params.idMhs;
 	var hasil = {};
-	db('tbkuliah_mahasiswa').where('id_kmhs',id_mhs).del().
+	db('tbpeserta_kuliah').where('id_peserta',id_mhs).del().
 	then(function(){
 		hasil.status = true;
 		res.json(hasil);

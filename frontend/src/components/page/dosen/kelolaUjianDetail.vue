@@ -27,7 +27,7 @@
                         <tr>
                         <td class="w3-white">Kelas</td>
                         <td class="w3-white">
-                            <template v-for="x in infoUjian.kelas">{{' '+x.nm_kelas}}</template></td>
+                            {{infoUjian.nm_kelas.toString()}}</td>
                         </tr>
                         <tr>
                         <td class="w3-white">Hari</td>
@@ -66,7 +66,6 @@
 <div class="w3-section w3-border w3-white w3-mobile">
 <span class="w3-bar w3-teal">
 <button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('soalUjian')">Soal Ujian</button>
-<button type="button" :class="currentTabs != 'pesertaUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('pesertaUjian')">Peserta Ujian</button>
 <button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
 </span>
 <br/>
@@ -93,7 +92,7 @@ import lokalisasi from 'date-fns/locale/id'
 import { Bus } from '../../../bus.js';
 
 export default {
-  name: 'DkelolaUjianDetail',
+  name: 'kelolaUjianDetail',
   components : {
       'genTable' : genTable,
       'genForm' : genForm,
