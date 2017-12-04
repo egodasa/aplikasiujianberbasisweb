@@ -18,7 +18,7 @@
         </span>
     </gen-form>
     <gen-table :formButton.Boolean="false"  :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain">
-        <template slot="customAction" scope="ca">
+        <template slot="customAction" slot-scope="ca">
             <template v-if="ca.pkData.status_ujian_peserta == 3">
                 <button class="w3-button w3-small w3-red" disabled="true">Tidak Ada</button>
             </template>
@@ -114,6 +114,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style slot-scoped>
 
 </style>

@@ -26,12 +26,15 @@ export default {
          menu : []
       }
   },
-  beforeMounted () {
-      if(this.$session.has('user')){
-          if(this.$session.get('user').id_juser != 2) this.$router.push({path:'/dosen'})
-      }else{
-        this.$router.push({path:'/'})
-      }
+  beforeRouteEnter (to, from, next) {
+      next(vm => {
+            console.log(from)
+            console.log(to)
+            if(vm.$session.has('user')){
+                console.log('gundul')
+                if(vm.$session.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
+            }else vm.$router.push({path:'/'})
+        })
   },
   beforeCreated (){
       

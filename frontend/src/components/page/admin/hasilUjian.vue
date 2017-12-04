@@ -1,7 +1,7 @@
 <template>
 <div class="w3-container">
     <gen-table showPk.Boolean="true" :exportUrl="exportUrl" :exportButton.Boolean="true" :pk="tableContent.content[0]" :formButton.Boolean="false" :url="url" :tableContent="tableContent" tableType="lain" :aksi.boolean="true">
-        <template slot="customAction" scope="ca">
+        <template slot="customAction" slot-scope="ca">
             <template v-if="ca.pkData.status_ujian_peserta == 3">
                 <button class="w3-button w3-small w3-red" disabled="true">Tidak Ada</button>
             </template>
@@ -32,12 +32,15 @@ export default {
                 header :  ['NOBP','Nama Mahasiswa','Status','Nilai'],
                 content : ['id','nobp','nm_mahasiswa','nm_status_ujian_peserta','nilai']
             },
-            exportUrl : '/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv'
+            exportUrl : [
+            {name:'CSV',url:'api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv'},
+            {name:'Excel',url:'api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/excel'}
+            ]
         }
   }
 }
 </script>
 
-<style scoped>
+<style slot-scoped>
 
 </style>

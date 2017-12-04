@@ -2,6 +2,7 @@
 <admin>
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
+    <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
     <div class="w3-border"></div>
     <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
@@ -46,7 +47,7 @@
         </span>
     </gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
-        <template slot="customAction" scope="ca">
+        <template slot="customAction" slot-scope="ca">
             <span class="hint--top" aria-label="Kelola Ujian">
                 <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
@@ -63,7 +64,6 @@ import admin from './halamanAdmin.vue'
 import axios from 'axios'
 import _ from 'lodash'
 import Datepicker from 'vuejs-datepicker';
-import pengaturan from '../../../pengaturan.json'
 import { Bus } from '../../../bus.js';
 
 export default {
@@ -76,10 +76,9 @@ export default {
           id_ujian : null,
           url : 'ujian',
             tableContent : {
-                header :  ['Matkul','Dosen','Jenis Ujian','Hari','TA'],
-                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','hari','tahun_akademik']
+                header :  ['Matkul','Dosen','Jenis Ujian','Hari','Status','TA'],
+                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','hari','nm_status_ujian','tahun_akademik']
             },
-            conf : pengaturan,
             id_jujian : null,
             id_jsoal : null,
             hari : null,

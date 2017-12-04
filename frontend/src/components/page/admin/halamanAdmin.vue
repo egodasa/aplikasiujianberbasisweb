@@ -21,6 +21,13 @@ export default {
   components : {
       secHeader, secFooter, secContent, secSidebar
   },
+  beforeRouteEnter (to, from, next) {
+      next(vm => {
+            if(vm.$session.has('user')){
+                if(vm.$session.get('user').id_juser == 2) vm.$router.push({path:'/dosen'})
+            }else vm.$router.push({path:'/'})
+        })
+  },
   mixins : [adminConf],
   data () {
       return {

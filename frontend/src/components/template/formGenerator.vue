@@ -11,17 +11,17 @@
                     <template v-if="x.jenis == 'textField'">
                         <template v-if="x.tipe == 'number'">
                             <label>{{x.caption}}</label>
-                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else-if="x.tipe == 'email'">
                             <label>{{x.caption}}</label>
-                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <template v-else>
                             <label>{{x.caption}}</label>
-                            <input :value="x.value" v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
+                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
                         </template>
                         <br/>
@@ -91,10 +91,9 @@
 <script>
 import axios from 'axios';
 import { Bus } from '../../bus.js';
-import pengaturan from '../../pengaturan.json';
 import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
-
+import pengaturan from '../../pengaturan.json'
 export default {
     name : 'genForm',
 	props : {

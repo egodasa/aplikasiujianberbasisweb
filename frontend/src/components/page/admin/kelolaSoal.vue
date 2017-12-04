@@ -16,10 +16,10 @@
             <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
                 <div class="w3-col l1">
-                    <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].huruf" :value='x.huruf' placeholder="Huruf" /><label class="w3-label w3-text-red"></label>
+                    <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].huruf" placeholder="Huruf" /><label class="w3-label w3-text-red"></label>
                 </div>
                 <div class="w3-col l11">
-                    <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].isi_pilihan" :value='x.isi_pilihan' placeholder="Isi Pilihan Ganda" /><label class="w3-label w3-text-red"></label><br/>
+                    <input v-for="(x,index,key) in dataForm.pilihanGanda" class="w3-input w3-border" type="text" v-model="dataForm.pilihanGanda[index].isi_pilihan" placeholder="Isi Pilihan Ganda" /><label class="w3-label w3-text-red"></label><br/>
                 </div>
             </div>
             <button class="w3-btn w3-tiny w3-teal" type="button" @click="addPG()">+</button>
@@ -109,10 +109,16 @@ export default {
            this.showForm = !this.showForm
         },
       addPG () {
-           this.dataForm.pilihanGanda.push({huruf:null,isi_pilihan:null})
+        if(this.dataForm.pilihanGanda.length != this.pilihanGandaDef.length){
+            this.dataForm.pilihanGanda.push({huruf:this.pilihanGandaDef[this.dataForm.pilihanGanda.length].huruf,isi_pilihan:null})
+        }else{
+            this.dataForm.pilihanGanda.push({huruf:null,isi_pilihan:null})
+        }
       },
       deletePG () {
-          this.dataForm.pilihanGanda.pop()
+          if(this.dataForm.pilihanGanda.length != 2){
+            this.dataForm.pilihanGanda.pop()
+          }
       },
       resetForm () {
           this.dataForm.isi_soal = null

@@ -24,7 +24,7 @@
         </form>
     </gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus">
-    <template slot="customAction" scope="ca">
+    <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Kelola Kuliah">
             <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
         </span>
@@ -141,6 +141,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style slot-scoped>
 
 </style>

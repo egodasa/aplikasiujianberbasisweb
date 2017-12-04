@@ -5,11 +5,11 @@
               <span class="w3-left">
               <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
               <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
-              <div class="w3-dropdown-hover" v-if="exportButton">
-                <button class="w3-button w3-small w3-blue w3-hover-green"><i class="fa fa-save"></i> Export</button>
-                <div class="w3-dropdown-content w3-border">
-                    <a v-for="x in exportUrl" class="w3-button" :href="x.url">{{x.name}}</a><br/>
-                </div>
+              <div class="w3-dropdown-click" v-if="exportButton">
+              <button class="w3-button w3-blue w3-small" @click="toggleCetakMenu()"><i class="fa fa-save"></i> Cetak</button>
+              <div :class="cetakMenu ? 'w3-dropdown-content w3-bar-block w3-border w3-show' : 'w3-dropdown-content w3-bar-block w3-border'">
+                <a v-for="x in exportUrl" class="w3-bar-item w3-button" :href="x.url">{{x.name}}</a>
+              </div>
               </div>
               </span>
               <span class="w3-right">
@@ -168,7 +168,10 @@ export default {
             type : Array,
             required : false,
             default : function(){
-                return []
+                return [
+                {name:'CSV',url:'api/cetak/csv'},
+                {name:'Excel',url:'api/cetak/excel'}
+                ]
             }
         },
         showPk : {
@@ -191,7 +194,8 @@ export default {
       spinStatus : true,
       showPilihan : false,
       pencarian : false,
-      cari : null
+      cari : null,
+      cetakMenu : false
     }
   },
   created () {
@@ -223,6 +227,9 @@ export default {
         }
 	},
   methods : {
+        toggleCetakMenu () {
+            this.cetakMenu = !this.cetakMenu
+        },
         toggleAksi () {
             this.showPilihan = !this.showPilihan
         },
