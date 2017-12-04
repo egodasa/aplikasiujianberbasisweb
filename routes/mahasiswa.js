@@ -126,7 +126,7 @@ router.get('/:id/ujian',(req, res, next)=>{
         tmp : null
     }
     query.count = db('lap_peserta_ujian').select('id_ujian').where('nobp',id)
-    query.tmp = db('lap_peserta_ujian').select().whereRaw("hari = cast(now() as date) and status_ujian=1 and cast(now() as time) between mulai - interval '15 minute' and selesai and nobp=?;",id)
+    query.tmp = db('lap_peserta_ujian').select().whereRaw("hari = cast(now() as date) and status_ujian=1 and cast(now() as time) between mulai - interval '15 minute' and selesai and nobp=? and nobp in (select nobp from getHasilUjian(id_ujian) where nobp=? and status_ujian_peserta = 3);",[id,id])
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
