@@ -10,8 +10,11 @@ var Promise = require('promise');
 var url = require('url');
 var knexLogger = require('knex-logger');
 const expressGraphQL = require('express-graphql');
+
 const sMahasiswa = require('./schema/mahasiswa.js');
 const sJujian = require('./schema/jenis_ujian.js');
+const sKuliah = require('./schema/kuliah.js');
+
 mysql = require('mysql');
 db = require('knex')({
   client: 'pg',
@@ -59,6 +62,10 @@ app.use('/api/v2/mahasiswa', expressGraphQL({
 }));
 app.use('/api/v2/jenis_ujian', expressGraphQL({
   schema: sJujian,
+  graphiql: true,
+}));
+app.use('/api/v2/kuliah', expressGraphQL({
+  schema: sKuliah,
   graphiql: true,
 }));
 //EOF ROUTES
