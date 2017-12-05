@@ -7,21 +7,19 @@
         <form id="addData" @submit.prevent="submitData()" name="addData">
             <span class="w3-container">
                 <label>Pilih Mata Kuliah</label>
-                <v-select v-model="matkul" :on-change="getDataDosen" :options="listMatkul" label="nm_matkul"></v-select>
+                <v-select v-model="matkul" :options="listMatkul" label="nm_matkul"></v-select>
             </span>
             <span class="w3-container">
                 <label>Pilih Dosen</label>
                 <v-select v-model="dosen" :options="listDosen" label="nm_dosen"></v-select>
             </span>
             <span class="w3-container">
-                <label>Pilih Kelas</label>
-                <select class="w3-input" v-model="kelas">
-                    <option v-for="x in listKelas" :value="x.id_kelas">{{x.nm_kelas}}</option>
-                </select>
+                <label>Tentukan Kelas</label>
+                <v-select v-model="kelas" multiple :options="listKelas" label="nm_kelas"></v-select>
             </span>
             <span class="w3-container">
                 <label>Tahun Akademik</label>
-                <input type="text" class="w3-input w3-border" v-model="tahun" />
+                <input type="text" class="w3-input w3-border" v-model="tahun_akademik" />
             </span>
             <span class="w3-container">
                 <button type="submit" class="w3-button w3-blue">Simpan</button>
@@ -57,32 +55,44 @@ export default {
       return {
           url : 'kuliah',
             tableContent : {
-                header : ['Mata Kuliah','Dosen','Tahun Akademik'],
-                content : ['id_kuliah','nm_matkul','nm_dosen','tahun_akademik']
+                header : ['Mata Kuliah','Dosen','Tahun Akademik','Status'],
+                content : ['id_kuliah','nm_matkul','nm_dosen','tahun_akademik','nm_status_kuliah']
             },
             listMatkul : [],
             listDosen : [],
             listKelas : [],
             matkul : null,
             dosen : null,
-            kelas : null
+            kelas : null,
+            tahun_akademik : null,
+            edit : false
         }
   },
   created () {
       this.getDataKelas()
       this.getDataMatkul()
+      this.getDataDosen()
   },
   methods : {
         toggleFormData() {
             Bus.$emit('toggleFormData')
         },
         submitData (){
+            var method = 'post'
+            var url = "api/kuliah"
+            var kelas = []
+            _.forEach(this.kelas,(v,k)=>{
+                kelas.push({id_kuliah: this.matkul.kd_matkul+'-'+this.dosen.nidn+'-'+this.tahun_akademik,id_kelas:v.id_kelas})
+                })
             var data = {
-                id_mdosen : this.dosen.nidn+""+this.dosen.kd_matkul,
-                id_kelas : this.kelas,
-                tahun_akademik : this.tahun
+                id_kuliah : this.matkul.kd_matkul+'-'+this.dosen.nidn+'-'+this.tahun_akademik,
+                nidn : this.dosen.nidn,
+                kd_matkul : this.matkul.kd_matkul,
+                tahun_akademik : this.tahun_akademik,
+                kelas : kelas
             }
-            axios.post('api/kuliah',data)
+            console.log(data)
+            axios[method](url,data)
             .then(res=>{
                 console.log('ok')
                 this.toggleFormData()
@@ -103,7 +113,7 @@ export default {
                     })
         },
         getDataDosen (v) {
-            axios.get('api/matkul/'+v.kd_matkul+'/dosen')
+            axios.get('api/dosen')
                 .then(res=>{
                     this.listDosen = res.data.data
                     })

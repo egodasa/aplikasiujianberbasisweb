@@ -198,6 +198,40 @@ router.get('/:id/kuliah',(req, res, next)=>{
 		res.json(hasil);
 		});
 	});
+router.get('/:id/ujian',(req, res, next)=>{
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_ujian').select().where('nidn',id)
+    query.tmp = db('lap_ujian').select().where('nidn',id)
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		hasil.row = rows.length
+		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.json(hasil);
+		});
+	});
 router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 	var idKuliah = req.params.idKuliah
     var id = req.params.id || 0;

@@ -136,6 +136,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
         res.json(hasil);
         }).
     catch(function(err){
+        console.log(err)
         hasil.status = false;
         hasil.err = err;
         res.json(hasil);

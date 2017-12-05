@@ -28,11 +28,12 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
       next(vm => {
-            console.log(from)
-            console.log(to)
+            console.log('nsdfskd')
             if(vm.$session.has('user')){
-                console.log('gundul')
                 if(vm.$session.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
+                else{
+                    if(vm.$session.get('user').username != vm.$route.params.nidn) vm.$router.push({path:'/dosen/'+vm.$session.get('user').username})
+                    }
             }else vm.$router.push({path:'/'})
         })
   },

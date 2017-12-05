@@ -60,13 +60,13 @@
                     <td :colspan="columnTotal" class="w3-center w3-teal"><b>Total Data : {{dataTable.row}} baris</b></td>
                 </tr>
                 </table>
-                <div class="w3-section w3-left">
+                <div class="w3-section">
                     Halaman <br/>
-                    <button type="button" v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo">{{index+1}}</button>
+                    <button type="button" style="margin-right:3px;"  v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" :class="pageNumber != pn ? 'w3-button w3-border w3-border-light-grey w3-teal w3-hover-white' : 'w3-button w3-border w3-border-light-grey w3-pale-green'">{{index+1}}</button>
                 </div>
-                <div class="w3-section w3-right">
+                <div class="w3-section">
                     Banyak data perhalaman <br/>
-                    <button type="button" v-for="p in pageRowsList" @click="getData(p,0)" class="w3-button w3-border w3-border-black w3-blue w3-hover-indigo w3-right w3-clear">{{p}}</button>
+                    <button type="button" style="margin-right:3px;" v-for="p in pageRowsList" @click="getData(p,0)" :class="p == pageRows ? 'w3-button w3-border w3-border-light-grey w3-pale-green w3-hover-white' : 'w3-button w3-border w3-border-light-grey w3-teal w3-hover-white'">{{p}}</button>
                 </div>
                 <br/>
               </template>
@@ -120,7 +120,7 @@ export default {
 			type : Array,
 			required : false,
 			default : function(){
-				return [100,50,25,10]
+				return [10,25,50,100]
 			}
 		},
         url : String,
@@ -190,7 +190,7 @@ export default {
       dataTable : [],
       totalRows : 0,
       pageRows : 10,
-      pageNumber : null,
+      pageNumber : 0,
       spinStatus : true,
       showPilihan : false,
       pencarian : false,

@@ -44,6 +44,15 @@ export default {
   components : {
     modal
   },
+  beforeRouteEnter (to, from, next) {
+      next(vm => {
+            if(vm.$session.has('user')){
+                if(vm.$session.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
+                else if(vm.$session.get('user').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$session.get('user').username})
+                else if(vm.$session.get('user').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
+            }
+        })
+  },
   data () {
       return {
       username : null,
@@ -71,7 +80,13 @@ export default {
               this.Blogin.caption = "Login"
               console.log(this.Blogin)
               let hasil = res.data.data
-              if(hasil.length == 0) console.log('username atau password salah')
+              if(hasil.length == 0) {
+                  this.$notify({
+                      title : "Peringatan!",
+                      text : "Username atau password tidak cocok!",
+                      type : "warning"
+                  })
+                  }
               else {
                   var x = {}
                   if(hasil[0].id_juser == 1){
@@ -79,7 +94,7 @@ export default {
                       x = {path : '/admin'}
                   }else if(hasil[0].id_juser == 2){
                       this.$session.set('user',hasil[0])
-                      x = {path : '/dosen'}
+                      x = {path : '/dosen/'+this.username}
                   }else if(hasil[0].id_juser == 3){
                       this.$session.set('infoUjian',hasil[0])
                       x = {path : '/ujian/login'}

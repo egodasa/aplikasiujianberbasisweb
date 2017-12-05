@@ -408,7 +408,7 @@ CREATE TABLE tbujian (
     mulai time without time zone NOT NULL,
     selesai time without time zone NOT NULL,
     deskripsi character varying(100) NOT NULL,
-    status_ujian smallint DEFAULT 1 NOT NULL,
+    status_ujian smallint DEFAULT 0 NOT NULL,
     id_jujian smallint NOT NULL,
     id_jsoal smallint NOT NULL,
     id_kuliah character varying(40) NOT NULL

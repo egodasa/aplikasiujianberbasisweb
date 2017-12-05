@@ -2,6 +2,7 @@
 <dosen>
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
+    <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
     <div class="w3-border"></div>
     <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
@@ -48,7 +49,7 @@
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
         <template slot="customAction" slot-scope="ca">
             <span class="hint--top" aria-label="Kelola Ujian">
-                <router-link :to="{name:'DkelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+                <router-link :to="{name:'DkelolaUjianDetail',params:{nidn:$session.get('user').username,idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
         </template>
     </gen-table>
@@ -73,10 +74,10 @@ export default {
   data () {
       return {
           id_ujian : null,
-          url : 'ujian',
+          url : 'dosen/'+this.$session.get('user').username+'/ujian',
             tableContent : {
-                header :  ['Matkul','Jenis Ujian','Hari','TA'],
-                content : ['id_ujian','nm_matkul','nm_jujian','hari','tahun_akademik']
+                header :  ['Matkul','Jenis Ujian','Hari','TA','Status'],
+                content : ['id_ujian','nm_matkul','nm_jujian','hari','tahun_akademik','nm_status_ujian']
             },
             id_jujian : null,
             id_jsoal : null,
@@ -109,7 +110,7 @@ export default {
                 id_jsoal : this.id_jsoal,
                 deskripsi : this.deskripsi
             }
-            axios.post('api/'+this.url,tmp)
+            axios.post('api/ujian',tmp)
             .then(res=>{
                 if(res.data.status == true){
                     Bus.$emit('toggleFormData')
@@ -152,7 +153,7 @@ export default {
                     })
         },
         getDataKuliah() {
-            axios.get('api/kuliah')
+            axios.get('api/dosen/'+this.$session.get('user').username+'/kuliah')
                 .then(res=>{
                     var tmp = res.data.data
                     var kuliah = []

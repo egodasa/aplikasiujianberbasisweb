@@ -44,10 +44,7 @@ export default [
     path: '/admin',
     component : dashboardAdmin
   },
-  {
-    path: '/dosen',
-    component : dashboardDosen
-  },
+
   {
     path: '/login',
     component : loginPengguna
@@ -164,5 +161,31 @@ export default [
     path: '/dosen/kuliah/:idKuliah',
     name : 'DkelolaKuliahDetail',
     component: DkelolaKuliahDetail
-  },
+  }/*,
+  {
+    path: '/dosen/:nidn',
+    component : dashboardDosen,
+    children : [
+      {
+        path: 'ujian',
+        name : 'DkelolaUjian',
+        component: DkelolaUjian
+      },
+      {
+        path: 'ujian/:idUjian',
+        name : 'DkelolaUjianDetail',
+        component: DkelolaUjianDetail
+      },
+      {
+        path: 'kuliah',
+        name : "DkelolaKuliah",
+        component: DkelolaKuliah
+      },
+      {
+        path: 'kuliah/:idKuliah',
+        name : 'DkelolaKuliahDetail',
+        component: DkelolaKuliahDetail
+      }
+    ]
+  }*/
 ];

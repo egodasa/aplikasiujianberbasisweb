@@ -16,7 +16,7 @@
         <tr>
             <td>
                 <h4>Pilih Soal</h4>
-                <button type="button" class="w3-button w3-blue" style="margin-right:5px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)">{{index+1}}</button>
+                <button type="button" style="margin-right:5px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)" :class="posisiSoal == index ? 'w3-button w3-green' : 'w3-button w3-blue'">{{index+1}}</button>
             </td>
             <td>
                 <h4>Jawaban Dosen</h4>
