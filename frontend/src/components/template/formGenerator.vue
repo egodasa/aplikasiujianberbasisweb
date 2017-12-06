@@ -13,16 +13,19 @@
                             <label>{{x.caption}}</label>
                             <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <template v-else-if="x.tipe == 'email'">
                             <label>{{x.caption}}</label>
                             <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <template v-else>
                             <label>{{x.caption}}</label>
                             <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <br/>
                     </template>
@@ -75,7 +78,7 @@
                 <br/>
                 </span>
                 <button type="submit" :disabled="Bsimpan.disabled" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
-                <button type="reset" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
+                <button type="reset" @click="resetForm()" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
                 <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()" :disabled="Bbatal.disabled"><span v-html="Bbatal.caption"></span></button>
             </form>
         </template>
@@ -94,6 +97,7 @@ import { Bus } from '../../bus.js';
 import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
 import pengaturan from '../../pengaturan.json'
+import _ from 'lodash'
 export default {
     name : 'genForm',
 	props : {
@@ -116,6 +120,7 @@ export default {
             showForm : false,
             idData : null,
             output : {},
+            error : {},
               Bsimpan : {
                   disabled : false,
                   caption : '<i class="fa fa-save w3-small"></i> Simpan',
@@ -148,25 +153,37 @@ export default {
             this.toggleFormData()
         })
         this.showForm = false
+        _.forEach(this.input,(v,k)=>{
+            this.$set(this.error,v.name, null)
+            })
     },
 	methods : {
+        resetForm (){
+            var prop = Object.keys(this.error)
+            _.forEach(prop, (v,k)=>{
+                this.error[v] = null
+                })
+        },
         buttonSubmit (x) {
             if(x == 1){
-                Bsimpan.disabled = true
-                Bsimpan.caption = '<i class="fa fa-spinner w3-spin w3-small"></i> Menyimpan Data'
-                Breset.disabled = true
-                Bbatal.disabled = true
+                this.Bsimpan.disabled = true
+                this.Bsimpan.caption = '<i class="fa fa-spinner w3-spin w3-small"></i> Menyimpan Data'
+                this.Breset.disabled = true
+                this.Bbatal.disabled = true
             }else{
-                Bsimpan.disabled = false
-                Bsimpan.caption = 'Simpan'
-                Breset.disabled = false
-                Bbatal.disabled = false
+                this.Bsimpan.disabled = false
+                this.Bsimpan.caption = '<i class="fa fa-save w3-small"></i> Simpan'
+                this.Breset.disabled = false
+                this.Bbatal.disabled = false
             }
         },
         toggleFormData (){
             this.showForm = !this.showForm
+            this.resetForm()
+            this.buttonSubmit(0)
         },
 		submitData (){
+            this.buttonSubmit(1)
             if(this.output[this.pk] == undefined){
                 var method = 'POST'
                 var url = ""
@@ -188,18 +205,23 @@ export default {
 				})
 			.then(res=>{
 				if(res.data.status == false) {
-                    console.log(this.msg.err[res.data.err])
-                    this.output[this.pk] = undefined
+                    var listError = Object.keys(res.data.error)
+                    console.log(this.error)
+                    _.forEach(listError,(v,k)=>{
+                        console.log(res.data.error[v])
+                        this.error[v] = res.data.error[v]
+                        })
+                    console.log(this.error)
                 }
 				else {
-                    
-                    console.log(this.msg.err[res.data.err])
                     Bus.$emit('newData')
                     this.toggleFormData()
 				}
+                this.buttonSubmit(0)
 			})
 			.catch(err=>{
-                console.log(this.msg.err[err.data.err])
+                this.buttonSubmit(0)
+                console.log(err)
 			})
 		},
         getDataDetail : function(x){
