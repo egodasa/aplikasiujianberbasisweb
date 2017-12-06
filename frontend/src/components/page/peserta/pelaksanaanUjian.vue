@@ -2,6 +2,7 @@
 <div>
     <sec-header onTop.Boolean="false"></sec-header>
     <sec-sidebar>
+    <slot>
     <div class="w3-container">
         <h3>Pilih Soal</h3>
     <button type="button" class="w3-button w3-blue w3-small w3-border" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
@@ -34,11 +35,9 @@
                 {{waktuSekarang}}
             </div>
         </div>
-         
-         
-
       <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian</button>
    </div>
+   </slot>
     </sec-sidebar>
 <sec-content>
    <div class="w3-container" style="margin-top:30px;">
@@ -50,7 +49,7 @@
     </div>
     <div class="w3-col l6 md6 s6">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
-            Sisa Waktu : {{listSoal.length-soalDikerjakan}}
+            Sisa Waktu : {{sisaWaktu}}
         </a>
     </div>
     <div class="w3-col l6 md6 s6">
@@ -101,6 +100,7 @@ import { Bus } from '../../../bus.js';
 import _ from 'lodash'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
+import hitungWaktu from 'date-fns/distance_in_words'
 import peserta from './halamanUjian.vue'
 import secHeader from '../../template/header.vue'
 import secFooter from '../../template/footer.vue'
@@ -131,15 +131,37 @@ export default {
           jawabanHuruf : null,
           hariSekarang : null,
           waktuSekarang : null,
-          interval : null
+          sisaWaktu : null,
+          waktuString : null
         }
   },
   beforeCreated () {
-    if(!this.$session.has('infoUjian'))this.$router.push({path: '/ujian/login'})
+    if(!this.$session.has('infoUjian')) this.$router.push({path: '/ujian/login'})
+  },
+  watch : {
+      waktuSekarang () {
+         var self = this
+         setInterval(function () {
+            self.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
+      }, 1000)
+      },
+      sisaWaktu () {
+          var self = this
+          setInterval(function () {
+             self.sisaWaktu = hitungWaktu(
+              new Date(),
+              new Date(self.waktuString)
+            ,{locale : lokalisasi})
+          }, 1000)
+      }
   },
   created (){
       this.infoUjian = this.$session.get('infoUjian')  
       this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
+      this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
+      this.sisaWaktu = formatWaktu(new Date(this.$session.get('infoUjian').selesai), 'h:m:s', {locale : lokalisasi})
+      this.waktuString = this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai
+      console.log(this.waktuString)
       this.genLjk()
   },
   computed : {
@@ -243,12 +265,6 @@ export default {
           console.log(this.$session.get('ljk'))
           
       }
-  },
-  mounted () {
-      this.interval = setInterval(this.setWaktu, 1000)
-  },
-  beforeDestroy() {
-    clearInterval(this.interval)
   }
 }
 </script>
