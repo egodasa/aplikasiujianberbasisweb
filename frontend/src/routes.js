@@ -25,6 +25,8 @@ import cekJawaban from './components/page/admin/cekJawaban.vue';
 import loginPengguna from './components/page/loginPengguna.vue';
 import dashboardAdmin from './components/page/admin/dashboardAdmin.vue';
 import dashboardDosen from './components/page/dosen/dashboardDosen.vue';
+import halamanDosen from './components/page/dosen/halamanDosen.vue';
+import halamanAdmin from './components/page/admin/halamanAdmin.vue';
 
 import DkelolaUjian from './components/page/dosen/kelolaUjian.vue';
 import DkelolaUjianDetail from './components/page/dosen/kelolaUjianDetail.vue';
@@ -42,90 +44,91 @@ export default [
   },
   {
     path: '/admin',
-    component : dashboardAdmin
-  },
-
-  {
-    path: '/login',
-    component : loginPengguna
-  },
-  {
-    path: '/admin/kuliah',
-    component: kelolaKuliah
-  },
-  {
-    path: '/admin/kuliah/:idKuliah',
-    name : 'kelolaKuliahDetail',
-    component: kelolaKuliahDetail
-  },
-  {
-    path: '/admin/ujian',
-    component: kelolaUjian
-  },
-  {
-    path: '/admin/ujian/:idUjian/mahasiswa',
-    name : 'kelolaPesertaUjian',
-    component: kelolaPesertaUjian
-  },
-  {
-    path: '/admin/ujian/:idUjian',
-    name : 'kelolaUjianDetail',
-    component: kelolaUjianDetail
-  },
-  {
-    path: '/admin/ujian/:idUjian/soal',
-    name : 'kelolaSoalUjian',
-    component: kelolaSoalUjian
-  },
-  {
-    path: '/admin/ujian/:idUjian/hasil',
-    name : 'hasilUjian',
-    component: hasilUjian
-  },
-  {
-    path: '/admin/ujian/:idUjian/jawaban/:idPeserta',
-    name : 'cekJawaban',
-    component: cekJawaban
-  },
-  {
-    path: '/admin/ujian/:idUjian/jawaban',
-    name : 'jawabanUjian',
-    component: jawabanUjian
-  },
-  {
-    path: '/admin/mahasiswa',
-    name : 'kelolaMahasiswa',
-    component: kelolaMahasiswa
-  },
-  {
-    path: '/admin/soal',
-    name: 'kelolaSoal',
-    component: kelolaSoal
-  },
-  {
-    path: '/admin/kelas',
-    name: 'kelolaKelas',
-    component: kelolaKelas
-  },
-  {
-    path: '/admin/matkul',
-    name: 'kelolaMatkul',
-    component: kelolaMatkul
-  },
-  {
-    path: '/admin/jenis-ujian',
-    name: 'kelolaJenisUjian',
-    component: kelolaJenisUjian
-  },
-  {
-    path: '/admin/tipe-soal',
-    name: 'kelolaTipeSoal',
-    component: kelolaTipeSoal
-  },
-  {
-    path: '/admin/dosen',
-    name: 'kelolaDosen',
-    component: kelolaDosen
+    component : halamanAdmin,
+    children : [
+          {
+            path: '',
+            component: dashboardAdmin
+          },
+          {
+            path: 'kuliah',
+            component: kelolaKuliah
+          },
+          {
+            path: 'kuliah/:idKuliah',
+            name : 'kelolaKuliahDetail',
+            component: kelolaKuliahDetail
+          },
+          {
+            path: 'ujian',
+            component: kelolaUjian
+          },
+          {
+            path: 'ujian/:idUjian/mahasiswa',
+            name : 'kelolaPesertaUjian',
+            component: kelolaPesertaUjian
+          },
+          {
+            path: 'ujian/:idUjian',
+            name : 'kelolaUjianDetail',
+            component: kelolaUjianDetail
+          },
+          {
+            path: 'ujian/:idUjian/soal',
+            name : 'kelolaSoalUjian',
+            component: kelolaSoalUjian
+          },
+          {
+            path: 'ujian/:idUjian/hasil',
+            name : 'hasilUjian',
+            component: hasilUjian
+          },
+          {
+            path: 'ujian/:idUjian/jawaban/:idPeserta',
+            name : 'cekJawaban',
+            component: cekJawaban
+          },
+          {
+            path: 'ujian/:idUjian/jawaban',
+            name : 'jawabanUjian',
+            component: jawabanUjian
+          },
+          {
+            path: 'mahasiswa',
+            name : 'kelolaMahasiswa',
+            component: kelolaMahasiswa
+          },
+          {
+            path: 'soal',
+            name: 'kelolaSoal',
+            component: kelolaSoal
+          },
+          {
+            path: 'kelas',
+            name: 'kelolaKelas',
+            component: kelolaKelas
+          },
+          {
+            path: 'matkul',
+            name: 'kelolaMatkul',
+            component: kelolaMatkul
+          },
+          {
+            path: 'jenis-ujian',
+            name: 'kelolaJenisUjian',
+            component: kelolaJenisUjian
+          },
+          {
+            path: 'tipe-soal',
+            name: 'kelolaTipeSoal',
+            component: kelolaTipeSoal
+          },
+          {
+            path: 'dosen',
+            name: 'kelolaDosen',
+            component: kelolaDosen
+          }
+    ]
   },
   {
     path: '/ujian/login',
@@ -141,7 +144,7 @@ export default [
     path: '/ujian/soal',
     name: 'pelaksanaanUjian',
     component: pelaksanaanUjian
-  },
+  },/*
   {
     path: '/dosen/ujian',
     name : 'DkelolaUjian',
@@ -161,11 +164,16 @@ export default [
     path: '/dosen/kuliah/:idKuliah',
     name : 'DkelolaKuliahDetail',
     component: DkelolaKuliahDetail
-  }/*,
+  },*/
   {
     path: '/dosen/:nidn',
-    component : dashboardDosen,
+    component : halamanDosen,
     children : [
+      {
+        path: '',
+        name : 'Dberanda',
+        component: dashboardDosen
+      },
       {
         path: 'ujian',
         name : 'DkelolaUjian',
@@ -187,5 +195,5 @@ export default [
         component: DkelolaKuliahDetail
       }
     ]
-  }*/
+  }
 ];
