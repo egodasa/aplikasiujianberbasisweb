@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
     <div>
     <div class="w3-container w3-blue-gray w3-round">
         <h2>Daftar Dosen Pengampu</h2>
@@ -16,7 +16,7 @@
     </div>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus"></gen-table>
     </div>
-</admin>
+
 </template>
 
 <script>

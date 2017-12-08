@@ -1,5 +1,4 @@
 <template>
-<dosen>
 <div class="w3-container">
     <h2>Detail Ujian</h2>
         <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
@@ -75,7 +74,6 @@
     </keep-alive>
 </div>
 </div>
-</dosen>
 </template>
 
 <script>

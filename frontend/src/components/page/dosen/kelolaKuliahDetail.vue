@@ -1,5 +1,4 @@
 <template>
-<dosen>
 <div class="w3-container">
     <h2>Detail Kuliah</h2>
         <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
@@ -52,7 +51,6 @@
     </gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent"></gen-table>
 </div>
-</dosen>
 </template>
 
 <script>

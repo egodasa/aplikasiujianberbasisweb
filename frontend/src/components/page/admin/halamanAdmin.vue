@@ -1,10 +1,12 @@
 <template>
 <div>
 <sec-header></sec-header>
-    <sec-sidebar :listMenu="menu"></sec-sidebar>
+    <sec-sidebar :listMenu="menu">
+    </sec-sidebar>
     <sec-content>
-            <slot></slot>
-
+            <slot>
+            <router-view></router-view>
+            </slot>
     </sec-content>
 </div>
 </template>
@@ -16,6 +18,8 @@ import secContent from '../../template/content.vue'
 import secSidebar from '../../template/sidebar.vue'
 import { adminConf } from './admin.js'
 import { Bus } from '../../../bus.js';
+
+
 export default {
   name: 'halamanAdmin',
   components : {
@@ -31,18 +35,15 @@ export default {
   mixins : [adminConf],
   data () {
       return {
-         menu : []
-      }
-  },
-  beforeCreated (){
-      if(this.$session.has('user')){
-          if(this.$session.get('user').id_juser != 1) this.$router.push({path:'/admin'})
-      }else{
-        this.$router.push({path:'/'})
+         menu : [],
+         hariSekarang : null
       }
   },
   created () {
       this.menu = this.adminMenu
+      
+  },
+  beforeCreated () {
   }
 }
 </script>

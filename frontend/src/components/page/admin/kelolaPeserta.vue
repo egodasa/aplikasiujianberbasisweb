@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
     <div>
     <div class="w3-container w3-blue-gray w3-round">
         <h2>Daftar Mahasiswa</h2>
@@ -7,7 +7,7 @@
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :url="url" :table-content="tableContent"></gen-table>
     </div>
-</admin>
+
 </template>
 
 <script>

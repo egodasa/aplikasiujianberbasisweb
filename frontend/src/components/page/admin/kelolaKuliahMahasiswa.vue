@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
 <div class="w3-container">
     <h2>Daftar Mahasiswa</h2>
     <div class="w3-border"></div>
@@ -17,7 +17,7 @@
     <gen-table :pk="tableContent.content[0]" :url="url" tableType="hapus" :tableContent="tableContent">
     </gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

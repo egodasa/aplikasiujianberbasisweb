@@ -11,6 +11,7 @@
         <span class="w3-container">
             <v-select v-model="selectedUjian" :options="listUjian" label="nm_ujian"></v-select>
         </span>
+        <button type="button" class="w3-btn w3-red w3-section" @click="batalkanUjian()">Kembali</button>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
 	</div>
 	</form>
@@ -52,6 +53,10 @@ export default {
       masukUjian(){
           this.$session.set('infoUjian',this.selectedUjian)
           this.$router.push({path : '/ujian/petunjuk'})
+      },
+      batalkanUjian (){
+          this.$session.destroy()
+          this.$router.push({path : '/'})
       }
   }
 }

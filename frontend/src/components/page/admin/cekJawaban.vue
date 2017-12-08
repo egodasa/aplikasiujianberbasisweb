@@ -1,5 +1,5 @@
 <template>
-<admin>
+<div>
  <div class="w3-container">
     <h2>{{'Pemeriksaan Jawaban Ujian '+infoUjian.nm_matkul}}</h2>
     <table class="w3-table w3-border w3-bordered w3-pale-blue">
@@ -47,7 +47,7 @@
         <button type="button" class="w3-button w3-red w3-right" @click="simpanPeriksa()">Simpan Hasil Pemeriksaan</button>
     </div>
 </div>
-</admin>
+</div>
 </template>
 
 <script>

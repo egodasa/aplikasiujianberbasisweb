@@ -20,6 +20,7 @@
     "vue": "vue/dist/vue.common.js"
   },
   "dependencies": {
+    "@xkeshi/vue-countdown": "^0.5.0",
     "axios": "^0.16.2",
     "date-fns": "^1.29.0",
     "md5": "^2.2.1",

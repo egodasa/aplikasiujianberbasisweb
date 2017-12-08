@@ -1,5 +1,4 @@
 <template>
-<dosen>
 <div class="w3-container">
     <h2>Aplikasi CAT</h2>
     Changelog :<br/>
@@ -16,7 +15,6 @@
         <li>Fitur manajemen Peserta</li>
     </ul>
 </div>
-</dosen>
 </template>
 
 <script>

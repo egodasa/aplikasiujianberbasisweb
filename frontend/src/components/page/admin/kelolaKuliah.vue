@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
 <div class="w3-container">
     <h2>Daftar Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
@@ -35,7 +35,7 @@
     </template>
     </gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

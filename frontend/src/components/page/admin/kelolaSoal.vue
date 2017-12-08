@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
     <div class="w3-container">
         <h2><i class="fa fa-list-alt"></i> Bank Soal</h2>
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
@@ -49,7 +49,7 @@
     </div>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus"></gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

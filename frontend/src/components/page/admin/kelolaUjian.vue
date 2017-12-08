@@ -1,5 +1,5 @@
 <template>
-<admin>
+
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
     <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
@@ -54,7 +54,7 @@
         </template>
     </gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

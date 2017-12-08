@@ -10,11 +10,13 @@ import VeeValidate, { Validator } from 'vee-validate';
 import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
 import vSelect from 'vue-select'
 import wysiwyg from "vue-wysiwyg";
+import VueCountdown from '@xkeshi/vue-countdown'
+
 Vue.use(wysiwyg, {
     hideModules: { "hyperlink": true,"image":true}
     });
 import Notifications from 'vue-notification'
-
+Vue.component('countdown', VueCountdown);
 Vue.use(Notifications)
 Vue.component('v-select', vSelect)
 VeeValidate.Validator.addLocale(bahasa)

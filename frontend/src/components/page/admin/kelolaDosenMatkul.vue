@@ -1,5 +1,5 @@
 <template>
-    <admin>
+    
 <div class="w3-container">
     <h2>Daftar Dosen Pengampu</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
@@ -16,7 +16,7 @@
     <gen-table :pk="tableContent.content[0]" tableType="hapus" :url="url" :tableContent="tableContent">
     </gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

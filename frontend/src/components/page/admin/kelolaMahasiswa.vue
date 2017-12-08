@@ -1,11 +1,11 @@
 <template>
-    <admin>
+    
 <div class="w3-container">
     <h2>Daftar Mahasiswa</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
 </div>
-</admin>
+
 </template>
 
 <script>

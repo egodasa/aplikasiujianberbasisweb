@@ -5,7 +5,7 @@
     <slot>
     <div class="w3-container">
         <h3>Pilih Soal</h3>
-    <button type="button" class="w3-button w3-blue w3-small w3-border" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
+    <button type="button" :class="posisiSoal == index ? 'w3-button w3-pale-blue  w3-hover-pale-blue w3-border' : 'w3-button w3-blue w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
     </div>
     <div class="w3-container">
         <h3>Informasi Ujian</h3>
@@ -106,7 +106,7 @@ import secHeader from '../../template/header.vue'
 import secFooter from '../../template/footer.vue'
 import secContent from '../../template/content.vue'
 import secSidebar from '../../template/sidebar.vue'
-
+import jarakMili from 'date-fns/difference_in_milliseconds'
 export default {
   name: 'pelaksanaanUjian',
   components : {
@@ -132,7 +132,11 @@ export default {
           hariSekarang : null,
           waktuSekarang : null,
           sisaWaktu : null,
-          waktuString : null
+          waktuString : null,
+          waktuSelesai : null,
+          soalDikerjakan : 0,
+          sisaWaktuJalan : null,
+          waktuSekarangJalan : null
         }
   },
   beforeCreated () {
@@ -141,17 +145,19 @@ export default {
   watch : {
       waktuSekarang () {
          var self = this
-         setInterval(function () {
+         this.waktuSekarangJalan = setInterval(function () {
             self.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
       }, 1000)
       },
       sisaWaktu () {
           var self = this
-          setInterval(function () {
-             self.sisaWaktu = hitungWaktu(
-              new Date(),
-              new Date(self.waktuString)
-            ,{locale : lokalisasi})
+          var waktu
+          this.sisaWaktuJalan = setInterval(function () {
+             waktu = new Date(self.$session.get('infoUjian').hari + " " + self.$session.get('infoUjian').selesai).getTime() - new Date().getTime()
+             if(waktu < 0) {
+                 self.kumpulkanUjian()
+             }
+             self.waktuUjian(waktu)
           }, 1000)
       }
   },
@@ -160,20 +166,22 @@ export default {
       this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
       this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
       this.sisaWaktu = formatWaktu(new Date(this.$session.get('infoUjian').selesai), 'h:m:s', {locale : lokalisasi})
-      this.waktuString = this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai
-      console.log(this.waktuString)
+      this.waktuString = new Date().getTime() - new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai)
+      this.waktuUjian(this.waktuString)
+      this.waktuSelesai = new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai).getTime()
       this.genLjk()
   },
-  computed : {
-        soalDikerjakan () {
-            var hasil = 0
-            _.forEach(this.listSoal, (v,k)=>{
-                if(v.jawaban != null) hasil++
-                })
-            return hasil
-        }
+  beforeDestroy () {
+      clearInterval(this.sisaWaktuJalan)
+      clearInterval(this.waktuSekarangJalan)
   },
   methods : {
+      waktuUjian (ms) {
+            var hours = Math.floor(ms / 3600000) // 1 Hour = 36000 Milliseconds
+            var minutes = Math.floor((ms % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+            var seconds = Math.floor(((ms % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+            this.sisaWaktu = hours+":"+minutes+":"+seconds | 0
+      },
       toggleMenu () {
           Bus.$emit('toggleMenu')
       },
@@ -197,6 +205,7 @@ export default {
                     _.forEach(res.data.data, (v,k)=>{
                         this.jawabanPeserta.push({id_soal : v.id_soal, jawaban : null}) 
                         })
+                this.hitungSoalSiap()
                     var tmp = {
                       jawabanPeserta : this.jawabanPeserta,
                       posisiSoal : this.posisiSoal
@@ -251,6 +260,7 @@ export default {
                   console.log(err)
                   })
           }
+          this.simpanJawaban(this.posisiSoal,this.jawaban)
           this.$session.destroy()
           this.$router.push({path: '/'})
       },
@@ -262,8 +272,16 @@ export default {
               posisiSoal : this.posisiSoal
           }
           this.$session.set('ljk',tmp)
-          console.log(this.$session.get('ljk'))
-          
+          this.hitungSoalSiap()
+      },
+      hitungSoalSiap () {
+          var b = 0
+          var s = 0
+          _.forEach(this.jawabanPeserta,(v,k)=>{
+              if(v.jawaban == null) b++
+              else s++
+              })
+          this.soalDikerjakan = s
       }
   }
 }

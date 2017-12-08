@@ -3,7 +3,9 @@
 <sec-header></sec-header>
     <sec-sidebar :listMenu="menu" :welcomeMessage="$session.get('user').username"></sec-sidebar>
     <sec-content>
-            <slot></slot>
+            <slot>
+            <router-view></router-view>
+            </slot>
     </sec-content>
 </div>
 </template>
@@ -37,7 +39,7 @@ export default {
             }else vm.$router.push({path:'/'})
         })
   },
-  beforeCreated (){
+  beforeCreated () {
       
   },
   created () {

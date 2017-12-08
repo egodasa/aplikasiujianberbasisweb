@@ -5,7 +5,7 @@
   <template v-if="$session.has('user')">
   <div class="w3-container w3-row">
     <div class="w3-col s8 w3-bar">
-      <span>{{welcomeMessage}}</span><br>
+      {{welcomeMessage}}
     </div>
   </div>
   <hr>
@@ -16,7 +16,7 @@
       </div>
       <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" @click="toggleMenu()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Tutup Menu</a>
-        <router-link v-for="x in listMenu" :to="x.path" :key="x.key" :class="$route.fullPath == x.path ? 'w3-bar-item w3-button w3-padding w3-gray' : 'w3-bar-item w3-button w3-padding'"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
+        <router-link @click="toggleMenu()" v-for="x in listMenu" :to="x.path" :key="x.key" :class="$route.fullPath == x.path ? 'w3-bar-item w3-button w3-padding w3-gray' : 'w3-bar-item w3-button w3-padding'"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
         <template v-if="$session.has('user')">
             <a v-if="$session.get('user').id_juser <= 2" class="w3-bar-item w3-button w3-padding" @click="logout()"><i class="fa fa-sign-out fa-fw"></i>  Logout</a>
         </template>
@@ -28,6 +28,11 @@
 </template>
 <script>
 import { Bus } from '../../bus.js';
+import formatWaktu from 'date-fns/format'
+import lokalisasi from 'date-fns/locale/id'
+import hitungWaktu from 'date-fns/distance_in_words'
+import hitungWaktuMili from 'date-fns/difference_in_milliseconds'
+
 export default {
   name: 'secSidebar',
   props : {
@@ -48,16 +53,38 @@ export default {
           required : false,
           default : 'Menu'
       }
-  },
+  },/*
+  watch : {
+      jamSekarang () {
+         var self = this
+         setInterval(function () {
+         self.jamSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
+      }, 1000)
+      },
+      sisaWaktu () {
+         var self = this
+         var mili = new Date().getTime()
+         var mili_akhir = new Date(2017,12,6,22,0,0).getTime()
+         var sisa = mili_akhir - mili
+         setInterval(function () {
+         self.sisaWaktu = new Date(sisa).getTime()}, 1000)
+     }
+  },*/
   data (){
       return {
-          menuStatus : "none"
+          menuStatus : "none",
+          hariSekarang : null,
+          jamSekarang : null,
+          sisaWaktu : null
       }
   },
   created(){
       Bus.$on('toggleMenu',()=>{
           this.toggleMenu()
           })
+      this.hariSekarang = formatWaktu(new Date(), 'dddd, DD MMMM YYYY', {locale : lokalisasi})
+      this.jamSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
+      this.sisaWaktu = 0
       },
   methods : {
       toggleMenu () {
