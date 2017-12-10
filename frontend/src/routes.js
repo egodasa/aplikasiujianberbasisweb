@@ -1,5 +1,6 @@
 import kelolaUjianDetail from './components/page/admin/kelolaUjianDetail.vue';
 import kelolaUjian from './components/page/admin/kelolaUjian.vue';
+import kelolaUser from './components/page/admin/kelolaUser.vue';
 
 import kelolaSoal from './components/page/admin/kelolaSoal.vue';
 import kelolaMahasiswa from './components/page/admin/kelolaMahasiswa.vue';
@@ -127,6 +128,11 @@ export default [
             path: 'dosen',
             name: 'kelolaDosen',
             component: kelolaDosen
+          },
+          {
+            path: 'user',
+            name: 'kelolaUser',
+            component: kelolaUser
           }
     ]
   },
