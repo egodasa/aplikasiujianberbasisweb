@@ -81,6 +81,22 @@ END; $$;
 ALTER FUNCTION public.gethasilujian(v_id_ujian character varying) OWNER TO mandan;
 
 --
+-- Name: updatestatuskuliah(); Type: FUNCTION; Schema: public; Owner: mandan
+--
+
+CREATE FUNCTION updatestatuskuliah() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+begin
+update tbkuliah set status_kuliah=1 where id_kuliah = new.id_kuliah;
+return new;
+end;
+$$;
+
+
+ALTER FUNCTION public.updatestatuskuliah() OWNER TO mandan;
+
+--
 -- Name: updatestatusujian(); Type: FUNCTION; Schema: public; Owner: mandan
 --
 
@@ -95,6 +111,84 @@ $$;
 
 
 ALTER FUNCTION public.updatestatusujian() OWNER TO mandan;
+
+--
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+--
+
+CREATE SEQUENCE tbjawaban_id_jawaban_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tbjawaban_id_jawaban_seq OWNER TO mandan;
+
+--
+-- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbjawaban (
+    id_jawaban integer DEFAULT nextval('tbjawaban_id_jawaban_seq'::regclass) NOT NULL,
+    id_ujian character varying(60) NOT NULL,
+    nobp character varying(15) NOT NULL,
+    jawaban text NOT NULL,
+    id_soal integer NOT NULL
+);
+
+
+ALTER TABLE tbjawaban OWNER TO mandan;
+
+--
+-- Name: tbsoal_id_soal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+--
+
+CREATE SEQUENCE tbsoal_id_soal_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tbsoal_id_soal_seq OWNER TO mandan;
+
+--
+-- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbsoal (
+    id_soal integer DEFAULT nextval('tbsoal_id_soal_seq'::regclass) NOT NULL,
+    isi_soal text NOT NULL,
+    "pilihanGanda" json,
+    id_jsoal smallint NOT NULL,
+    bobot smallint DEFAULT 1 NOT NULL,
+    jawaban text NOT NULL
+);
+
+
+ALTER TABLE tbsoal OWNER TO mandan;
+
+--
+-- Name: lap_jawaban; Type: VIEW; Schema: public; Owner: mandan
+--
+
+CREATE VIEW lap_jawaban AS
+ SELECT tbjawaban.id_jawaban,
+    tbjawaban.nobp,
+    tbjawaban.id_ujian,
+    tbjawaban.id_soal,
+    tbsoal.isi_soal,
+    tbsoal.jawaban,
+    tbjawaban.jawaban AS jawaban_peserta,
+    tbsoal.bobot
+   FROM (tbjawaban
+     JOIN tbsoal ON ((tbjawaban.id_soal = tbsoal.id_soal)));
+
+
+ALTER TABLE lap_jawaban OWNER TO mandan;
 
 --
 -- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -200,7 +294,8 @@ CREATE TABLE tbkuliah (
     id_kuliah character varying(40) NOT NULL,
     nidn character varying(11) NOT NULL,
     kd_matkul character varying(15) NOT NULL,
-    tahun_akademik character varying(5) NOT NULL
+    tahun_akademik character varying(5) NOT NULL,
+    status_kuliah smallint DEFAULT '0'::smallint NOT NULL
 );
 
 
@@ -237,6 +332,32 @@ CREATE TABLE tbmatkul (
 ALTER TABLE tbmatkul OWNER TO mandan;
 
 --
+-- Name: tbstatus_status_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+--
+
+CREATE SEQUENCE tbstatus_status_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tbstatus_status_seq OWNER TO mandan;
+
+--
+-- Name: tbstatus; Type: TABLE; Schema: public; Owner: mandan
+--
+
+CREATE TABLE tbstatus (
+    status integer DEFAULT nextval('tbstatus_status_seq'::regclass) NOT NULL,
+    nm_status character varying(20) NOT NULL
+);
+
+
+ALTER TABLE tbstatus OWNER TO mandan;
+
+--
 -- Name: lap_kuliah; Type: VIEW; Schema: public; Owner: mandan
 --
 
@@ -246,18 +367,21 @@ CREATE VIEW lap_kuliah AS
     b.nm_matkul,
     a.nidn,
     c.nm_dosen,
-    ( SELECT array_to_json(array_agg(d.id_kelas)) AS kelas
-           FROM (tbkelas_kuliah d
-             JOIN tbkelas e ON ((e.id_kelas = d.id_kelas)))
-          WHERE ((d.id_kuliah)::text = (a.id_kuliah)::text)) AS id_kelas,
+    ( SELECT array_to_json(array_agg(d_1.id_kelas)) AS kelas
+           FROM (tbkelas_kuliah d_1
+             JOIN tbkelas e ON ((e.id_kelas = d_1.id_kelas)))
+          WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS id_kelas,
     ( SELECT array_to_json(array_agg(e.nm_kelas)) AS kelas
-           FROM (tbkelas_kuliah d
-             JOIN tbkelas e ON ((d.id_kelas = e.id_kelas)))
-          WHERE ((d.id_kuliah)::text = (a.id_kuliah)::text)) AS nm_kelas,
-    a.tahun_akademik
-   FROM ((tbkuliah a
+           FROM (tbkelas_kuliah d_1
+             JOIN tbkelas e ON ((d_1.id_kelas = e.id_kelas)))
+          WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS nm_kelas,
+    a.tahun_akademik,
+    a.status_kuliah,
+    d.nm_status AS nm_status_kuliah
+   FROM (((tbkuliah a
      JOIN tbmatkul b ON (((a.kd_matkul)::text = (b.kd_matkul)::text)))
-     JOIN tbdosen c ON (((a.nidn)::text = (c.nidn)::text)));
+     JOIN tbdosen c ON (((a.nidn)::text = (c.nidn)::text)))
+     JOIN tbstatus d ON ((a.status_kuliah = d.status)));
 
 
 ALTER TABLE lap_kuliah OWNER TO mandan;
@@ -305,32 +429,6 @@ CREATE TABLE tbpeserta_kuliah (
 
 
 ALTER TABLE tbpeserta_kuliah OWNER TO mandan;
-
---
--- Name: tbstatus_status_seq; Type: SEQUENCE; Schema: public; Owner: mandan
---
-
-CREATE SEQUENCE tbstatus_status_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tbstatus_status_seq OWNER TO mandan;
-
---
--- Name: tbstatus; Type: TABLE; Schema: public; Owner: mandan
---
-
-CREATE TABLE tbstatus (
-    status integer DEFAULT nextval('tbstatus_status_seq'::regclass) NOT NULL,
-    nm_status character varying(20) NOT NULL
-);
-
-
-ALTER TABLE tbstatus OWNER TO mandan;
 
 --
 -- Name: lap_peserta_kuliah; Type: VIEW; Schema: public; Owner: mandan
@@ -507,36 +605,6 @@ CREATE VIEW lap_peserta_ujian AS
 ALTER TABLE lap_peserta_ujian OWNER TO mandan;
 
 --
--- Name: tbsoal_id_soal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
---
-
-CREATE SEQUENCE tbsoal_id_soal_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tbsoal_id_soal_seq OWNER TO mandan;
-
---
--- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
---
-
-CREATE TABLE tbsoal (
-    id_soal integer DEFAULT nextval('tbsoal_id_soal_seq'::regclass) NOT NULL,
-    isi_soal text NOT NULL,
-    "pilihanGanda" json,
-    id_jsoal smallint NOT NULL,
-    bobot smallint DEFAULT 1 NOT NULL,
-    jawaban text NOT NULL
-);
-
-
-ALTER TABLE tbsoal OWNER TO mandan;
-
---
 -- Name: lap_soal; Type: VIEW; Schema: public; Owner: mandan
 --
 
@@ -697,35 +765,6 @@ CREATE TABLE tbhasil_ujian (
 
 
 ALTER TABLE tbhasil_ujian OWNER TO mandan;
-
---
--- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: mandan
---
-
-CREATE SEQUENCE tbjawaban_id_jawaban_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE tbjawaban_id_jawaban_seq OWNER TO mandan;
-
---
--- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
---
-
-CREATE TABLE tbjawaban (
-    id_jawaban integer DEFAULT nextval('tbjawaban_id_jawaban_seq'::regclass) NOT NULL,
-    id_ujian character varying(60) NOT NULL,
-    nobp character varying(15) NOT NULL,
-    jawaban text NOT NULL,
-    id_soal integer NOT NULL
-);
-
-
-ALTER TABLE tbjawaban OWNER TO mandan;
 
 --
 -- Name: tbpengaturan; Type: TABLE; Schema: public; Owner: mandan
@@ -1115,6 +1154,8 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 1	KKKI12106-1026108501-20171-1	14101152610565	39
 2	KKKI22106-1026108501-20171-1	14101152610565	100
 1	KKKI12106-1026108501-20171-3	14101152610565	0
+2	KKKI12106-1026108501-20171-3	14101152610544	100
+3	KPKI12102-1029108702-20171-1	14101152610555	9
 \.
 
 
@@ -1122,7 +1163,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 1, true);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 3, true);
 
 
 --
@@ -1130,6 +1171,8 @@ SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 1, true);
 --
 
 COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
+1	KPKI12102-1029108702-20171-1	14101152610555	jbjbjbjbjb	10
+6	KPKI12102-1029108702-20171-3	14101152610555	xzx	20
 \.
 
 
@@ -1137,7 +1180,7 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 -- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 1, false);
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 6, true);
 
 
 --
@@ -1222,6 +1265,9 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 6	KKKI22106-1026108501-20171	1
 7	KKKI22106-1026108501-20171	2
 8	KKKI22106-1026108501-20171	3
+1	KPKI12102-admin-20171	1
+2	KPKI12102-admin-20171	2
+3	KPKI12102-1029108702-20171	6
 \.
 
 
@@ -1229,16 +1275,17 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 1, false);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 3, true);
 
 
 --
 -- Data for Name: tbkuliah; Type: TABLE DATA; Schema: public; Owner: mandan
 --
 
-COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik) FROM stdin;
-KKKI12106-1026108501-20171	1026108501	KKKI12106	20171
-KKKI22106-1026108501-20171	1026108501	KKKI22106	20171
+COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
+KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	1
+KKKI22106-1026108501-20171	1026108501	KKKI22106	20171	1
+KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
 \.
 
 
@@ -1374,6 +1421,8 @@ COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas
 14101152610574-KKKI22106-1026108501-20171	14101152610574	KKKI22106-1026108501-20171	1	3	3
 13101152610342-KKKI22106-1026108501-20171	13101152610342	KKKI22106-1026108501-20171	1	3	3
 14101152610550-KKKI22106-1026108501-20171	14101152610550	KKKI22106-1026108501-20171	1	3	3
+14101152610555-KPKI12102-1029108702-20171	14101152610555	KPKI12102-1029108702-20171	1	3	6
+14101152610544-KPKI12102-1029108702-20171	14101152610544	KPKI12102-1029108702-20171	1	3	6
 \.
 
 
@@ -1393,6 +1442,17 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 7	sdsx	\N	2	12	sax
 8	sdsx	\N	2	12	sax
 9	cxzzz	[{"huruf":"A","isi_pilihan":"scz"},{"huruf":"B","isi_pilihan":"xs"},{"huruf":"C","isi_pilihan":"zsx"}]	1	1	A
+10	dasdsa	\N	2	12	swsa
+11	Bisnis adalah?	[{"huruf":"A","isi_pilihan":"manggaleh"},{"huruf":"B","isi_pilihan":"ntah"}]	1	1	A
+12	sads	\N	2	12	xasx
+13	ccdc	\N	2	12	zxczz
+14	zxcz	\N	2	12	zxczxc
+15	zcasz	\N	2	12	cdxcdx
+16	zscszcz	\N	2	12	zdddccd
+17	zxccxzd	\N	2	12	dzczxvdv
+18	zcxxccx	\N	2	12	xcxxzc
+19	zxc	\N	2	12	xzc
+20	xzX	\N	2	12	zsxz
 \.
 
 
@@ -1400,7 +1460,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 9, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 20, true);
 
 
 --
@@ -1416,6 +1476,17 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 4	KKKI22106-1026108501-20171-2	4
 8	KKKI22106-1026108501-20171-2	8
 9	KKKI12106-1026108501-20171-3	9
+10	KPKI12102-1029108702-20171-1	10
+11	KKKI22106-1026108501-20171-3	11
+12	KPKI12102-1029108702-20171-2	12
+13	KPKI12102-1029108702-20171-2	13
+14	KPKI12102-1029108702-20171-2	14
+15	KPKI12102-1029108702-20171-2	15
+16	KPKI12102-1029108702-20171-2	16
+17	KPKI12102-1029108702-20171-2	17
+18	KPKI12102-1029108702-20171-2	18
+19	KPKI12102-1029108702-20171-2	19
+20	KPKI12102-1029108702-20171-3	20
 \.
 
 
@@ -1423,7 +1494,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 9, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 20, true);
 
 
 --
@@ -1456,7 +1527,11 @@ KKKI12106-1026108501-20171-1	2012-12-22	08:00:00	08:00:00	Ujan	1	1	2	KKKI12106-1
 KKKI12106-1026108501-20171-2	2017-12-08	08:00:00	08:00:00	08:00:0000	1	2	2	KKKI12106-1026108501-20171
 KKKI22106-1026108501-20171-1	2017-12-08	08:00:00	09:00:00	ujian	1	1	1	KKKI22106-1026108501-20171
 KKKI22106-1026108501-20171-2	2017-12-08	08:00:00	10:00:00	Ujian	1	2	2	KKKI22106-1026108501-20171
-KKKI12106-1026108501-20171-3	2017-12-04	22:56:00	23:10:00	test	1	3	1	KKKI12106-1026108501-20171
+KKKI12106-1026108501-20171-3	2017-12-04	22:56:00	23:30:00	test	1	3	1	KKKI12106-1026108501-20171
+KPKI12102-1029108702-20171-1	2017-12-06	22:00:00	23:59:00	gundul	1	1	2	KPKI12102-1029108702-20171
+KKKI22106-1026108501-20171-3	2017-12-07	07:50:00	08:15:00	fsd	1	3	1	KKKI22106-1026108501-20171
+KPKI12102-1029108702-20171-2	2017-12-07	09:00:00	11:00:00	ujian	1	2	2	KPKI12102-1029108702-20171
+KPKI12102-1029108702-20171-3	2017-12-08	12:00:00	12:01:00	sdsaxxa	1	3	2	KPKI12102-1029108702-20171
 \.
 
 
@@ -1467,7 +1542,6 @@ KKKI12106-1026108501-20171-3	2017-12-04	22:56:00	23:10:00	test	1	3	1	KKKI12106-1
 COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 1	1012019001	db6653d17bc6d38ec16390d7368ee1df	2	1
 2	1009026602	41ef49094fe0cd268aec84f100dcb963	2	1
-3	1023116001	543fa11cff502800d9cf8ef3a550e199	2	1
 4	1025125401	1a35a5d2bafd6b907a43a78788e74003	2	1
 5	1028128901	c4e95b4da82ad63735dc8398b34e0b8e	2	1
 6	1013128902	8d452f6928b45c750494a3ca3f729bd1	2	1
@@ -1826,6 +1900,7 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 359	14101152610733	250eb727438e3f472dd12323abc1eb65	3	1
 360	14101152610457	39ed25e64fb16dc99b8defcc926dd315	3	1
 362	admin	21232f297a57a5a743894a0e4a801fc3	1	1
+4	das	7815696ecbf1c96e6894b779456d330e	1	1
 \.
 
 
@@ -1833,7 +1908,14 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 -- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbuser_id_user_seq', 1, false);
+SELECT pg_catalog.setval('tbuser_id_user_seq', 4, true);
+
+
+--
+-- Name: updateStatusKuliah; Type: TRIGGER; Schema: public; Owner: mandan
+--
+
+CREATE TRIGGER "updateStatusKuliah" AFTER INSERT ON tbpeserta_kuliah FOR EACH ROW EXECUTE PROCEDURE updatestatuskuliah();
 
 
 --
