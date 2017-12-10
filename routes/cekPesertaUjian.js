@@ -19,7 +19,7 @@ router.get('/:id_tsoal/ujian/:id_ujian/peserta/:nobp',(req, res, next)=>{
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 module.exports = router

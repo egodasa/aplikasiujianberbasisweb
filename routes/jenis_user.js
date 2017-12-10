@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/user/create_update');
-let md5 = require('md5')
-let pk = "id_user"
-let tbl = "tbuser"
+var checkData = require('../validator/tipe_soal/create_update');
+var pk = 'id_juser';
+var tbl = 'tbjenis_user';
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -15,12 +14,11 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-        query.count = db('lap_user').select('id_user')
-        query.tmp = db('lap_user').select()
-        //query.tmp = db('lap_user').select().where(req.query)
+        query.count = db('tbjenis_user').select('id_juser')
+        query.tmp = db('tbjenis_user').select()
     }else{
-        query.count = db('lap_user').select().where('id_user',id)
-        query.tmp = db('lap_user').select().where('id_user',id)
+        query.count = db('tbjenis_user').select().where('id_juser',id)
+        query.tmp = db('tbjenis_user').select().where('id_juser',id)
     }
     if(limit == null && offset == null) {
         query.show = query.tmp
@@ -29,45 +27,24 @@ router.get('/:id?',(req, res, next)=>{
         query.show = query.tmp.limit(limit).offset(offset)
     }
 	query.show.then(function(rows){
-        hasil.kode = 0;
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
 		return query.count
 		}).
 	then((rows)=>{
-        let code
+		 let code
 		hasil.row = rows.length
         if(rows.length == 0) code = 204
         else code = 200
 		res.status(code).json(hasil);
 		}).
 	catch(function(err){
-        hasil.kode = 1;
 		hasil.status = false
 		hasil.error = err;
 		res.status(503).json(hasil);
 		});
 	});
-router.post('/cek',(req, res, next)=>{
-	let username = req.body.username
-    let password = req.body.password
-    let hasil = {}
-    let query = db('lap_user').select()
-	query.where({username:username,password:password}).
-	then(function(rows){
-		hasil.status = true;
-		hasil.data = rows;
-		hasil.current_row = rows.length;
-        res.json(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false
-		hasil.error = err;
-		res.status(503).json(hasil);
-		});
-	});
-
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
@@ -77,23 +54,20 @@ router.post('/',(req,res,next)=>{
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-        console.log(pesan);
 		hasil.status = false;
 		hasil.error = pesan;
 		res.status(422).json(hasil); 
 	}
 	else{
-        data.password = md5(data.password)
-		db('tbuser').insert(data).
+		db(tbl).insert(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
 			}).
 		catch(function(err){
-            console.log(err);
 			hasil.status = false;
 			hasil.error = err;
-			res.status(503).json(hasil);
+			res.json(hasil);
 			});
 	}
 	});
@@ -116,7 +90,6 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
-    console.log(data)
 	req.checkBody(checkData);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
@@ -127,8 +100,7 @@ router.put('/:id',(req,res,next)=>{
 		res.json(hasil);
 	}
 	else{
-        data.password = md5(data.password)
-		db('tbuser').where(pk,id).update(data).
+		db(tbl).where(pk,'=',id).update(data).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
@@ -136,7 +108,7 @@ router.put('/:id',(req,res,next)=>{
 		catch(function(err){
 			hasil.status = false;
 			hasil.error = err;
-			res.status(503).json(hasil);
+			res.json(hasil);
 			});
 	}
 	});

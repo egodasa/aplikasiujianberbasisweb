@@ -51,13 +51,16 @@ router.get('/:id?',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.get('/cari/:cari',(req, res, next)=>{
@@ -85,13 +88,16 @@ router.get('/cari/:cari',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.post('/',(req,res,next)=>{
@@ -105,7 +111,7 @@ router.post('/',(req,res,next)=>{
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
-		res.json(hasil); 
+		res.status(422).json(hasil); 
 	}
 	else{
 		db(tbl).insert(data).
@@ -115,7 +121,7 @@ router.post('/',(req,res,next)=>{
 			}).
 		catch(function(err){
 			hasil.status = false;
-			hasil.err = err;
+			hasil.error = err;
 			res.json(hasil);
 			});
 	}
@@ -131,8 +137,8 @@ router.delete('/:id',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 router.put('/:id',(req,res,next)=>{
@@ -156,7 +162,7 @@ router.put('/:id',(req,res,next)=>{
 			}).
 		catch(function(err){
 			hasil.status = false;
-			hasil.err = err;
+			hasil.error = err;
 			res.json(hasil);
 			});
 	}
@@ -189,13 +195,16 @@ router.get('/:id/kuliah',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.get('/:id/ujian',(req, res, next)=>{
@@ -223,13 +232,16 @@ router.get('/:id/ujian',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
@@ -246,8 +258,8 @@ router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
     
@@ -270,7 +282,7 @@ router.post('/:id/kuliah',(req,res,next)=>{
         }).
     catch(function(err){
         hasil.status = false;
-        hasil.err = err;
+        hasil.error = err;
         res.json(hasil);
         });
 	});
@@ -284,8 +296,8 @@ router.delete('/:id/matkul/:id_matkul',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 //lihat ujian yg diampu dosen
@@ -314,13 +326,16 @@ router.get('/:id/ujian',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 

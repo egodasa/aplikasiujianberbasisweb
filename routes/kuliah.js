@@ -30,13 +30,16 @@ router.get('/:id?',(req, res, next)=>{
 		return query.count;
 		}).
 	then((rows)=>{
+		 let code
 		hasil.row = rows.length
-		res.json(hasil);
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.post('/',(req,res,next)=>{
@@ -58,7 +61,7 @@ router.post('/',(req,res,next)=>{
         }).
     catch(function(err){
         hasil.status = false;
-        hasil.err = err;
+        hasil.error = err;
         res.json(hasil);
         });
 	}); 
@@ -78,7 +81,7 @@ router.put('/:id',(req,res,next)=>{
         }).
     catch(function(err){
         hasil.status = false;
-        hasil.err = err;
+        hasil.error = err;
         res.json(hasil);
         });
 	}); 
@@ -92,8 +95,8 @@ router.delete('/:id',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 
@@ -123,7 +126,7 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.post('/:id/mahasiswa',(req,res,next)=>{
@@ -138,7 +141,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
     catch(function(err){
         console.log(err)
         hasil.status = false;
-        hasil.err = err;
+        hasil.error = err;
         res.json(hasil);
         });
 	}); 
@@ -152,8 +155,8 @@ router.delete('/:id/mahasiswa/:idMhs',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 

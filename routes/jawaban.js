@@ -20,7 +20,7 @@ router.get('/:id?',(req, res, next)=>{
 	catch(function(err){
 		hasil.status = false
 		hasil.error = err;
-		res.json(hasil);
+		res.status(503).json(hasil);
 		});
 	});
 router.post('/',(req,res,next)=>{
@@ -34,8 +34,8 @@ router.post('/',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
     });
 });
@@ -49,8 +49,8 @@ router.delete('/:id',(req,res,next)=>{
 		}).
 	catch(function(err){
 		hasil.status = false;
-		hasil.err = err;
-		res.json(hasil);
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 });
