@@ -1,10 +1,9 @@
 {
     "tahun_akademik":"20171",
     "err" : [
-        /*0*/"Ok",
+       /*0*/"Ok",
        /*1*/"Terjadi kesalahan pada server. Silahkan refresh halaman." ,
-       /*2*/"Ujian yang Anda pilih sudah ada. Silahkan pilih yang lain",
-       /*3*/"Username atau password tidak cocok",
-       /*4*/"Anda sudah mengikuti ujian ini" 
+       /*2*/"Data yang diinput salah.",
+       /*3*/"Tidak ada akses kehalaman yang dituju"
     ]
     }

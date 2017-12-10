@@ -86,7 +86,7 @@ router.put('/:id',(req,res,next)=>{
         });
 	}); 
 router.delete('/:id',(req,res,next)=>{
-	var id = " "+req.params.id;
+	var id = req.params.id;
 	var hasil = {};
 	db(tbl).where(pk,id).del().
 	then(function(){

@@ -74,7 +74,7 @@
                   <div class="w3-display-middle">
                       <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">{{statusDataTable}}</div><br/>
                       <div class="w3-center">
-                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton && statusCodeDataTable == 200 || statusCOdeDataTable == 204"><i class="fa fa-plus"></i> Tambah Data</button>
+                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton && statusCodeDataTable == 200 || statusCodeDataTable == 204"><i class="fa fa-plus"></i> Tambah Data</button>
                   <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center w3-blue-grey"><i class="fa fa-refresh"></i> Refresh</button>
                       </div>
                     </div>
@@ -254,17 +254,13 @@ export default {
             }else url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
 			axios.get(url)
 			.then(res=>{
-                if(res.data.status == true){
                     this.statusCodeDataTable = res.status
-                    if(res.data.data.length == 0){
-                        this.statusDataTable = "Tidak Ada Data!"
+                    if(this.statusCodeDataTable == 204){
+                        this.statusDataTable = "Data Kosong"
                     }
                     this.totalRows = res.data.row
                     this.dataTable = res.data
-                }else{
-                    this.dataTable = []
-                }
-                this.spinStatus = false
+                    this.spinStatus = false
 			})
 			.catch(err=>{
                 if(err.response.status == 503){
@@ -285,7 +281,7 @@ export default {
 				this.getData(this.pageRows,this.pageNumber)
 			})
 			.catch(err=>{
-				console.log(err)
+				Bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
 			})
 		},
         getDataDetail (x) {
