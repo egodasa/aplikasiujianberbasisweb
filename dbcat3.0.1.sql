@@ -1152,8 +1152,6 @@ SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 1, false);
 
 COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 1	KKKI12106-1026108501-20171-1	14101152610565	39
-2	KKKI22106-1026108501-20171-1	14101152610565	100
-1	KKKI12106-1026108501-20171-3	14101152610565	0
 2	KKKI12106-1026108501-20171-3	14101152610544	100
 3	KPKI12102-1029108702-20171-1	14101152610555	9
 \.
@@ -1265,8 +1263,6 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 6	KKKI22106-1026108501-20171	1
 7	KKKI22106-1026108501-20171	2
 8	KKKI22106-1026108501-20171	3
-1	KPKI12102-admin-20171	1
-2	KPKI12102-admin-20171	2
 3	KPKI12102-1029108702-20171	6
 \.
 
@@ -1434,8 +1430,6 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 2	javascript adalah	\N	2	20	bahasa pemrograman
 3	E dalam bisnis adaa=lah	[{"huruf":"A","isi_pilihan":"elektronik"},{"huruf":"B","isi_pilihan":"gundul"},{"huruf":"C","isi_pilihan":"au ah gelap"}]	1	1	A
 1	Gundul adalah	\N	2	12	eh
-2	anu adlaah	\N	2	21	gundu;
-3	asd	\N	2	12	asd
 4	xzx	\N	2	12	zx
 5	sdsx	\N	2	12	sax
 6	sdsx	\N	2	12	sax
@@ -1453,6 +1447,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 18	zcxxccx	\N	2	12	xcxxzc
 19	zxc	\N	2	12	xzc
 20	xzX	\N	2	12	zsxz
+21	Gundulmu	\N	2	20	gundulku
 \.
 
 
@@ -1460,7 +1455,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 20, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 21, true);
 
 
 --
@@ -1468,8 +1463,6 @@ SELECT pg_catalog.setval('tbsoal_id_soal_seq', 20, true);
 --
 
 COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
-1	KKKI12106-1026108501-20171-1	2
-2	KKKI22106-1026108501-20171-1	3
 1	KKKI22106-1026108501-20171-2	1
 2	KKKI22106-1026108501-20171-2	2
 3	KKKI22106-1026108501-20171-2	3
@@ -1487,6 +1480,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 18	KPKI12102-1029108702-20171-2	18
 19	KPKI12102-1029108702-20171-2	19
 20	KPKI12102-1029108702-20171-3	20
+21	KKKI12106-1026108501-20171-1	21
 \.
 
 
@@ -1494,7 +1488,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 20, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 21, true);
 
 
 --
@@ -1523,7 +1517,6 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
-KKKI12106-1026108501-20171-1	2012-12-22	08:00:00	08:00:00	Ujan	1	1	2	KKKI12106-1026108501-20171
 KKKI12106-1026108501-20171-2	2017-12-08	08:00:00	08:00:00	08:00:0000	1	2	2	KKKI12106-1026108501-20171
 KKKI22106-1026108501-20171-1	2017-12-08	08:00:00	09:00:00	ujian	1	1	1	KKKI22106-1026108501-20171
 KKKI22106-1026108501-20171-2	2017-12-08	08:00:00	10:00:00	Ujian	1	2	2	KKKI22106-1026108501-20171
@@ -1532,6 +1525,7 @@ KPKI12102-1029108702-20171-1	2017-12-06	22:00:00	23:59:00	gundul	1	1	2	KPKI12102
 KKKI22106-1026108501-20171-3	2017-12-07	07:50:00	08:15:00	fsd	1	3	1	KKKI22106-1026108501-20171
 KPKI12102-1029108702-20171-2	2017-12-07	09:00:00	11:00:00	ujian	1	2	2	KPKI12102-1029108702-20171
 KPKI12102-1029108702-20171-3	2017-12-08	12:00:00	12:01:00	sdsaxxa	1	3	2	KPKI12102-1029108702-20171
+KKKI12106-1026108501-20171-1	2012-12-22	08:00:00	08:00:00	Ujan	1	1	2	KKKI12106-1026108501-20171
 \.
 
 
@@ -1900,7 +1894,6 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 359	14101152610733	250eb727438e3f472dd12323abc1eb65	3	1
 360	14101152610457	39ed25e64fb16dc99b8defcc926dd315	3	1
 362	admin	21232f297a57a5a743894a0e4a801fc3	1	1
-4	das	7815696ecbf1c96e6894b779456d330e	1	1
 \.
 
 
@@ -1909,6 +1902,158 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 --
 
 SELECT pg_catalog.setval('tbuser_id_user_seq', 4, true);
+
+
+--
+-- Name: tbdosen_id_dosen; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbdosen
+    ADD CONSTRAINT tbdosen_id_dosen PRIMARY KEY (id_dosen);
+
+
+--
+-- Name: tbdosen_nidn; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbdosen
+    ADD CONSTRAINT tbdosen_nidn UNIQUE (nidn);
+
+
+--
+-- Name: tbjawaban_id_jawaban; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjawaban
+    ADD CONSTRAINT tbjawaban_id_jawaban PRIMARY KEY (id_jawaban);
+
+
+--
+-- Name: tbjenis_soal_id_jsoal; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjenis_soal
+    ADD CONSTRAINT tbjenis_soal_id_jsoal PRIMARY KEY (id_jsoal);
+
+
+--
+-- Name: tbjenis_ujian_id_jujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjenis_ujian
+    ADD CONSTRAINT tbjenis_ujian_id_jujian PRIMARY KEY (id_jujian);
+
+
+--
+-- Name: tbjenis_user_id_juser; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjenis_user
+    ADD CONSTRAINT tbjenis_user_id_juser PRIMARY KEY (id_juser);
+
+
+--
+-- Name: tbkelas_id_kelas; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbkelas
+    ADD CONSTRAINT tbkelas_id_kelas PRIMARY KEY (id_kelas);
+
+
+--
+-- Name: tbkelas_kuliah_id_kkuliah; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbkelas_kuliah
+    ADD CONSTRAINT tbkelas_kuliah_id_kkuliah PRIMARY KEY (id_kkuliah);
+
+
+--
+-- Name: tbkuliah_id_kuliah; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbkuliah
+    ADD CONSTRAINT tbkuliah_id_kuliah PRIMARY KEY (id_kuliah);
+
+
+--
+-- Name: tbmahasiswa_id_mahasiswa; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbmahasiswa
+    ADD CONSTRAINT tbmahasiswa_id_mahasiswa PRIMARY KEY (id_mahasiswa);
+
+
+--
+-- Name: tbmahasiswa_nobp; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbmahasiswa
+    ADD CONSTRAINT tbmahasiswa_nobp UNIQUE (nobp);
+
+
+--
+-- Name: tbmatkul_id_matkul; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbmatkul
+    ADD CONSTRAINT tbmatkul_id_matkul PRIMARY KEY (id_matkul);
+
+
+--
+-- Name: tbpeserta_kuliah_id_peserta; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbpeserta_kuliah
+    ADD CONSTRAINT tbpeserta_kuliah_id_peserta PRIMARY KEY (id_peserta);
+
+
+--
+-- Name: tbsoal_id_soal; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbsoal
+    ADD CONSTRAINT tbsoal_id_soal PRIMARY KEY (id_soal);
+
+
+--
+-- Name: tbsoal_ujian_id_sujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbsoal_ujian
+    ADD CONSTRAINT tbsoal_ujian_id_sujian PRIMARY KEY (id_sujian);
+
+
+--
+-- Name: tbstatus_status; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbstatus
+    ADD CONSTRAINT tbstatus_status PRIMARY KEY (status);
+
+
+--
+-- Name: tbujian_id_ujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbujian
+    ADD CONSTRAINT tbujian_id_ujian PRIMARY KEY (id_ujian);
+
+
+--
+-- Name: tbuser_id_user; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbuser
+    ADD CONSTRAINT tbuser_id_user PRIMARY KEY (id_user);
+
+
+--
+-- Name: tbuser_username; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbuser
+    ADD CONSTRAINT tbuser_username UNIQUE (username);
 
 
 --
