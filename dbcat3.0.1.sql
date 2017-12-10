@@ -1151,9 +1151,6 @@ SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 1, false);
 --
 
 COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
-1	KKKI12106-1026108501-20171-1	14101152610565	39
-2	KKKI12106-1026108501-20171-3	14101152610544	100
-3	KPKI12102-1029108702-20171-1	14101152610555	9
 \.
 
 
@@ -1169,8 +1166,6 @@ SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 3, true);
 --
 
 COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
-1	KPKI12102-1029108702-20171-1	14101152610555	jbjbjbjbjb	10
-6	KPKI12102-1029108702-20171-3	14101152610555	xzx	20
 \.
 
 
@@ -1271,7 +1266,7 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 3, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 6, true);
 
 
 --
@@ -1279,9 +1274,6 @@ SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 3, true);
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
-KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	1
-KKKI22106-1026108501-20171	1026108501	KKKI22106	20171	1
-KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
 \.
 
 
@@ -1463,24 +1455,6 @@ SELECT pg_catalog.setval('tbsoal_id_soal_seq', 21, true);
 --
 
 COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
-1	KKKI22106-1026108501-20171-2	1
-2	KKKI22106-1026108501-20171-2	2
-3	KKKI22106-1026108501-20171-2	3
-4	KKKI22106-1026108501-20171-2	4
-8	KKKI22106-1026108501-20171-2	8
-9	KKKI12106-1026108501-20171-3	9
-10	KPKI12102-1029108702-20171-1	10
-11	KKKI22106-1026108501-20171-3	11
-12	KPKI12102-1029108702-20171-2	12
-13	KPKI12102-1029108702-20171-2	13
-14	KPKI12102-1029108702-20171-2	14
-15	KPKI12102-1029108702-20171-2	15
-16	KPKI12102-1029108702-20171-2	16
-17	KPKI12102-1029108702-20171-2	17
-18	KPKI12102-1029108702-20171-2	18
-19	KPKI12102-1029108702-20171-2	19
-20	KPKI12102-1029108702-20171-3	20
-21	KKKI12106-1026108501-20171-1	21
 \.
 
 
@@ -1517,15 +1491,6 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
-KKKI12106-1026108501-20171-2	2017-12-08	08:00:00	08:00:00	08:00:0000	1	2	2	KKKI12106-1026108501-20171
-KKKI22106-1026108501-20171-1	2017-12-08	08:00:00	09:00:00	ujian	1	1	1	KKKI22106-1026108501-20171
-KKKI22106-1026108501-20171-2	2017-12-08	08:00:00	10:00:00	Ujian	1	2	2	KKKI22106-1026108501-20171
-KKKI12106-1026108501-20171-3	2017-12-04	22:56:00	23:30:00	test	1	3	1	KKKI12106-1026108501-20171
-KPKI12102-1029108702-20171-1	2017-12-06	22:00:00	23:59:00	gundul	1	1	2	KPKI12102-1029108702-20171
-KKKI22106-1026108501-20171-3	2017-12-07	07:50:00	08:15:00	fsd	1	3	1	KKKI22106-1026108501-20171
-KPKI12102-1029108702-20171-2	2017-12-07	09:00:00	11:00:00	ujian	1	2	2	KPKI12102-1029108702-20171
-KPKI12102-1029108702-20171-3	2017-12-08	12:00:00	12:01:00	sdsaxxa	1	3	2	KPKI12102-1029108702-20171
-KKKI12106-1026108501-20171-1	2012-12-22	08:00:00	08:00:00	Ujan	1	1	2	KKKI12106-1026108501-20171
 \.
 
 
@@ -1921,6 +1886,14 @@ ALTER TABLE ONLY tbdosen
 
 
 --
+-- Name: tbhasil_ujian_id_hasil; Type: CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbhasil_ujian
+    ADD CONSTRAINT tbhasil_ujian_id_hasil PRIMARY KEY (id_hasil);
+
+
+--
 -- Name: tbjawaban_id_jawaban; Type: CONSTRAINT; Schema: public; Owner: mandan
 --
 
@@ -2057,6 +2030,76 @@ ALTER TABLE ONLY tbuser
 
 
 --
+-- Name: tbhasil_ujian_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbhasil_ujian_id_ujian ON tbhasil_ujian USING btree (id_ujian);
+
+
+--
+-- Name: tbhasil_ujian_nobp; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbhasil_ujian_nobp ON tbhasil_ujian USING btree (nobp);
+
+
+--
+-- Name: tbjawaban_id_soal; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbjawaban_id_soal ON tbjawaban USING btree (id_soal);
+
+
+--
+-- Name: tbjawaban_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbjawaban_id_ujian ON tbjawaban USING btree (id_ujian);
+
+
+--
+-- Name: tbjawaban_nobp; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbjawaban_nobp ON tbjawaban USING btree (nobp);
+
+
+--
+-- Name: tbkuliah_kd_matkul; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbkuliah_kd_matkul ON tbkuliah USING btree (kd_matkul);
+
+
+--
+-- Name: tbkuliah_nidn; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbkuliah_nidn ON tbkuliah USING btree (nidn);
+
+
+--
+-- Name: tbsoal_ujian_id_soal; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbsoal_ujian_id_soal ON tbsoal_ujian USING btree (id_soal);
+
+
+--
+-- Name: tbsoal_ujian_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbsoal_ujian_id_ujian ON tbsoal_ujian USING btree (id_ujian);
+
+
+--
+-- Name: tbujian_id_kuliah; Type: INDEX; Schema: public; Owner: mandan
+--
+
+CREATE INDEX tbujian_id_kuliah ON tbujian USING btree (id_kuliah);
+
+
+--
 -- Name: updateStatusKuliah; Type: TRIGGER; Schema: public; Owner: mandan
 --
 
@@ -2068,6 +2111,46 @@ CREATE TRIGGER "updateStatusKuliah" AFTER INSERT ON tbpeserta_kuliah FOR EACH RO
 --
 
 CREATE TRIGGER "updateStatusUjian" AFTER INSERT ON tbsoal_ujian FOR EACH ROW EXECUTE PROCEDURE updatestatusujian();
+
+
+--
+-- Name: tbhasil_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbhasil_ujian
+    ADD CONSTRAINT tbhasil_ujian_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbjawaban_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjawaban
+    ADD CONSTRAINT tbjawaban_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbsoal_ujian_id_soal_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbsoal_ujian
+    ADD CONSTRAINT tbsoal_ujian_id_soal_fkey FOREIGN KEY (id_soal) REFERENCES tbsoal(id_soal) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbsoal_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbsoal_ujian
+    ADD CONSTRAINT tbsoal_ujian_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbujian_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbujian
+    ADD CONSTRAINT tbujian_id_kuliah_fkey FOREIGN KEY (id_kuliah) REFERENCES tbkuliah(id_kuliah) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
