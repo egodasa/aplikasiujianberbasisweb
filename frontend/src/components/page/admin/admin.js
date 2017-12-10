@@ -9,6 +9,12 @@ export const adminConf = {
               key : 1
               },
               {
+                  path : '/admin/kuliah',
+                  name : 'Kuliah',
+              icon : 'fa-institution fa-fw',
+              key : 9
+              },
+              {
                   path : '/admin/ujian',
                   name : 'Ujian',
               icon : 'fa-list-alt fa-fw',
@@ -51,11 +57,12 @@ export const adminConf = {
               key : 8
               },
               {
-                  path : '/admin/kuliah',
-                  name : 'Kuliah',
-              icon : 'fa-institution fa-fw',
-              key : 9
+                  path : '/admin/user',
+                  name : 'User',
+              icon : 'fa-user-md fa-fw',
+              key : 8
               }
+              
          //     {
         //          path : '/ujian/login',
        //           name : 'Login Peserta Ujian',

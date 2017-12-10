@@ -81,11 +81,7 @@ export default {
               console.log(this.Blogin)
               let hasil = res.data.data
               if(hasil.length == 0) {
-                  this.$notify({
-                      title : "Peringatan!",
-                      text : "Username atau password tidak cocok!",
-                      type : "warning"
-                  })
+                  Bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
                   }
               else {
                   var x = {}

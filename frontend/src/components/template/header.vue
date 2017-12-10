@@ -1,8 +1,8 @@
 <template>
 <!-- Top container -->
 <div class="w3-bar w3-black w3-large w3-top w3-bottom-margin w3-card" style="z-index:4">
-  <span class="w3-bar-item w3-left w3-hide-small w3-hide-medium">{{title}}</span>
-  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" @click="toggleMenu()"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-left w3-hide-small w3-hide-medium"><img src="./images/upi.png" class="w3-image" style="max-height:30px;width:50px;" /> {{title}}</span>
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" @click="toggleMenu()"><i class="fa fa-bars"></i>  Menu </button>
 </div>
 </template>
 <script>

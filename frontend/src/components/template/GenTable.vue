@@ -1,7 +1,7 @@
 <template>
   <div class="w3-responsive">
         <template v-if="spinStatus == false">
-              <template v-if="dataTable.data.length > 0">
+              <template v-if="statusCodeDataTable == 200 && dataTable.row != 0">
               <span class="w3-left">
               <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
               <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
@@ -51,7 +51,6 @@
                     </button></span>
                     </template>
                     <template v-else>
-                    
                     </template>
                     <slot name="customAction" :pkData="tr"></slot>
                   </td>
@@ -73,11 +72,10 @@
               <template v-else>
                   <div class="w3-display-container" style="height:300px;">
                   <div class="w3-display-middle">
-                      <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">Tidak ada data</div><br/>
+                      <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">{{statusDataTable}}</div><br/>
                       <div class="w3-center">
-                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
+                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton && statusCodeDataTable == 200 || statusCOdeDataTable == 204"><i class="fa fa-plus"></i> Tambah Data</button>
                   <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center w3-blue-grey"><i class="fa fa-refresh"></i> Refresh</button>
-                  
                       </div>
                     </div>
                   </div>
@@ -195,7 +193,9 @@ export default {
       showPilihan : false,
       pencarian : false,
       cari : null,
-      cetakMenu : false
+      cetakMenu : false,
+      statusDataTable : null,
+      statusCodeDataTable : null
     }
   },
   created () {
@@ -255,6 +255,10 @@ export default {
 			axios.get(url)
 			.then(res=>{
                 if(res.data.status == true){
+                    this.statusCodeDataTable = res.status
+                    if(res.data.data.length == 0){
+                        this.statusDataTable = "Tidak Ada Data!"
+                    }
                     this.totalRows = res.data.row
                     this.dataTable = res.data
                 }else{
@@ -263,8 +267,13 @@ export default {
                 this.spinStatus = false
 			})
 			.catch(err=>{
-				this.dataTable = []
-                this.spinStatus = false
+                if(err.response.status == 503){
+                    this.statusCodeDataTable = 503
+                    this.statusDataTable = "Terjadi Kesalahan Pada Server!"
+                    this.dataTable = []
+                    this.spinStatus = false
+                }
+				
 			})
 		},
 		deleteData (id) {

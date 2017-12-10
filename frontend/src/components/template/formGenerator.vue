@@ -1,6 +1,5 @@
 <template>
 <div id="genForm">
-    <notifications group="foo" />
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content">
         <div class="w3-card-8 w3-container w3-section">
@@ -11,39 +10,36 @@
                     <template v-if="x.jenis == 'textField'">
                         <template v-if="x.tipe == 'number'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
-                            <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <input :disabled="x.disabled || false" class="w3-input w3-border" :placeholder="x.caption" type="number" :name="x.name" :min="x.min" :max="x.max" v-model.number="output[x.name]" />
                             <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <template v-else-if="x.tipe == 'email'">
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
-                            <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <input :disabled="x.disabled || false" class="w3-input w3-border"  :placeholder="x.caption" type="email" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <template v-else>
                             <label>{{x.caption}}</label>
-                            <input v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" v-validate="'required'" :placeholder="x.caption" type="text" :name="x.name" v-model="output[x.name]" />
-                            <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                            <input :disabled="x.disabled || false" class="w3-input w3-border" :placeholder="x.caption" :type="x.tipe" :name="x.name" v-model="output[x.name]" />
                             <span class="w3-text-red">{{ error[x.name] }}</span>
                         </template>
                         <br/>
                     </template>
                     <template v-else-if="x.jenis == 'textArea'">
                     <label>{{x.caption}}</label>
-                    <textarea v-validate data-vv-rules="required" :disabled="x.disabled || false" v-bind:data-vv-as="x.caption" class="w3-input w3-border" :placeholder="x.caption" :name="x.name" v-model="output[x.name]" />{{x.value}}</textarea>
-                    <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>    
+                    <textarea :disabled="x.disabled || false" class="w3-input w3-border" :placeholder="x.caption" :name="x.name" v-model="output[x.name]" />{{x.value}}</textarea>
+                    <span class="w3-text-red">{{ error[x.name] }}</span>    
                     </template>
                     <template v-else-if="x.jenis == 'radioButton'">
                     <label for="x.name" v-for="(y,index,key) in x.option">
                         <span v-if="index < 1">{{x.caption}}<br/></span>
-                        <input class="w3-radio" :disabled="x.disabled || false" v-validate data-vv-rules="required" :value="y[x.valueSelect]" v-bind:data-vv-as="x.caption" type="radio" :name="x.name" v-model="output[x.name]" /> {{y[x.captionSelect]}}<br/>
+                        <input class="w3-radio" :disabled="x.disabled || false" :value="y[x.valueSelect]" type="radio" :name="x.name" v-model="output[x.name]" /> {{y[x.captionSelect]}}<br/>
                     </label>
-                    <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span>
+                    <span class="w3-text-red">{{ error[x.name] }}</span>
                     </template>
                     <template v-else-if="x.jenis == 'selectOption'">
                     <label>{{x.caption}}</label>
-                    <select class="w3-select w3-white w3-border w3-text-gray" :disabled="x.disabled || false" v-validate data-vv-rules="required" v-bind:data-vv-as="x.caption" :name="x.name" v-model="output[x.name]">
+                    <select class="w3-select w3-white w3-border w3-text-gray" :disabled="x.disabled || false" :name="x.name" v-model="output[x.name]">
                         <template v-if="x.option.length == 0">
                         <option class="w3-white w3-text-gray" value="null" disabled>{{x.caption}}</option>
                         </template>
@@ -59,7 +55,7 @@
                             </template>
                         </template>
                     </select>
-                    <span class="w3-text-red" v-if="errors.has(x.name)">{{ errors.first(x.name) }}</span><br/>
+                    <span class="w3-text-red">{{ error[x.name] }}</span><br/>
                     </template>
                     <template v-else-if="x.jenis == 'select2'">
                         <v-select :valueSelect="x.valueSelect" v-model="output[x.name]" :label="x.captionSelect" :placeholder="x.placeholder" :options="x.option"></v-select>
@@ -139,13 +135,6 @@ export default {
         Datepicker, TimePicker
     },
     created () {
-        this.$notify({
-  group: 'foo',
-  title: 'Important message',
-  text: 'Hello user! This is a notification!',
-  duration : -9,
-  position : 'bottom right'
-});
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
@@ -204,24 +193,22 @@ export default {
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
-				if(res.data.status == false) {
-                    var listError = Object.keys(res.data.error)
-                    console.log(this.error)
-                    _.forEach(listError,(v,k)=>{
-                        console.log(res.data.error[v])
-                        this.error[v] = res.data.error[v]
-                        })
-                    console.log(this.error)
-                }
-				else {
-                    Bus.$emit('newData')
-                    this.toggleFormData()
-				}
+                Bus.$emit('newData')
+                this.toggleFormData()
                 this.buttonSubmit(0)
 			})
 			.catch(err=>{
+                var kode = err.response.status 
+                if(kode == 422){
+                    Bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','warning')
+                    var listError = Object.keys(err.response.data.error)
+                    _.forEach(listError,(v,k)=>{
+                        this.error[v] = err.response.data.error[v].msg
+                        })
+                }else if(kode == 500){
+                    Bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','danger')
+                }
                 this.buttonSubmit(0)
-                console.log(err)
 			})
 		},
         getDataDetail : function(x){
