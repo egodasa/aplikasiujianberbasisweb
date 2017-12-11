@@ -46,6 +46,7 @@ router.get('/:id?', (req, res, next) => {
 		res.status(503).json(hasil);
 		});
     });
+
 router.post('/', (req, res, next) => {
     var data = req.body;
     console.log(data)
@@ -183,8 +184,11 @@ router.get('/:id/soal', (req, res, next) => {
         return db('lap_soal_ujian').select().where('id_ujian',id).count('* as jumlah')
 		})
 	.then((jumlah)=>{
+		let code
 		hasil.row = jumlah[0].jumlah;
-		res.json(hasil);
+        if(hasil.row == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil); 
 		})
 	.catch((err)=>{
 		hasil.status = false;
@@ -337,8 +341,11 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
 		return query.count('* as jumlah');
 		})
 	.then((jumlah)=>{
+        let code
 		hasil.row = jumlah[0].jumlah;
-		res.json(hasil); 
+        if(hasil.row == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil); 
 		})
 	.catch((err)=>{
 		hasil.status = false;
@@ -425,6 +432,47 @@ router.get('/:idUjian/hasil/cetak/excel',(req,res,next)=>{
         }).
 	catch(function(err){
 		res.json(err);
+		});
+    });
+    
+//get rata
+router.get('/nilai/rata/:url_cari?/:cari?', (req, res, next) => {
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    var cari = req.params.cari
+    var url_cari = req.params.url_cari
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(cari != null && url_cari != null){
+        query.count = db('nilai_rata').select().where("nm_matkul","like",'%'+cari+'%').orWhere(db.raw('lower(nm_dosen)'),'like','%'+cari+'%').orWhere("nm_jujian","like",'%'+cari+'%')
+        query.tmp = db('nilai_rata').select().where("nm_matkul","like",'%'+cari+'%').orWhere(db.raw('lower(nm_dosen)'),'like','%'+cari+'%').orWhere("nm_jujian","like",'%'+cari+'%')
+    }else{
+        query.count = db('nilai_rata').select()
+        query.tmp = db('nilai_rata').select()
+    }
+    if(limit == null) query.show = query.tmp
+    else query.show = query.tmp.limit(limit).offset(offset)
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count;
+		}).
+	then((rows)=>{
+		 let code
+		hasil.row = rows.length
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
     });
 module.exports = router;

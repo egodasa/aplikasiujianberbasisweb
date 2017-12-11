@@ -20,8 +20,11 @@ router.get('/:id?',(req, res, next)=>{
 		return db(tbl).count(pk+' as jumlah');
 		}).
 	then((jumlah)=>{
+		let code
 		hasil.row = jumlah[0].jumlah;
-		res.json(hasil);
+        if(hasil.row == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil); 
 		}).
 	catch(function(err){
 		hasil.status = false
