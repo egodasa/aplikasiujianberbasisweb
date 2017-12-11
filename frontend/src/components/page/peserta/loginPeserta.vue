@@ -9,7 +9,7 @@
 	<form method="POST" @submit.prevent="masukUjian()">
 	<div class="w3-center" style="margin:0 auto;width:75%;">
         <span class="w3-container">
-            <v-select v-model="selectedUjian" :options="listUjian" label="nm_ujian"></v-select>
+            <v-select v-model="selectedUjian" :options="listUjian" label="nm_ujian" placeholder="Klik disini untuk memilih ujian ...."></v-select>
         </span>
         <button type="button" class="w3-btn w3-red w3-section" @click="batalkanUjian()">Kembali</button>
         <button type="submit" class="w3-btn w3-blue w3-section">Login</button>

@@ -74,7 +74,7 @@
                   <div class="w3-display-middle">
                       <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">{{statusDataTable}}</div><br/>
                       <div class="w3-center">
-                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" v-if="formButton && statusCodeDataTable == 200 || statusCodeDataTable == 204"><i class="fa fa-plus"></i> Tambah Data</button>
+                      <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" :disabled="statusCodeDataTable >= 500" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
                   <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center w3-blue-grey"><i class="fa fa-refresh"></i> Refresh</button>
                       </div>
                     </div>
@@ -255,16 +255,20 @@ export default {
 			axios.get(url)
 			.then(res=>{
                     this.statusCodeDataTable = res.status
-                    if(this.statusCodeDataTable == 204){
-                        this.statusDataTable = "Data Kosong"
+                    if(this.statusCodeDataTable == 204 || res.data.row == 0){
+                        if(this.pencarian == false){
+                            this.statusDataTable = "Data Kosong"
+                        }else{
+                            this.statusDataTable = "Tidak Ditemukan Hasil Pencarian"
+                        }
                     }
                     this.totalRows = res.data.row
                     this.dataTable = res.data
                     this.spinStatus = false
 			})
 			.catch(err=>{
-                if(err.response.status == 503){
-                    this.statusCodeDataTable = 503
+                if(err.response.status >= 299){
+                    this.statusCodeDataTable = err.response.status
                     this.statusDataTable = "Terjadi Kesalahan Pada Server!"
                     this.dataTable = []
                     this.spinStatus = false

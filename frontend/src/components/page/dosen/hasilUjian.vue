@@ -29,8 +29,8 @@ export default {
       return {
           url : 'ujian/'+this.$route.params.idUjian+'/hasil',
             tableContent : {
-                header :  ['NOBP','Nama Mahasiswa','Status','Nilai'],
-                content : ['id','nobp','nm_mahasiswa','nm_status_ujian_peserta','nilai']
+                header :  ['NOBP','Nama Mahasiswa','Kelas','Status','Nilai'],
+                content : ['id','nobp','nm_mahasiswa','nm_kelas','nm_status_ujian_peserta','nilai']
             },
             exportUrl : [
             {url:'/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv',name:'CSV'},

@@ -77,7 +77,7 @@
    </template>
    <template v-else>
       <label>Jawaban Anda</label>
-      <wysiwyg v-model="jawaban" placeholder="Ketik jawaban disini ..." /><br/>
+      <textarea v-model="jawaban" placeholder="Ketik jawaban disini ..."></textarea><br/>
      <button type="button" class="w3-button w3-blue w3-right w3-block" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
    </template>
    <div class="w3-col l6 s6">
@@ -170,6 +170,8 @@ export default {
       this.waktuUjian(this.waktuString)
       this.waktuSelesai = new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai).getTime()
       this.genLjk()
+      this.sisaWaktuJalan = 0
+      this.waktuSekarangJalan = 0
   },
   beforeDestroy () {
       clearInterval(this.sisaWaktuJalan)
@@ -180,7 +182,7 @@ export default {
             var hours = Math.floor(ms / 3600000) // 1 Hour = 36000 Milliseconds
             var minutes = Math.floor((ms % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
             var seconds = Math.floor(((ms % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-            this.sisaWaktu = hours+":"+minutes+":"+seconds | 0
+            this.sisaWaktu = hours+":"+minutes+":"+seconds
       },
       toggleMenu () {
           Bus.$emit('toggleMenu')

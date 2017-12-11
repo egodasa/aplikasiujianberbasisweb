@@ -39,7 +39,7 @@
             </template>
             <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
             <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
-            <button type="button" class="w3-button w3-reset w3-section" @click="resetForm()">Reset</button>
+            <button type="button" class="w3-button w3-red w3-section" @click="resetForm()">Reset</button>
             <button type="button" class="w3-button w3-blue w3-section" @click="formBatal()">Batal</button>
         </form>
         </div>
@@ -86,7 +86,7 @@ export default {
           {huruf:'D',isi_pilihan:null},
           {huruf:'E',isi_pilihan:null}
           ],
-          detailUjian : [{}]
+          detailUjian : {}
         }
   },
   created () {
@@ -133,8 +133,14 @@ export default {
           this.dataForm.isi_soal = null
           this.dataForm.jawaban = null
           this.dataForm.id_soal = undefined
-          this.dataForm.pilihanGanda = this.pilihanGandaDef
-          this.id_jsoal = 1
+          this.dataForm.pilihanGanda = [
+          {huruf:'A',isi_pilihan:null},
+          {huruf:'B',isi_pilihan:null},
+          {huruf:'C',isi_pilihan:null},
+          {huruf:'D',isi_pilihan:null},
+          {huruf:'E',isi_pilihan:null}
+          ]
+          this.id_jsoal = this.detailUjian.id_jsoal
           this.bobot = undefined
       },
       submitData () {

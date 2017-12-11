@@ -75,7 +75,7 @@ export default {
         submitData (){
             var method
             var url
-            if(this.edit = false){
+            if(this.edit == false){
                 method = 'post'
                 url = "api/kuliah"
             }else {

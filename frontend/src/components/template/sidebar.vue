@@ -5,7 +5,10 @@
   <template v-if="$session.has('user')">
   <div class="w3-container w3-row">
     <div class="w3-col s8 w3-bar">
-      {{welcomeMessage}}
+      <i class="fa fa-user fa-fw"></i> {{$session.get('user').username}}<br/>
+      <template v-if="$session.get('user').id_juser == 2">
+        <i class="fa fa-user fa-fw"></i> {{infoUser.nm_dosen}}
+      </template>
     </div>
   </div>
   <hr>
@@ -32,7 +35,7 @@ import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 import hitungWaktu from 'date-fns/distance_in_words'
 import hitungWaktuMili from 'date-fns/difference_in_milliseconds'
-
+import axios from 'axios'
 export default {
   name: 'secSidebar',
   props : {
@@ -53,32 +56,29 @@ export default {
           required : false,
           default : 'Menu'
       }
-  },/*
-  watch : {
-      jamSekarang () {
-         var self = this
-         setInterval(function () {
-         self.jamSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
-      }, 1000)
-      },
-      sisaWaktu () {
-         var self = this
-         var mili = new Date().getTime()
-         var mili_akhir = new Date(2017,12,6,22,0,0).getTime()
-         var sisa = mili_akhir - mili
-         setInterval(function () {
-         self.sisaWaktu = new Date(sisa).getTime()}, 1000)
-     }
-  },*/
+  },
   data (){
       return {
           menuStatus : "none",
           hariSekarang : null,
           jamSekarang : null,
-          sisaWaktu : null
+          sisaWaktu : null,
+          infoUser : {}
       }
   },
-  created(){
+  created () {
+      if(this.$session.has('user')){
+          if(this.$session.get('user').id_juser == 2){
+              axios.get('api/dosen/'+this.$session.get('user').username)
+              .then(res=>{
+                  console.log(res.data.data)
+                  this.infoUser = res.data.data[0]
+                  })
+              .catch(err=>{
+                  
+                  })
+          }
+      }
       Bus.$on('toggleMenu',()=>{
           this.toggleMenu()
           })
