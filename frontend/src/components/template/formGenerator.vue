@@ -187,6 +187,7 @@ export default {
                 if(field[x] != this.pk) output_new[field[x]] = this.output[field[x]]
                 this.output[field[x]] = null
             }
+            console.log(output_new)
 			axios({
 				method : method,
 				data : output_new,
@@ -200,7 +201,6 @@ export default {
 			.catch(err=>{
                 var kode = err.response.status 
                 if(kode == 422){
-                    Bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','warning')
                     var listError = Object.keys(err.response.data.error)
                     _.forEach(listError,(v,k)=>{
                         this.error[v] = err.response.data.error[v].msg
@@ -214,7 +214,12 @@ export default {
         getDataDetail : function(x){
             axios.get('/api/'+this.url+'/'+x)
             .then(res=>{
-                this.output = res.data.data[0]
+                var field = Object.keys(this.output)
+                var field_length = field.length
+                for(var x =0;x<field_length;x++){
+                    this.output[field[x]] = res.data.data[0][field[x]]
+                }
+                this.output[this.pk] = res.data.data[0][this.pk]
                 this.showForm = !this.showForm
             })
             .catch(err=>{
