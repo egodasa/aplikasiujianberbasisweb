@@ -40,7 +40,7 @@ export default {
 			],
             tableContent : {
                 header :  ['NIDN','Nama Dosen'],
-                content : ['id','nidn','nm_dosen']
+                content : ['id_dosen','nidn','nm_dosen']
             }
         }
   }

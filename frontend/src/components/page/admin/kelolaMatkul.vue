@@ -24,6 +24,13 @@ export default {
           url : 'matkul',
             listForm : [
                 {
+					caption: "Kode Matkul",
+					name:"kd_matkul",
+					jenis:"textField",
+					tipe:"text",
+					value:null
+					},
+                {
 					caption: "Nama Matkul",
 					name:"nm_matkul",
 					jenis:"textField",
@@ -47,7 +54,7 @@ export default {
 			],
             tableContent : {
                 header :  ['Kode Matkul','Nama Matkul','Semester','SKS'],
-                content : ['kd_matkul','nm_matkul','smt','sks']
+                content : ['id_matkul','kd_matkul','nm_matkul','smt','sks']
             }
         }
   }
