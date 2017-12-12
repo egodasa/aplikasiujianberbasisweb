@@ -81,6 +81,22 @@ END; $$;
 ALTER FUNCTION public.gethasilujian(v_id_ujian character varying) OWNER TO mandan;
 
 --
+-- Name: tambahusermahasiswa(); Type: FUNCTION; Schema: public; Owner: mandan
+--
+
+CREATE FUNCTION tambahusermahasiswa() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ insert into tbuser(username,password,id_juser) select new.nobp as username,md5(CONCAT('UPI',new.nobp,'YPTK')) as password,3 as id_juser;
+return new;
+END;
+$$;
+
+
+ALTER FUNCTION public.tambahusermahasiswa() OWNER TO mandan;
+
+--
 -- Name: updatestatuskuliah(); Type: FUNCTION; Schema: public; Owner: mandan
 --
 
@@ -367,11 +383,11 @@ CREATE VIEW lap_kuliah AS
     b.nm_matkul,
     a.nidn,
     c.nm_dosen,
-    ( SELECT array_to_json(array_agg(d_1.id_kelas)) AS kelas
+    ( SELECT array_agg(d_1.id_kelas) AS kelas
            FROM (tbkelas_kuliah d_1
              JOIN tbkelas e ON ((e.id_kelas = d_1.id_kelas)))
           WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS id_kelas,
-    ( SELECT array_to_json(array_agg(e.nm_kelas)) AS kelas
+    ( SELECT array_agg(e.nm_kelas) AS kelas
            FROM (tbkelas_kuliah d_1
              JOIN tbkelas e ON ((d_1.id_kelas = e.id_kelas)))
           WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS nm_kelas,
@@ -1192,6 +1208,16 @@ SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 362, true);
 --
 
 COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
+1	KPKI12102-1029108702-20171-1	14101152610555	100
+2	KPKI12102-1029108702-20171-1	14101152610544	80
+3	KPKI12102-1029108702-20171-1	14101152610561	60
+4	KPKI12101-1007118403-20171-1	14101152610561	66
+5	KPKI12101-1007118403-20171-1	14101152610555	100
+6	KKKI23109-1015067501-20171-1	14101152610545	100
+7	KKKI23109-1015067501-20171-1	14101152610555	33
+8	KKKI23109-1015067501-20171-1	14101152610561	33
+9	KKKI23109-1015067501-20171-1	14101152610562	100
+10	KKKI23109-1015067501-20171-1	14101152610544	100
 \.
 
 
@@ -1199,7 +1225,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 1, false);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 10, true);
 
 
 --
@@ -1294,25 +1320,21 @@ COPY tbkelas (id_kelas, nm_kelas) FROM stdin;
 --
 
 COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
-1	KKKI12106-1026108501-20171	10
-2	KKKI12106-1026108501-20171	9
-3	KKKI22106-1026108501-20171	1
-4	KKKI22106-1026108501-20171	2
-5	KKKI22106-1026108501-20171	3
-6	KPKI12102-1029108702-20171	6
-7	KPKI12102-1029108702-20171	1
-8	KPKI12102-1029108702-20171	3
-9	KPKI12102-1029108702-20171	2
-10	KPKI12102-1029108702-20171	4
-11	BBKI82112-1029108702-20171	1
-12	BBKI82112-1029108702-20171	3
-13	BBKI82112-1029108702-20171	2
-14	BBKI82112-1029108702-20171	4
-15	BBKI82112-1029108702-20171	6
-16	BBKI82112-1029108702-20171	5
-17	KKKI23110-1026108501-20171	1
-18	KKKI23110-1026108501-20171	2
-19	KKKI23110-1026108501-20171	3
+31	KPKI12101-1007118403-20171	2
+32	KPKI12101-1007118403-20171	1
+33	KPKI12101-1007118403-20171	3
+34	KPKI12102-1029108702-20171	1
+35	KPKI12102-1029108702-20171	5
+36	KPKI12102-1029108702-20171	6
+37	BBKI82112-1029108702-20171	1
+38	BBKI82112-1029108702-20171	2
+39	BBKI82112-1029108702-20171	3
+40	BBKI82112-1029108702-20171	4
+41	BBKI82112-1029108702-20171	5
+42	KKKI12106-1026108501-20171	1
+43	KKKI12106-1026108501-20171	6
+44	KKKI12106-1026108501-20171	10
+45	KKKI23109-1015067501-20171	10
 \.
 
 
@@ -1320,7 +1342,7 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 19, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 45, true);
 
 
 --
@@ -1328,6 +1350,11 @@ SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 19, true);
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
+KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	0
+BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
+KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
+KKKI23109-1015067501-20171	1015067501	KKKI23109	20171	1
+KPKI12101-1007118403-20171	1007118403	KPKI12101	20171	1
 \.
 
 
@@ -1354,6 +1381,7 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 16	Masrifadil Firmansyah	14101152610457	1
 17	regiza dafma	regiza	1
 22	dsadasxs	14101152610000	1
+28	mahasiswa	14101152611552	1
 \.
 
 
@@ -1361,7 +1389,7 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 -- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 25, true);
+SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 29, true);
 
 
 --
@@ -1454,6 +1482,26 @@ COPY tbpengaturan (pengaturan) FROM stdin;
 --
 
 COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas_peserta, id_kelas) FROM stdin;
+14101152610555-KPKI12102-1029108702-20171	14101152610555	KPKI12102-1029108702-20171	1	3	1
+14101152610544-KPKI12102-1029108702-20171	14101152610544	KPKI12102-1029108702-20171	1	3	1
+14101152610561-KPKI12102-1029108702-20171	14101152610561	KPKI12102-1029108702-20171	1	3	1
+14101152610555-BBKI82112-1029108702-20171	14101152610555	BBKI82112-1029108702-20171	1	3	1
+14101152610544-BBKI82112-1029108702-20171	14101152610544	BBKI82112-1029108702-20171	1	3	1
+14101152610561-BBKI82112-1029108702-20171	14101152610561	BBKI82112-1029108702-20171	1	3	1
+14101152610545-BBKI82112-1029108702-20171	14101152610545	BBKI82112-1029108702-20171	1	3	2
+14101152610562-BBKI82112-1029108702-20171	14101152610562	BBKI82112-1029108702-20171	1	3	2
+14101152610565-BBKI82112-1029108702-20171	14101152610565	BBKI82112-1029108702-20171	1	3	2
+14101152610545-KPKI12102-1029108702-20171	14101152610545	KPKI12102-1029108702-20171	1	3	5
+14101152610562-KPKI12102-1029108702-20171	14101152610562	KPKI12102-1029108702-20171	1	3	5
+14101152610555-KKKI23109-1015067501-20171	14101152610555	KKKI23109-1015067501-20171	1	3	10
+14101152610544-KKKI23109-1015067501-20171	14101152610544	KKKI23109-1015067501-20171	1	3	10
+14101152610561-KKKI23109-1015067501-20171	14101152610561	KKKI23109-1015067501-20171	1	3	10
+14101152610545-KKKI23109-1015067501-20171	14101152610545	KKKI23109-1015067501-20171	1	3	10
+14101152610562-KKKI23109-1015067501-20171	14101152610562	KKKI23109-1015067501-20171	1	3	10
+14101152610555-KPKI12101-1007118403-20171	14101152610555	KPKI12101-1007118403-20171	1	3	1
+14101152610544-KPKI12101-1007118403-20171	14101152610544	KPKI12101-1007118403-20171	1	3	1
+14101152610561-KPKI12101-1007118403-20171	14101152610561	KPKI12101-1007118403-20171	1	3	2
+14101152610545-KPKI12101-1007118403-20171	14101152610545	KPKI12101-1007118403-20171	1	3	2
 \.
 
 
@@ -1506,6 +1554,19 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 42	APakah arti makruh	\N	2	20	dilakukan tidak berdosa,ditinggalkan tidak berdosa
 43	Sebutkan macam-macam puasa	\N	2	20	puasa wajib,puasa sunnah
 44	Arti dari wajib adalah?	\N	2	20	dilakukan berpahala,ditinggalkan berdosa
+45	Sholat yang berhukum fardhu kifayat adalah?	[{"huruf":"A","isi_pilihan":"Sholat idul fitri"},{"huruf":"B","isi_pilihan":"Sholat jumat"},{"huruf":"C","isi_pilihan":"Sholat gerhana"}]	1	1	A
+46	Hukum membunuh kecoa adalah?	[{"huruf":"A","isi_pilihan":"Berpahala"},{"huruf":"B","isi_pilihan":"Berdosa"},{"huruf":"C","isi_pilihan":"Tidak berpahala dan tidak berdosa"}]	1	1	C
+47	Sholat fardhu yang sangat ditekankan menurut Al-Qur'an adalah?	[{"huruf":"A","isi_pilihan":"Subuh"},{"huruf":"B","isi_pilihan":"Ashar"},{"huruf":"C","isi_pilihan":"Magrib"}]	1	1	B
+48	Hukum mengambil wudhu sebelum membaca Al-Qur'an adalah?	[{"huruf":"A","isi_pilihan":"Wajib"},{"huruf":"B","isi_pilihan":"Sunat"},{"huruf":"C","isi_pilihan":"Makhruh"}]	1	1	B
+49	Sholat sunat yang dilakukan sebelum memasuki masjid adalah...	[{"huruf":"A","isi_pilihan":"Sholat sunat"},{"huruf":"B","isi_pilihan":"Sholat tahiyatul masjid"},{"huruf":"C","isi_pilihan":"Sholat gerhana"}]	1	1	B
+50	Pancasila adalah	[{"huruf":"A","isi_pilihan":"Ideologi negara"},{"huruf":"B","isi_pilihan":"Lambang negara"},{"huruf":"C","isi_pilihan":"semua benar"}]	1	1	C
+51	Banyak sila pada pancasila adalah?	[{"huruf":"A","isi_pilihan":"5"},{"huruf":"B","isi_pilihan":"4"},{"huruf":"C","isi_pilihan":"3"}]	1	1	A
+52	Pancasila berlambangkan?	[{"huruf":"A","isi_pilihan":"Burung garuda"},{"huruf":"B","isi_pilihan":"Burung perkutut"},{"huruf":"C","isi_pilihan":"Burung beo"}]	1	1	A
+53	Jumlah nabi Ulul Azmi ada?	\N	2	10	lima
+54	Jumlah rakaat sholat dalam sehari ada?	\N	2	20	17
+55	Bagian terkecil dari sistem basis data adalah?	[{"huruf":"A","isi_pilihan":"Byte"},{"huruf":"B","isi_pilihan":"Bit"},{"huruf":"C","isi_pilihan":"row"}]	1	1	B
+56	Mongodb termasuk kedalam jenis database?	[{"huruf":"A","isi_pilihan":"sql"},{"huruf":"B","isi_pilihan":"nosql"},{"huruf":"C","isi_pilihan":"no relation"}]	1	1	B
+57	Salah satu database yang termasuk nosql adalah?	[{"huruf":"A","isi_pilihan":"Mysql"},{"huruf":"B","isi_pilihan":"Postgresql"},{"huruf":"C","isi_pilihan":"Firebase"}]	1	1	C
 \.
 
 
@@ -1513,7 +1574,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 44, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 57, true);
 
 
 --
@@ -1521,6 +1582,14 @@ SELECT pg_catalog.setval('tbsoal_id_soal_seq', 44, true);
 --
 
 COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
+6	KPKI12101-1007118403-20171-1	50
+7	KPKI12101-1007118403-20171-1	51
+8	KPKI12101-1007118403-20171-1	52
+9	KPKI12102-1029108702-20171-1	53
+10	KPKI12102-1029108702-20171-1	54
+11	KKKI23109-1015067501-20171-1	55
+12	KKKI23109-1015067501-20171-1	56
+13	KKKI23109-1015067501-20171-1	57
 \.
 
 
@@ -1528,7 +1597,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 1, false);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 13, true);
 
 
 --
@@ -1557,6 +1626,9 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
+KPKI12101-1007118403-20171-1	2017-12-12	20:00:00	22:00:00	Ujian	1	1	1	KPKI12101-1007118403-20171
+KPKI12102-1029108702-20171-1	2017-12-12	20:00:00	22:30:00	Ujian	1	1	2	KPKI12102-1029108702-20171
+KKKI23109-1015067501-20171-1	2017-12-12	20:00:00	22:30:00	Ujian	1	1	1	KKKI23109-1015067501-20171
 \.
 
 
@@ -1926,6 +1998,9 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 359	14101152610457	39ed25e64fb16dc99b8defcc926dd315	3	1
 360	admin	21232f297a57a5a743894a0e4a801fc3	1	1
 361	regiza	095174c8a29df0283f049b9c0fb240a6	3	1
+362	gundul	bcc668a0f1fcf385f0f3b7709ec5dff8	1	1
+363	14101152611552	6faba0d1ce7697ccde3b9493f0ba8708	3	1
+364	mandan	e070e2dd9634c6c078a59218cdca9e23	1	1
 \.
 
 
@@ -1933,7 +2008,7 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 -- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbuser_id_user_seq', 361, true);
+SELECT pg_catalog.setval('tbuser_id_user_seq', 364, true);
 
 
 --
@@ -2181,6 +2256,13 @@ CREATE INDEX tbujian_id_kuliah ON tbujian USING btree (id_kuliah);
 
 
 --
+-- Name: tambahUserMahasiswa; Type: TRIGGER; Schema: public; Owner: mandan
+--
+
+CREATE TRIGGER "tambahUserMahasiswa" AFTER INSERT ON tbmahasiswa FOR EACH ROW EXECUTE PROCEDURE tambahusermahasiswa();
+
+
+--
 -- Name: updateStatusKuliah; Type: TRIGGER; Schema: public; Owner: mandan
 --
 
@@ -2192,6 +2274,22 @@ CREATE TRIGGER "updateStatusKuliah" AFTER INSERT ON tbpeserta_kuliah FOR EACH RO
 --
 
 CREATE TRIGGER "updateStatusUjian" AFTER INSERT ON tbsoal_ujian FOR EACH ROW EXECUTE PROCEDURE updatestatusujian();
+
+
+--
+-- Name: tbkelas_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbkelas_kuliah
+    ADD CONSTRAINT tbkelas_kuliah_id_kuliah_fkey FOREIGN KEY (id_kuliah) REFERENCES tbkuliah(id_kuliah) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbpeserta_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbpeserta_kuliah
+    ADD CONSTRAINT tbpeserta_kuliah_id_kuliah_fkey FOREIGN KEY (id_kuliah) REFERENCES tbkuliah(id_kuliah) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
