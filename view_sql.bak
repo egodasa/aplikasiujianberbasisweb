@@ -1,0 +1,185 @@
+CREATE VIEW lap_jawaban AS
+ SELECT tbjawaban.id_jawaban,
+    tbjawaban.nobp,
+    tbjawaban.id_ujian,
+    tbjawaban.id_soal,
+    tbsoal.isi_soal,
+    tbsoal.jawaban,
+    tbjawaban.jawaban AS jawaban_peserta,
+    tbsoal.bobot
+   FROM (tbjawaban
+     JOIN tbsoal ON ((tbjawaban.id_soal = tbsoal.id_soal)));
+     
+     CREATE VIEW lap_kelas_kuliah AS
+ SELECT a.id_kkuliah,
+    a.id_kelas,
+    a.id_kuliah,
+    b.nm_kelas
+   FROM (tbkelas_kuliah a
+     JOIN tbkelas b ON ((a.id_kelas = b.id_kelas)));
+     
+     CREATE VIEW lap_kuliah AS
+ SELECT a.id_kuliah,
+    a.kd_matkul,
+    b.nm_matkul,
+    a.nidn,
+    c.nm_dosen,
+    ( SELECT array_agg(d_1.id_kelas) AS kelas
+           FROM (tbkelas_kuliah d_1
+             JOIN tbkelas e ON ((e.id_kelas = d_1.id_kelas)))
+          WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS id_kelas,
+    ( SELECT array_agg(e.nm_kelas) AS kelas
+           FROM (tbkelas_kuliah d_1
+             JOIN tbkelas e ON ((d_1.id_kelas = e.id_kelas)))
+          WHERE ((d_1.id_kuliah)::text = (a.id_kuliah)::text)) AS nm_kelas,
+    a.tahun_akademik,
+    a.status_kuliah,
+    d.nm_status AS nm_status_kuliah
+   FROM (((tbkuliah a
+     JOIN tbmatkul b ON (((a.kd_matkul)::text = (b.kd_matkul)::text)))
+     JOIN tbdosen c ON (((a.nidn)::text = (c.nidn)::text)))
+     JOIN tbstatus d ON ((a.status_kuliah = d.status)));
+     
+     CREATE VIEW lap_peserta_kuliah AS
+ SELECT a.id_peserta,
+    b.id_kuliah,
+    b.kd_matkul,
+    b.nm_matkul,
+    b.nidn,
+    b.nm_dosen,
+    b.tahun_akademik,
+    a.nobp,
+    c.nm_mahasiswa,
+    a.status_peserta,
+    d.nm_status AS nm_status_peserta,
+    a.status_kelas_peserta,
+    e.nm_status AS nm_status_kelas_peserta,
+    a.id_kelas,
+    f.nm_kelas
+   FROM (((((tbpeserta_kuliah a
+     LEFT JOIN lap_kuliah b ON (((a.id_kuliah)::text = (b.id_kuliah)::text)))
+     JOIN tbmahasiswa c ON (((a.nobp)::text = (c.nobp)::text)))
+     JOIN tbstatus d ON ((a.status_peserta = d.status)))
+     JOIN tbstatus e ON ((a.status_kelas_peserta = e.status)))
+     JOIN tbkelas f ON ((a.id_kelas = f.id_kelas)));
+     
+     CREATE VIEW lap_ujian AS
+ SELECT a.id_ujian,
+    a.hari,
+    a.mulai,
+    a.selesai,
+    a.deskripsi,
+    a.status_ujian,
+    c.nm_status AS nm_status_ujian,
+    a.id_jsoal,
+    d.nm_jsoal,
+    a.id_jujian,
+    e.nm_jujian,
+    b.id_kuliah,
+    b.kd_matkul,
+    b.nm_matkul,
+    b.nidn,
+    b.nm_dosen,
+    b.id_kelas,
+    b.nm_kelas,
+    b.tahun_akademik
+   FROM ((((tbujian a
+     JOIN lap_kuliah b ON (((a.id_kuliah)::text = (b.id_kuliah)::text)))
+     JOIN tbstatus c ON ((a.status_ujian = c.status)))
+     JOIN tbjenis_soal d ON ((a.id_jsoal = d.id_jsoal)))
+     JOIN tbjenis_ujian e ON ((a.id_jujian = e.id_jujian)));
+     
+     CREATE VIEW lap_peserta_ujian AS
+ SELECT a.id_ujian,
+    a.hari,
+    a.mulai,
+    a.selesai,
+    a.deskripsi,
+    a.status_ujian,
+    a.nm_status_ujian,
+    a.id_jsoal,
+    a.nm_jsoal,
+    a.id_jujian,
+    a.nm_jujian,
+    a.kd_matkul,
+    a.nm_matkul,
+    a.nidn,
+    a.nm_dosen,
+    b.id_kuliah,
+    b.nobp,
+    b.nm_mahasiswa,
+    b.id_kelas,
+    b.nm_kelas,
+    concat(a.nm_matkul, '-', a.nm_jujian) AS nm_ujian
+   FROM (lap_ujian a
+     JOIN ( SELECT aa.id_kuliah,
+            aa.nobp,
+            bb.nm_mahasiswa,
+            aa.id_kelas,
+            cc.nm_kelas
+           FROM ((tbpeserta_kuliah aa
+             JOIN tbmahasiswa bb ON (((aa.nobp)::text = (bb.nobp)::text)))
+             JOIN tbkelas cc ON ((aa.id_kelas = cc.id_kelas)))) b ON (((a.id_kuliah)::text = (b.id_kuliah)::text)))
+  WHERE (a.status_ujian = 1);
+  
+  CREATE VIEW lap_soal AS
+ SELECT tbsoal.id_soal,
+    tbsoal.isi_soal,
+    tbsoal."pilihanGanda",
+    tbsoal.id_jsoal,
+    tbsoal.bobot,
+    tbsoal.jawaban,
+    tbjenis_soal.nm_jsoal
+   FROM (tbsoal
+     JOIN tbjenis_soal ON ((tbsoal.id_jsoal = tbjenis_soal.id_jsoal)));
+     
+     CREATE VIEW lap_soal_ujian AS
+ SELECT tbsoal_ujian.id_ujian,
+    tbsoal.id_soal,
+    tbsoal.isi_soal,
+    tbsoal."pilihanGanda",
+    tbsoal.id_jsoal,
+    tbsoal.bobot,
+    tbsoal.jawaban
+   FROM (tbsoal_ujian
+     JOIN tbsoal ON ((tbsoal_ujian.id_soal = tbsoal.id_soal)));
+     
+     CREATE VIEW lap_user AS
+ SELECT tbuser.id_user,
+    tbuser.username,
+    tbuser.password,
+    tbuser.id_juser,
+    tbjenis_user.nm_juser
+   FROM (tbuser
+     JOIN tbjenis_user ON ((tbuser.id_juser = tbjenis_user.id_juser)));
+     
+     CREATE VIEW nilai_rata AS
+ SELECT b.nm_dosen,
+    b.nm_matkul,
+    b.nm_jujian,
+    b.id_ujian,
+    (avg(b.nilai))::numeric(5,2) AS avg
+   FROM (tbpeserta_kuliah a
+     RIGHT JOIN ( SELECT aa.nobp,
+            aa.id_ujian,
+            bb.nm_matkul,
+            bb.nm_jujian,
+            bb.id_kuliah,
+            aa.nilai,
+            bb.nm_dosen
+           FROM (tbhasil_ujian aa
+             JOIN lap_ujian bb ON (((aa.id_ujian)::text = (bb.id_ujian)::text)))
+          ORDER BY bb.tahun_akademik, aa.nilai) b ON ((((a.id_kuliah)::text = (b.id_kuliah)::text) AND ((a.nobp)::text = (b.nobp)::text))))
+  GROUP BY b.id_ujian, b.nm_matkul, b.nm_jujian, b.nm_dosen;
+  
+  CREATE VIEW statistik AS
+ SELECT ( SELECT count(tbkuliah.id_kuliah) AS count
+           FROM tbkuliah) AS total_kuliah,
+    ( SELECT count(tbujian.id_ujian) AS count
+           FROM tbujian) AS total_ujian,
+    ( SELECT count(tbmahasiswa.id_mahasiswa) AS count
+           FROM tbmahasiswa) AS total_mahasiswa,
+    ( SELECT count(tbdosen.id_dosen) AS count
+           FROM tbdosen) AS total_dosen;
+           
+           
