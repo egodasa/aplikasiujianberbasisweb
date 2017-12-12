@@ -18,12 +18,12 @@ router.get('/:id?', (req, res, next) => {
         tmp : null
     }
     if(id == 0){
-         query.count = db('lap_ujian').select()
-         query.tmp = db('lap_ujian').select()
+         query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu"))
+         query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu"))
     }
     else{
-        query.count = db('lap_ujian').select().where('id_ujian',id)
-        query.tmp = db('lap_ujian').select().where('id_ujian',id)
+        query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id)
+        query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id)
     }
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)

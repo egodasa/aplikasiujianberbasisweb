@@ -13,13 +13,13 @@ router.get('/:id?',(req, res, next)=>{
         tmp : null
     }
     if(id == 0){
-         query.count = db('lap_kuliah').select()
+         query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas"))
          //query.tmp = db('lap_kuliah').select().where(req.query)
-         query.tmp = db('lap_kuliah').select()
+         query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas"))
     }
     else{
-        query.count = db('lap_kuliah').select().where('id_kuliah',id)
-        query.tmp = db('lap_kuliah').select().where('id_kuliah',id)
+        query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('id_kuliah',id)
+        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('id_kuliah',id)
     }
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)

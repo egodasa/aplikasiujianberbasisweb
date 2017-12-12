@@ -180,8 +180,8 @@ router.get('/:id/kuliah',(req, res, next)=>{
         count : null,
         tmp : null
     }
-    query.count = db('lap_kuliah').select().where('nidn',id)
-    query.tmp = db('lap_kuliah').select().where('nidn',id)
+    query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
+    query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
@@ -217,8 +217,8 @@ router.get('/:id/ujian',(req, res, next)=>{
         count : null,
         tmp : null
     }
-    query.count = db('lap_ujian').select().where('nidn',id)
-    query.tmp = db('lap_ujian').select().where('nidn',id)
+    query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id)
+    query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id)
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
