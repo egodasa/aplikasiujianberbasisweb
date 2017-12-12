@@ -142,47 +142,48 @@ export default {
   beforeCreated () {
     if(!this.$session.has('infoUjian')) this.$router.push({path: '/ujian/login'})
   },
-  watch : {
-      waktuSekarang () {
-         var self = this
-         this.waktuSekarangJalan = setInterval(function () {
-            self.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
-      }, 1000)
-      },
-      sisaWaktu () {
-          var self = this
-          var waktu
-          this.sisaWaktuJalan = setInterval(function () {
-             waktu = new Date(self.$session.get('infoUjian').hari + " " + self.$session.get('infoUjian').selesai).getTime() - new Date().getTime()
-             if(waktu < 0) {
-                 self.kumpulkanUjian()
-             }
-             self.waktuUjian(waktu)
-          }, 1000)
-      }
-  },
   created (){
       this.infoUjian = this.$session.get('infoUjian')  
       this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
       this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
-      this.sisaWaktu = formatWaktu(new Date(this.$session.get('infoUjian').selesai), 'h:m:s', {locale : lokalisasi})
-      this.waktuString = new Date().getTime() - new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai)
-      this.waktuUjian(this.waktuString)
       this.waktuSelesai = new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai).getTime()
       this.genLjk()
-      this.sisaWaktuJalan = 0
-      this.waktuSekarangJalan = 0
+      this.runSisaWaktu()
+      this.runWaktuSekarang()
   },
   beforeDestroy () {
       clearInterval(this.sisaWaktuJalan)
       clearInterval(this.waktuSekarangJalan)
   },
   methods : {
+      runSisaWaktu () {
+          var sisa = new Date(this.$session.get('infoUjian').hari + " " + this.$session.get('infoUjian').selesai).getTime() - new Date().getTime()
+          this.sisaWaktuJalan = setInterval(()=>{
+              if(sisa < 0) {
+                  this.kumpulkanUjian()
+              }
+              this.waktuUjian(sisa)
+              sisa = sisa - 1000
+              },1000)
+      },
+      runWaktuSekarang () {
+          this.waktuSekarangJalan = setInterval(()=> {
+            this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
+          }, 1000)
+      },
       waktuUjian (ms) {
             var hours = Math.floor(ms / 3600000) // 1 Hour = 36000 Milliseconds
             var minutes = Math.floor((ms % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
             var seconds = Math.floor(((ms % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-            this.sisaWaktu = hours+":"+minutes+":"+seconds
+            if(hours != 0){
+                this.sisaWaktu = hours+" Jam "+minutes+" Menit "+seconds+" Detik"
+            }else{
+                if(minutes != 0){
+                    this.sisaWaktu = minutes+" Menit "+seconds+" Detik"
+                }else{
+                    this.sisaWaktu = seconds+" Detik"
+                }
+            }
       },
       toggleMenu () {
           Bus.$emit('toggleMenu')
