@@ -14,6 +14,7 @@ const expressGraphQL = require('express-graphql');
 const sMahasiswa = require('./schema/mahasiswa.js');
 const sJujian = require('./schema/jenis_ujian.js');
 const sKuliah = require('./schema/kuliah.js');
+const sStatistik = require('./schema/statistik.js');
 
 mysql = require('mysql');
 db = require('knex')({
@@ -67,6 +68,10 @@ app.use('/api/v2/jenis_ujian', expressGraphQL({
 }));
 app.use('/api/v2/kuliah', expressGraphQL({
   schema: sKuliah,
+  graphiql: true,
+}));
+app.use('/api/v2/statistik', expressGraphQL({
+  schema: sStatistik,
   graphiql: true,
 }));
 //EOF ROUTES
