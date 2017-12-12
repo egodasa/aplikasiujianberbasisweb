@@ -6,7 +6,10 @@ var validasi = {
 		isLength : {
 			options : [{min : 1,max : 15}],
 			errorMessage : 'Username harus berisikan minimal 3 karakter dan maksimal 15 karakter ...'
-		}
+		},
+        cekUsername : {
+            errorMessage : "Username sudah dipakai ..."
+        }
 	},
 	'password': {
 		notEmpty : {
