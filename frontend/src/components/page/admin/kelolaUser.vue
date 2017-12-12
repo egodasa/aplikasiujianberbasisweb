@@ -1,7 +1,7 @@
 <template>
     
 <div class="w3-container">
-    <h2>Daftar Tipe Soal</h2>
+    <h2>Daftar User</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
 </div>

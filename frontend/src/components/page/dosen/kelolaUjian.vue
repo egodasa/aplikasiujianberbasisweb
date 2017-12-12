@@ -74,8 +74,8 @@ export default {
           id_ujian : null,
           url : 'dosen/'+this.$session.get('user').username+'/ujian',
             tableContent : {
-                header :  ['Matkul','Jenis Ujian','Hari','TA','Status'],
-                content : ['id_ujian','nm_matkul','nm_jujian','hari','tahun_akademik','nm_status_ujian']
+                header :  ['Matkul','Jenis Ujian','Waktu Pelaksanaan','TA','Status'],
+                content : ['id_ujian','nm_matkul','nm_jujian','ket_waktu','tahun_akademik','nm_status_ujian']
             },
             id_jujian : null,
             id_jsoal : null,

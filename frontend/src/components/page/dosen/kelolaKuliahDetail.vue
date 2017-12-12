@@ -21,7 +21,7 @@
                         <tr>
                         <td class="w3-white">Kelas</td>
                         <td class="w3-white">
-                            {{infoKuliah.nm_kelas}}</td>
+                            {{infoKuliah.ket_nm_kelas}}</td>
                         </tr>
                         <tr>
                     <td class="w3-white">Tahun Akademik</td>

@@ -76,8 +76,8 @@ export default {
           id_ujian : null,
           url : 'ujian',
             tableContent : {
-                header :  ['Matkul','Dosen','Jenis Ujian','Hari','Status','TA'],
-                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','hari','nm_status_ujian','tahun_akademik']
+                header :  ['Matkul','Dosen','Jenis Ujian','Waktu Pelaksanaan','Status','TA'],
+                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','ket_waktu','nm_status_ujian','tahun_akademik']
             },
             id_jujian : null,
             id_jsoal : null,

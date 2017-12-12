@@ -50,7 +50,7 @@ export default {
           url : 'dosen/'+this.$session.get('user').username+'/kuliah',
             tableContent : {
                 header : ['Mata Kuliah','Tahun Akademik','Kelas'],
-                content : ['id_kuliah','nm_matkul','tahun_akademik','nm_kelas']
+                content : ['id_kuliah','nm_matkul','tahun_akademik','ket_nm_kelas']
             },
             listMatkul : [],
             listKelas : [],

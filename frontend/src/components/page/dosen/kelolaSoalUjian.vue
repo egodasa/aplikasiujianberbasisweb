@@ -141,7 +141,7 @@ export default {
           {huruf:'E',isi_pilihan:null}
           ]
           this.id_jsoal = this.detailUjian.id_jsoal
-          this.bobot = undefined
+          this.bobot = null
       },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined

@@ -1,6 +1,6 @@
 <template>
 <!-- Top container -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-left:250px;margin-top:43px;">
 <slot></slot>
 </div>
 </template>
