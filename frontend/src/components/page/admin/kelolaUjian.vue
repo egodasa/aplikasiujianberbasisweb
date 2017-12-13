@@ -7,15 +7,18 @@
     <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
         <h2>Tambah Data</h2>
-        <span class="w3-container">
+        <span class="w3-container" v-if="!edit">
             <label>Pilih Kuliah</label>
-            <v-select v-model="kuliah" :options="listKuliah" :on-change="getDataJujian" label="nm_kuliah"></v-select>
+            <v-select v-model="kuliah":options="listKuliah" :on-change="getDataJujian" label="nm_kuliah"></v-select>
         </span>
-        <span class="w3-container">
+        <span class="w3-container" v-if="!edit">
             <label>Pilih Jenis Ujian</label>
             <select class="w3-select w3-border" v-model="id_jujian">
                 <option v-for='x in listJujian' :value="x.id_jujian">{{x.nm_jujian}}</option>
             </select>
+        </span>
+        <span class='w3-container' v-if="edit">
+            <label><b><i>*Kuliah dan jenis ujian tidak dapat diganti ...</i></b></label>
         </span>
         <span class="w3-container">
             <label>Pilih Jenis Soal</label>
@@ -42,12 +45,17 @@
             <textarea class='w3-input w3-border' v-model="deskripsi"></textarea>
         </span>
         <span class="w3-container">
-        <button class="w3-button w3-blue " @click="submitData()">Tambahkan</button>
-        <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
+        <button class="w3-button w3-blue " @click="submitData()">{{edit ? 'Simpan Perubahan' : 'Tambahkan'}}</button>
+        <button class="w3-button w3-red" v-if="!edit" @click="resetData()">Reset</button>
+        <button class="w3-button w3-green" @click="toggleFormData()">Batal</button>
         </span>
     </gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
         <template slot="customAction" slot-scope="ca">
+            <span class="hint--top" aria-label="Edit">
+                <button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData[tableContent.content[0]])"><i class="fa fa-edit"></i> 
+                </button>
+            </span>
             <span class="hint--top" aria-label="Kelola Ujian">
                 <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
@@ -90,7 +98,9 @@ export default {
             deskripsi : null,
             listKuliah : [],
             listJujian : [],
-            listJsoal : []
+            listJsoal : [],
+            edit : false,
+            id_ujian : null
         }
   },
   created () {
@@ -98,10 +108,33 @@ export default {
       this.getDataKuliah()
   },
   methods : {
-        submitData (){
+        resetData () {
             console.log(this.kuliah)
+            this.id_jujian = null
+            this.id_jsoal = null
+            this.selectedKuliah = null
+            this.hari = null
+            this.mulai = null
+            this.selesai = null
+            this.deskripsi = null
+            this.id_ujian = null
+        },
+        submitData (){
+            var method
+            var url
+            var id_ujian
+            if(this.edit == false){
+                method = "post"
+                url = 'api/'+this.url
+                id_ujian = this.selectedKuliah.id_kuliah+'-'+this.id_jujian
+            }
+            else {
+                method = "put"
+                url = 'api/'+this.url+"/"+this.id_ujian
+                id_ujian = this.id_ujian
+            }
             var tmp = {
-                id_ujian : this.selectedKuliah.id_kuliah+'-'+this.id_jujian,
+                id_ujian : id_ujian,
                 id_kuliah : this.selectedKuliah.id_kuliah,
                 hari : this.hari,
                 mulai : this.mulai,
@@ -110,23 +143,18 @@ export default {
                 id_jsoal : this.id_jsoal,
                 deskripsi : this.deskripsi
             }
-            axios.post('api/'+this.url,tmp)
+            axios[method](url,tmp)
             .then(res=>{
                 if(res.data.status == true){
                     Bus.$emit('toggleFormData')
                     Bus.$emit('newData')
-                    this.id_jujian = null
-                    this.id_jsoal = null
-                    this.hari = null
-                    this.mulai = null
-                    this.selesai = null
-                    this.deskripsi = null
-                    this.kuliah = null
-                    this.selectedKuliah = null
+                    this.resetData()
+                    this.edit = false
                 }
                 })
             .catch(err=>{
                 console.log(err)
+                Bus.$emit('showAlert','Peringatan!','Terjadi kesalahan pada server.','danger')
                 })
             
         },
@@ -168,6 +196,28 @@ export default {
         },
         toggleFormData() {
             Bus.$emit('toggleFormData')
+            this.resetData()
+            this.edit = false
+        },
+        getDataDetail (x) {
+            axios.get('api/ujian/'+x)
+            .then(res=>{
+                this.toggleFormData()
+                var hasil = res.data.data[0]
+                this.id_ujian = x
+                this.id_jujian = hasil.id_jujian
+                this.id_jsoal = hasil.id_jsoal
+                this.selectedKuliah = hasil.id_kuliah
+                this.hari = hasil.hari
+                this.mulai = hasil.mulai
+                this.selesai = hasil.selesai
+                this.deskripsi = hasil.deskripsi
+                this.edit = true
+                })
+            .catch(err=>{
+                console.log(err)
+                Bus.$emit('showAlert','Pesan!','Tidak dapat mengedit data. Silahkan ulangi kembali.','warning')
+                })
         }
   }
 }
