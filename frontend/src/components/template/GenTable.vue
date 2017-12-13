@@ -39,11 +39,11 @@
                     </button></span>
                     </template>
                     <template v-else-if="tableType == 'edit'">
-                    <span class="hint--top" aria-label="Hapus"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
+                    <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(tr[pk])"><i class="fa fa-close"></i> 
                     </button></span>
                     </template>
                     <template v-else-if="tableType == 'hapus'">
-                    <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
+                    <span class="hint--top" aria-label="Hapus"><button class="w3-button w3-hover-white w3-white" @click="deleteData(tr[pk])"><i class="fa fa-close"></i> 
                     </button></span>
                     </template>
                     <template v-else-if="tableType == 'tambahkan'">
