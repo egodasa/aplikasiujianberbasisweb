@@ -71,6 +71,10 @@
                         <label>{{x.caption}}</label>
                         <time-picker v-model="output[x.name]"></time-picker>
                     </template>
+                    <template v-else-if="x.jenis == 'selectize'">
+                        <label>{{x.caption}}</label>
+                        <selectize v-model="output[x.name]" :settings="x"></selectize>
+                    </template>
                 <br/>
                 </span>
                 <button type="submit" :disabled="Bsimpan.disabled" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
@@ -94,8 +98,13 @@ import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
 import pengaturan from '../../pengaturan.json'
 import _ from 'lodash'
+import selectize from 'vue2-selectize'
+
 export default {
     name : 'genForm',
+    components : {
+        selectize, Datepicker, TimePicker
+    },
 	props : {
 		url : String,
 		input : Array,
@@ -131,9 +140,6 @@ export default {
               }
 		}
 	},
-    components: {
-        Datepicker, TimePicker
-    },
     created () {
         Bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
