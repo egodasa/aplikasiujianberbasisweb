@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('lodash')
 var pk = 'id_kuliah';
 var tbl = 'tbkuliah';
 router.get('/:id?',(req, res, next)=>{
@@ -47,13 +48,17 @@ router.post('/',(req,res,next)=>{
 	var hasil = {};
     console.log(data)
     db(tbl).insert({
-        id_kuliah : data.id_kuliah,
+        id_kuliah : data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,
         nidn : data.nidn,
         kd_matkul : data.kd_matkul,
         tahun_akademik : data.tahun_akademik,
         }).
     then((rows)=>{
-        return db('tbkelas_kuliah').insert(data.kelas)
+        let kelas = []
+        _.forEach(data.kelas,(v,k)=>{
+            kelas.push({id_kuliah:data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,id_kelas:v})
+            })
+        return db('tbkelas_kuliah').insert(kelas)
         }).
     then(function(){
         hasil.status = true;
@@ -71,8 +76,6 @@ router.put('/:id',(req,res,next)=>{
 	var hasil = {};
     console.log(data)
     db(tbl).update({
-        nidn : data.nidn,
-        kd_matkul : data.kd_matkul,
         tahun_akademik : data.tahun_akademik,
         }).where('id_kuliah',data.id_kuliah)
     then(function(){

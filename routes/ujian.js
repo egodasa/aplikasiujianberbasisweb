@@ -58,7 +58,16 @@ router.post('/', (req, res, next) => {
             hasil.err = 2
             reject(res.json(hasil));
         }else return db.transaction(trx=>{
-            return trx('tbujian').insert(data).then(()=>{
+            return trx('tbujian').insert({
+                id_ujian : data.id_ujian,
+                hari : data.hari,
+                mulai : data.mulai,
+                selesai : data.selesai,
+                deskripsi : data.deskripsi,
+                id_jujian : data.id_jujian,
+                id_jsoal : data.id_jsoal,
+                id_kuliah : data.id_kuliah
+                }).then(()=>{
                     return db('tbkelas_ujian').insert(data.kelas)
                 })
             })
@@ -93,17 +102,12 @@ router.put('/:id', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
     db('tbujian').where('id_ujian','=',id).update({
-        id_ujian : data.kd_matkul+'-'+data.nidn+'-'+data.tahun_akademik,
-        kd_matkul : data.kd_matkul,
-        nidn : data.nidn,
         hari : data.hari,
         mulai : data.mulai,
         selesai : data.selesai,
         deskripsi : data.deskripsi,
         id_jujian : data.id_jujian,
-        id_jsoal : data.id_jsoal,
-        tahun_akademik : data.tahun_akademik,
-        id_kelas : data.id_kelas
+        id_jsoal : data.id_jsoal
         }).
     then(function(){
         hasil.status = true;

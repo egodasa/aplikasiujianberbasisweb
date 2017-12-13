@@ -4,6 +4,7 @@ var checkData = require('../validator/dosen/create_update');
 var pk = 'id_dosen';
 var tbl = 'tbdosen';
 var json2csv = require('json2csv')
+var _ = require('lodash')
 
 router.get('/cetak/csv',(req,res,next)=>{
     db('tbdosen').select()
@@ -266,15 +267,20 @@ router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 router.post('/:id/kuliah',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
+    var id = req.params.id
     console.log(data)
-    db(tbl).insert({
-        id_kuliah : data.id_kuliah,
-        nidn : data.nidn,
+    db('tbkuliah').insert({
+        id_kuliah : data.kd_matkul+"-"+id+"-"+data.tahun_akademik,
+        nidn : id,
         kd_matkul : data.kd_matkul,
         tahun_akademik : data.tahun_akademik,
         }).
     then((rows)=>{
-        return db('tbkelas_kuliah').insert(data.kelas)
+        let kelas = []
+        _.forEach(data.kelas,(v,k)=>{
+            kelas.push({id_kuliah:data.kd_matkul+"-"+id+"-"+data.tahun_akademik,id_kelas:v})
+            })
+        return db('tbkelas_kuliah').insert(kelas)
         }).
     then(function(){
         hasil.status = true;
