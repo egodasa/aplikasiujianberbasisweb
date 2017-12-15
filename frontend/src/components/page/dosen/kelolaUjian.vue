@@ -1,66 +1,20 @@
 <template>
+
 <div class="w3-container">
     <h2>Kelola Ujian</h2>
     <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
     <div class="w3-border"></div>
     <br/>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
-        <h2>Tambah Data</h2>
-        <span class="w3-container" v-if="!edit">
-            <label>Pilih Kuliah</label>
-            <v-select v-model="kuliah" :options="listKuliah" :on-change="getDataJujian" label="nm_kuliah"></v-select>
-        </span>
-        <span class="w3-container" v-if="!edit">
-            <label>Pilih Jenis Ujian</label>
-            <select class="w3-select w3-border" v-model="id_jujian">
-                <option v-for='x in listJujian' :value="x.id_jujian">{{x.nm_jujian}}</option>
-            </select>
-        </span>
-        <span class='w3-container' v-if="edit">
-            <label><b><i>*Kuliah dan jenis ujian tidak dapat diganti ...</i></b></label>
-        </span>
-        <span class="w3-container">
-            <label>Pilih Jenis Soal</label>
-            <select class="w3-select w3-border" v-model="id_jsoal">
-                <option v-for='x in listJsoal' :value="x.id_jsoal">{{x.nm_jsoal}}</option>
-            </select>
-        </span>
-        <div class="w3-row">
-          <div class="w3-third">
-            <label>Waktu Ujian</label>
-            <datepicker input-class="w3-input w3-border" v-model="hari"></datepicker>
-          </div>
-          <div class="w3-third">
-            <label>Jam Mulai</label>
-            <input class="w3-input w3-border" type="text" v-model="mulai">
-          </div>
-          <div class="w3-third">
-            <label>Jam Selesai</label>
-            <input class="w3-input w3-border" type="text" v-model="selesai">
-          </div>
-        </div>
-        <span class="w3-container">
-            <label>Keterangan Ujian</label>
-            <textarea class='w3-input w3-border' v-model="deskripsi"></textarea>
-        </span>
-        <span class="w3-container">
-        <button class="w3-button w3-blue " @click="submitData()">{{edit ? 'Simpan Perubahan' : 'Tambahkan'}}</button>
-        <button class="w3-button w3-red" v-if="!edit" @click="resetData()">Reset</button>
-        <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
-        </span>
-    </gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
+    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" slot-scope="ca">
-            <span class="hint--top" aria-label="Edit">
-                <button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData[tableContent.content[0]])"><i class="fa fa-edit"></i> 
-                </button>
-            </span>
             <span class="hint--top" aria-label="Kelola Ujian">
-                <router-link :to="{name:'DkelolaUjianDetail',params:{nidn:$session.get('user').username,idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+                <router-link :to="{name:'DkelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
         </template>
     </gen-table>
 </div>
+
 </template>
 
 <script>
@@ -71,7 +25,6 @@ import axios from 'axios'
 import _ from 'lodash'
 import Datepicker from 'vuejs-datepicker';
 import { Bus } from '../../../bus.js';
-
 export default {
   name: 'kelolaUjian',
   components : {
@@ -79,148 +32,119 @@ export default {
   },
   data () {
       return {
-          id_ujian : null,
           url : 'dosen/'+this.$session.get('user').username+'/ujian',
             tableContent : {
-                header :  ['Matkul','Jenis Ujian','Waktu Pelaksanaan','TA','Status'],
-                content : ['id_ujian','nm_matkul','nm_jujian','ket_waktu','tahun_akademik','nm_status_ujian']
+                header :  ['Matkul','Dosen','Jenis Ujian','Waktu Pelaksanaan','Status','TA'],
+                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','ket_waktu','nm_status_ujian','tahun_akademik']
             },
-            id_jujian : null,
-            id_jsoal : null,
-            hari : null,
-            mulai : null,
-            selesai : null,
-            kelas : null,
-            kuliah : null,
-            selectedKuliah : null,
-            deskripsi : null,
-            listKuliah : [],
-            listJujian : [],
-            listJsoal : [],
-            edit : false,
-            ujian : false
+          listForm : [
+                {
+                    caption : "Pilih Kuliah",
+                    name : "id_kuliah",
+                    jenis : "selectize",
+                    labelField : 'nm_matkul',
+                    valueField : 'id_kuliah',
+                    options : [],
+                    placeholder : "Ketik nama mata kuliah",
+                    searchField : ['nm_matkul','nm_dosen'],
+                    render : {
+                        option : function(item,escape){
+                                return '<div>'+escape(item.nm_matkul + '('+item.tahun_akademik+')') + '<br/>'+escape(item.nm_dosen) + '<br/>'+escape(item.ket_nm_kelas)+'</div>'
+                            },
+                        item : function(item,escape){
+                                return '<div>'+escape(item.nm_matkul) + ' - '+escape(item.nm_dosen) +'</div>'
+                            }
+                    },
+                    onItemAdd : (value, $item)=>{
+                        this.getDataSelectGraph('api/v2/jenis_ujian',{
+                          query : `query jenisUjianTersedia($id_kuliah : String) {jenisUjianTersedia(id_kuliah : $id_kuliah){id_jujian,nm_jujian}}`,
+                          variables : {id_kuliah : value}
+                          },'jenisUjianTersedia',1,'jenis ujian','select')
+                        },
+                    onFocus : ()=>{
+                        if(this.listForm[1].option.length > 0) this.listForm[1].option = []
+                        }
+                },
+                {
+                    caption : "Pilih Jenis Ujian",
+                    name : "id_jujian",
+                    jenis : "selectOption",
+                    valueSelect : 'id_jujian',
+                    captionSelect : 'nm_jujian',
+                    option : []
+                },
+                {
+                    caption : "Pilih Jenis Soal",
+                    name : "id_jsoal",
+                    jenis : "selectOption",
+                    valueSelect : 'id_jsoal',
+                    captionSelect : 'nm_jsoal',
+                    option : []
+                },
+                {
+                    caption : "Hari Ujian",
+                    name : "hari",
+                    jenis : "datePick"
+                },
+                {
+                    caption : "Jam Mulai",
+                    name : "mulai",
+                    jenis : "textField",
+                    tipe:'text'
+                },
+                {
+                    caption : "Jam Selesai",
+                    name : "selesai",
+                    jenis : "textField",
+                    tipe:'text'
+                },
+                {
+                    caption : "Deskripsi",
+                    name : "deskripsi",
+                    jenis : "textArea"
+                }
+          ]
         }
   },
   created () {
-      this.getDataSelect('jenis_soal','listJsoal')
-      this.getDataKuliah()
+      this.getDataSelect('api/jenis_soal',2)
+      this.getDataSelectGraph('api/v2/dosen',{
+          query : `query getKuliah($nidn : String){ getKuliah(nidn : $nidn){id_kuliah,nm_matkul,nm_dosen,tahun_akademik,ket_nm_kelas}}`,
+          variables : {nidn : this.$route.params.nidn}
+          },'getKuliah',0,'kuliah','selectize')
   },
   methods : {
-        resetData () {
-            console.log(this.kuliah)
-            this.id_jujian = null
-            this.id_jsoal = null
-            this.selectedKuliah = null
-            this.hari = null
-            this.mulai = null
-            this.selesai = null
-            this.deskripsi = null
-            this.id_ujian = null
-        },
-        submitData (){
-            var method
-            var url
-            var id_ujian
-            if(this.edit == false){
-                method = "post"
-                url = 'api/'+this.url
-                id_ujian = this.selectedKuliah.id_kuliah+'-'+this.id_jujian
-            }
-            else {
-                method = "put"
-                url = 'api/'+this.url+"/"+this.id_ujian
-                id_ujian = this.id_ujian
-            }
-            var tmp = {
-                id_ujian : this.selectedKuliah.id_kuliah+'-'+this.id_jujian,
-                id_kuliah : this.selectedKuliah.id_kuliah,
-                hari : this.hari,
-                mulai : this.mulai,
-                selesai : this.selesai,
-                id_jujian : this.id_jujian,
-                id_jsoal : this.id_jsoal,
-                deskripsi : this.deskripsi
-            }
-            axios[method](url,tmp)
-            .then(res=>{
-                if(res.data.status == true){
-                    Bus.$emit('toggleFormData')
-                    Bus.$emit('newData')
-                    this.resetData()
-                    this.edit = false
-                }
-                })
-            .catch(err=>{
-                console.log(err)
-                Bus.$emit('showAlert','Peringatan!','Terjadi kesalahan pada server.','danger')
-                })
-            
-        },
-        getDataJujian (x) {
-            this.selectedKuliah = x
-            let query = `query jenisUjianTersedia($id_kuliah : String) {jenisUjianTersedia(id_kuliah : $id_kuliah){id_jujian,nm_jujian}}`
-            let kueri = {query:query, variables : {id_kuliah : x.id_kuliah}}
-            axios.post('api/v2/jenis_ujian',kueri)
-            .then(res=>{
-                console.log(res.data.data)
-                this.listJujian = res.data.data['jenisUjianTersedia']
-                })
-            .catch(err=>{
-                console.log(err)
-                })
-        },
-        getDataSelect (x,y) {
-            axios.get('api/'+x)
+        getDataSelect (url,index){
+            axios.get(url)
                 .then(res=>{
-                    this[y] = res.data.data
+                    this.listForm[index].option = res.data.data
                     })
                 .catch((err)=>{
-                    this[y] = []
+                    console.log(err)
                     })
         },
-        getDataKuliah() {
-            axios.get('api/dosen/'+this.$session.get('user').username+'/kuliah')
+        getDataSelectGraph (url,query,name,index,nama,tipe){
+            axios.post(url,query)
                 .then(res=>{
-                    var tmp = res.data.data
-                    var kuliah = []
-                    _.forEach(tmp,(v,k)=>{
-                        kuliah.push({id_kuliah:v.id_kuliah,nm_kuliah:v.nm_matkul+'/'+v.tahun_akademik+'/'+v.nm_kelas.toString()})
-                        })
-                    this.listKuliah = kuliah
+                    if(tipe == 'selectize'){
+                        this.listForm[index].options = res.data.data[name]
+                    }else{
+                        this.listForm[index].option = res.data.data[name]
+                    }
                     })
-                .catch((err)=>{
-                    this.listKuliah = []
+                .catch(err=>{
+                    Bus.$emit('showAlert','Pesan!','Tidak dapat mengambil daftar '+nama+'. Silahkan muat ulang halaman','warning')
+                    this.listForm[index].options = []
                     })
         },
         toggleFormData() {
             Bus.$emit('toggleFormData')
-        },
-        getDataDetail (x) {
-            axios.get('api/ujian/'+x)
-            .then(res=>{
-                this.resetData()
-                var hasil = res.data.data[0]
-                this.getDataJujian(hasil.id_ujian)
-                this.id_ujian = x
-                this.id_jujian = hasil.id_jujian
-                this.id_jsoal = hasil.id_jsoal
-                this.selectedKuliah = hasil.id_kuliah
-                this.hari = hasil.hari
-                this.mulai = hasil.mulai
-                this.selesai = hasil.selesai
-                this.deskripsi = hasil.deskripsi
-                this.edit = true
-                this.toggleFormData()
-                })
-            .catch(err=>{
-                console.log(err)
-                Bus.$emit('showAlert','Pesan!','Tidak dapat mengedit data. Silahkan ulangi kembali.','warning')
-                })
+            this.resetData()
+            this.edit = false
         }
   }
 }
 </script>
 
-<style slot-scoped>
-
+<style scoped>
 </style>

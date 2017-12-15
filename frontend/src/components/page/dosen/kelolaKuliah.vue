@@ -42,7 +42,10 @@ export default {
                     labelField : 'nm_matkul',
                     valueField : 'kd_matkul',
                     options : [],
-                    searchField : ['kd_matkul','nm_matkul']
+                    searchField : ['kd_matkul','nm_matkul'],
+                    onChange : function () {
+                        console.log('gunduls')
+                    }
                 },
                 {
                     caption : "Tambahkan kelas",
