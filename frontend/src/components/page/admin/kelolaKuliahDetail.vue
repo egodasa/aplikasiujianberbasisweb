@@ -37,23 +37,7 @@
             </div>
     </div>
     <h2>Daftar Peserta Kuliah</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
-        <h2>Tambah Data</h2>
-        <span class="w3-container">
-            <label>Pilih Kelas</label>
-            <select class="w3-select w3-border" v-model="id_kelas" @change="getDataSelect('mahasiswa','listMahasiswa','mahasiswaNotInKelasKuliah',{id_ujian:$route.params.idUjian})">
-                <option v-for='x in listKelas' :value="x.id_kelas">{{x.nm_kelas}}</option>
-            </select>
-        </span>
-        <span class="w3-container">
-        <label>Pilih Mahasiswa</label>
-        <v-select v-model="mahasiswa" multiple :options="listMahasiswa" label="nm_mahasiswa"></v-select>
-        </span>
-        <span class="w3-container">
-        <button class="w3-button w3-blue " @click="submitData()">Tambahkan</button>
-        <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
-        </span>
-    </gen-form>
+    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent"></gen-table>
 </div>
 
@@ -85,11 +69,50 @@ export default {
               content : ['id_peserta','nobp','nm_mahasiswa','nm_kelas']
           },
           loading : false,
-          mahasiswa : null,
-            id_kelas : null,
-            listMahasiswa : [],
-            listKelas : [],
-            file : null
+          listForm : [
+            {
+                    caption : "Pilih Kelas",
+                    name : "id_kelas",
+                    jenis : "selectOption",
+                    valueSelect : 'id_kelas',
+                    captionSelect : 'nm_kelas',
+                    option : []
+                },
+            {
+                    caption : "Tambahkan Mahasiswa",
+                    name : "nobp",
+                    jenis : "selectize",
+                    labelField : 'nm_mahasiswa',
+                    valueField : 'nobp',
+                    options : [],
+                    placeholder : "Ketik nobp atau nama mahasiswa ....",
+                    searchField : ['nm_mahasiswa','nobp'],
+                    maxItems : null,
+                    load : (q,c)=>{
+                        if(q.length <= 1) return c()
+                        let query = `query mahasiswaNotInKelasKuliah($id_kuliah : String,$nobp : String,$nm_mahasiswa:String) {mahasiswaNotInKelasKuliah(id_kuliah : $id_kuliah,nobp : $nobp,nm_mahasiswa : $nm_mahasiswa){nobp,nm_mahasiswa}}`
+                        let kueri = {query:query, variables : {id_kuliah : this.$route.params.idKuliah   ,nobp:q,nm_mahasiswa:q}}
+                        console.log(kueri)
+                        axios.post('api/v2/mahasiswa',kueri)
+                            .then(res=>{
+                                console.log(res.data.data)
+                                c(res.data.data.mahasiswaNotInKelasKuliah)
+                                })
+                            .catch(err=>{
+                                c()
+                                })
+                        },
+                    render : {
+                        option : function(item,escape){
+                                return '<div>'+escape(item.nobp)+' - '+escape(item.nm_mahasiswa)+'</div>'
+                            },
+                        item : function(item,escape){
+                                return '<div>'+escape(item.nobp)+' - '+escape(item.nm_mahasiswa)+'</div>'
+                            }
+                    }
+                }
+                
+            ]
         }
     },
   created (){
@@ -99,58 +122,19 @@ export default {
       changeTabs (x){
           this.currentTabs = x
       },
-      submitData (){
-            var tmp = []
-            _.forEach(this.mahasiswa, (v,k)=>{
-                tmp.push({id_peserta:v.nobp+'-'+this.$route.params.idKuliah,id_kuliah:this.$route.params.idKuliah,nobp:v.nobp,id_kelas:this.id_kelas})
-                })
-            axios.post('api/'+this.url,tmp)
-            .then(res=>{
-                Bus.$emit('toggleFormData')
-                Bus.$emit('newData')
-                this.mahasiswa = null,
-                this.id_kelas = null
-                })
-            .catch(err=>{
-                console.log(err)
-                })
-        },
-      getDataSelect (x,y,name,args) {
-            let query = `query mahasiswaNotInKelasKuliah($id_kuliah : String) {mahasiswaNotInKelasKuliah(id_kuliah : $id_kuliah){nobp,nm_mahasiswa}}`
-            let kueri = {query:query, variables : {id_kuliah : this.$route.params.idKuliah}}
-            console.log(kueri)
-            axios.post('api/v2/'+x,kueri)
-                .then(res=>{
-                    console.log(res.data.data[name])
-                    this[y] = res.data.data[name]
-                    })
-                .catch((err)=>{
-                    console.log(err)
-                    this[y] = []
-                    })
-        },
       detailKuliah () {
           axios.get('api/kuliah/'+this.$route.params.idKuliah)
             .then(res=>{
                 this.infoKuliah = res.data.data[0]
-                this.getKelas(this.infoKuliah.id_kelas)
+                _.forEach(this.infoKuliah.id_kelas,(v,k)=>{
+                    this.listForm[0].option.push({id_kelas:v,nm_kelas:this.infoKuliah.nm_kelas[k]})
+                })
                 })
             .catch(err=>{
+                Bus.$emit('showAlert','Pesan!','Tidak dapat mengambil detail kuliah. Silahkan muat ulang halaman!','warning')
                 this.infoKuliah = [{}]
-                console.log(err)
                 })
-      },
-      getKelas (x) {
-          var tmp = []
-            _.forEach(x,(v,k)=>{
-                tmp.push({id_kelas : v,nm_kelas: this.infoKuliah.nm_kelas[k]})
-                })
-            this.listKelas = tmp
-            console.log(this.listKelas)
-        },
-        toggleFormData() {
-            Bus.$emit('toggleFormData')
-        }
+      }
   }
 }
 </script>

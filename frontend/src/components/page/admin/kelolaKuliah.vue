@@ -20,12 +20,11 @@ import axios from 'axios'
 import _ from 'lodash'
 import admin from './halamanAdmin.vue'
 import { Bus } from '../../../bus.js';
-import selectize from 'vue2-selectize'
 
 export default {
   name: 'kelolaKuliah',
   components : {
-      genTable, genForm, admin, selectize
+      genTable, genForm, admin
   },
   data () {
       return {
@@ -85,6 +84,7 @@ export default {
             axios.get(url)
                 .then(res=>{
                     this.listForm[index].options = res.data.data
+                    console.log(this.listForm[index].options)
                     })
                 .catch((err)=>{
                     console.log(err)
