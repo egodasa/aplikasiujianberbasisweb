@@ -22,6 +22,22 @@ const daftarDosen = new GraphQLObjectType({
     status_dosen: { type: GraphQLInt }
   })
 });
+const daftarKuliah = new GraphQLObjectType({
+  name: 'Kuliah',
+  fields: () => ({
+    id_kuliah: { 
+        type: GraphQLString
+    },
+    kd_matkul: { type: GraphQLString },
+    nm_matkul: { type: GraphQLString },
+    nidn: { type: GraphQLString },
+    nm_dosen: { type: GraphQLString },
+    tahun_akademik: { type: GraphQLString },
+    status_kuliah: { type: GraphQLInt },
+    nm_status_kuliah: { type: GraphQLString },
+    ket_nm_kelas : {type: GraphQLString}
+  })
+});
 const hasil = new GraphQLScalarType({
   name: 'Hasil',
   serialize: value => value,
@@ -55,7 +71,18 @@ const RootQuery = new GraphQLObjectType({
       resolve(parentValue, args) {
         return db('tbdosen').select().where('nidn',args.id)
       }
-    }
+    },
+    getKuliah: {
+      type: new GraphQLList(daftarKuliah),
+      args : {
+          nidn : {type : GraphQLString}
+      },
+      resolve(parentValue, args) {
+        return db('lap_kuliah')
+            .select(db.raw("*,array_to_string(nm_kelas,',') as ket_nm_kelas"))
+            .where('nidn',args.nidn)
+      }
+    },
   }
 });
 module.exports = new GraphQLSchema({

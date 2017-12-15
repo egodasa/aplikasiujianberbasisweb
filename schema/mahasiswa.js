@@ -50,6 +50,12 @@ const RootQuery = new GraphQLObjectType({
       args : {
           id_kuliah : {
               type : GraphQLString
+          },
+          nobp : {
+              type : GraphQLString
+          },
+          nm_mahasiswa : {
+              type : GraphQLString
           }
       },
       resolve(parentValue, args) {
