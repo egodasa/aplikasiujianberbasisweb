@@ -5,7 +5,7 @@
         <div class="w3-card-8 w3-container w3-section">
         <template v-if="contentType == 'form'">
             <form v-if="showForm" id="addData" @submit.prevent="submitData()" name="addData" method="POST">
-                <h3>Tambah Data</h3>
+                <h3>{{edit ? 'Edit Data' : 'Tambah Data'}}</h3>
                 <span v-for="x in input">
                     <template v-if="x.jenis == 'textField'">
                         <template v-if="x.tipe == 'number'">
@@ -59,21 +59,26 @@
                     </template>
                     <template v-else-if="x.jenis == 'select2'">
                         <v-select :valueSelect="x.valueSelect" v-model="output[x.name]" :label="x.captionSelect" :placeholder="x.placeholder" :options="x.option"></v-select>
+                        <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                     <template v-else-if="x.jenis == 'richEditor'">
                         <wysiwyg v-model="output[x.name]" />
+                        <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                     <template v-else-if="x.jenis == 'datePick'">
                         <label>{{x.caption}}</label>
-                        <datepicker v-model="output[x.name]"></datepicker>
+                        <datepicker input-class="w3-input w3-border" v-model="output[x.name]"></datepicker>
+                        <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                     <template v-else-if="x.jenis == 'timePick'">
                         <label>{{x.caption}}</label>
                         <time-picker v-model="output[x.name]"></time-picker>
+                        <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                     <template v-else-if="x.jenis == 'selectize'">
                         <label>{{x.caption}}</label>
                         <selectize v-model="output[x.name]" :settings="x"></selectize>
+                        <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                 <br/>
                 </span>
@@ -137,7 +142,8 @@ export default {
               Breset : {
                   disabled : false,
                   caption : '<i class="fa fa-repeat w3-small"></i> Reset'
-              }
+              },
+              edit : false
 		}
 	},
     created () {
@@ -151,9 +157,22 @@ export default {
         _.forEach(this.input,(v,k)=>{
             this.$set(this.error,v.name, null)
             })
+        //SET DAFTAR V-MODEL DI OBJECT OUTPUT{}
+        _.forEach(this.input,(v,k)=>{
+            this.output[v.name] = null //looping ke object input dan ambil properti name yang merupakan vmodel
+            this.error[v.name] = null //looping ke object input dan ambil properti name yang merupakan error
+            })
+        //EOF SET DAFTAR V-MODEL DI OBJECT OUTPUT{}
     },
 	methods : {
         resetForm (){
+            var prop = Object.keys(this.error)
+            _.forEach(prop, (v,k)=>{
+                this.error[v] = null
+                this.output[v] = null
+                })
+        },
+        resetError () {
             var prop = Object.keys(this.error)
             _.forEach(prop, (v,k)=>{
                 this.error[v] = null
@@ -179,24 +198,18 @@ export default {
         },
 		submitData (){
             this.buttonSubmit(1)
-            if(this.output[this.pk] == undefined){
+            this.resetError()
+            if(this.edit == false){
                 var method = 'POST'
                 var url = ""
             }else {
                 var method = 'PUT'
                 var url = '/'+this.output[this.pk]
+                this.edit = false
             }
-            var field = Object.keys(this.output)
-            var field_length = field.length
-            var output_new = {}
-            for(var x=0;x<field_length;x++){
-                if(field[x] != this.pk) output_new[field[x]] = this.output[field[x]]
-                this.output[field[x]] = null
-            }
-            console.log(output_new)
 			axios({
 				method : method,
-				data : output_new,
+				data : this.output,
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
@@ -211,25 +224,21 @@ export default {
                     _.forEach(listError,(v,k)=>{
                         this.error[v] = err.response.data.error[v].msg
                         })
-                }else if(kode == 500){
+                }else if(kode >= 500){
                     Bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','danger')
                 }
                 this.buttonSubmit(0)
 			})
 		},
-        getDataDetail : function(x){
+        getDataDetail (x){
+            this.edit = true
             axios.get('/api/'+this.url+'/'+x)
             .then(res=>{
-                var field = Object.keys(this.output)
-                var field_length = field.length
-                for(var x =0;x<field_length;x++){
-                    this.output[field[x]] = res.data.data[0][field[x]]
-                }
-                this.output[this.pk] = res.data.data[0][this.pk]
+                this.output = res.data.data[0]
                 this.showForm = !this.showForm
             })
             .catch(err=>{
-                console.log(err)
+                Bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
             })
 		}
 	},
