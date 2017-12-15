@@ -26,7 +26,6 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
 	db(tbl).insert(data).then(()=>{
 		hasil.status =true;
 		hasil.error = null;

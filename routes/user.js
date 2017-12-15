@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/user/create_update');
+var validator = require('../validator/validator');
 let md5 = require('md5')
 let pk = "id_user"
 let tbl = "tbuser"
@@ -72,7 +72,7 @@ router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	req.checkBody(checkData);
+	req.checkBody(validator.user);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
@@ -84,7 +84,11 @@ router.post('/',(req,res,next)=>{
 	}
 	else{
         data.password = md5(data.password)
-		db('tbuser').insert(data).
+		db('tbuser').insert({
+            username : data.username,
+            password : data.password,
+            id_juser : data.id_juser
+            }).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
@@ -117,18 +121,20 @@ router.put('/:id',(req,res,next)=>{
 	var id = req.params.id;
 	var hasil = {};
     console.log(data)
-	req.checkBody(checkData);
+	req.checkBody(validator.edit_user);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
 		hasil.status = false,
 		hasil.error = pesan;
-		res.json(hasil);
+		res.status(422).json(hasil);
 	}
 	else{
         data.password = md5(data.password)
-		db('tbuser').where(pk,id).update(data).
+		db('tbuser').where(pk,id).update({
+            password : data.password
+            }).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);

@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/ujian/create_update');
-var checkDataPeserta = require('../validator/peserta_ujian/create_update');
-var checkDataSoal = require('../validator/soal/create_update');
+var validator = require('../validator/validator');
 var json2csv = require('json2csv')
 const excel = require('node-excel-export');
 
@@ -51,38 +49,38 @@ router.post('/', (req, res, next) => {
     var data = req.body;
     console.log(data)
     var hasil = {};
-    db('tbujian').select('id_ujian').where('id_ujian',data.id_ujian)
-    .then(rows=>{
-        if(rows.length != 0){
-            hasil.status = false
-            hasil.err = 2
-            reject(res.json(hasil));
-        }else return db.transaction(trx=>{
-            return trx('tbujian').insert({
-                id_ujian : data.id_ujian,
-                hari : data.hari,
-                mulai : data.mulai,
-                selesai : data.selesai,
-                deskripsi : data.deskripsi,
-                id_jujian : data.id_jujian,
-                id_jsoal : data.id_jsoal,
-                id_kuliah : data.id_kuliah
-                }).then(()=>{
-                    return db('tbkelas_ujian').insert(data.kelas)
-                })
+    req.checkBody(validator.ujian);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false;
+		hasil.error = pesan;
+        res.status(422).json(hasil);
+	}
+	else{
+        db('tbujian').insert({
+            id_ujian : data.id_kuliah+'-'+data.id_jujian,
+            hari : data.hari,
+            mulai : data.mulai,
+            selesai : data.selesai,
+            deskripsi : data.deskripsi,
+            id_jujian : data.id_jujian,
+            id_jsoal : data.id_jsoal,
+            id_kuliah : data.id_kuliah
             })
-        })
-    .then(function(){
-        hasil.status = true;
-        hasil.err = 0
-        res.json(hasil);
-        }).
-    catch(function(err){
-        hasil.status = false;
-        hasil.err = 1;
-        res.json(hasil);
-        });
+        .then(function(rows){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            console.log(err)
+            hasil.status = false;
+            res.status(500).json(hasil);
+            });
+        }
     });
+});
 router.delete('/:id', (req, res, next) => {
     var id = req.params.id;
     var hasil = {};
@@ -101,25 +99,34 @@ router.put('/:id', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var hasil = {};
-    db('tbujian').where('id_ujian','=',id).update({
-        hari : data.hari,
-        mulai : data.mulai,
-        selesai : data.selesai,
-        deskripsi : data.deskripsi,
-        id_jujian : data.id_jujian,
-        id_jsoal : data.id_jsoal
-        }).
-    then(function(){
-        hasil.status = true;
-        res.json(hasil);
-        }).
-    catch(function(err){
-        hasil.status = false;
-        hasil.error = err;
-        res.json(hasil);
-        });
+    req.checkBody(validator.edit_ujian);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false;
+		hasil.error = pesan;
+        res.status(422).json(hasil);
+	}
+	else{
+        db('tbujian').where('id_ujian','=',id).update({
+            hari : data.hari,
+            mulai : data.mulai,
+            selesai : data.selesai,
+            deskripsi : data.deskripsi
+            }).
+        then(function(){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            hasil.status = false;
+            hasil.error = err;
+            res.json(hasil);
+            });
+        }
     });
-
+});
 //daftar peserta ujian
 router.get('/:id/mahasiswa',(req, res, next)=>{
 	var id = req.params.id || 0;
@@ -159,21 +166,6 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 		res.status(503).json(hasil);
 		});
 	});
-router.post('/:id/mahasiswa',(req,res,next)=>{
-	var data = req.body;
-	var hasil = {};
-    console.log(data)
-	db('tbpeserta_ujian').insert(data).then(()=>{
-		hasil.status =true;
-		hasil.error = null;
-		res.send(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false;
-		hasil.error = err;
-		res.status(503).json(hasil);
-		});
-    });
 //Soal Ujian
 router.get('/:id/soal', (req, res, next) => {
     var id = req.params.id;
@@ -204,51 +196,50 @@ router.post('/:id/soal/', (req, res, next) => {
 	var data = req.body;
     var hasil = {}
 	var id_ujian = req.params.id
-	req.checkBody(checkDataSoal);
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
-        console.log(hasil.error);
-        res.json(hasil); 
+        res.status(422).json(hasil); 
 	}
 	else{
-	db('tbsoal').insert({
-        isi_soal:data.isi_soal,
-        jawaban:data.jawaban,
-        pilihanGanda:JSON.stringify(data.pilihanGanda),
-        id_jsoal:data.id_jsoal,
-        bobot:data.bobot
-        }).returning('id_soal').then((id)=>{
-		return db('tbsoal_ujian').insert({id_ujian:id_ujian,id_soal:parseInt(id)})
-		}).
-    then(()=>{
-        hasil.status =true;
-		hasil.error = null;
-		res.send(hasil);
-        }).
-	catch(function(err){
-		hasil.status = false;
-		hasil.error = err;
-		res.status(503).json(hasil);
-		});
-    }
+        db('tbsoal').insert({
+            isi_soal:data.isi_soal,
+            jawaban:data.jawaban,
+            pilihanGanda:JSON.stringify(data.pilihanGanda),
+            id_jsoal:data.id_jsoal,
+            bobot:data.bobot
+            }).returning('id_soal').then((id)=>{
+            return db('tbsoal_ujian').insert({id_ujian:id_ujian,id_soal:parseInt(id)})
+            }).
+        then(()=>{
+            hasil.status =true;
+            hasil.error = null;
+            res.send(hasil);
+            }).
+        catch(function(err){
+            hasil.status = false;
+            hasil.error = err;
+            res.status(503).json(hasil);
+            });
+        }
     });
 });
 router.put('/:id/soal/:id_soal', (req, res, next) => {
 	var data = req.body;
 	var id_soal = req.params.id_soal;
 	var hasil = {};
-	req.checkBody(checkData);
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
-	res.json(hasil);
+        res.status(422).json(hasil);
 	}
 	else{
 		db('tbsoal').update({
@@ -266,7 +257,7 @@ router.put('/:id/soal/:id_soal', (req, res, next) => {
 		catch(function(err){
 			hasil.status = false;
 			hasil.error = err;
-			res.json(hasil);
+			res.status(503).json(hasil);
 			});
 	}
 	});
@@ -312,7 +303,12 @@ router.post('/jawaban',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	db('tbjawaban').insert(data).then(()=>{
+	db('tbjawaban').insert({
+        id_ujian : data.id_ujian,
+        nobp : data.nobp,
+        jawaban : data.jawaban,
+        id_soal : data.id_soal
+        }).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
 		res.send(hasil);
@@ -360,7 +356,11 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
 router.post('/hasil', (req, res, next) => {
     var data = req.body;
     var hasil = {};
-    db('tbhasil_ujian').insert(data).
+    db('tbhasil_ujian').insert({
+        id_ujian : data.id_ujian,
+        nobp : data.nobp,
+        nilai : data.nilai
+        }).
     then(function(){
         hasil.status = true;
         res.json(hasil);

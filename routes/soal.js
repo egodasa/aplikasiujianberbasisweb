@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/soal/create_update');
+var validator = require('../validator/validator');
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -47,7 +47,7 @@ router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	req.checkBody(checkData);
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
@@ -55,7 +55,7 @@ router.post('/',(req,res,next)=>{
 		hasil.status = false;
 		hasil.error = pesan;
         console.log(hasil.error);
-        res.json(hasil); 
+        res.status(422).json(hasil); 
 	}
 	else{
 	db('tbsoal').insert({
@@ -95,14 +95,14 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
-	req.checkBody(checkData);
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
-	res.json(hasil);
+        res.status(422).json(hasil);
 	}
 	else{
 		db('tbsoal').update({
@@ -120,7 +120,7 @@ router.put('/:id',(req,res,next)=>{
 		catch(function(err){
 			hasil.status = false;
 			hasil.error = err;
-			res.json(hasil);
+			res.status(503).json(hasil);
 			});
 	}
 	});

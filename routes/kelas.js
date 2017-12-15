@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/kelas/create_update');
+var validator = require('../validator/validator');
 var pk = 'id_kelas';
 var tbl = 'tbkelas';
 router.get('/:id?',(req, res, next)=>{
@@ -49,7 +49,7 @@ router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
     console.log(data)
-	req.checkBody(checkData);
+	req.checkBody(validator.kelas);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
@@ -59,7 +59,9 @@ router.post('/',(req,res,next)=>{
 		res.status(422).json(hasil); 
 	}
 	else{
-		db(tbl).insert(data).
+		db(tbl).insert({
+            nm_kelas : data.nm_kelas
+            }).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);
@@ -90,17 +92,19 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
-	req.checkBody(checkData);
+	req.checkBody(validator.kelas);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
 		hasil.status = false,
 		hasil.error = pesan;
-		res.json(hasil);
+		res.status(422).json(hasil);
 	}
 	else{
-		db(tbl).where(pk,'=',id).update(data).
+		db(tbl).where(pk,'=',id).update({
+            nm_kelas : data.nm_kelas
+            }).
 		then(function(){
 			hasil.status = true;
 			res.json(hasil);

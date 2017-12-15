@@ -97,7 +97,7 @@ router.put('/:id',(req,res,next)=>{
 	if(result.isEmpty() == false){
 		hasil.status = false,
 		hasil.error = pesan;
-		res.json(hasil);
+		res.status(422).json(hasil);
 	}
 	else{
 		db(tbl).where(pk,'=',id).update(data).
@@ -108,7 +108,7 @@ router.put('/:id',(req,res,next)=>{
 		catch(function(err){
 			hasil.status = false;
 			hasil.error = err;
-			res.json(hasil);
+			res.status(500).json(hasil);
 			});
 	}
 	});

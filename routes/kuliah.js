@@ -3,6 +3,7 @@ var router = express.Router();
 var _ = require('lodash')
 var pk = 'id_kuliah';
 var tbl = 'tbkuliah';
+var validator = require('../validator/validator');
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -46,48 +47,41 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
-    db(tbl).insert({
-        id_kuliah : data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,
-        nidn : data.nidn,
-        kd_matkul : data.kd_matkul,
-        tahun_akademik : data.tahun_akademik,
-        }).
-    then((rows)=>{
-        let kelas = []
-        _.forEach(data.kelas,(v,k)=>{
-            kelas.push({id_kuliah:data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,id_kelas:v})
-            })
-        return db('tbkelas_kuliah').insert(kelas)
-        }).
-    then(function(){
-        hasil.status = true;
-        res.json(hasil);
-        }).
-    catch(function(err){
-        hasil.status = false;
-        hasil.error = err;
-        res.json(hasil);
-        });
+    req.checkBody(validator.kuliah);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false,
+		hasil.error = pesan;
+		res.status(422).json(hasil);
+	}
+	else{
+        db(tbl).insert({
+            id_kuliah : data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,
+            nidn : data.nidn,
+            kd_matkul : data.kd_matkul,
+            tahun_akademik : data.tahun_akademik
+            }).
+        then((rows)=>{
+            let kelas = []
+            _.forEach(data.kelas,(v,k)=>{
+                kelas.push({id_kuliah:data.kd_matkul+"-"+data.nidn+"-"+data.tahun_akademik,id_kelas:v})
+                })
+            return db('tbkelas_kuliah').insert(kelas)
+            }).
+        then(function(){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            hasil.status = false;
+            hasil.error = err;
+            res.status(503).json(hasil);
+            });
+        }
 	}); 
-router.put('/:id',(req,res,next)=>{
-    var id= req.params.id
-	var data = req.body;
-	var hasil = {};
-    console.log(data)
-    db(tbl).update({
-        tahun_akademik : data.tahun_akademik,
-        }).where('id_kuliah',data.id_kuliah)
-    then(function(){
-        hasil.status = true;
-        res.json(hasil);
-        }).
-    catch(function(err){
-        hasil.status = false;
-        hasil.error = err;
-        res.json(hasil);
-        });
-	}); 
+}); 
 router.delete('/:id',(req,res,next)=>{
 	var id = req.params.id;
 	var hasil = {};
@@ -138,19 +132,39 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 router.post('/:id/mahasiswa',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
-    db('tbpeserta_kuliah').insert(data).
-    then(function(){
-        hasil.status = true;
-        res.json(hasil);
-        }).
-    catch(function(err){
-        console.log(err)
-        hasil.status = false;
-        hasil.error = err;
-        res.json(hasil);
-        });
+    var id = req.params.id
+    req.checkBody(validator.peserta_kuliah);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false,
+		hasil.error = pesan;
+		res.status(422).json(hasil);
+	}
+	else{
+        let data_send = []
+        _.forEach(data.nobp,(v,k)=>{
+            data_send.push({
+            id_peserta : v+'-'+id,
+            nobp : v,
+            id_kuliah : id
+            })
+            })
+        db('tbpeserta_kuliah').insert(data_send).
+        then(function(){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            console.log(err)
+            hasil.status = false;
+            hasil.error = err;
+            res.status(503).json(hasil);
+            });
+        }
 	}); 
+}); 
 router.delete('/:id/mahasiswa/:idMhs',(req,res,next)=>{
 	var id_mhs = req.params.idMhs;
 	var hasil = {};
