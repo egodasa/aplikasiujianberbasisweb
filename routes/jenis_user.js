@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/tipe_soal/create_update');
+var validator = require('../validator/validator');
 var pk = 'id_juser';
 var tbl = 'tbjenis_user';
 router.get('/:id?',(req, res, next)=>{
@@ -45,6 +45,7 @@ router.get('/:id?',(req, res, next)=>{
 		res.status(503).json(hasil);
 		});
 	});
+/*
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
@@ -113,5 +114,5 @@ router.put('/:id',(req,res,next)=>{
 	}
 	});
 });
-
+*/
 module.exports = router;

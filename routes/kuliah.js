@@ -131,6 +131,7 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 	});
 router.post('/:id/mahasiswa',(req,res,next)=>{
 	var data = req.body;
+    console.log(data)
 	var hasil = {};
     var id = req.params.id
     req.checkBody(validator.peserta_kuliah);
@@ -148,7 +149,8 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
             data_send.push({
             id_peserta : v+'-'+id,
             nobp : v,
-            id_kuliah : id
+            id_kuliah : id,
+            id_kelas : data.id_kelas
             })
             })
         db('tbpeserta_kuliah').insert(data_send).
