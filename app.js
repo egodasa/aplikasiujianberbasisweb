@@ -17,7 +17,6 @@ const sKuliah = require('./schema/kuliah.js');
 const sStatistik = require('./schema/statistik.js');
 const sDosen = require('./schema/dosen.js');
 
-mysql = require('mysql');
 db = require('knex')({
   client: 'pg',
   connection: process.env.DATABASE_URL
