@@ -8,9 +8,7 @@
 <div class="w3-center w3-container" :style="Blogin.disabled ? 'display:block;height:250px;':'display:none;height:300px;'">
     <div class="w3-big w3-margin-top">Mengecek Login Pengguna
   <div class="sk-three-bounce">
-    <div class="sk-child sk-bounce1"></div>
-    <div class="sk-child sk-bounce2"></div>
-    <div class="sk-child sk-bounce3"></div>
+    <img src="/images/loading.gif" class="w3-image" width="200" />
   </div>
   </div>
 </div>
@@ -68,41 +66,45 @@ export default {
   },
   methods : {
       cekUser () {
-          this.Blogin.disabled = true
-          this.Blogin.caption = "Mengecek"
-          var data = {
-              username : this.username,
-              password : md5(this.password || "password")
-          }
-          axios.post('api/user/cek',data)
-          .then(res=>{
-              this.Blogin.disabled = false
-              this.Blogin.caption = "Login"
-              console.log(this.Blogin)
-              let hasil = res.data.data
-              if(hasil.length == 0) {
-                  Bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
-                  }
-              else {
-                  var x = {}
-                  if(hasil[0].id_juser == 1){
-                      this.$session.set('user',hasil[0])
-                      x = {path : '/admin'}
-                  }else if(hasil[0].id_juser == 2){
-                      this.$session.set('user',hasil[0])
-                      x = {path : '/dosen/'+this.username}
-                  }else if(hasil[0].id_juser == 3){
-                      this.$session.set('infoUjian',hasil[0])
-                      x = {path : '/ujian/login'}
-                  }else this.$router.push({path: '/'})
-                  this.$router.push(x)
+          if(this.username == null || this.password == null){
+              Bus.$emit("showAlert","Pesan!","Username dan password tidak boleh kosong!","warning")
+          }else{
+              this.Blogin.disabled = true
+              this.Blogin.caption = "Mengecek"
+              var data = {
+                username : this.username,
+                password : md5(this.password)
               }
-              })
-          .catch(err=>{
-              this.Blogin.disabled = false
-              this.Blogin.caption = "Login"
-              console.log(err)
-              })
+              axios.post('api/user/cek',data)
+              .then(res=>{
+                  this.Blogin.disabled = false
+                  this.Blogin.caption = "Login"
+                  console.log(this.Blogin)
+                  let hasil = res.data.data
+                  if(hasil.length == 0) {
+                      Bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
+                      }
+                  else {
+                      var x = {}
+                      if(hasil[0].id_juser == 1){
+                          this.$session.set('user',hasil[0])
+                          x = {path : '/admin'}
+                      }else if(hasil[0].id_juser == 2){
+                          this.$session.set('user',hasil[0])
+                          x = {path : '/dosen/'+this.username}
+                      }else if(hasil[0].id_juser == 3){
+                          this.$session.set('infoUjian',hasil[0])
+                          x = {path : '/ujian/login'}
+                      }else this.$router.push({path: '/'})
+                      this.$router.push(x)
+                  }
+                  })
+              .catch(err=>{
+                  this.Blogin.disabled = false
+                  this.Blogin.caption = "Login"
+                  console.log(err)
+                  })
+          }
       }
   }
 }

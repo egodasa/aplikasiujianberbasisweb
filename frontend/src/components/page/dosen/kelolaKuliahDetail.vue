@@ -1,15 +1,6 @@
 <template>
 <div class="w3-container">
     <h2>Detail Kuliah</h2>
-        <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
-        <div class="w3-big w3-margin-top">Mengecek Login Pengguna
-        <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-        </div>
-        </div>
-        </div>
     <div id="infoKuliah" :style="!loading ? 'display:block;':'display:none;height:300px;'">
             <div class="w3-row">
                 <div class="w3-col l6 s12 xs12">

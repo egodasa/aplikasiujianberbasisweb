@@ -11,7 +11,9 @@ import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
 import vSelect from 'vue-select'
 import wysiwyg from "vue-wysiwyg";
 import VueCountdown from '@xkeshi/vue-countdown'
+import Spinner from 'vue-simple-spinner'
 
+Vue.use(Spinner)
 Vue.use(wysiwyg, {
     hideModules: { "hyperlink": true,"image":true}
     });
