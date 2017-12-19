@@ -1193,6 +1193,7 @@ COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
 342	WENDI BOY	0006047306	1
 343	WIDIAWATI PURBA	1018118401	1
 344	ZULDES JONI ST	1024127202	1
+365	Amaik	10101010101	1
 \.
 
 
@@ -1200,7 +1201,7 @@ COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
 -- Name: tbdosen_id_dosen_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 362, true);
+SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 365, true);
 
 
 --
@@ -1218,6 +1219,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 8	KKKI23109-1015067501-20171-1	14101152610561	33
 9	KKKI23109-1015067501-20171-1	14101152610562	100
 10	KKKI23109-1015067501-20171-1	14101152610544	100
+11	KPKI12102-1029108702-20171-1	14101152610545	30
 \.
 
 
@@ -1225,7 +1227,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 10, true);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 11, true);
 
 
 --
@@ -1233,6 +1235,10 @@ SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 10, true);
 --
 
 COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
+1	KPKI12102-1029108702-20171-1	14101152610545	5	53
+2	KPKI12102-1029108702-20171-1	14101152610545	17	54
+3	KPKI12102-1029108702-20171-1	14101152610562	5	53
+4	KPKI12102-1029108702-20171-1	14101152610562	17	54
 \.
 
 
@@ -1240,7 +1246,7 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 -- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 1, false);
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 4, true);
 
 
 --
@@ -1267,7 +1273,7 @@ SELECT pg_catalog.setval('tbjenis_soal_id_jsoal_seq', 4, true);
 COPY tbjenis_ujian (id_jujian, nm_jujian) FROM stdin;
 1	UTS
 2	UAS
-3	Lain
+3	Lain-lain
 \.
 
 
@@ -1275,7 +1281,7 @@ COPY tbjenis_ujian (id_jujian, nm_jujian) FROM stdin;
 -- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 5, true);
+SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 10, true);
 
 
 --
@@ -1335,6 +1341,10 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 43	KKKI12106-1026108501-20171	6
 44	KKKI12106-1026108501-20171	10
 45	KKKI23109-1015067501-20171	10
+48	KKKI72103-1008077101-20171	1
+49	KKKI72103-1008077101-20171	2
+50	KKKI72103-1008077101-20171	3
+51	KKKI72103-1008077101-20171	4
 \.
 
 
@@ -1342,7 +1352,7 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 45, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 54, true);
 
 
 --
@@ -1350,11 +1360,12 @@ SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 45, true);
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
-KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	0
-BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
 KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
 KKKI23109-1015067501-20171	1015067501	KKKI23109	20171	1
 KPKI12101-1007118403-20171	1007118403	KPKI12101	20171	1
+BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
+KKKI72103-1008077101-20171	1008077101	KKKI72103	20171	1
+KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	1
 \.
 
 
@@ -1382,6 +1393,8 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 17	regiza dafma	regiza	1
 22	dsadasxs	14101152610000	1
 28	mahasiswa	14101152611552	1
+30	Mandan	14101152610999	1
+31	test mahasiswa	14101152610123	1
 \.
 
 
@@ -1389,7 +1402,7 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 -- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 29, true);
+SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 31, true);
 
 
 --
@@ -1502,6 +1515,11 @@ COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas
 14101152610544-KPKI12101-1007118403-20171	14101152610544	KPKI12101-1007118403-20171	1	3	1
 14101152610561-KPKI12101-1007118403-20171	14101152610561	KPKI12101-1007118403-20171	1	3	2
 14101152610545-KPKI12101-1007118403-20171	14101152610545	KPKI12101-1007118403-20171	1	3	2
+14101152610555-KKKI72103-1008077101-20171	14101152610555	KKKI72103-1008077101-20171	1	3	2
+14101152610555-KKKI12106-1026108501-20171	14101152610555	KKKI12106-1026108501-20171	1	3	6
+14101152610544-KKKI12106-1026108501-20171	14101152610544	KKKI12106-1026108501-20171	1	3	6
+14101152610561-KKKI12106-1026108501-20171	14101152610561	KKKI12106-1026108501-20171	1	3	10
+14101152610545-KKKI12106-1026108501-20171	14101152610545	KKKI12106-1026108501-20171	1	3	10
 \.
 
 
@@ -1627,8 +1645,8 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
 KPKI12101-1007118403-20171-1	2017-12-12	20:00:00	22:00:00	Ujian	1	1	1	KPKI12101-1007118403-20171
-KPKI12102-1029108702-20171-1	2017-12-12	20:00:00	22:30:00	Ujian	1	1	2	KPKI12102-1029108702-20171
 KKKI23109-1015067501-20171-1	2017-12-12	20:00:00	22:30:00	Ujian	1	1	1	KKKI23109-1015067501-20171
+KPKI12102-1029108702-20171-1	2017-12-13	09:30:00	10:30:00	Ujian	1	1	2	KPKI12102-1029108702-20171
 \.
 
 
@@ -2001,6 +2019,8 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 362	gundul	bcc668a0f1fcf385f0f3b7709ec5dff8	1	1
 363	14101152611552	6faba0d1ce7697ccde3b9493f0ba8708	3	1
 364	mandan	e070e2dd9634c6c078a59218cdca9e23	1	1
+365	14101152610999	becea52c3fdd0efb4a11a6effeac4053	3	1
+367	14101152610123	31b4af51dea7643e619a3c2631447005	3	1
 \.
 
 
@@ -2008,7 +2028,7 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 -- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbuser_id_user_seq', 364, true);
+SELECT pg_catalog.setval('tbuser_id_user_seq', 367, true);
 
 
 --
