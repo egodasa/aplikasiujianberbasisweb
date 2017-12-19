@@ -85,12 +85,11 @@
           </template>
           <template v-else>
               <div class="w3-display-container" style="height:300px;">
-                  <div class="w3-display-middle">
-                      <div class="sk-three-bounce">
-                        <div class="sk-child sk-bounce1"></div>
-                        <div class="sk-child sk-bounce2"></div>
-                        <div class="sk-child sk-bounce3"></div>
-                      </div>
+                  <div class="w3-display-middle w3-center">
+                        <h4>Memuat Data ...</h4>
+                        <div class="sk-three-bounce">
+                            <img src="/images/loading.gif" class="w3-image" width="200" />
+                          </div>
                     </div>
                   </div>
           </template>
