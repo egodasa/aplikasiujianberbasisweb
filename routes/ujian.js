@@ -195,6 +195,11 @@ router.get('/:id/soal', (req, res, next) => {
 router.post('/:id/soal/', (req, res, next) => {
 	var data = req.body;
     var hasil = {}
+    if(data.id_jsoal == 1){
+        data.bobot = 1
+    }else{
+        data.pilihanGanda = [{}]
+    }
 	var id_ujian = req.params.id
 	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
@@ -203,6 +208,7 @@ router.post('/:id/soal/', (req, res, next) => {
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
+        console.log(pesan)
         res.status(422).json(hasil); 
 	}
 	else{

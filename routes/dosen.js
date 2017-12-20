@@ -235,6 +235,7 @@ router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 
 router.post('/:id/kuliah',(req,res,next)=>{
 	var data = req.body;
+    console.log(data)
 	var hasil = {};
     var id = req.params.id
     req.checkBody(validator.dosen_kuliah);
