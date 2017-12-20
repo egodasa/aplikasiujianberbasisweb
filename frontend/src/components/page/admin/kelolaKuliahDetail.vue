@@ -29,7 +29,7 @@
     </div>
     <h2>Daftar Peserta Kuliah</h2>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus"></gen-table>
 </div>
 
 </template>

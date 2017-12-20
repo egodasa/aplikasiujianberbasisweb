@@ -34,8 +34,8 @@ export default {
       return {
           url : 'dosen/'+this.$session.get('user').username+'/ujian',
             tableContent : {
-                header :  ['Matkul','Dosen','Jenis Ujian','Waktu Pelaksanaan','Status','TA'],
-                content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','ket_waktu','nm_status_ujian','tahun_akademik']
+                header :  ['Matkul','Jenis Ujian','Waktu Pelaksanaan','Status','TA'],
+                content : ['id_ujian','nm_matkul','nm_jujian','ket_waktu','nm_status_ujian','tahun_akademik']
             },
           listForm : [
                 {

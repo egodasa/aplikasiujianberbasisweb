@@ -94,6 +94,7 @@ export default {
   },
   created () {
       Bus.$on('getDataDetail', x =>{
+          console.log('detail soal')
             this.getDataDetail(x)
         })
       Bus.$on('toggleFormData', () =>{

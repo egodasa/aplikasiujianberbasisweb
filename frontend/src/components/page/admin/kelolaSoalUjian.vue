@@ -91,6 +91,7 @@ export default {
   },
   created () {
       Bus.$on('getDataDetail', x =>{
+          console.log('soal ujian detail')
             this.getDataDetail(x)
         })
       Bus.$on('toggleFormData',()=>{
@@ -141,7 +142,7 @@ export default {
           {huruf:'E',isi_pilihan:null}
           ]
           this.id_jsoal = this.detailUjian.id_jsoal
-          this.bobot = null
+          this.dataForm.bobot = null
       },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
