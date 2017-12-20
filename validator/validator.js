@@ -274,7 +274,7 @@ let validator = {
             },
             isLength: {
                 options: [{
-                    min: 3,
+                    min: 1,
                     max: 3000
                 }],
                 errorMessage: 'Jawaban maksimal 3000 karakter ...'
@@ -284,7 +284,7 @@ let validator = {
             notEmpty: {
                 errorMessage: 'Bobot nilai harus diisi ...'
             },
-            isLength: {
+            isInt: {
                 options: [{
                     min: 1,
                     max: 100
@@ -334,7 +334,7 @@ let validator = {
             },
             isLength: {
                 options: [{
-                    min: 3,
+                    min: 1,
                     max: 3000
                 }],
                 errorMessage: 'Jawaban maksimal 3000 karakter ...'
