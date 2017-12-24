@@ -90,7 +90,6 @@ export default {
   },
   created () {
       bus.$on('getDataDetail', x =>{
-          console.log('soal ujian detail')
             this.getDataDetail(x)
         })
       bus.$on('toggleFormData',()=>{
@@ -104,7 +103,7 @@ export default {
           this.toggleFormData()
       },
       getDetailUjian () {
-          ajx.get('/api/ujian/'+this.$route.params.idUjian)
+          this.$ajx.get('/api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               console.log(res.data)
               this.detailUjian = res.data.data[0]
@@ -153,7 +152,7 @@ export default {
               var method = 'PUT'
               var url = '/api/soal/'+this.dataForm.id_soal
           }
-          ajx({
+          this.$ajx({
             method : method,
             data : this.dataForm,
             url :url,
@@ -171,20 +170,22 @@ export default {
         })
 		},
       getDataDetail (x) {
-          ajx({
+          this.$ajx({
             method : 'GET',
             url :'/api/soal/'+x,
             })
           .then(res=>{
-            if(res.data.status == false) console.log(res.data)
-            else {
                 let hasil = res.data.data[0]
                 this.dataForm = hasil
                 this.toggleFormData()
-            }
         })
         .catch(err=>{
-            console.log(err)
+            var kode = err.response.status
+            if(kode > 300){
+                bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
+            }else{
+                bus.$emit('showAlert','Peringatan!','Terjadi kesalahan pada server!.','warning')
+            }
         })
 		}
   },

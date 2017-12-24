@@ -49,7 +49,7 @@ export default {
             _.forEach(this.dosen, (v,k)=>{
                 tmp.push({id_mdosen:v.nidn+""+this.$route.params.kdMatkul ,nidn:v.nidn,kd_matkul:this.$route.params.kdMatkul})
                 })
-            ajx.post('api/'+this.url,tmp)
+            this.$ajx.post('api/'+this.url,tmp)
             .then(res=>{
                 bus.$emit('toggleFormData')
                 bus.$emit('newData')
@@ -61,7 +61,7 @@ export default {
             
         },
         getListDosen () {
-            ajx.get('api/dosen')
+            this.$ajx.get('api/dosen')
             .then(res=>{
                 this.listDosen = res.data.data
                 })

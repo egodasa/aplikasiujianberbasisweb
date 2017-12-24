@@ -55,7 +55,7 @@ export default {
             console.log('adddata run')
             var data = {id_mahasiswa : id,id_mdosen:this.$route.params.idMatkulDosen}
             console.log(data)
-            ajx({
+            this.$ajx({
 				method : 'POST',
 				url :'api/'+this.url,
                 data : data

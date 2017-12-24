@@ -84,7 +84,7 @@
                 </span>
                 <button type="submit" :disabled="Bsimpan.disabled" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
                 <button type="reset" @click="resetForm()" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
-                <button type="button" class="w3-button w3-blue w3-section" @click="toggleFormData()" :disabled="Bbatal.disabled"><span v-html="Bbatal.caption"></span></button>
+                <button type="button" class="w3-button w3-blue w3-section" @click="cancelForm()" :disabled="Bbatal.disabled"><span v-html="Bbatal.caption"></span></button>
             </form>
         </template>
         <template v-else>
@@ -176,6 +176,13 @@ export default {
                 this.error[v] = null
                 })
         },
+        cancelForm () {
+            this.resetForm()
+            this.edit = false
+            this.showForm = false
+            this.buttonSubmit(0)
+            this.idData = null
+        },
         buttonSubmit (x) {
             if(x == 1){
                 this.Bsimpan.disabled = true
@@ -202,10 +209,9 @@ export default {
                 var url = ""
             }else {
                 var method = 'PUT'
-                var url = '/'+this.output[this.pk]
-                this.edit = false
+                var url = '/'+this.idData
             }
-			ajx({
+			this.$ajx({
 				method : method,
 				data : this.output,
 				url :'/api/'+this.url+url,
@@ -214,6 +220,8 @@ export default {
                 bus.$emit('newData')
                 this.toggleFormData()
                 this.buttonSubmit(0)
+                console.log('kanciang')
+                this.edit = false
 			})
 			.catch(err=>{
                 var kode = err.response.status 
@@ -230,13 +238,19 @@ export default {
 		},
         getDataDetail (x){
             this.edit = true
-            ajx.get('/api/'+this.url+'/'+x)
+            this.$ajx.get('/api/'+this.url+'/'+x)
             .then(res=>{
                 this.output = res.data.data[0]
                 this.showForm = !this.showForm
+                this.idData = this.output[this.pk]
             })
             .catch(err=>{
-                bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
+                var kode = err.response.status
+                if(kode > 300){
+                    bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
+                }else{
+                    bus.$emit('showAlert','Peringatan!','Terjadi kesalahan pada server!.','warning')
+                }
             })
 		}
 	},

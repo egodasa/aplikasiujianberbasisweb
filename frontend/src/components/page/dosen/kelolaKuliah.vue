@@ -69,7 +69,7 @@ export default {
             Bus.$emit('toggleFormData')
         },
         getDataSelect (url,index){
-            ajx.get(url)
+            this.$ajx.get(url)
                 .then(res=>{
                     this.listForm[index].options = res.data.data
                     })

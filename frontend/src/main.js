@@ -25,10 +25,10 @@ Vue.use(VueRouter);
 Vue.use(VueSession);
 Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
 
-window.lcs = store
-window.ajx = axios
+Vue.prototype.$lcs = store
 window.bus = Bus
 window._ = lodash
+Vue.prototype.$ajx = axios
 // We create te router instance here.
 const router = new VueRouter({
   routes: routes

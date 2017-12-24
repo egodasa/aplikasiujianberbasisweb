@@ -76,7 +76,7 @@ export default {
             _.forEach(this.mahasiswa, (v,k)=>{
                 tmp.push({id_peserta:v.nobp+'-'+this.$route.params.idUjian,id_ujian:this.$route.params.idUjian,nobp:v.nobp,id_kelas:this.id_kelas})
                 })
-            ajx.post('api/'+this.url,tmp)
+            this.$ajx.post('api/'+this.url,tmp)
             .then(res=>{
                 Bus.$emit('toggleFormData')
                 Bus.$emit('newData')
@@ -92,7 +92,7 @@ export default {
             let query = `query mahasiswaNotInKelasUjian($id_ujian : String) {mahasiswaNotInKelasUjian(id_ujian : $id_ujian){nobp,nm_mahasiswa}}`
             let kueri = {query:query, variables : {id_ujian : this.$route.params.idUjian}}
             console.log(kueri)
-            ajx.post('api/v2/'+x,kueri)
+            this.$ajx.post('api/v2/'+x,kueri)
                 .then(res=>{
                     this[y] = res.data.data[name]
                     })

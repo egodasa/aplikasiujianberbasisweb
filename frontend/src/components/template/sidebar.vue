@@ -2,10 +2,10 @@
 <!-- Top container -->
 <div id="sidebar">
 <nav class="w3-sidebar w3-collapse w3-white" :style="'z-index:3;width:250px;display:'+menuStatus+';'" id="mySidebar"><br>
-  <template v-if="$session.has('user')">
+  <template v-if="$lcs.get('user')">
     <div class="w3-bar-block">
-      <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{$session.get('user').username}}</span>
-      <template v-if="$session.get('user').id_juser == 2">
+      <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{$lcs.get('user').username}}</span>
+      <template v-if="$lcs.get('user').id_juser == 2">
         <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{infoUser.nm_dosen}}</span> 
       </template>
     </div>
@@ -18,8 +18,8 @@
       <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-red w3-dark-grey w3-hover-black" @click="toggleMenu()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Tutup Menu</a>
         <router-link @click="toggleMenu()" v-for="x in listMenu" :to="x.path" :key="x.key" :class="$route.fullPath == x.path ? 'w3-bar-item w3-button w3-padding w3-gray' : 'w3-bar-item w3-button w3-padding'"><i :class="'fa ' + x.icon "></i>  {{x.name}}</router-link>
-        <template v-if="$session.has('user')">
-            <a v-if="$session.get('user').id_juser <= 2" class="w3-bar-item w3-button w3-padding" @click="logout()"><i class="fa fa-sign-out fa-fw"></i>  Logout</a>
+        <template v-if="$lcs.get('user')">
+            <a v-if="$lcs.get('user').id_juser <= 2" class="w3-bar-item w3-button w3-padding" @click="logout()"><i class="fa fa-sign-out fa-fw"></i>  Logout</a>
         </template>
       </div>
    </slot>
@@ -64,12 +64,11 @@ export default {
       }
   },
   created () {
-      if(this.$session.has('user')){
-          if(this.$session.get('user').id_juser == 2){
+      if(this.$lcs.get('user')){
+          if(this.$lcs.get('user').id_juser == 2){
               let query = `query getDosen($id : String) { getDosen(id : $id){id_dosen,nidn,nm_dosen,status_dosen} }`
-              let kueri = { query : query, variables : { id : this.$session.get('user').username }}
-              console.log(kueri)
-              ajx.post('api/v2/dosen/',kueri)
+              let kueri = { query : query, variables : { id : this.$lcs.get('user').username }}
+              this.$ajx.post('api/v2/dosen/',kueri)
               .then(res=>{
                   this.infoUser = res.data.data.getDosen[0]
                   })
@@ -92,7 +91,7 @@ export default {
           }else this.menuStatus = "none"
       },
       logout () {
-          this.$session.destroy()
+          this.$lcs.clearAll()
           this.$router.push({path : '/'})
       }
   }

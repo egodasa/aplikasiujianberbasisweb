@@ -137,7 +137,7 @@ export default {
               var method = 'PUT'
               var url = '/'+this.dataForm.id_soal
           }
-          ajx({
+          this.$ajx({
             method : method,
             data : this.dataForm,
             url :'/api/'+this.url+url,
@@ -155,7 +155,7 @@ export default {
         })
 		},
       getDataDetail (x) {
-          ajx({
+          this.$ajx({
             method : 'GET',
             url :'/api/'+this.url+'/'+x,
             })

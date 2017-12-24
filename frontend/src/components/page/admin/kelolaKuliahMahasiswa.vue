@@ -50,7 +50,7 @@ export default {
             _.forEach(this.mahasiswa, (v,k)=>{
                 tmp.push({id_kuliah:this.$route.params.idKuliah,nobp:v.nobp})
                 })
-            ajx.post('api/'+this.url,tmp)
+            this.$ajx.post('api/'+this.url,tmp)
             .then(res=>{
                 bus.$emit('toggleFormData')
                 bus.$emit('newData')
@@ -62,7 +62,7 @@ export default {
             
         },
         getListMahasiswa () {
-            ajx.get('api/mahasiswa')
+            this.$ajx.get('api/mahasiswa')
             .then(res=>{
                 this.listMahasiswa = res.data.data
                 })

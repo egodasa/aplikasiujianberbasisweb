@@ -58,7 +58,7 @@ export default {
   },
   methods : {
       getDataSelect (url,target) {
-          ajx.get(url)
+          this.$ajx.get(url)
           .then(res=>{
               this.listForm[target].option = res.data.data
               })

@@ -248,7 +248,7 @@ export default {
             if(this.pencarian == true){
                 url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
             }else url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
-			ajx.get(url)
+			this.$ajx.get(url)
 			.then(res=>{
                     this.statusCodeDataTable = res.status
                     if(this.statusCodeDataTable == 204 || res.data.row == 0){
@@ -273,7 +273,7 @@ export default {
 			})
 		},
 		deleteData (id) {
-			ajx({
+			this.$ajx({
 				method : 'DELETE',
 				url :this.baseUrl+this.url+'/'+id
 				})

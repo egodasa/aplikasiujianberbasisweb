@@ -19,10 +19,14 @@
             <li>Jika terdapat masalah maka dipersilahkan untuk melapor kepada pengawas ujian</li>
         </ul>
 		</div>
-		<div class="w3-container">
+        <div class="w3-row">
+        <div class="w3-container w3-half">
 			<button class="w3-button w3-margin w3-left w3-teal" @click="batalkanUjian"><b><< Kembali</b></button>
+		</div>
+        <div class="w3-container w3-half">
 			<router-link :to="{name: 'pelaksanaanUjian'}" class="w3-button w3-margin w3-right w3-blue"><b>Kerjakan Ujian>></b></router-link>
 		</div>
+        </div>
 	</div>
 </div>
 
@@ -34,7 +38,7 @@ export default {
   name: 'petunjukUjian',
   methods : {
       batalkanUjian () {
-          this.$session.destroy()
+          this.$lcs.destroy()
           this.$router.push({path: '/login'})
       }
   }

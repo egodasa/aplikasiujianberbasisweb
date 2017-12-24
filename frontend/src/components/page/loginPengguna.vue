@@ -42,10 +42,10 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
       next(vm => {
-            if(vm.$session.has('user')){
-                if(vm.$session.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
-                else if(vm.$session.get('user').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$session.get('user').username})
-                else if(vm.$session.get('user').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
+            if(vm.$lcs.get('user')){
+                if(vm.$lcs.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
+                else if(vm.$lcs.get('user').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$lcs.get('user').username})
+                else if(vm.$lcs.get('user').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
             }
         })
   },
@@ -61,7 +61,6 @@ export default {
   },
   created (){
       bus.$emit('toggleModal')
-      console.log(lcs)
   },
   methods : {
       cekUser () {
@@ -74,7 +73,7 @@ export default {
                 username : this.username,
                 password : md5(this.password)
               }
-              ajx.post('api/user/cek',data)
+              this.$ajx.post('api/user/cek',data)
               .then(res=>{
                   this.Blogin.disabled = false
                   this.Blogin.caption = "Login"
@@ -86,13 +85,13 @@ export default {
                   else {
                       var x = {}
                       if(hasil[0].id_juser == 1){
-                          this.$session.set('user',hasil[0])
+                          this.$lcs.set('user',hasil[0])
                           x = {path : '/admin'}
                       }else if(hasil[0].id_juser == 2){
-                          this.$session.set('user',hasil[0])
+                          this.$lcs.set('user',hasil[0])
                           x = {path : '/dosen/'+this.username}
                       }else if(hasil[0].id_juser == 3){
-                          this.$session.set('infoUjian',hasil[0])
+                          this.$lcs.set('infoUjian',hasil[0])
                           x = {path : '/ujian/login'}
                       }else this.$router.push({path: '/'})
                       this.$router.push(x)
@@ -110,38 +109,4 @@ export default {
 </script>
 
 <style scoped>
-.sk-three-bounce {
-  margin: 40px auto;
-  width: 80px;
-  text-align: center; }
-  .sk-three-bounce .sk-child {
-    width: 20px;
-    height: 20px;
-    background-color: #333;
-    border-radius: 100%;
-    display: inline-block;
-    -webkit-animation: sk-three-bounce 1.4s ease-in-out 0s infinite both;
-            animation: sk-three-bounce 1.4s ease-in-out 0s infinite both; }
-  .sk-three-bounce .sk-bounce1 {
-    -webkit-animation-delay: -0.32s;
-            animation-delay: -0.32s; }
-  .sk-three-bounce .sk-bounce2 {
-    -webkit-animation-delay: -0.16s;
-            animation-delay: -0.16s; }
-
-@-webkit-keyframes sk-three-bounce {
-  0%, 80%, 100% {
-    -webkit-transform: scale(0);
-            transform: scale(0); }
-  40% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
-
-@keyframes sk-three-bounce {
-  0%, 80%, 100% {
-    -webkit-transform: scale(0);
-            transform: scale(0); }
-  40% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
 </style>

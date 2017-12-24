@@ -42,22 +42,22 @@
 <sec-content>
    <div class="w3-container" style="margin-top:30px;">
    <div class="w3-row" style="margin-top:30px;">
-    <div class="w3-col l6 md6 s6">
+    <div class="w3-col l6 md6 s12 xs12">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
             Total Soal : {{listSoal.length}}
         </a>
     </div>
-    <div class="w3-col l6 md6 s6">
+    <div class="w3-col l6 md6 s12 xs12">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
             Sisa Waktu : {{sisaWaktu}}
         </a>
     </div>
-    <div class="w3-col l6 md6 s6">
+    <div class="w3-col l6 md6 s12 xs12">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
             Selesai : {{soalDikerjakan}}
         </a>
     </div>
-    <div class="w3-col l6 md6 s6">
+    <div class="w3-col l6 md6 s12 xs12">
         <a class="w3-button w3-border w3-border-gray w3-pale-blue w3-block w3-hover-blue">
             Belum Selesai : {{listSoal.length-soalDikerjakan}}
         </a>
@@ -138,13 +138,13 @@ export default {
         }
   },
   beforeCreated () {
-    if(!this.$session.has('infoUjian')) this.$router.push({path: '/ujian/login'})
+    if(!this.$lcs.get('infoUjian')) this.$router.push({path: '/ujian/login'})
   },
   created (){
-      this.infoUjian = this.$session.get('infoUjian')  
+      this.infoUjian = this.$lcs.get('infoUjian')  
       this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
       this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
-      this.waktuSelesai = new Date(this.$session.get('infoUjian').hari.substr(0,10) + " " + this.$session.get('infoUjian').selesai).getTime()
+      this.waktuSelesai = new Date(this.$lcs.get('infoUjian').hari.substr(0,10) + " " + this.$lcs.get('infoUjian').selesai).getTime()
       this.genLjk()
       this.runSisaWaktu()
       this.runWaktuSekarang()
@@ -155,7 +155,7 @@ export default {
   },
   methods : {
       runSisaWaktu () {
-          var sisa = new Date(this.$session.get('infoUjian').hari + " " + this.$session.get('infoUjian').selesai).getTime() - new Date().getTime()
+          var sisa = new Date(this.$lcs.get('infoUjian').hari + " " + this.$lcs.get('infoUjian').selesai).getTime() - new Date().getTime()
           this.sisaWaktuJalan = setInterval(()=>{
               if(sisa < 0) {
                   this.kumpulkanUjian()
@@ -198,9 +198,9 @@ export default {
           .then(res=>{
                 this.listSoal = res.data.data
                 //cek sesi ujian apakah sudah ada
-                if(this.$session.has('ljk')){
-                   this.jawabanPeserta = this.$session.get('ljk').jawabanPeserta
-                   this.posisiSoal = this.$session.get('ljk').posisiSoal
+                if(this.$lcs.get('ljk')){
+                   this.jawabanPeserta = this.$lcs.get('ljk').jawabanPeserta
+                   this.posisiSoal = this.$lcs.get('ljk').posisiSoal
                    this.showSoal(this.posisiSoal)
                 }else{
                     _.forEach(res.data.data, (v,k)=>{
@@ -211,7 +211,7 @@ export default {
                       jawabanPeserta : this.jawabanPeserta,
                       posisiSoal : this.posisiSoal
                     }
-                    this.$session.set('ljk',tmp)
+                    this.$lcs.set('ljk',tmp)
                 }
                 this.showSoal(this.posisiSoal)
               })
@@ -262,7 +262,7 @@ export default {
                   })
           }
           this.simpanJawaban(this.posisiSoal,this.jawaban)
-          this.$session.destroy()
+          this.$lcs.destroy()
           this.$router.push({path: '/'})
       },
       simpanJawaban (x,jawaban){
@@ -272,7 +272,7 @@ export default {
               jawabanPeserta : this.jawabanPeserta,
               posisiSoal : this.posisiSoal
           }
-          this.$session.set('ljk',tmp)
+          this.$lcs.set('ljk',tmp)
           this.hitungSoalSiap()
       },
       hitungSoalSiap () {

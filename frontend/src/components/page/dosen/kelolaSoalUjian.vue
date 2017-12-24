@@ -103,7 +103,7 @@ export default {
           this.toggleFormData()
       },
       getDetailUjian () {
-          ajx.get('/api/ujian/'+this.$route.params.idUjian)
+          this.$ajx.get('/api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               console.log(res.data)
               this.detailUjian = res.data.data[0]
@@ -152,7 +152,7 @@ export default {
               var method = 'PUT'
               var url = '/api/soal/'+this.dataForm.id_soal
           }
-          ajx({
+          this.$ajx({
             method : method,
             data : this.dataForm,
             url :url,
@@ -170,7 +170,7 @@ export default {
         })
 		},
       getDataDetail (x) {
-          ajx({
+          this.$ajx({
             method : 'GET',
             url :'/api/soal/'+x,
             })

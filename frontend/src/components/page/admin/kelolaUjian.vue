@@ -45,11 +45,11 @@ export default {
                     options : [],
                     placeholder : "Ketik nama dosen atau matkul",
                     searchField : ['nm_matkul','nm_dosen'],
-                    load : function(q,c){
+                    load : (q,c)=>{
                         if(q.length <= 1) return c()
                         var query = `query cariKuliah($cari : String){ cariKuliah(cari : $cari){id_kuliah,nm_matkul,nm_dosen,tahun_akademik,ket_nm_kelas}}`
                         var kueri = {query : query,variables : {cari : q}}
-                        ajx.post('api/v2/kuliah',kueri)
+                        this.$ajx.post('api/v2/kuliah',kueri)
                             .then(res=>{
                                 c(res.data.data.cariKuliah)
                                 })
@@ -68,7 +68,7 @@ export default {
                     onItemAdd : (value, $item)=>{
                         let query = `query jenisUjianTersedia($id_kuliah : String) {jenisUjianTersedia(id_kuliah : $id_kuliah){id_jujian,nm_jujian}}`
                         let kueri = {query:query, variables : {id_kuliah : value}}
-                        ajx.post('api/v2/jenis_ujian',kueri)
+                        this.$ajx.post('api/v2/jenis_ujian',kueri)
                         .then(res=>{
                             this.listForm[1].option = res.data.data['jenisUjianTersedia']
                             })
@@ -126,7 +126,7 @@ export default {
   },
   methods : {
         getDataSelect (url,index){
-            ajx.get(url)
+            this.$ajx.get(url)
                 .then(res=>{
                     this.listForm[index].option = res.data.data
                     })

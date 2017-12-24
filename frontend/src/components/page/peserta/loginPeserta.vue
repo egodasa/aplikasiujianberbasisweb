@@ -32,14 +32,14 @@ export default {
         }
   },
   beforeCreated (){
-      if(this.$session.has('infoUjian')) this.$router.push({path : '/ujian/petunjuk'})
+      if(this.$lcs.get('infoUjian')) this.$router.push({path : '/ujian/petunjuk'})
   },
   created () {
     this.getUjian()
   },
   methods : {
       getUjian () {
-          ajx.get('/api/mahasiswa/'+this.$session.get('infoUjian').username+'/ujian')
+          ajx.get('/api/mahasiswa/'+this.$lcs.get('infoUjian').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               })
@@ -49,11 +49,11 @@ export default {
               })
       },
       masukUjian(){
-          this.$session.set('infoUjian',this.selectedUjian)
+          this.$lcs.set('infoUjian',this.selectedUjian)
           this.$router.push({path : '/ujian/petunjuk'})
       },
       batalkanUjian (){
-          this.$session.destroy()
+          this.$lcs.destroy()
           this.$router.push({path : '/'})
       }
   }

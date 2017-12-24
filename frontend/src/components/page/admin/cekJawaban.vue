@@ -61,7 +61,7 @@ export default {
       admin
   },
   beforeCreated () {
-      ajx.get('api/ujian/'+this.$route.params.idUjian+'/hasil/'+this.$route.params.idPeserta)
+      this.$ajx.get('api/ujian/'+this.$route.params.idUjian+'/hasil/'+this.$route.params.idPeserta)
       .then(res=>{
           if(res.data.data.length == 1) {
               console.log('dup')
@@ -90,7 +90,7 @@ export default {
   },
   methods : {
       getUjian (){
-          ajx.get('api/ujian/'+this.$route.params.idUjian)
+          this.$ajx.get('api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               this.infoUjian = res.data.data[0]
               })
@@ -100,7 +100,7 @@ export default {
               })
       },
       getListJawaban (){
-          ajx.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
+          this.$ajx.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
           .then(res=>{
               console.log(res.data.data)
               this.listJawaban = res.data.data
@@ -131,7 +131,7 @@ export default {
               nobp : this.$route.params.idPeserta,
               nilai : this.totalBobot
               }
-          ajx.post('api/ujian/hasil',data)
+          this.$ajx.post('api/ujian/hasil',data)
           .then(res=>{
               console.log(res)
               this.$router.push({path: '/admin/ujian/'+this.$route.params.idUjian})

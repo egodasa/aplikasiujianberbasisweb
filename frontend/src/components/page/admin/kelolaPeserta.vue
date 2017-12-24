@@ -67,7 +67,7 @@ export default {
   },
   methods : {
         getDataKelas () {
-            ajx.get('api/kelas')
+            this.$ajx.get('api/kelas')
                 .then(res=>{
                     this.listForm[2].option = res.data.data
                     })

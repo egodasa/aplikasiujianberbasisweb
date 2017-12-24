@@ -1,7 +1,7 @@
 <template>
 <div>
 <sec-header></sec-header>
-    <sec-sidebar :listMenu="menu" :welcomeMessage="$session.get('user').username"></sec-sidebar>
+    <sec-sidebar :listMenu="menu" :welcomeMessage="$lcs.get('user').username"></sec-sidebar>
     <sec-content>
             <slot>
             <router-view></router-view>
@@ -30,11 +30,10 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
       next(vm => {
-            console.log('nsdfskd')
-            if(vm.$session.has('user')){
-                if(vm.$session.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
+            if(vm.$lcs.get('user')){
+                if(vm.$lcs.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
                 else{
-                    if(vm.$session.get('user').username != vm.$route.params.nidn) vm.$router.push({path:'/dosen/'+vm.$session.get('user').username})
+                    if(vm.$lcs.get('user').username != vm.$route.params.nidn) vm.$router.push({path:'/dosen/'+vm.$lcs.get('user').username})
                     }
             }else vm.$router.push({path:'/'})
         })

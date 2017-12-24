@@ -113,7 +113,7 @@ export default {
   },
   methods : {
         getDataSelect (url,index){
-            ajx.get(url)
+            this.$ajx.get(url)
                 .then(res=>{
                     this.listForm[index].option = res.data.data
                     })
@@ -122,7 +122,7 @@ export default {
                     })
         },
         getDataSelectGraph (url,query,name,index,nama,tipe){
-            ajx.post(url,query)
+            this.$ajx.post(url,query)
                 .then(res=>{
                     if(tipe == 'selectize'){
                         this.listForm[index].options = res.data.data[name]

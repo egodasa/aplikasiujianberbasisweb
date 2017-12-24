@@ -119,7 +119,7 @@ export default {
           this.currentTabs = x
       },
       detailUjian () {
-          ajx.get('api/ujian/'+this.$route.params.idUjian)
+          this.$ajx.get('api/ujian/'+this.$route.params.idUjian)
             .then(res=>{
                 this.infoUjian = res.data.data[0]
                 console.log(this.infoUjian.nm_kelas)
