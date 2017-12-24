@@ -16,10 +16,7 @@
 <script>
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import admin from './halamanAdmin.vue'
-import { Bus } from '../../../bus.js';
 
 export default {
   name: 'kelolaKuliah',
@@ -78,10 +75,10 @@ export default {
   },
   methods : {
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         },
         getDataSelect (url,index){
-            axios.get(url)
+            ajx.get(url)
                 .then(res=>{
                     this.listForm[index].options = res.data.data
                     console.log(this.listForm[index].options)

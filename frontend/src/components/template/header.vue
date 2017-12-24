@@ -7,7 +7,6 @@
 </div>
 </template>
 <script>
-import { Bus } from '../../bus.js';
 export default {
   name: 'secHeader',
   props : {
@@ -25,11 +24,11 @@ export default {
   methods : {
       logout () {
           this.$session.destroy()
-          Bus.$emit('setMenu',3)
+          bus.$emit('setMenu',3)
           this.$router.push({path: '/login'})
       },
       toggleMenu (){
-          Bus.$emit('toggleMenu')
+          bus.$emit('toggleMenu')
       }
   }
 }

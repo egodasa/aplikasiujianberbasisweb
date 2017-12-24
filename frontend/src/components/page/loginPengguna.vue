@@ -32,10 +32,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import _ from 'lodash'
+
 import md5 from 'md5'
-import { Bus } from '../../bus.js';
 import modal from '../template/modal.vue'
 export default {
   name: 'loginPengguna',
@@ -62,12 +60,13 @@ export default {
     }
   },
   created (){
-      Bus.$emit('toggleModal')
+      bus.$emit('toggleModal')
+      console.log(lcs)
   },
   methods : {
       cekUser () {
           if(this.username == null || this.password == null){
-              Bus.$emit("showAlert","Pesan!","Username dan password tidak boleh kosong!","warning")
+              bus.$emit("showAlert","Pesan!","Username dan password tidak boleh kosong!","warning")
           }else{
               this.Blogin.disabled = true
               this.Blogin.caption = "Mengecek"
@@ -75,14 +74,14 @@ export default {
                 username : this.username,
                 password : md5(this.password)
               }
-              axios.post('api/user/cek',data)
+              ajx.post('api/user/cek',data)
               .then(res=>{
                   this.Blogin.disabled = false
                   this.Blogin.caption = "Login"
                   console.log(this.Blogin)
                   let hasil = res.data.data
                   if(hasil.length == 0) {
-                      Bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
+                      bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
                       }
                   else {
                       var x = {}

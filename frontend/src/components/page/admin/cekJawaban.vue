@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import _ from 'lodash'
+
+
 import { adminConf } from './admin.js'
 import admin from './halamanAdmin.vue'
 export default {
@@ -61,7 +61,7 @@ export default {
       admin
   },
   beforeCreated () {
-      axios.get('api/ujian/'+this.$route.params.idUjian+'/hasil/'+this.$route.params.idPeserta)
+      ajx.get('api/ujian/'+this.$route.params.idUjian+'/hasil/'+this.$route.params.idPeserta)
       .then(res=>{
           if(res.data.data.length == 1) {
               console.log('dup')
@@ -90,7 +90,7 @@ export default {
   },
   methods : {
       getUjian (){
-          axios.get('api/ujian/'+this.$route.params.idUjian)
+          ajx.get('api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               this.infoUjian = res.data.data[0]
               })
@@ -100,7 +100,7 @@ export default {
               })
       },
       getListJawaban (){
-          axios.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
+          ajx.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
           .then(res=>{
               console.log(res.data.data)
               this.listJawaban = res.data.data
@@ -131,7 +131,7 @@ export default {
               nobp : this.$route.params.idPeserta,
               nilai : this.totalBobot
               }
-          axios.post('api/ujian/hasil',data)
+          ajx.post('api/ujian/hasil',data)
           .then(res=>{
               console.log(res)
               this.$router.push({path: '/admin/ujian/'+this.$route.params.idUjian})

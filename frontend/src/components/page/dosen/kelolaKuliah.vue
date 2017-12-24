@@ -16,10 +16,7 @@
 <script>
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import dosen from './halamanDosen.vue'
-import { Bus } from '../../../bus.js';
 import selectize from 'vue2-selectize'
 
 export default {
@@ -72,7 +69,7 @@ export default {
             Bus.$emit('toggleFormData')
         },
         getDataSelect (url,index){
-            axios.get(url)
+            ajx.get(url)
                 .then(res=>{
                     this.listForm[index].options = res.data.data
                     })

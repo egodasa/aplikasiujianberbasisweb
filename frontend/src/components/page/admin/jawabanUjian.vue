@@ -10,7 +10,7 @@
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import axios from 'axios'
+
 
 export default {
   name: 'jawabanUjian',

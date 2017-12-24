@@ -16,9 +16,6 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import _ from 'lodash'
-import { Bus } from '../../../bus.js';
-import axios from 'axios'
 
 export default {
   name: 'pengaturan',

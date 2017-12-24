@@ -54,8 +54,6 @@
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import axios from 'axios'
-import { Bus } from '../../../bus.js';
 import admin from './halamanAdmin.vue'
 export default {
   name: 'kelolaSoal',
@@ -93,11 +91,11 @@ export default {
         }
   },
   created () {
-      Bus.$on('getDataDetail', x =>{
+      bus.$on('getDataDetail', x =>{
           console.log('detail soal')
             this.getDataDetail(x)
         })
-      Bus.$on('toggleFormData', () =>{
+      bus.$on('toggleFormData', () =>{
             this.toggleFormData()
         })
   },
@@ -139,7 +137,7 @@ export default {
               var method = 'PUT'
               var url = '/'+this.dataForm.id_soal
           }
-          axios({
+          ajx({
             method : method,
             data : this.dataForm,
             url :'/api/'+this.url+url,
@@ -148,7 +146,7 @@ export default {
             if(res.data.status == false) console.log(res.data)
             else {
                 this.toggleFormData()
-                Bus.$emit("newData")
+                bus.$emit("newData")
                 this.resetForm()
             }
         })
@@ -157,7 +155,7 @@ export default {
         })
 		},
       getDataDetail (x) {
-          axios({
+          ajx({
             method : 'GET',
             url :'/api/'+this.url+'/'+x,
             })
@@ -176,7 +174,7 @@ export default {
 		}
   },
   destroyed () {
-      //Bus.$off('getDataDetail')
+      //bus.$off('getDataDetail')
   }
 }
 </script>

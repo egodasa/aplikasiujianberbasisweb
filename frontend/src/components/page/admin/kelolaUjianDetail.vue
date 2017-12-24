@@ -82,14 +82,11 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import hasilUjian from './hasilUjian.vue'
 import soalUjian from './kelolaSoalUjian.vue'
 import kelolaPesertaUjian from './kelolaPesertaUjian.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
-import { Bus } from '../../../bus.js';
 
 export default {
   name: 'kelolaUjianDetail',
@@ -122,11 +119,11 @@ export default {
           this.currentTabs = x
       },
       detailUjian () {
-          axios.get('api/ujian/'+this.$route.params.idUjian)
+          ajx.get('api/ujian/'+this.$route.params.idUjian)
             .then(res=>{
                 this.infoUjian = res.data.data[0]
                 console.log(this.infoUjian.nm_kelas)
-                Bus.$emit('getKelas',this.infoUjian.nm_kelas)
+                bus.$emit('getKelas',this.infoUjian.nm_kelas)
                 this.infoUjian.hari = formatWaktu(new Date(this.infoUjian.hari), 'DD MMMM YYYY', {locale : lokalisasi})
                 this.periksaSoal = this.infoUjian.id_jsoal == 2
                 })

@@ -41,11 +41,10 @@
 </template>
 
 <script>
-import { Bus } from './bus.js';
 export default {
   name: 'app',
   created () {
-      Bus.$on('showAlert',(w,x,y,z)=>{
+      bus.$on('showAlert',(w,x,y,z)=>{
           this.showAlert(w,x,y,z)
           })
   },

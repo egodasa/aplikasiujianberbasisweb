@@ -38,11 +38,8 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import dosen from './halamanDosen.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
-import { Bus } from '../../../bus.js'
 
 export default {
   name: 'DkelolaKuliahDetail',
@@ -84,7 +81,7 @@ export default {
                         let query = `query mahasiswaNotInKelasKuliah($id_kuliah : String,$nobp : String,$nm_mahasiswa:String) {mahasiswaNotInKelasKuliah(id_kuliah : $id_kuliah,nobp : $nobp,nm_mahasiswa : $nm_mahasiswa){nobp,nm_mahasiswa}}`
                         let kueri = {query:query, variables : {id_kuliah : this.$route.params.idKuliah   ,nobp:q,nm_mahasiswa:q}}
                         console.log(kueri)
-                        axios.post('api/v2/mahasiswa',kueri)
+                        ajx.post('api/v2/mahasiswa',kueri)
                             .then(res=>{
                                 console.log(res.data.data)
                                 c(res.data.data.mahasiswaNotInKelasKuliah)
@@ -114,7 +111,7 @@ export default {
           this.currentTabs = x
       },
       detailKuliah () {
-          axios.get('api/kuliah/'+this.$route.params.idKuliah)
+          ajx.get('api/kuliah/'+this.$route.params.idKuliah)
             .then(res=>{
                 this.infoKuliah = res.data.data[0]
                 _.forEach(this.infoKuliah.id_kelas,(v,k)=>{

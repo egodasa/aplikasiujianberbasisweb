@@ -21,10 +21,8 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import dosen from './halamanDosen.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import Datepicker from 'vuejs-datepicker';
-import { Bus } from '../../../bus.js';
+
 export default {
   name: 'kelolaUjian',
   components : {
@@ -115,7 +113,7 @@ export default {
   },
   methods : {
         getDataSelect (url,index){
-            axios.get(url)
+            ajx.get(url)
                 .then(res=>{
                     this.listForm[index].option = res.data.data
                     })
@@ -124,7 +122,7 @@ export default {
                     })
         },
         getDataSelectGraph (url,query,name,index,nama,tipe){
-            axios.post(url,query)
+            ajx.post(url,query)
                 .then(res=>{
                     if(tipe == 'selectize'){
                         this.listForm[index].options = res.data.data[name]
@@ -133,12 +131,12 @@ export default {
                     }
                     })
                 .catch(err=>{
-                    Bus.$emit('showAlert','Pesan!','Tidak dapat mengambil daftar '+nama+'. Silahkan muat ulang halaman','warning')
+                    bus.$emit('showAlert','Pesan!','Tidak dapat mengambil daftar '+nama+'. Silahkan muat ulang halaman','warning')
                     this.listForm[index].options = []
                     })
         },
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
             this.resetData()
             this.edit = false
         }

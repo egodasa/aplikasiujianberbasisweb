@@ -21,10 +21,8 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import axios from 'axios'
-import _ from 'lodash'
 import Datepicker from 'vuejs-datepicker';
-import { Bus } from '../../../bus.js';
+
 export default {
   name: 'kelolaUjian',
   components : {
@@ -51,7 +49,7 @@ export default {
                         if(q.length <= 1) return c()
                         var query = `query cariKuliah($cari : String){ cariKuliah(cari : $cari){id_kuliah,nm_matkul,nm_dosen,tahun_akademik,ket_nm_kelas}}`
                         var kueri = {query : query,variables : {cari : q}}
-                        axios.post('api/v2/kuliah',kueri)
+                        ajx.post('api/v2/kuliah',kueri)
                             .then(res=>{
                                 c(res.data.data.cariKuliah)
                                 })
@@ -70,7 +68,7 @@ export default {
                     onItemAdd : (value, $item)=>{
                         let query = `query jenisUjianTersedia($id_kuliah : String) {jenisUjianTersedia(id_kuliah : $id_kuliah){id_jujian,nm_jujian}}`
                         let kueri = {query:query, variables : {id_kuliah : value}}
-                        axios.post('api/v2/jenis_ujian',kueri)
+                        ajx.post('api/v2/jenis_ujian',kueri)
                         .then(res=>{
                             this.listForm[1].option = res.data.data['jenisUjianTersedia']
                             })
@@ -128,7 +126,7 @@ export default {
   },
   methods : {
         getDataSelect (url,index){
-            axios.get(url)
+            ajx.get(url)
                 .then(res=>{
                     this.listForm[index].option = res.data.data
                     })
@@ -137,7 +135,7 @@ export default {
                     })
         },
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
             this.resetData()
             this.edit = false
         }

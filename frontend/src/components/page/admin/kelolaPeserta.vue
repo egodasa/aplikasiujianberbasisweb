@@ -13,7 +13,7 @@
 <script>
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
-import axios from 'axios'
+
 import admin from './halamanAdmin.vue'
 
 export default {
@@ -67,7 +67,7 @@ export default {
   },
   methods : {
         getDataKelas () {
-            axios.get('api/kelas')
+            ajx.get('api/kelas')
                 .then(res=>{
                     this.listForm[2].option = res.data.data
                     })

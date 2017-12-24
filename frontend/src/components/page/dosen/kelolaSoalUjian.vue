@@ -51,8 +51,7 @@
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import axios from 'axios'
-import { Bus } from '../../../bus.js';
+
 export default {
   name: 'kelolaSoalUjian',
   components : {
@@ -90,10 +89,10 @@ export default {
         }
   },
   created () {
-      Bus.$on('getDataDetail', x =>{
+      bus.$('getDataDetail', x =>{
             this.getDataDetail(x)
         })
-      Bus.$on('toggleFormData',()=>{
+      bus.$('toggleFormData',()=>{
           this.toggleFormData()
           })
       this.getDetailUjian()
@@ -104,7 +103,7 @@ export default {
           this.toggleFormData()
       },
       getDetailUjian () {
-          axios.get('/api/ujian/'+this.$route.params.idUjian)
+          ajx.get('/api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               console.log(res.data)
               this.detailUjian = res.data.data[0]
@@ -153,7 +152,7 @@ export default {
               var method = 'PUT'
               var url = '/api/soal/'+this.dataForm.id_soal
           }
-          axios({
+          ajx({
             method : method,
             data : this.dataForm,
             url :url,
@@ -171,7 +170,7 @@ export default {
         })
 		},
       getDataDetail (x) {
-          axios({
+          ajx({
             method : 'GET',
             url :'/api/soal/'+x,
             })

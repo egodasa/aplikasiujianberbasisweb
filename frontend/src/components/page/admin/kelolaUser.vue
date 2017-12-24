@@ -12,7 +12,7 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import axios from 'axios'
+
 export default {
   name: 'kelolaUser',
   components : {
@@ -58,7 +58,7 @@ export default {
   },
   methods : {
       getDataSelect (url,target) {
-          axios.get(url)
+          ajx.get(url)
           .then(res=>{
               this.listForm[target].option = res.data.data
               })

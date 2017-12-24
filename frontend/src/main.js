@@ -10,22 +10,26 @@ import VeeValidate, { Validator } from 'vee-validate';
 import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
 import vSelect from 'vue-select'
 import wysiwyg from "vue-wysiwyg";
-import VueCountdown from '@xkeshi/vue-countdown'
-import Spinner from 'vue-simple-spinner'
-
-Vue.use(Spinner)
+import Notifications from 'vue-notification'
+import store from 'store'
+import axios from 'axios'
+import lodash from 'lodash'
+import { Bus } from './bus.js'
 Vue.use(wysiwyg, {
     hideModules: { "hyperlink": true,"image":true}
-    });
-import Notifications from 'vue-notification'
-Vue.component('countdown', VueCountdown);
+    })
 Vue.use(Notifications)
 Vue.component('v-select', vSelect)
 VeeValidate.Validator.addLocale(bahasa)
 Vue.use(VueRouter);
 Vue.use(VueSession);
 Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
-// We create the router instance here.
+
+window.lcs = store
+window.ajx = axios
+window.bus = Bus
+window._ = lodash
+// We create te router instance here.
 const router = new VueRouter({
   routes: routes
 });

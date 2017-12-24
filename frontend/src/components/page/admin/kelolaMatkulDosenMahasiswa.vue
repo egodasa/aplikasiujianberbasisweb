@@ -21,8 +21,6 @@
 
 <script>
 import genTable from '../../template/GenTable.vue'
-import { Bus } from '../../../bus.js';
-import axios from 'axios';
 import admin from './halamanAdmin.vue'
 
 export default {
@@ -45,7 +43,7 @@ export default {
         }
   },
   created () {
-      Bus.$on('addDataList', (x)=>{
+      bus.$on('addDataList', (x)=>{
           this.addData(x)
           })
   },
@@ -57,7 +55,7 @@ export default {
             console.log('adddata run')
             var data = {id_mahasiswa : id,id_mdosen:this.$route.params.idMatkulDosen}
             console.log(data)
-            axios({
+            ajx({
 				method : 'POST',
 				url :'api/'+this.url,
                 data : data
@@ -65,7 +63,7 @@ export default {
 			.then(res=>{
                 if(res.data.status == true) {
                     this.toggleFormData()
-                    Bus.$emit('newData')
+                    bus.$emit('newData')
                 }
                 else console.log(res.data.error)
 			})
@@ -78,7 +76,7 @@ export default {
       console.log('non aktif')
   },
   destroyed () {
-      Bus.$off('addDataList')
+      bus.$off('addDataList')
   }
 }
 </script>

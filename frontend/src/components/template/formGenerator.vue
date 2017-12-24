@@ -97,12 +97,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { Bus } from '../../bus.js';
 import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
 import pengaturan from '../../pengaturan.json'
-import _ from 'lodash'
+
 import selectize from 'vue2-selectize'
 
 export default {
@@ -147,10 +145,10 @@ export default {
 		}
 	},
     created () {
-        Bus.$on('getDataDetail', x =>{
+        bus.$on('getDataDetail', x =>{
             this.getDataDetail(x)
         })
-        Bus.$on('toggleFormData', () =>{
+        bus.$on('toggleFormData', () =>{
             this.toggleFormData()
         })
         this.showForm = false
@@ -207,13 +205,13 @@ export default {
                 var url = '/'+this.output[this.pk]
                 this.edit = false
             }
-			axios({
+			ajx({
 				method : method,
 				data : this.output,
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
-                Bus.$emit('newData')
+                bus.$emit('newData')
                 this.toggleFormData()
                 this.buttonSubmit(0)
 			})
@@ -225,25 +223,25 @@ export default {
                         this.error[v] = err.response.data.error[v].msg
                         })
                 }else if(kode >= 500){
-                    Bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','danger')
+                    bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','danger')
                 }
                 this.buttonSubmit(0)
 			})
 		},
         getDataDetail (x){
             this.edit = true
-            axios.get('/api/'+this.url+'/'+x)
+            ajx.get('/api/'+this.url+'/'+x)
             .then(res=>{
                 this.output = res.data.data[0]
                 this.showForm = !this.showForm
             })
             .catch(err=>{
-                Bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
+                bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
             })
 		}
 	},
     destroyed () {
-        //Bus.$off('getDataDetail')
+        //bus.$off('getDataDetail')
     }
 }
 </script>

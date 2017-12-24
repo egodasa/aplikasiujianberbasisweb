@@ -97,9 +97,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { Bus } from '../../bus.js';
-
 export default {
   name: 'genTable',
   props : {
@@ -198,10 +195,10 @@ export default {
     }
   },
   created () {
-        Bus.$on('newData',()=>{
+        bus.$on('newData',()=>{
             this.getData(this.pageRows,this.pageNumber)
             })
-        Bus.$emit('newData')
+        bus.$emit('newData')
   },
   computed : {
         tableCenter : function () {
@@ -251,7 +248,7 @@ export default {
             if(this.pencarian == true){
                 url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
             }else url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
-			axios.get(url)
+			ajx.get(url)
 			.then(res=>{
                     this.statusCodeDataTable = res.status
                     if(this.statusCodeDataTable == 204 || res.data.row == 0){
@@ -276,7 +273,7 @@ export default {
 			})
 		},
 		deleteData (id) {
-			axios({
+			ajx({
 				method : 'DELETE',
 				url :this.baseUrl+this.url+'/'+id
 				})
@@ -284,17 +281,17 @@ export default {
 				this.getData(this.pageRows,this.pageNumber)
 			})
 			.catch(err=>{
-				Bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
+				bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
 			})
 		},
         getDataDetail (x) {
-            Bus.$emit('getDataDetail',x)
+            bus.$emit('getDataDetail',x)
         },
         addDataList (x) {
-            Bus.$emit('addDataList',x)
+            bus.$emit('addDataList',x)
         },
         toggleFormData () {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         },
         cariData () {
             this.pencarian = true

@@ -16,9 +16,6 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import _ from 'lodash'
-import { Bus } from '../../../bus.js';
-import axios from 'axios'
 
 export default {
   name: 'kelolaPesertaUjian',
@@ -56,10 +53,10 @@ export default {
             _.forEach(this.mahasiswa, (v,k)=>{
                 tmp.push({id_peserta:v.nobp+'-'+this.$route.params.idUjian,id_ujian:this.$route.params.idUjian,nobp:v.nobp,id_kelas:this.id_kelas})
                 })
-            axios.post('api/'+this.url,tmp)
+            ajx.post('api/'+this.url,tmp)
             .then(res=>{
-                Bus.$emit('toggleFormData')
-                Bus.$emit('newData')
+                bus.$emit('toggleFormData')
+                bus.$emit('newData')
                 this.mahasiswa = null,
                 this.id_kelas = null
                 })
@@ -72,7 +69,7 @@ export default {
             let query = `query mahasiswaNotInKelasUjian($id_ujian : String) {mahasiswaNotInKelasUjian(id_ujian : $id_ujian){nobp,nm_mahasiswa}}`
             let kueri = {query:query, variables : {id_ujian : this.$route.params.idUjian}}
             console.log(kueri)
-            axios.post('api/v2/'+x,kueri)
+            ajx.post('api/v2/'+x,kueri)
                 .then(res=>{
                     this[y] = res.data.data[name]
                     })
@@ -82,7 +79,7 @@ export default {
                     })
         },
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         },
         getKelas (x) {
             this.listKelas = x

@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import _ from 'lodash'
 export default {
   name: 'loginPeserta',
   data () {
@@ -41,7 +39,7 @@ export default {
   },
   methods : {
       getUjian () {
-          axios.get('/api/mahasiswa/'+this.$session.get('infoUjian').username+'/ujian')
+          ajx.get('/api/mahasiswa/'+this.$session.get('infoUjian').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               })

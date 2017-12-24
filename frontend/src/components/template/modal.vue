@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { Bus } from '../../bus.js';
 export default {
   name: 'modal',
   data () {
@@ -34,7 +33,7 @@ export default {
     }
   },
   created () {
-      Bus.$on('toggleModal', ()=>{
+      bus.$on('toggleModal', ()=>{
           this.toggleModal()
           })
   }

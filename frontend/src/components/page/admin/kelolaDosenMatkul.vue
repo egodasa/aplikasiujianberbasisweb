@@ -23,9 +23,6 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import axios from 'axios'
-import _ from 'lodash'
-import { Bus } from '../../../bus.js';
 
 export default {
   name: 'kelolaDosenMatkul',
@@ -52,10 +49,10 @@ export default {
             _.forEach(this.matkul, (v,k)=>{
                 tmp.push({id_mdosen:this.$route.params.nidn+""+v.kd_matkul ,nidn:this.$route.params.nidn,kd_matkul:v.kd_matkul})
                 })
-            axios.post('api/'+this.url,tmp)
+            ajx.post('api/'+this.url,tmp)
             .then(res=>{
-                Bus.$emit('toggleFormData')
-                Bus.$emit('newData')
+                bus.$emit('toggleFormData')
+                bus.$emit('newData')
                 this.matkul = null
                 })
             .catch(err=>{
@@ -64,7 +61,7 @@ export default {
             
         },
         getListMatkul () {
-            axios.get('api/matkul')
+            ajx.get('api/matkul')
             .then(res=>{
                 this.listMatkul = res.data.data
                 })
@@ -72,7 +69,7 @@ export default {
                 })
         },
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         }
     }
 }

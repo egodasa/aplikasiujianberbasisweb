@@ -95,9 +95,7 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
-import { Bus } from '../../../bus.js';
-import _ from 'lodash'
+
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 import hitungWaktu from 'date-fns/distance_in_words'
@@ -186,7 +184,7 @@ export default {
             }
       },
       toggleMenu () {
-          Bus.$emit('toggleMenu')
+          bus.$emit('toggleMenu')
       },
       setWaktu () {
           this.waktuSekarang = formatWaktu(new Date(), 'H : M : S', {locale : lokalisasi})
@@ -196,7 +194,7 @@ export default {
           this.jawaban = this.jawabanPeserta[this.posisiSoal].jawaban || null
       },
       genLjk () {
-          axios.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
+          ajx.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
           .then(res=>{
                 this.listSoal = res.data.data
                 //cek sesi ujian apakah sudah ada
@@ -237,7 +235,7 @@ export default {
                   nilai : parseInt(nilai)
               }
               console.log('benar ' + benar + 'salah ' + salah)
-              axios.post('api/ujian/hasil',hasil)
+              ajx.post('api/ujian/hasil',hasil)
               .then(res=>{
                   console.log(res.data)
                   })
@@ -255,7 +253,7 @@ export default {
                       })
                   })
               console.log(hasil)
-              axios.post('api/ujian/jawaban',hasil)
+              ajx.post('api/ujian/jawaban',hasil)
               .then(res=>{
                   console.log(res.data)
                   })

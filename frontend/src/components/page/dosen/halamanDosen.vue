@@ -16,7 +16,7 @@ import secFooter from '../../template/footer.vue'
 import secContent from '../../template/content.vue'
 import secSidebar from '../../template/sidebar.vue'
 import { dosenConf } from './dosen.js'
-import { Bus } from '../../../bus.js';
+
 export default {
   name: 'halamanDosen',
   components : {

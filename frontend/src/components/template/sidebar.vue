@@ -28,12 +28,11 @@
 </div>
 </template>
 <script>
-import { Bus } from '../../bus.js';
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 import hitungWaktu from 'date-fns/distance_in_words'
 import hitungWaktuMili from 'date-fns/difference_in_milliseconds'
-import axios from 'axios'
+
 export default {
   name: 'secSidebar',
   props : {
@@ -70,7 +69,7 @@ export default {
               let query = `query getDosen($id : String) { getDosen(id : $id){id_dosen,nidn,nm_dosen,status_dosen} }`
               let kueri = { query : query, variables : { id : this.$session.get('user').username }}
               console.log(kueri)
-              axios.post('api/v2/dosen/',kueri)
+              ajx.post('api/v2/dosen/',kueri)
               .then(res=>{
                   this.infoUser = res.data.data.getDosen[0]
                   })
@@ -79,7 +78,7 @@ export default {
                   })
           }
       }
-      Bus.$on('toggleMenu',()=>{
+      bus.$on('toggleMenu',()=>{
           this.toggleMenu()
           })
       this.hariSekarang = formatWaktu(new Date(), 'dddd, DD MMMM YYYY', {locale : lokalisasi})

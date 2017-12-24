@@ -24,9 +24,6 @@
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
 import admin from './halamanAdmin.vue'
-import _ from 'lodash'
-import { Bus } from '../../../bus.js';
-import axios from 'axios'
 
 export default {
   name: 'kelolaKuliahMahasiswa',
@@ -53,10 +50,10 @@ export default {
             _.forEach(this.mahasiswa, (v,k)=>{
                 tmp.push({id_kuliah:this.$route.params.idKuliah,nobp:v.nobp})
                 })
-            axios.post('api/'+this.url,tmp)
+            ajx.post('api/'+this.url,tmp)
             .then(res=>{
-                Bus.$emit('toggleFormData')
-                Bus.$emit('newData')
+                bus.$emit('toggleFormData')
+                bus.$emit('newData')
                 this.mahasiswa = null
                 })
             .catch(err=>{
@@ -65,7 +62,7 @@ export default {
             
         },
         getListMahasiswa () {
-            axios.get('api/mahasiswa')
+            ajx.get('api/mahasiswa')
             .then(res=>{
                 this.listMahasiswa = res.data.data
                 })
@@ -73,7 +70,7 @@ export default {
                 })
         },
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         }
     }
 }

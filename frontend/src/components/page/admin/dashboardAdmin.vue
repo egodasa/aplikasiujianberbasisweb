@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 import genTable from '../../template/GenTable.vue'
 
 export default {
@@ -91,7 +91,7 @@ export default {
               }
             }`
             let kueri = {query:query}
-            axios.post('api/v2/statistik',kueri)
+            ajx.post('api/v2/statistik',kueri)
             .then(res=>{
                 console.log(res.data)
                 this.statistik = res.data.data.statistik[0]
