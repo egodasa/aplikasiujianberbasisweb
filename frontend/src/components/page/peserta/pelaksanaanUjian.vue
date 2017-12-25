@@ -2,11 +2,13 @@
 <div>
     <sec-header onTop.Boolean="false"></sec-header>
     <sec-sidebar>
-    <slot>
+    <template slot="sidebarAtas">
     <div class="w3-container">
         <h3>Pilih Soal</h3>
     <button type="button" :class="posisiSoal == index ? 'w3-button w3-pale-blue  w3-hover-pale-blue w3-border' : 'w3-button w3-blue w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
     </div>
+    </template>
+    <template slot="sidebarBawah">
     <div class="w3-container">
         <h3>Informasi Ujian</h3>
         <div class="w3-row">
@@ -37,7 +39,7 @@
         </div>
       <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian</button>
    </div>
-   </slot>
+    </template>
     </sec-sidebar>
 <sec-content>
    <div class="w3-container" style="margin-top:30px;">
@@ -138,7 +140,7 @@ export default {
         }
   },
   beforeCreated () {
-    if(!this.$lcs.get('infoUjian')) this.$router.push({path: '/ujian/login'})
+    if(!this.$lcs.get('infoUjian')) this.$router.push({path: '/'})
   },
   created (){
       this.infoUjian = this.$lcs.get('infoUjian')  
@@ -194,7 +196,7 @@ export default {
           this.jawaban = this.jawabanPeserta[this.posisiSoal].jawaban || null
       },
       genLjk () {
-          ajx.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
+          this.$ajx.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
           .then(res=>{
                 this.listSoal = res.data.data
                 //cek sesi ujian apakah sudah ada
@@ -235,7 +237,7 @@ export default {
                   nilai : parseInt(nilai)
               }
               console.log('benar ' + benar + 'salah ' + salah)
-              ajx.post('api/ujian/hasil',hasil)
+              this.$ajx.post('api/ujian/hasil',hasil)
               .then(res=>{
                   console.log(res.data)
                   })
@@ -253,7 +255,7 @@ export default {
                       })
                   })
               console.log(hasil)
-              ajx.post('api/ujian/jawaban',hasil)
+              this.$ajx.post('api/ujian/jawaban',hasil)
               .then(res=>{
                   console.log(res.data)
                   })
@@ -262,7 +264,9 @@ export default {
                   })
           }
           this.simpanJawaban(this.posisiSoal,this.jawaban)
-          this.$lcs.destroy()
+          this.$lcs.remove('infoUjian')
+          this.$lcs.remove('infoLogin')
+          this.$lcs.remove('ljk')
           this.$router.push({path: '/'})
       },
       simpanJawaban (x,jawaban){

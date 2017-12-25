@@ -30,7 +30,7 @@ export default {
   },
   data () {
       return {
-          url : 'dosen/'+this.$session.get('user').username+'/ujian',
+          url : 'dosen/'+this.$lcs.get('infoLogin').username+'/ujian',
             tableContent : {
                 header :  ['Matkul','Jenis Ujian','Waktu Pelaksanaan','Status','TA'],
                 content : ['id_ujian','nm_matkul','nm_jujian','ket_waktu','nm_status_ujian','tahun_akademik']

@@ -1,7 +1,13 @@
 <template>
 <div>
 <sec-header></sec-header>
-    <sec-sidebar :listMenu="menu" :welcomeMessage="$lcs.get('user').username"></sec-sidebar>
+    <sec-sidebar :listMenu="menu">
+        <template slot="sidebarAtas">
+            <div class="w3-bar-block">
+            <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{$lcs.get('infoLogin').username}}</span>
+            </div>
+        </template>
+    </sec-sidebar>
     <sec-content>
             <slot>
             <router-view></router-view>
@@ -28,19 +34,20 @@ export default {
          menu : []
       }
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter: (to, from, next)=>{
       next(vm => {
-            if(vm.$lcs.get('user')){
-                if(vm.$lcs.get('user').id_juser == 1) vm.$router.push({path:'/admin'})
-                else{
-                    if(vm.$lcs.get('user').username != vm.$route.params.nidn) vm.$router.push({path:'/dosen/'+vm.$lcs.get('user').username})
-                    }
-            }else vm.$router.push({path:'/'})
-        })
-  },
-  beforeCreated () {
-      
-  },
+        if(vm.$lcs.get('infoLogin')){
+            if(new Date().getTime() > vm.$lcs.get('infoLogin').expireLogin){
+                vm.$lcs.remove('infoLogin')
+                vm.$router.push({path:'/'})
+            }
+            else{
+                if(vm.$lcs.get('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
+                else if(vm.$lcs.get('infoLogin').id_juser == 3) vm.$router.push({path:'/'})
+            }
+        }else vm.$router.push({path:'/'})
+      })
+    },
   created () {
       this.menu = this.dosenMenu
   }

@@ -93,6 +93,9 @@ export default {
         }
   },
   created () {
+      bus.$on('toggleFormData',()=>{
+          this.toggleFormData()
+          })
       this.getDetailUjian()
   },
   methods : {
@@ -159,7 +162,7 @@ export default {
             if(res.data.status == false) console.log(res.data)
             else {
                 this.toggleFormData()
-                Bus.$emit("newData")
+                bus.$emit("newData")
                 this.resetForm()
             }
         })
@@ -186,7 +189,7 @@ export default {
 		}
   },
   destroyed () {
-      //Bus.$off('getDataDetail')
+      //bus.$off('getDataDetail')
   }
 }
 </script>

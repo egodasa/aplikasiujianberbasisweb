@@ -26,7 +26,7 @@ export default {
   },
   data () {
       return {
-          url : 'dosen/'+this.$session.get('user').username+'/kuliah',
+          url : 'dosen/'+this.$lcs.get('infoLogin').username+'/kuliah',
             tableContent : {
                 header : ['Mata Kuliah','Kelas','Tahun Akademik','Status'],
                 content : ['id_kuliah','nm_matkul','ket_nm_kelas','tahun_akademik','nm_status_kuliah']
@@ -66,7 +66,7 @@ export default {
   },
   methods : {
         toggleFormData() {
-            Bus.$emit('toggleFormData')
+            bus.$emit('toggleFormData')
         },
         getDataSelect (url,index){
             this.$ajx.get(url)

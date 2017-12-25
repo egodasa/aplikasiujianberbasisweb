@@ -150,27 +150,7 @@ export default [
     path: '/ujian/soal',
     name: 'pelaksanaanUjian',
     component: pelaksanaanUjian
-  },/*
-  {
-    path: '/dosen/ujian',
-    name : 'DkelolaUjian',
-    component: DkelolaUjian
   },
-  {
-    path: '/dosen/ujian/:idUjian',
-    name : 'DkelolaUjianDetail',
-    component: DkelolaUjianDetail
-  },
-  {
-    path: '/dosen/kuliah',
-    name : "DkelolaKuliah",
-    component: DkelolaKuliah
-  },
-  {
-    path: '/dosen/kuliah/:idKuliah',
-    name : 'DkelolaKuliahDetail',
-    component: DkelolaKuliahDetail
-  },*/
   {
     path: '/dosen/:nidn',
     component : halamanDosen,

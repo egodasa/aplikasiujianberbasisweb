@@ -32,20 +32,20 @@ export default {
         }
   },
   beforeCreated (){
-      if(this.$lcs.get('infoUjian')) this.$router.push({path : '/ujian/petunjuk'})
+      if(this.$lcs.get('infoLogin')) this.$router.push({path : '/ujian/petunjuk'})
   },
   created () {
     this.getUjian()
   },
   methods : {
       getUjian () {
-          ajx.get('/api/mahasiswa/'+this.$lcs.get('infoUjian').username+'/ujian')
+          this.$ajx.get('/api/mahasiswa/'+this.$lcs.get('infoLogin').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               })
           .catch(err=>{
               this.listUjian = []
-              console.log(err)
+              bus.$emit('showAlert','Kesalahan!','Tidak dapat mengambil daftar ujian. Silahkan tekan tombol "Kembali"!','warning')
               })
       },
       masukUjian(){
@@ -53,7 +53,7 @@ export default {
           this.$router.push({path : '/ujian/petunjuk'})
       },
       batalkanUjian (){
-          this.$lcs.destroy()
+          this.$lcs.remove('infoLogin')
           this.$router.push({path : '/'})
       }
   }
