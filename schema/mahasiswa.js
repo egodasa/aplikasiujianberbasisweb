@@ -45,6 +45,17 @@ const RootQuery = new GraphQLObjectType({
         return db('tbmahasiswa').select()
       }
     },
+    getMahasiswa: {
+      type: new GraphQLList(daftarMahasiswa),
+      args : {
+          id : {
+              type : GraphQLString
+          }
+      },
+      resolve(parentValue, args) {
+        return db('tbmahasiswa').select().where('nobp',args.id)
+      }
+    },
     mahasiswaNotInKelasKuliah: {
       type: new GraphQLList(daftarMahasiswa),
       args : {
