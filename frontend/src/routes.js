@@ -8,11 +8,9 @@ import kelolaPesertaUjian from './components/page/admin/kelolaPesertaUjian.vue';
 import kelolaSoalUjian from './components/page/admin/kelolaSoalUjian.vue';
 import kelolaKelas from './components/page/admin/kelolaKelas.vue';
 import kelolaMatkul from './components/page/admin/kelolaMatkul.vue';
-import kelolaMatkulDosen from './components/page/admin/kelolaMatkulDosen.vue';
 import kelolaTipeSoal from './components/page/admin/kelolaTipeSoal.vue';
 import kelolaJenisUjian from './components/page/admin/kelolaJenisUjian.vue';
 import kelolaDosen from './components/page/admin/kelolaDosen.vue';
-import kelolaDosenMatkul from './components/page/admin/kelolaDosenMatkul.vue';
 
 import kelolaKuliah from './components/page/admin/kelolaKuliah.vue';
 import kelolaKuliahDetail from './components/page/admin/kelolaKuliahDetail.vue';
@@ -21,7 +19,6 @@ import DkelolaKuliah from './components/page/dosen/kelolaKuliah.vue';
 import DkelolaKuliahDetail from './components/page/dosen/kelolaKuliahDetail.vue';
 
 import hasilUjian from './components/page/admin/hasilUjian.vue';
-import jawabanUjian from './components/page/admin/jawabanUjian.vue';
 import cekJawaban from './components/page/admin/cekJawaban.vue';
 import loginPengguna from './components/page/loginPengguna.vue';
 import dashboardAdmin from './components/page/admin/dashboardAdmin.vue';
@@ -32,7 +29,6 @@ import halamanAdmin from './components/page/admin/halamanAdmin.vue';
 import DkelolaUjian from './components/page/dosen/kelolaUjian.vue';
 import DkelolaUjianDetail from './components/page/dosen/kelolaUjianDetail.vue';
 
-import home from './components/Home.vue';
 import loginPeserta from './components/page/peserta/loginPeserta.vue';
 import petunjukUjian from './components/page/peserta/petunjukUjian.vue';
 import pelaksanaanUjian from './components/page/peserta/pelaksanaanUjian.vue';
@@ -88,11 +84,6 @@ export default [
             path: 'ujian/:idUjian/jawaban/:idPeserta',
             name : 'cekJawaban',
             component: cekJawaban
-          },
-          {
-            path: 'ujian/:idUjian/jawaban',
-            name : 'jawabanUjian',
-            component: jawabanUjian
           },
           {
             path: 'mahasiswa',

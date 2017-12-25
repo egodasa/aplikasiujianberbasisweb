@@ -208,6 +208,7 @@ export default {
                 var method = 'PUT'
                 var url = '/'+this.idData
             }
+            console.log(this.output)
 			this.$ajx({
 				method : method,
 				data : this.output,

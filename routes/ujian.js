@@ -97,6 +97,7 @@ router.delete('/:id', (req, res, next) => {
 });
 router.put('/:id', (req, res, next) => {
     var data = req.body;
+    console.log(data)
     var id = req.params.id;
     var hasil = {};
     req.checkBody(validator.edit_ujian);
