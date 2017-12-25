@@ -44,8 +44,12 @@
         </form>
         </div>
     </div>
-    <gen-table :pk="tableContent
-    .content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
+    <template slot="customAction" slot-scope="ca">
+        <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData.id_soal)"><i class="fa fa-edit"></i> 
+        </button></span>
+    </template>
+    </gen-table>
     </div>
 </template>
 
@@ -89,12 +93,6 @@ export default {
         }
   },
   created () {
-      bus.$('getDataDetail', x =>{
-            this.getDataDetail(x)
-        })
-      bus.$('toggleFormData',()=>{
-          this.toggleFormData()
-          })
       this.getDetailUjian()
   },
   methods : {

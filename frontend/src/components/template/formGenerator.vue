@@ -99,8 +99,6 @@
 <script>
 import Datepicker from 'vuejs-datepicker';
 import TimePicker from 'vue-timepicker'
-import pengaturan from '../../pengaturan.json'
-
 import selectize from 'vue2-selectize'
 
 export default {
@@ -124,7 +122,6 @@ export default {
 	},
 	data () {
 		return {
-            msg : pengaturan,
             showForm : false,
             idData : null,
             output : {},

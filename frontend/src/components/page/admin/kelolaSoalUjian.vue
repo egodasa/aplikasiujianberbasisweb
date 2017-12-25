@@ -39,13 +39,17 @@
             </template>
             <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
             <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
-            <button type="button" class="w3-button w3-reset w3-section" @click="resetForm()">Reset</button>
+            <button type="button" class="w3-button w3-red w3-section" @click="resetForm()">Reset</button>
             <button type="button" class="w3-button w3-blue w3-section" @click="formBatal()">Batal</button>
         </form>
         </div>
     </div>
-    <gen-table :pk="tableContent
-    .content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus"></gen-table>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
+    <template slot="customAction" slot-scope="ca">
+        <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData.id_soal)"><i class="fa fa-edit"></i> 
+        </button></span>
+    </template>
+    </gen-table>
     </div>
 </template>
 
@@ -89,12 +93,6 @@ export default {
         }
   },
   created () {
-      bus.$on('getDataDetail', x =>{
-            this.getDataDetail(x)
-        })
-      bus.$on('toggleFormData',()=>{
-          this.toggleFormData()
-          })
       this.getDetailUjian()
   },
   methods : {
