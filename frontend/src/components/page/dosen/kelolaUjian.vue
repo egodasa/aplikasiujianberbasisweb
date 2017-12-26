@@ -134,11 +134,6 @@ export default {
                     bus.$emit('showAlert','Pesan!','Tidak dapat mengambil daftar '+nama+'. Silahkan muat ulang halaman','warning')
                     this.listForm[index].options = []
                     })
-        },
-        toggleFormData() {
-            bus.$emit('toggleFormData')
-            this.resetData()
-            this.edit = false
         }
   }
 }

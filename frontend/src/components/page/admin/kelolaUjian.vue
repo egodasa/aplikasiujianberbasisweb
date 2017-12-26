@@ -131,11 +131,6 @@ export default {
                 .catch((err)=>{
                     console.log(err)
                     })
-        },
-        toggleFormData() {
-            bus.$emit('toggleFormData')
-            this.resetData()
-            this.edit = false
         }
   }
 }
