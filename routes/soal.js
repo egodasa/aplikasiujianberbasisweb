@@ -67,7 +67,7 @@ router.post('/',(req,res,next)=>{
         }).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
-		res.send(hasil);
+		res.json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false;
@@ -115,7 +115,7 @@ router.put('/:id',(req,res,next)=>{
 		then(function(){
 			hasil.status =true;
 			hasil.error = null;
-			res.send(hasil);
+			res.json(hasil);
 			}).
 		catch(function(err){
 			hasil.status = false;

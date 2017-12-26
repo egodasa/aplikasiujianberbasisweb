@@ -26,13 +26,14 @@ router.get('/:id?', (req, res, next) => {
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)
 	query.show.then(function(rows){
+        console.log(rows)
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
 		return query.count;
 		}).
 	then((rows)=>{
-		 let code
+        let code
 		hasil.row = rows.length
         if(rows.length == 0) code = 204
         else code = 200
@@ -97,7 +98,6 @@ router.delete('/:id', (req, res, next) => {
 });
 router.put('/:id', (req, res, next) => {
     var data = req.body;
-    console.log(data)
     var id = req.params.id;
     var hasil = {};
     req.checkBody(validator.edit_ujian);
@@ -123,7 +123,7 @@ router.put('/:id', (req, res, next) => {
         catch(function(err){
             hasil.status = false;
             hasil.error = err;
-            res.json(hasil);
+            res.status(503).json(hasil);
             });
         }
     });
@@ -133,7 +133,6 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
-    console.log(req.query)
 	var hasil = {};
     let query = {
         show : null,
@@ -174,7 +173,7 @@ router.get('/:id/soal', (req, res, next) => {
     var offset = parseInt(req.query.offset) || null;
     var belumDitambahkan = req.query.belumDitambahkan || 0;
     var hasil = {};
-    db('lap_soal_ujian').select().where('id_ujian',id).then((rows)=>{
+    db('lap_soal_ujian').select().where('id_ujian',id).orderByRaw('random()').then((rows)=>{
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
@@ -190,7 +189,7 @@ router.get('/:id/soal', (req, res, next) => {
 	.catch((err)=>{
 		hasil.status = false;
 		hasil.error = err;
-		res.json(err);
+		res.status(503).json(err);
 		});
 });
 router.post('/:id/soal/', (req, res, next) => {

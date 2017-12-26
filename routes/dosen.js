@@ -307,9 +307,6 @@ router.get('/:id/ujian/:idUjian?',(req, res, next)=>{
 		return query.count
 		}).
 	then((rows)=>{
-        console.log('===Get Data Detail====')
-        console.log(rows)
-        console.log('===EOF=====')
         let code
 		hasil.row = rows.length
         if(rows.length == 0) code = 204
@@ -358,7 +355,7 @@ router.post('/:id/ujian', (req, res, next) => {
         }
     });
 });
-router.put('/:id/ujian/idUjian', (req, res, next) => {
+router.put('/:id/ujian/:idUjian', (req, res, next) => {
     var data = req.body;
     var id = req.params.id;
     var id_ujian = req.params.idUjian;
@@ -386,7 +383,7 @@ router.put('/:id/ujian/idUjian', (req, res, next) => {
         catch(function(err){
             hasil.status = false;
             hasil.error = err;
-            res.json(hasil);
+            res.status(503).json(hasil);
             });
         }
     });
