@@ -67,7 +67,7 @@
                     </template>
                     <template v-else-if="x.jenis == 'datePick'">
                         <label>{{x.caption}}</label>
-                        <datepicker input-class="w3-input w3-border" v-model="output[x.name]"></datepicker>
+                        <datepicker language="id" placeholder="Pilih Tanggal ..." :value="output[x.value]" input-class="w3-input w3-border" v-model="output[x.name]"></datepicker>
                         <span class="w3-text-red">{{ error[x.name] }}</span> 
                     </template>
                     <template v-else-if="x.jenis == 'timePick'">
@@ -83,7 +83,7 @@
                 <br/>
                 </span>
                 <button type="submit" :disabled="Bsimpan.disabled" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
-                <button type="reset" @click="resetForm()" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
+                <button type="button" @click="resetForm()" class="w3-button w3-reset w3-red w3-section" :disabled="Breset.disabled"><span v-html="Breset.caption"></span></button>
                 <button type="button" class="w3-button w3-blue w3-section" @click="cancelForm()" :disabled="Bbatal.disabled"><span v-html="Bbatal.caption"></span></button>
             </form>
         </template>
@@ -154,7 +154,7 @@ export default {
             })
         //SET DAFTAR V-MODEL DI OBJECT OUTPUT{}
         _.forEach(this.input,(v,k)=>{
-            this.output[v.name] = null //looping ke object input dan ambil properti name yang merupakan vmodel
+            this.output[v.name] = v.value || null //looping ke object input dan ambil properti name yang merupakan vmodel
             this.error[v.name] = null //looping ke object input dan ambil properti name yang merupakan error
             })
         //EOF SET DAFTAR V-MODEL DI OBJECT OUTPUT{}
@@ -208,7 +208,6 @@ export default {
                 var method = 'PUT'
                 var url = '/'+this.idData
             }
-            console.log(this.output)
 			this.$ajx({
 				method : method,
 				data : this.output,
@@ -218,7 +217,6 @@ export default {
                 bus.$emit('newData')
                 this.toggleFormData()
                 this.buttonSubmit(0)
-                console.log('kanciang')
                 this.edit = false
 			})
 			.catch(err=>{
