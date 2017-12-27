@@ -171,25 +171,37 @@ router.get('/:id/soal', (req, res, next) => {
     var id = req.params.id;
     var limit = parseInt(req.query.limit) || null;
     var offset = parseInt(req.query.offset) || null;
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
     var hasil = {};
-    db('lap_soal_ujian').select().where('id_ujian',id).orderByRaw('random()').then((rows)=>{
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('lap_soal_ujian').select().where('id_ujian',id)
+    query.tmp = db('lap_soal_ujian').select().where('id_ujian',id)
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-        return db('lap_soal_ujian').select().where('id_ujian',id).count('* as jumlah')
-		})
-	.then((jumlah)=>{
-		let code
-		hasil.row = jumlah[0].jumlah;
-        if(hasil.row == 0) code = 204
+		return query.count
+		}).
+	then((rows)=>{
+		 let code
+		hasil.row = rows.length
+        if(rows.length == 0) code = 204
         else code = 200
-		res.status(code).json(hasil); 
-		})
-	.catch((err)=>{
-		hasil.status = false;
+		res.status(code).json(hasil);
+        })
+    .catch(function(err){
+		hasil.status = false
 		hasil.error = err;
-		res.status(503).json(err);
+		res.status(503).json(hasil);
 		});
 });
 router.post('/:id/soal/', (req, res, next) => {
