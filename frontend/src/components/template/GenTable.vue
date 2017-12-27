@@ -56,16 +56,31 @@
                   </td>
                 </tr>
                 <tr>
-                    <td :colspan="columnTotal" class="w3-center w3-teal"><b>Total Data : {{dataTable.row}} baris</b></td>
+                    <td :colspan="columnTotal" class="w3-white w3-center">
+                        <span class="w3-right">
+                            <a class="w3-button w3-hover-white"><b>Total Data {{dataTable.row}} baris</b></a>
+                        </span>
+                        <span class="w3-left">
+                            <a class="w3-button w3-hover-white"><b>{{'Halaman '+ pagePosition +' dari '+pageNumberList}}</b></a>
+                        </span>
+                        
+                    </td>
                 </tr>
                 </table>
-                <div class="w3-section">
-                    Halaman <br/>
-                    <button type="button" style="margin-right:3px;"  v-for="(pn,index,key) in pageNumberList" @click="getData(pageRows,pn)" :class="pageNumber != pn ? 'w3-button w3-border w3-border-light-grey w3-teal w3-hover-white' : 'w3-button w3-border w3-border-light-grey w3-pale-green'">{{index+1}}</button>
-                </div>
-                <div class="w3-section">
-                    Banyak data perhalaman <br/>
-                    <button type="button" style="margin-right:3px;" v-for="p in pageRowsList" @click="getData(p,0)" :class="p == pageRows ? 'w3-button w3-border w3-border-light-grey w3-pale-green w3-hover-white' : 'w3-button w3-border w3-border-light-grey w3-teal w3-hover-white'">{{p}}</button>
+                <div class="w3-row w3-margin-top">
+                    <div class="w3-col l6 md6 xs12 s12">
+                    <div class="w3-bar">
+                        <button type="button" class="w3-button w3-teal w3-bar-item" @click="getData(pageRows,pagePosition-1)" :disabled="pagePosition == 1">Sebelumnya</button>
+                        <input v-model="pageNumberInput" style="width:20%;height:38px;margin: 0px 5px;" min=1 :max.Number="pageNumberList.length" @keyup.enter="getData(pageRows,pageNumberInput)" class="w3-input w3-border w3-bar-item" type="number" />
+                        <button type="button" class="w3-button w3-teal w3-bar-item" @click="getData(pageRows,pagePosition+1)" :disabled="pagePosition == pageNumberList">Selanjutnya</button>
+                    </div>
+                    </div>
+                    <div class="w3-col l6 md6 xs12 s12">
+                        <div class="w3-bar">
+                            <input v-model="pageRowsInput" style="width:20%;height:38px;" min=1 @keyup.enter="getData(pageRowsInput,1)" class="w3-input w3-border w3-bar-item w3-right " type="number" />
+                            <span class="w3-bar-item w3-right">Banyak data perhalaman</span>
+                        </div>
+                    </div>
                 </div>
                 <br/>
               </template>
@@ -184,7 +199,9 @@ export default {
       dataTable : [],
       totalRows : 0,
       pageRows : 10,
-      pageNumber : 0,
+      pageRowsInput : 10,
+      pagePosition : 1,
+      pageNumberInput : 1,
       spinStatus : true,
       showPilihan : false,
       pencarian : false,
@@ -196,7 +213,7 @@ export default {
   },
   created () {
         bus.$on('newData',()=>{
-            this.getData(this.pageRows,this.pageNumber)
+            this.getData(this.pageRows,this.pagePosition)
             })
         bus.$emit('newData')
   },
@@ -209,10 +226,7 @@ export default {
 			var pn
 			var pnl = []
 			pn = Math.ceil(this.totalRows/this.pageRows)
-			for(var x=0;x<pn;x++){
-				pnl[x] = x*this.pageRows
-			}
-			return pnl
+			return pn
 		},
         columnTotal : function(){
             var aksi,pk,numb
@@ -240,10 +254,16 @@ export default {
 			  mili = (jam*3600000)+(menit*60000)
 			  return mili
 			},
-		getData (limit = null,offset = null) {
+		getData (limit,offset) {
+            if(offset < 1 || offset > this.pageNumberList) {
+                offset = 1
+                this.pageNumberInput = 1
+            }
             this.spinStatus = true
+            this.pageNumberInput = offset
 			this.pageRows = limit
-			this.pageNumber = offset
+            this.pagePosition = offset
+            offset = (offset-1)*this.pageRows
             var url
             if(this.pencarian == true){
                 url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
@@ -278,7 +298,7 @@ export default {
 				url :this.baseUrl+this.url+'/'+id
 				})
 			.then(res=>{
-				this.getData(this.pageRows,this.pageNumber)
+				this.getData(this.pageRows,this.pagePosition)
 			})
 			.catch(err=>{
 				bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
@@ -295,11 +315,11 @@ export default {
         },
         cariData () {
             this.pencarian = true
-            this.getData(10,0)
+            this.getData(10,0,1)
         },
         resetCariData () {
             this.pencarian = false
-            this.getData(10,0)
+            this.getData(10,0,1)
         }
 	},
     destroyed () {
