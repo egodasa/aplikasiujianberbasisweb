@@ -1,9 +1,9 @@
 <template>
 <!-- Top container -->
 <div id="sidebar">
-<nav class="w3-sidebar w3-collapse w3-white" :style="'z-index:3;width:250px;display:'+menuStatus+';'" id="mySidebar"><br>
+<nav class="w3-sidebar w3-collapse w3-white" :style="'z-index:3;padding-top:30px;width:250px;display:'+menuStatus+';'" id="mySidebar"><br>
     <slot name="sidebarAtas"></slot>
-<hr>
+<div class="w3-border-bottom"></div>
 <slot name="sidebarBawah">
     <div class="w3-container">
         <h5>{{title}}</h5>
