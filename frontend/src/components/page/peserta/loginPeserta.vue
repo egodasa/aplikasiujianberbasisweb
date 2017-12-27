@@ -31,9 +31,13 @@ export default {
           selectedUjian : null
         }
   },
-  beforeCreated (){
-      if(this.$lcs.get('infoLogin')) this.$router.push({path : '/ujian/petunjuk'})
-  },
+  beforeRouteEnter: (to, from, next)=>{
+    next(vm => {
+    if(vm.$lcs.get('infoLogin')){
+        if(vm.$lcs.get('infoLogin').id_juser != 3) vm.$router.push({path:'/'})
+    }else vm.$router.push({path:'/'})
+    })
+},
   created () {
     this.getUjian()
   },
