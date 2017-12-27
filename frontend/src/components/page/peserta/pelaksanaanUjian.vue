@@ -5,7 +5,7 @@
     <template slot="sidebarAtas">
     <div class="w3-container">
         <h3>Pilih Soal</h3>
-    <button type="button" :class="posisiSoal == index ? 'w3-button w3-pale-blue  w3-hover-pale-blue w3-border' : 'w3-button w3-blue w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
+    <button style="padding: 5px;width:40px;margin : 3px;" type="button" :class="posisiSoal == index ? 'w3-button w3-pale-blue  w3-hover-pale-blue w3-border' : 'w3-button w3-blue w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
     </div>
     </template>
     <template slot="sidebarBawah">
@@ -292,6 +292,5 @@ export default {
 }
 </script>
 
-<style src="../../../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css">
-
+<style scopped>
 </style>
