@@ -15,6 +15,7 @@ import store from 'store'
 import axios from 'axios'
 import lodash from 'lodash'
 import { Bus } from './bus.js'
+
 Vue.use(wysiwyg, {
     hideModules: { "hyperlink": true,"image":true}
     })

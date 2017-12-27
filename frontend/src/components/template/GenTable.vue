@@ -71,13 +71,13 @@
                     <div class="w3-col l6 md6 xs12 s12">
                     <div class="w3-bar">
                         <button type="button" class="w3-button w3-teal w3-bar-item" @click="getData(pageRows,pagePosition-1)" :disabled="pagePosition == 1">Sebelumnya</button>
-                        <input v-model="pageNumberInput" style="width:20%;height:38px;margin: 0px 5px;" min=1 :max.Number="pageNumberList.length" @keyup.enter="getData(pageRows,pageNumberInput)" class="w3-input w3-border w3-bar-item" type="number" />
+                        <input v-model="pageNumberInput" style="width:20%;height:38px;margin: 0px 5px;" min=1 :max.Number="pageNumberList.length" @blur="getData(pageRows,pageNumberInput)" @keyup.enter="getData(pageRows,pageNumberInput)" class="w3-input w3-border w3-bar-item" type="number" />
                         <button type="button" class="w3-button w3-teal w3-bar-item" @click="getData(pageRows,pagePosition+1)" :disabled="pagePosition == pageNumberList">Selanjutnya</button>
                     </div>
                     </div>
                     <div class="w3-col l6 md6 xs12 s12">
                         <div class="w3-bar">
-                            <input v-model="pageRowsInput" style="width:20%;height:38px;" min=1 @keyup.enter="getData(pageRowsInput,1)" class="w3-input w3-border w3-bar-item w3-right " type="number" />
+                            <input v-model="pageRowsInput" style="width:20%;height:38px;" min=1 @keyup.enter="getData(pageRowsInput,1)" class="w3-input w3-border w3-bar-item w3-right" @blur="getData(pageRowsInput,1)" type="number" />
                             <span class="w3-bar-item w3-right">Banyak data perhalaman</span>
                         </div>
                     </div>

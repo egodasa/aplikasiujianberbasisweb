@@ -2,7 +2,6 @@ var Promise = require('promise');
 module.exports = {
 		cekUsername : function(value){
 			return new Promise(function(resolve, reject){
-				var hasil;
 				db('tbuser').select('username').where('username',value)
                 .then((rows)=>{
                     if(rows.length > 0) resolve(false)

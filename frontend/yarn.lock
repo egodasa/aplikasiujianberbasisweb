@@ -54,6 +54,12 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
+ajx@^0.16.2:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ajx/-/ajx-0.1.0.tgz#5daae45a90f3cbd74b6c9cddcdb394765fdaeed5"
+  dependencies:
+    event-target-shim "^2.0.0"
+
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -216,13 +222,6 @@ aws-sign2@~0.6.0:
 aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
-
-axios@^0.16.2:
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
-  dependencies:
-    follow-redirects "^1.2.3"
-    is-buffer "^1.1.5"
 
 babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -1519,12 +1518,6 @@ debug@2.6.9, debug@^2.2.0, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6, debug@~2.6.
   dependencies:
     ms "2.0.0"
 
-debug@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  dependencies:
-    ms "2.0.0"
-
 decamelize@^1.0.0, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -1803,6 +1796,10 @@ event-stream@~3.3.0:
     stream-combiner "~0.0.4"
     through "~2.3.1"
 
+event-target-shim@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-2.0.0.tgz#a6c07fb273495a3789e105b49fcc3cb0a308fab4"
+
 eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
@@ -1930,12 +1927,6 @@ find-up@^1.0.0:
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
-
-follow-redirects@^1.2.3:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.2.6.tgz#4dcdc7e4ab3dd6765a97ff89c3b4c258117c79bf"
-  dependencies:
-    debug "^3.1.0"
 
 for-in@^1.0.1:
   version "1.0.2"
@@ -4279,6 +4270,10 @@ vm-browserify@~0.0.1:
   dependencies:
     indexof "0.0.1"
 
+vue-date@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/vue-date/-/vue-date-1.1.7.tgz#c8b2c7fe1da18d05655061c344f6c3693f1604e0"
+
 vue-hot-reload-api@^2.0.1:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.2.4.tgz#683bd1d026c0d3b3c937d5875679e9a87ec6cd8f"
@@ -4392,9 +4387,9 @@ vuejs-datepicker@^0.9.20:
   version "0.9.21"
   resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-0.9.21.tgz#35a9197c1692da22844d40e80d7f46c0737bf9a0"
 
-vuejs-paginate@^1.4.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/vuejs-paginate/-/vuejs-paginate-1.5.0.tgz#633174c39d502d15f0b72cdfadaf99d1dfa7d538"
+vuejs-paginate@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/vuejs-paginate/-/vuejs-paginate-1.5.1.tgz#b8985b298d2016d684bbc9ed78e1b81acd904f76"
 
 watchify@^3.4.0:
   version "3.9.0"
