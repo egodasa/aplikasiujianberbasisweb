@@ -93,6 +93,9 @@ export default {
         }
   },
   created () {
+      bus.$on('toggleFormData',()=>{
+          this.showForm = !this.showForm
+      })
       this.getDetailUjian()
   },
   methods : {
