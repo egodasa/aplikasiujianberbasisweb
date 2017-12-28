@@ -17,6 +17,7 @@ const sKuliah = require('./schema/kuliah.js');
 const sStatistik = require('./schema/statistik.js');
 const sDosen = require('./schema/dosen.js');
 const sUser = require('./schema/user.js');
+const sUjian = require('./schema/ujian.js');
 
 db = require('knex')({
   client: 'pg',
@@ -81,6 +82,10 @@ app.use('/api/v2/dosen', expressGraphQL({
 }));
 app.use('/api/v2/user', expressGraphQL({
   schema: sUser,
+  graphiql: true,
+}));
+app.use('/api/v2/ujian', expressGraphQL({
+  schema: sUjian,
   graphiql: true,
 }));
 //EOF ROUTES
