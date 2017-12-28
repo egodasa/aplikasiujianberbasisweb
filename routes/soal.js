@@ -46,7 +46,12 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
+	if(data.id_jsoal == 1){
+        data.bobot = 1
+    }else{
+        data.jawaban = " - "
+        data.pilihanGanda = [{}]
+    }
 	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
@@ -95,6 +100,12 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
+	if(data.id_jsoal == 1){
+        data.bobot = 1
+    }else{
+        data.jawaban = " - "
+        data.pilihanGanda = [{}]
+    }
 	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();

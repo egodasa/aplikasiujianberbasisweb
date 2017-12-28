@@ -3,7 +3,7 @@ var router = express.Router();
 var validator = require('../validator/validator');
 var json2csv = require('json2csv')
 const excel = require('node-excel-export');
-
+_ = require('lodash')
 router.get('/:id?', (req, res, next) => {
 	var id = req.params.id || 0;
 	var nidn = req.query.nidn || 0;
@@ -210,6 +210,7 @@ router.post('/:id/soal/', (req, res, next) => {
     if(data.id_jsoal == 1){
         data.bobot = 1
     }else{
+        data.jawaban = " - "
         data.pilihanGanda = [{}]
     }
 	var id_ujian = req.params.id
@@ -319,14 +320,18 @@ router.get('/:id/jawaban/:idPeserta?',(req, res, next)=>{
 	});
 router.post('/jawaban',(req,res,next)=>{
 	var data = req.body;
-	var hasil = {};
-    console.log(data)
-	db('tbjawaban').insert({
-        id_ujian : data.id_ujian,
-        nobp : data.nobp,
-        jawaban : data.jawaban,
-        id_soal : data.id_soal
-        }).then(()=>{
+    var hasil = {};
+    var data_tmp = []
+    _.forEach(data,(v,k) => {
+        data_tmp.push({
+            id_ujian : v.id_ujian,
+            nobp : v.nobp,
+            jawaban : v.jawaban,
+            id_soal : v.id_soal
+            })
+    });
+    console.log(data_tmp)
+	db('tbjawaban').insert(data_tmp).then(()=>{
 		hasil.status =true;
 		hasil.error = null;
 		res.send(hasil);
@@ -344,19 +349,23 @@ router.get('/:id/hasil/:idPeserta?', (req, res, next) => {
     var id_mahasiswa = req.params.idPeserta || 0;
     var limit = parseInt(req.query.limit) || null;
     var offset = parseInt(req.query.offset) || null;
-    var hasil = {};
-    if(id_mahasiswa == 0){
-        var query = db(db.raw("getHasilUjian('"+id+"')")).select().where('id_ujian',id) 
-    }else{
-        var query = db(db.raw("getHasilUjian('"+id+"')")).select().where({id_ujian:id,nobp:id_mahasiswa}) 
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
     }
-    query.limit(limit).offset(offset).then((rows)=>{
+    query.count = db(db.raw("getHasilUjian('"+id+"')")).select(db.raw('distinct(nobp),id_ujian,nm_mahasiswa,id_kelas,nm_kelas,nilai,status_ujian_peserta,nm_status_ujian_peserta')).where('id_ujian',id) 
+    query.tmp = db(db.raw("getHasilUjian('"+id+"')")).select(db.raw('distinct(nobp),id_ujian,nm_mahasiswa,id_kelas,nm_kelas,nilai,status_ujian_peserta,nm_status_ujian_peserta')).where('id_ujian',id) 
+    if(limit == null) query.show = query.tmp
+    else query.show = query.tmp.limit(limit).offset(offset)
+    query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
 		})
 	.then(()=>{
-		return query.count('* as jumlah');
+		return query.count;
 		})
 	.then((jumlah)=>{
         let code
