@@ -48,7 +48,7 @@
 <div class="w3-row-padding w3-white">
     <div class="w3-col l6 m6 s12 xs12">
         <h5>Pilih Soal</h5>
-        <button type="button" style="padding: 5px;width:40px;margin : 3px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)" :class="posisiSoal == index ? 'w3-button w3-green' : 'w3-button w3-blue'">{{index+1}}</button>
+        <button type="button" style="padding: 5px;width:40px;margin : 3px;" v-for="(y,index,key) in listJawaban" @click="showSoal(index)" :class="posisiSoal == index ? 'w3-button w3-pale-blue w3-border w3-border-light-gray' : ' w3-border w3-border-light-gray w3-button w3-blue'">{{index+1}}</button>
     </div>
     <div class="w3-col l6 m6 s12 xs12">
         <h5>Informasi Peserta</h5>
@@ -110,14 +110,14 @@
 <script>
 
 
-import { adminConf } from './admin.js'
-import admin from './halamanAdmin.vue'
+import { dosenConf } from './dosen.js'
+import dosen from './halamanDosen.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 export default {
-name: 'cekJawaban',
+name: 'DcekJawaban',
 components : {
-    admin
+    dosen
 },
 data () {
     return {
@@ -159,7 +159,7 @@ methods : {
         .catch(err=>{
             console.log(err)
             if(err){
-                if(err.response.status == 204) this.$router.push({path:'/admin/ujian'})
+                if(err.response.status == 204) this.$router.push({path:'/dosen/ujian/'+this.$lcs.get('infoLogin').username})
                 else {
                     bus.$emit('showAlert','Kesalahan!','Tidak dapat mengambil data jawaban. Silahkan ulangi kembali ...','warning')
                 }
@@ -202,7 +202,7 @@ methods : {
         this.$ajx.post('api/ujian/hasil',data)
         .then(res=>{
             console.log(res)
-            this.$router.push({path: '/admin/ujian/'+this.$route.params.idUjian})
+            this.$router.push({path: '/dosen/'+this.$lcs.get('infoUjian').username+'/ujian/'+this.$route.params.idUjian})
             })
         .catch(err=>{
             console.log(err)
