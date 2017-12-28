@@ -6,7 +6,7 @@
                 <button class="w3-button w3-small w3-red" disabled="true">Tidak Ada</button>
             </template>
             <template v-else-if="ca.pkData.status_ujian_peserta == 4">
-                <router-link tag="button" :to="{name:'cekJawaban',params:{idUjian:$route.params.idUjian,idPeserta:ca.pkData.nobp}}" class="w3-btn w3-small w3-blue">
+                <router-link tag="button" :to="{name:'DcekJawaban',params:{idUjian:$route.params.idUjian,idPeserta:ca.pkData.nobp}}" class="w3-btn w3-small w3-blue">
                     <i class="fa fa-edit w3-small"></i> <b>Periksa Jawaban</b>
                 </router-link>
             </template>
