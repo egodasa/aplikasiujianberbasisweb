@@ -171,7 +171,7 @@ export default {
           .then(res=>{
                 let hasil = res.data.data[0]
                 this.dataForm = hasil
-                this.toggleFormData()
+                this.$refs.genTable.toggleFormData()
         })
         .catch(err=>{
             var kode = err.response.status
