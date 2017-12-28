@@ -81,6 +81,22 @@ END; $$;
 ALTER FUNCTION public.gethasilujian(v_id_ujian character varying) OWNER TO mandan;
 
 --
+-- Name: tambahuserdosen(); Type: FUNCTION; Schema: public; Owner: mandan
+--
+
+CREATE FUNCTION tambahuserdosen() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+ insert into tbuser(username,password,id_juser) select new.nidn as username,md5(CONCAT('upi',new.nidn,'yptk')) as password,2 as id_juser;
+return new;
+END;
+$$;
+
+
+ALTER FUNCTION public.tambahuserdosen() OWNER TO mandan;
+
+--
 -- Name: tambahusermahasiswa(); Type: FUNCTION; Schema: public; Owner: mandan
 --
 
@@ -88,7 +104,7 @@ CREATE FUNCTION tambahusermahasiswa() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
- insert into tbuser(username,password,id_juser) select new.nobp as username,md5(CONCAT('UPI',new.nobp,'YPTK')) as password,3 as id_juser;
+ insert into tbuser(username,password,id_juser) select new.nobp as username,md5(CONCAT('upi',new.nobp,'yptk')) as password,3 as id_juser;
 return new;
 END;
 $$;
@@ -181,7 +197,7 @@ CREATE TABLE tbsoal (
     "pilihanGanda" json,
     id_jsoal smallint NOT NULL,
     bobot smallint DEFAULT 1 NOT NULL,
-    jawaban text NOT NULL
+    jawaban character varying(200)
 );
 
 
@@ -747,7 +763,8 @@ CREATE VIEW lap_user AS
     tbuser.username,
     tbuser.password,
     tbuser.id_juser,
-    tbjenis_user.nm_juser
+    tbjenis_user.nm_juser,
+    tbuser.status_user
    FROM (tbuser
      JOIN tbjenis_user ON ((tbuser.id_juser = tbjenis_user.id_juser)));
 
@@ -1193,7 +1210,7 @@ COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
 342	WENDI BOY	0006047306	1
 343	WIDIAWATI PURBA	1018118401	1
 344	ZULDES JONI ST	1024127202	1
-365	Amaik	10101010101	1
+366	amaik	10101010101	1
 \.
 
 
@@ -1201,7 +1218,7 @@ COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
 -- Name: tbdosen_id_dosen_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 365, true);
+SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 366, true);
 
 
 --
@@ -1209,17 +1226,11 @@ SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 365, true);
 --
 
 COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
-1	KPKI12102-1029108702-20171-1	14101152610555	100
-2	KPKI12102-1029108702-20171-1	14101152610544	80
-3	KPKI12102-1029108702-20171-1	14101152610561	60
-4	KPKI12101-1007118403-20171-1	14101152610561	66
-5	KPKI12101-1007118403-20171-1	14101152610555	100
-6	KKKI23109-1015067501-20171-1	14101152610545	100
-7	KKKI23109-1015067501-20171-1	14101152610555	33
-8	KKKI23109-1015067501-20171-1	14101152610561	33
-9	KKKI23109-1015067501-20171-1	14101152610562	100
-10	KKKI23109-1015067501-20171-1	14101152610544	100
-11	KPKI12102-1029108702-20171-1	14101152610545	30
+21	KBKI62121-1029116801-20171-1	14101152610544	16
+22	KBKI62121-1029116801-20171-3	14101152610561	4
+23	KBKI62121-1029116801-20171-3	14101152610561	4
+24	KBKI62121-1029116801-20171-3	14101152610561	4
+25	KBKI62121-1029116801-20171-1	14101152610561	23
 \.
 
 
@@ -1227,7 +1238,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 11, true);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 25, true);
 
 
 --
@@ -1235,10 +1246,10 @@ SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 11, true);
 --
 
 COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
-1	KPKI12102-1029108702-20171-1	14101152610545	5	53
-2	KPKI12102-1029108702-20171-1	14101152610545	17	54
-3	KPKI12102-1029108702-20171-1	14101152610562	5	53
-4	KPKI12102-1029108702-20171-1	14101152610562	17	54
+23	KBKI62121-1029116801-20171-1	14101152610544	Hsbsjs\nDnsnndd	120
+24	KBKI62121-1029116801-20171-1	14101152610544	Bsbsbsbsb	121
+25	KBKI62121-1029116801-20171-1	14101152610561	fdscdsd	120
+26	KBKI62121-1029116801-20171-1	14101152610561	dzcdcdc	121
 \.
 
 
@@ -1246,7 +1257,7 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 -- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 4, true);
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 26, true);
 
 
 --
@@ -1263,7 +1274,7 @@ COPY tbjenis_soal (id_jsoal, nm_jsoal) FROM stdin;
 -- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjenis_soal_id_jsoal_seq', 4, true);
+SELECT pg_catalog.setval('tbjenis_soal_id_jsoal_seq', 6, true);
 
 
 --
@@ -1281,7 +1292,7 @@ COPY tbjenis_ujian (id_jujian, nm_jujian) FROM stdin;
 -- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 10, true);
+SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 12, true);
 
 
 --
@@ -1326,25 +1337,31 @@ COPY tbkelas (id_kelas, nm_kelas) FROM stdin;
 --
 
 COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
-31	KPKI12101-1007118403-20171	2
-32	KPKI12101-1007118403-20171	1
-33	KPKI12101-1007118403-20171	3
-34	KPKI12102-1029108702-20171	1
-35	KPKI12102-1029108702-20171	5
-36	KPKI12102-1029108702-20171	6
-37	BBKI82112-1029108702-20171	1
-38	BBKI82112-1029108702-20171	2
-39	BBKI82112-1029108702-20171	3
-40	BBKI82112-1029108702-20171	4
-41	BBKI82112-1029108702-20171	5
-42	KKKI12106-1026108501-20171	1
-43	KKKI12106-1026108501-20171	6
-44	KKKI12106-1026108501-20171	10
-45	KKKI23109-1015067501-20171	10
-48	KKKI72103-1008077101-20171	1
-49	KKKI72103-1008077101-20171	2
-50	KKKI72103-1008077101-20171	3
-51	KKKI72103-1008077101-20171	4
+67	KPKI12102-1029108702-20171	7
+68	KPKI12102-1029108702-20171	8
+69	KPKI12102-1029108702-20171	9
+70	KKKI23109-1015067501-20171	8
+71	KKKI23109-1015067501-20171	9
+72	KBKI32110-1016038602-20171	5
+73	KBKI32110-1016038602-20171	7
+74	KBKI32110-1016038602-20171	6
+75	KPKI12101-1007118403-20171	1
+76	KPKI12101-1007118403-20171	2
+77	KPKI12101-1007118403-20171	3
+78	KPKI12101-1007118403-20171	4
+79	KPKI12101-1007118403-20171	5
+80	KKKI23104-1012128601-20171	1
+85	BBKI82112-1029108702-20171	1
+86	BBKI82112-1029108702-20171	2
+87	BBKI82112-1029108702-20171	3
+88	KBKI62121-1029116801-20171	1
+89	KBKI62121-1029116801-20171	2
+90	KBKI62121-1029116801-20171	3
+62	KPKI62104-1028018801-20171	1
+63	KPKI62104-1028018801-20171	2
+64	KPKI62104-1028018801-20171	3
+65	KPKI62104-1028018801-20171	4
+66	KPKI62104-1028018801-20171	5
 \.
 
 
@@ -1352,7 +1369,7 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 54, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 90, true);
 
 
 --
@@ -1360,12 +1377,14 @@ SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 54, true);
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
-KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
-KKKI23109-1015067501-20171	1015067501	KKKI23109	20171	1
+KPKI62104-1028018801-20171	1028018801	KPKI62104	20171	0
+KBKI32110-1016038602-20171	1016038602	KBKI32110	20171	0
 KPKI12101-1007118403-20171	1007118403	KPKI12101	20171	1
-BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
-KKKI72103-1008077101-20171	1008077101	KKKI72103	20171	1
-KKKI12106-1026108501-20171	1026108501	KKKI12106	20171	1
+KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
+KKKI23104-1012128601-20171	1012128601	KKKI23104	20171	1
+KKKI23109-1015067501-20171	1015067501	KKKI23109	20171	1
+BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	0
+KBKI62121-1029116801-20171	1029116801	KBKI62121	20171	1
 \.
 
 
@@ -1391,10 +1410,9 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 15	Try Lestari	14101152610733	1
 16	Masrifadil Firmansyah	14101152610457	1
 17	regiza dafma	regiza	1
-22	dsadasxs	14101152610000	1
 28	mahasiswa	14101152611552	1
 30	Mandan	14101152610999	1
-31	test mahasiswa	14101152610123	1
+32	regiza	12345678912345	1
 \.
 
 
@@ -1402,7 +1420,7 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 -- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 31, true);
+SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 33, true);
 
 
 --
@@ -1479,7 +1497,7 @@ SELECT pg_catalog.setval('tbmatkul_id_matkul_seq1', 60, true);
 -- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbnama_kelas_id_kelas_seq', 13, true);
+SELECT pg_catalog.setval('tbnama_kelas_id_kelas_seq', 15, true);
 
 
 --
@@ -1495,31 +1513,18 @@ COPY tbpengaturan (pengaturan) FROM stdin;
 --
 
 COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas_peserta, id_kelas) FROM stdin;
-14101152610555-KPKI12102-1029108702-20171	14101152610555	KPKI12102-1029108702-20171	1	3	1
-14101152610544-KPKI12102-1029108702-20171	14101152610544	KPKI12102-1029108702-20171	1	3	1
-14101152610561-KPKI12102-1029108702-20171	14101152610561	KPKI12102-1029108702-20171	1	3	1
-14101152610555-BBKI82112-1029108702-20171	14101152610555	BBKI82112-1029108702-20171	1	3	1
-14101152610544-BBKI82112-1029108702-20171	14101152610544	BBKI82112-1029108702-20171	1	3	1
-14101152610561-BBKI82112-1029108702-20171	14101152610561	BBKI82112-1029108702-20171	1	3	1
-14101152610545-BBKI82112-1029108702-20171	14101152610545	BBKI82112-1029108702-20171	1	3	2
-14101152610562-BBKI82112-1029108702-20171	14101152610562	BBKI82112-1029108702-20171	1	3	2
-14101152610565-BBKI82112-1029108702-20171	14101152610565	BBKI82112-1029108702-20171	1	3	2
-14101152610545-KPKI12102-1029108702-20171	14101152610545	KPKI12102-1029108702-20171	1	3	5
-14101152610562-KPKI12102-1029108702-20171	14101152610562	KPKI12102-1029108702-20171	1	3	5
-14101152610555-KKKI23109-1015067501-20171	14101152610555	KKKI23109-1015067501-20171	1	3	10
-14101152610544-KKKI23109-1015067501-20171	14101152610544	KKKI23109-1015067501-20171	1	3	10
-14101152610561-KKKI23109-1015067501-20171	14101152610561	KKKI23109-1015067501-20171	1	3	10
-14101152610545-KKKI23109-1015067501-20171	14101152610545	KKKI23109-1015067501-20171	1	3	10
-14101152610562-KKKI23109-1015067501-20171	14101152610562	KKKI23109-1015067501-20171	1	3	10
+14101152610544-KBKI62121-1029116801-20171	14101152610544	KBKI62121-1029116801-20171	1	3	1
+14101152610561-KBKI62121-1029116801-20171	14101152610561	KBKI62121-1029116801-20171	1	3	1
 14101152610555-KPKI12101-1007118403-20171	14101152610555	KPKI12101-1007118403-20171	1	3	1
 14101152610544-KPKI12101-1007118403-20171	14101152610544	KPKI12101-1007118403-20171	1	3	1
-14101152610561-KPKI12101-1007118403-20171	14101152610561	KPKI12101-1007118403-20171	1	3	2
+14101152610561-KPKI12101-1007118403-20171	14101152610561	KPKI12101-1007118403-20171	1	3	1
 14101152610545-KPKI12101-1007118403-20171	14101152610545	KPKI12101-1007118403-20171	1	3	2
-14101152610555-KKKI72103-1008077101-20171	14101152610555	KKKI72103-1008077101-20171	1	3	2
-14101152610555-KKKI12106-1026108501-20171	14101152610555	KKKI12106-1026108501-20171	1	3	6
-14101152610544-KKKI12106-1026108501-20171	14101152610544	KKKI12106-1026108501-20171	1	3	6
-14101152610561-KKKI12106-1026108501-20171	14101152610561	KKKI12106-1026108501-20171	1	3	10
-14101152610545-KKKI12106-1026108501-20171	14101152610545	KKKI12106-1026108501-20171	1	3	10
+14101152610562-KPKI12101-1007118403-20171	14101152610562	KPKI12101-1007118403-20171	1	3	2
+14101152610565-KPKI12101-1007118403-20171	14101152610565	KPKI12101-1007118403-20171	1	3	2
+13101152610342-KPKI12101-1007118403-20171	13101152610342	KPKI12101-1007118403-20171	1	3	2
+regiza-KPKI12102-1029108702-20171	regiza	KPKI12102-1029108702-20171	1	3	7
+regiza-KKKI23104-1012128601-20171	regiza	KKKI23104-1012128601-20171	1	3	1
+14101152610561-KKKI23109-1015067501-20171	14101152610561	KKKI23109-1015067501-20171	1	3	8
 \.
 
 
@@ -1528,27 +1533,9 @@ COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas
 --
 
 COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM stdin;
-1	javascript adalah	\N	2	20	bahasa pemrograman
 2	E dalam bisnis adaa=lah	[{"huruf":"A","isi_pilihan":"elektronik"},{"huruf":"B","isi_pilihan":"gundul"},{"huruf":"C","isi_pilihan":"au ah gelap"}]	1	1	A
-3	Gundul adalah	\N	2	12	eh
-4	xzx	\N	2	12	zx
-5	sdsx	\N	2	12	sax
-6	sdsx	\N	2	12	sax
-7	sdsx	\N	2	12	sax
-8	sdsx	\N	2	12	sax
 9	cxzzz	[{"huruf":"A","isi_pilihan":"scz"},{"huruf":"B","isi_pilihan":"xs"},{"huruf":"C","isi_pilihan":"zsx"}]	1	1	A
-10	dasdsa	\N	2	12	swsa
 11	Bisnis adalah?	[{"huruf":"A","isi_pilihan":"manggaleh"},{"huruf":"B","isi_pilihan":"ntah"}]	1	1	A
-12	sads	\N	2	12	xasx
-13	ccdc	\N	2	12	zxczz
-14	zxcz	\N	2	12	zxczxc
-15	zcasz	\N	2	12	cdxcdx
-16	zscszcz	\N	2	12	zdddccd
-17	zxccxzd	\N	2	12	dzczxvdv
-18	zcxxccx	\N	2	12	xcxxzc
-19	zxc	\N	2	12	xzc
-20	xzX	\N	2	12	zsxz
-21	Gundulmu	\N	2	20	gundulku
 22	A pada bilangan hexadecimal bernilai?	[{"huruf":"A","isi_pilihan":"12"},{"huruf":"B","isi_pilihan":"9"},{"huruf":"C","isi_pilihan":"10"}]	1	1	C
 23	Faktor yang mempengaruhi cara berkomunikasi seseorang adalah, kecuali?	[{"huruf":"A","isi_pilihan":"Keluarga"},{"huruf":"B","isi_pilihan":"Tempat Tinggal"},{"huruf":"C","isi_pilihan":"Tinggi Badan"}]	1	1	C
 24	Bagaimana cara menghadapi sikap seseorang yang bertentangan dengan budaya kita?	[{"huruf":"A","isi_pilihan":"Memakluminya"},{"huruf":"B","isi_pilihan":"Memberikan peringatan"},{"huruf":"C","isi_pilihan":"Membiarkannya"}]	1	1	A
@@ -1567,11 +1554,6 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 37	Sholat merupakan?	[{"huruf":"A","isi_pilihan":"Kewajiban"},{"huruf":"B","isi_pilihan":"Tiang agama"},{"huruf":"C","isi_pilihan":"Semua Benar"}]	1	1	C
 38	Iqlab adalah?	[{"huruf":"A","isi_pilihan":"Nun mati bertemu qaf"},{"huruf":"B","isi_pilihan":"Nun mati bertemu mim"},{"huruf":"C","isi_pilihan":"Nun mati bertemu ba"}]	1	1	C
 39	Batasan aurat perempuan adalah...	[{"huruf":"A","isi_pilihan":"dari siku sampai lutut"},{"huruf":"B","isi_pilihan":"dari siku sampai kepala"},{"huruf":"C","isi_pilihan":"seluruh badan kecuali muka dan telapak tangan"}]	1	1	C
-40	Sebutkan nama-nama nabi ulul azmi?	\N	2	20	nuh,ibrahim,musa,isa,muhammad
-41	Apakah arti dari haram?	\N	2	20	ditinggalkan berdosa,dilakukan berpahala
-42	APakah arti makruh	\N	2	20	dilakukan tidak berdosa,ditinggalkan tidak berdosa
-43	Sebutkan macam-macam puasa	\N	2	20	puasa wajib,puasa sunnah
-44	Arti dari wajib adalah?	\N	2	20	dilakukan berpahala,ditinggalkan berdosa
 45	Sholat yang berhukum fardhu kifayat adalah?	[{"huruf":"A","isi_pilihan":"Sholat idul fitri"},{"huruf":"B","isi_pilihan":"Sholat jumat"},{"huruf":"C","isi_pilihan":"Sholat gerhana"}]	1	1	A
 46	Hukum membunuh kecoa adalah?	[{"huruf":"A","isi_pilihan":"Berpahala"},{"huruf":"B","isi_pilihan":"Berdosa"},{"huruf":"C","isi_pilihan":"Tidak berpahala dan tidak berdosa"}]	1	1	C
 47	Sholat fardhu yang sangat ditekankan menurut Al-Qur'an adalah?	[{"huruf":"A","isi_pilihan":"Subuh"},{"huruf":"B","isi_pilihan":"Ashar"},{"huruf":"C","isi_pilihan":"Magrib"}]	1	1	B
@@ -1580,11 +1562,98 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 50	Pancasila adalah	[{"huruf":"A","isi_pilihan":"Ideologi negara"},{"huruf":"B","isi_pilihan":"Lambang negara"},{"huruf":"C","isi_pilihan":"semua benar"}]	1	1	C
 51	Banyak sila pada pancasila adalah?	[{"huruf":"A","isi_pilihan":"5"},{"huruf":"B","isi_pilihan":"4"},{"huruf":"C","isi_pilihan":"3"}]	1	1	A
 52	Pancasila berlambangkan?	[{"huruf":"A","isi_pilihan":"Burung garuda"},{"huruf":"B","isi_pilihan":"Burung perkutut"},{"huruf":"C","isi_pilihan":"Burung beo"}]	1	1	A
-53	Jumlah nabi Ulul Azmi ada?	\N	2	10	lima
-54	Jumlah rakaat sholat dalam sehari ada?	\N	2	20	17
 55	Bagian terkecil dari sistem basis data adalah?	[{"huruf":"A","isi_pilihan":"Byte"},{"huruf":"B","isi_pilihan":"Bit"},{"huruf":"C","isi_pilihan":"row"}]	1	1	B
 56	Mongodb termasuk kedalam jenis database?	[{"huruf":"A","isi_pilihan":"sql"},{"huruf":"B","isi_pilihan":"nosql"},{"huruf":"C","isi_pilihan":"no relation"}]	1	1	B
 57	Salah satu database yang termasuk nosql adalah?	[{"huruf":"A","isi_pilihan":"Mysql"},{"huruf":"B","isi_pilihan":"Postgresql"},{"huruf":"C","isi_pilihan":"Firebase"}]	1	1	C
+58	1 + 2 +3 + 4 + 5 + 6 + (-7) + 8 * 9 + 0 =	[{"huruf":"A","isi_pilihan":"100"},{"huruf":"B","isi_pilihan":"86"},{"huruf":"C","isi_pilihan":"72"}]	1	1	B
+1	javascript adalah	\N	2	20	\N
+61	Mongodb menyimpan informasi dalam bentuk?	[{"huruf":"A","isi_pilihan":"Tabel"},{"huruf":"B","isi_pilihan":"JSON"},{"huruf":"C","isi_pilihan":"Object"}]	1	1	B
+62	SQL adalah	[{"huruf":"A","isi_pilihan":"Structured Query Language"},{"huruf":"B","isi_pilihan":"Structural Query Language"},{"huruf":"C","isi_pilihan":"Structured Queries Language"}]	1	1	A
+67	Hukum mandi sebelum sholat jumat adalah?	[{"huruf":"A","isi_pilihan":"Wajib"},{"huruf":"B","isi_pilihan":"Sunnah"},{"huruf":"C","isi_pilihan":"Makruh"}]	1	1	B
+68	Total rakaat sholat dalam sehari adalah?	[{"huruf":"A","isi_pilihan":"15"},{"huruf":"B","isi_pilihan":"16"},{"huruf":"C","isi_pilihan":"17"}]	1	1	C
+69	Sholat yang sangat utama yang dijelaskan didalam Al-Qur'an adalah?	[{"huruf":"A","isi_pilihan":"Shubuh"},{"huruf":"B","isi_pilihan":"Ashar"},{"huruf":"C","isi_pilihan":"Isya"}]	1	1	B
+70	Arti dari surat Al-Baqarah adalah?	[{"huruf":"A","isi_pilihan":"Hewan Ternak"},{"huruf":"B","isi_pilihan":"Sapi Betina"},{"huruf":"C","isi_pilihan":"Hidangan"}]	1	1	B
+71	Sholat tarawih hukumnya?	[{"huruf":"A","isi_pilihan":"Wajib"},{"huruf":"B","isi_pilihan":"Sunah"},{"huruf":"C","isi_pilihan":"Makruh"}]	1	1	B
+72	Ayat Kursi terdapat didalam surat?	[{"huruf":"A","isi_pilihan":"Al-Maidah"},{"huruf":"B","isi_pilihan":"Al-Baqarah"},{"huruf":"C","isi_pilihan":"Ali-Imran"}]	1	1	B
+73	Kitab taurat diterima oleh?	[{"huruf":"A","isi_pilihan":"Musa"},{"huruf":"B","isi_pilihan":"Isa"},{"huruf":"C","isi_pilihan":"Ayub"}]	1	1	A
+74	Orang yang melakukan azan disebut?	[{"huruf":"A","isi_pilihan":"Imam "},{"huruf":"B","isi_pilihan":"Jamaah"},{"huruf":"C","isi_pilihan":"Muazin"}]	1	1	C
+75	Puasa yang dilakukan karena berjanji adalah?	[{"huruf":"A","isi_pilihan":"Puasa Kifarat"},{"huruf":"B","isi_pilihan":"Puasa Narwiyah"},{"huruf":"C","isi_pilihan":"Puasa Arafah"}]	1	1	A
+76	Arti dari surat An-Nisa adalah?	[{"huruf":"A","isi_pilihan":"Wanita"},{"huruf":"B","isi_pilihan":"Perempuan pilihan"},{"huruf":"C","isi_pilihan":"Suami"}]	1	1	A
+77	Nabi yang diangkat kelangit dan diturunkan kebumi saat akan kiamat dekat adalah?	[{"huruf":"A","isi_pilihan":"Musa"},{"huruf":"B","isi_pilihan":"Isa"},{"huruf":"C","isi_pilihan":"Daud"}]	1	1	B
+78	As-sidiq berarti	[{"huruf":"A","isi_pilihan":"Membenarkan"},{"huruf":"B","isi_pilihan":"Menguatkan"},{"huruf":"C","isi_pilihan":"Memperbaiki"}]	1	1	A
+79	Hukum meninggalkan sholat adalah?	[{"huruf":"A","isi_pilihan":"Berdosa"},{"huruf":"B","isi_pilihan":"Berpahala"},{"huruf":"C","isi_pilihan":"Tidak apa-apa"}]	1	1	A
+80	Idgham Ma'al Ghunah berarti?	[{"huruf":"A","isi_pilihan":"Membaca dengan jelas"},{"huruf":"B","isi_pilihan":"Membaca dengan keras"},{"huruf":"C","isi_pilihan":"Membaca dengan dengung"}]	1	1	C
+81	1 + 2 +3 + 4 + 5	[{"huruf":"A","isi_pilihan":"15"},{"huruf":"B","isi_pilihan":"16"},{"huruf":"C","isi_pilihan":"17"}]	1	1	A
+82	2*4*8	[{"huruf":"A","isi_pilihan":"64"},{"huruf":"B","isi_pilihan":"63"},{"huruf":"C","isi_pilihan":"21"}]	1	1	A
+83	Banyak sisi kubus adalah?	[{"huruf":"A","isi_pilihan":"6"},{"huruf":"B","isi_pilihan":"8"},{"huruf":"C","isi_pilihan":"10"}]	1	1	A
+84	Banyak sisi tabung adalah?	[{"huruf":"A","isi_pilihan":"5"},{"huruf":"B","isi_pilihan":"4"},{"huruf":"C","isi_pilihan":"3"}]	1	1	C
+85	KPK  dari 24 adalah?	[{"huruf":"A","isi_pilihan":"1,2,3,4,5,6"},{"huruf":"B","isi_pilihan":"1,3,5,7,8,12"},{"huruf":"C","isi_pilihan":"1,2,3,4,6,12"}]	1	1	C
+86	12 x 12	[{"huruf":"A","isi_pilihan":"144"},{"huruf":"B","isi_pilihan":"111"},{"huruf":"C","isi_pilihan":"124"}]	1	1	A
+87	98 - (-23)	[{"huruf":"A","isi_pilihan":"123"},{"huruf":"B","isi_pilihan":"121"},{"huruf":"C","isi_pilihan":"119"}]	1	1	B
+88	10 - 9 + (-2)	[{"huruf":"A","isi_pilihan":"-2"},{"huruf":"B","isi_pilihan":"-1"},{"huruf":"C","isi_pilihan":"2"}]	1	1	B
+89	-20 - 9 - 29 - 100	[{"huruf":"A","isi_pilihan":"109"},{"huruf":"B","isi_pilihan":"-158"},{"huruf":"C","isi_pilihan":"-187"}]	1	1	B
+90	1 + 1 + (-1) + 1 * 1 / 1 * 0 - 1	[{"huruf":"A","isi_pilihan":"0"},{"huruf":"B","isi_pilihan":"1"},{"huruf":"C","isi_pilihan":"2"}]	1	1	A
+91	DB adalah	[{"huruf":"A","isi_pilihan":"database"},{"huruf":"B","isi_pilihan":"basis data"},{"huruf":"C","isi_pilihan":"gundul"}]	1	1	A
+65	Iqlab dijumpai saat?	[{"huruf":"A","isi_pilihan":"Mim sukun bertemu ba"},{"huruf":"B","isi_pilihan":"Mim sukun bertemu mim"},{"huruf":"C","isi_pilihan":"Nun mati bertemu ba"}]	1	1	C
+92	PAI adalah?	[{"huruf":"A","isi_pilihan":"Pendidikan Agama Islam"},{"huruf":"B","isi_pilihan":"Pendidikan Anak Islam"},{"huruf":"C","isi_pilihan":"Pendidikan Agar Islam"}]	1	1	A
+66	Hewan yang jika dibunuh mendapat pahala adalah?	[{"huruf":"A","isi_pilihan":"Cicak"},{"huruf":"B","isi_pilihan":"Ular"},{"huruf":"C","isi_pilihan":"Sapi"}]	1	1	A
+94	Kucing bernafas menggunakan?	[{"huruf":"A","isi_pilihan":"Ekor"},{"huruf":"B","isi_pilihan":"Hidung"},{"huruf":"C","isi_pilihan":"Paru-paru"}]	1	1	B
+95	Dibawah adalah kombinasi warna kucing, kecuali	[{"huruf":"A","isi_pilihan":"Hitam Putih"},{"huruf":"B","isi_pilihan":"Putih Kuning Hitam"},{"huruf":"C","isi_pilihan":"Abu-abu kuning"}]	1	1	C
+96	Bahasa inggris kucing adalah?	[{"huruf":"A","isi_pilihan":"Cat"},{"huruf":"B","isi_pilihan":"Cats"},{"huruf":"C","isi_pilihan":"Puss"}]	1	1	A
+98	Ular bernafas menggunakan?	[{"huruf":"A","isi_pilihan":"Insang"},{"huruf":"B","isi_pilihan":"Paru-paru"},{"huruf":"C","isi_pilihan":"Kulit"}]	1	1	C
+99	Cacing Bernafas menggunakan?	[{"huruf":"A","isi_pilihan":"Kulit"},{"huruf":"B","isi_pilihan":"Paru-paru"},{"huruf":"C","isi_pilihan":"insang"}]	1	1	A
+100	26 / 4 + 1 =	[{"huruf":"A","isi_pilihan":"231"},{"huruf":"B","isi_pilihan":"43"},{"huruf":"C","isi_pilihan":"5"}]	1	1	C
+101	100 meter = .... mm	[{"huruf":"A","isi_pilihan":"100000"},{"huruf":"B","isi_pilihan":"10000"},{"huruf":"C","isi_pilihan":"1000000"}]	1	1	A
+102	24 meter / 600 cm = ... m	[{"huruf":"A","isi_pilihan":"40"},{"huruf":"B","isi_pilihan":"4"},{"huruf":"C","isi_pilihan":"0,4"}]	1	1	B
+103	Jantung manusia berada didada?	[{"huruf":"A","isi_pilihan":"Tengah"},{"huruf":"B","isi_pilihan":"Kiri"},{"huruf":"C","isi_pilihan":"Kanan"}]	1	1	B
+104	1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20 =	[{"huruf":"A","isi_pilihan":"100"},{"huruf":"B","isi_pilihan":"210"},{"huruf":"C","isi_pilihan":"310"}]	1	1	B
+105	Manusia bernafas menggunakan?	[{"huruf":"A","isi_pilihan":"Hidung"},{"huruf":"B","isi_pilihan":"Paru-paru"},{"huruf":"C","isi_pilihan":"Insang"}]	1	1	A
+106	Pulau hawai terletak disamudera?	[{"huruf":"A","isi_pilihan":"Atlantik"},{"huruf":"B","isi_pilihan":"Pasifik"},{"huruf":"C","isi_pilihan":"Artik"}]	1	1	B
+63	Pancasila adalah	[{}]	2	20	\N
+107	Ibukota dari Rusia adalah?	[{"huruf":"A","isi_pilihan":"Solechnaya"},{"huruf":"B","isi_pilihan":"Moskow"},{"huruf":"C","isi_pilihan":"Moskva"}]	1	1	B
+108	Samudera terbesar didunia adalah?	[{"huruf":"A","isi_pilihan":"Pasifik"},{"huruf":"B","isi_pilihan":"Atlantik"},{"huruf":"C","isi_pilihan":"Arktik"}]	1	1	A
+109	Iwo jima merupakan pulau yang termasuk kedalam negara?	[{"huruf":"A","isi_pilihan":"Cina"},{"huruf":"B","isi_pilihan":"Jepang"},{"huruf":"C","isi_pilihan":"Korea Selatan"}]	1	1	B
+110	Kota Jepang yang dibom pada perang dunia kedua adalah?	[{"huruf":"A","isi_pilihan":"Kokura"},{"huruf":"B","isi_pilihan":"Nagasaki"},{"huruf":"C","isi_pilihan":"Kyoto"}]	1	1	B
+111	1 tahun = .... bulan	[{"huruf":"A","isi_pilihan":"12"},{"huruf":"B","isi_pilihan":"11"},{"huruf":"C","isi_pilihan":"13"}]	1	1	A
+112	187 x 982 x 982 / 231 x 0 =	[{"huruf":"A","isi_pilihan":"321"},{"huruf":"B","isi_pilihan":"4341"},{"huruf":"C","isi_pilihan":"0"}]	1	1	C
+113	Pulau Indonesia paling barat adalah?	[{"huruf":"A","isi_pilihan":"We"},{"huruf":"B","isi_pilihan":"Eh"},{"huruf":"C","isi_pilihan":"Ka"}]	1	1	A
+97	12 x 9	[{"huruf":"A","isi_pilihan":"78"},{"huruf":"B","isi_pilihan":"88"},{"huruf":"C","isi_pilihan":"108"}]	1	1	C
+114	1 - 0	[{"huruf":"A","isi_pilihan":"1"},{"huruf":"B","isi_pilihan":"0"},{"huruf":"C","isi_pilihan":"-1"}]	1	1	A
+3	Gundul adalah	\N	2	12	\N
+4	xzx	\N	2	12	\N
+5	sdsx	\N	2	12	\N
+6	sdsx	\N	2	12	\N
+7	sdsx	\N	2	12	\N
+8	sdsx	\N	2	12	\N
+10	dasdsa	\N	2	12	\N
+12	sads	\N	2	12	\N
+13	ccdc	\N	2	12	\N
+14	zxcz	\N	2	12	\N
+15	zcasz	\N	2	12	\N
+16	zscszcz	\N	2	12	\N
+17	zxccxzd	\N	2	12	\N
+18	zcxxccx	\N	2	12	\N
+19	zxc	\N	2	12	\N
+20	xzX	\N	2	12	\N
+21	Gundulmu	\N	2	20	\N
+40	Sebutkan nama-nama nabi ulul azmi?	\N	2	20	\N
+41	Apakah arti dari haram?	\N	2	20	\N
+42	APakah arti makruh	\N	2	20	\N
+43	Sebutkan macam-macam puasa	\N	2	20	\N
+44	Arti dari wajib adalah?	\N	2	20	\N
+53	Jumlah nabi Ulul Azmi ada?	\N	2	10	\N
+54	Jumlah rakaat sholat dalam sehari ada?	\N	2	20	\N
+59	Anu	[{}]	2	20	\N
+60	ANu 2	[{}]	2	30	\N
+64	Sebutkan contoh penerapan pancasila didalam kehidupan sehari-hari	[{}]	2	20	\N
+93	fdsfsdf	[{}]	2	21	\N
+115	Gundul adalah?	[{}]	2	20	 - 
+116	Penelitian adalah?	[{}]	2	20	 - 
+117	<i>Penelitian adalah?</i>	[{}]	2	30	 - 
+118	Ayam adalah?cxzcz	[{}]	2	46	 - 
+119	kldkfndsfjkefnewfjbebfebwjh ewbfv fvdsvfdsfbdsfshdasfkbskfb	[{}]	2	4	 - 
+120	Isi soal	[{}]	2	9	 - 
+121	Isi soal	[{}]	2	21	 - 
 \.
 
 
@@ -1592,7 +1661,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 57, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 121, true);
 
 
 --
@@ -1600,14 +1669,55 @@ SELECT pg_catalog.setval('tbsoal_id_soal_seq', 57, true);
 --
 
 COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
-6	KPKI12101-1007118403-20171-1	50
-7	KPKI12101-1007118403-20171-1	51
-8	KPKI12101-1007118403-20171-1	52
-9	KPKI12102-1029108702-20171-1	53
-10	KPKI12102-1029108702-20171-1	54
-11	KKKI23109-1015067501-20171-1	55
-12	KKKI23109-1015067501-20171-1	56
-13	KKKI23109-1015067501-20171-1	57
+21	KPKI12102-1029108702-20171-3	65
+22	KPKI12102-1029108702-20171-3	66
+23	KPKI12102-1029108702-20171-3	67
+24	KPKI12102-1029108702-20171-3	68
+25	KPKI12102-1029108702-20171-3	69
+26	KPKI12102-1029108702-20171-3	70
+27	KPKI12102-1029108702-20171-3	71
+28	KPKI12102-1029108702-20171-3	72
+29	KPKI12102-1029108702-20171-3	73
+30	KPKI12102-1029108702-20171-3	74
+31	KPKI12102-1029108702-20171-3	75
+32	KPKI12102-1029108702-20171-3	76
+33	KPKI12102-1029108702-20171-3	77
+34	KPKI12102-1029108702-20171-3	78
+35	KPKI12102-1029108702-20171-3	79
+36	KPKI12102-1029108702-20171-3	80
+37	KKKI23104-1012128601-20171-3	81
+38	KKKI23104-1012128601-20171-3	82
+39	KKKI23104-1012128601-20171-3	83
+40	KKKI23104-1012128601-20171-3	84
+41	KKKI23104-1012128601-20171-3	85
+42	KKKI23104-1012128601-20171-3	86
+43	KKKI23104-1012128601-20171-3	87
+44	KKKI23104-1012128601-20171-3	88
+45	KKKI23104-1012128601-20171-3	89
+46	KKKI23104-1012128601-20171-3	90
+50	KBKI62121-1029116801-20171-3	94
+51	KBKI62121-1029116801-20171-3	95
+52	KBKI62121-1029116801-20171-3	96
+53	KBKI62121-1029116801-20171-3	97
+54	KBKI62121-1029116801-20171-3	98
+55	KBKI62121-1029116801-20171-3	99
+56	KBKI62121-1029116801-20171-3	100
+57	KBKI62121-1029116801-20171-3	101
+58	KBKI62121-1029116801-20171-3	102
+59	KBKI62121-1029116801-20171-3	103
+60	KBKI62121-1029116801-20171-3	104
+61	KBKI62121-1029116801-20171-3	105
+62	KBKI62121-1029116801-20171-3	106
+63	KBKI62121-1029116801-20171-3	107
+64	KBKI62121-1029116801-20171-3	108
+65	KBKI62121-1029116801-20171-3	109
+66	KBKI62121-1029116801-20171-3	110
+67	KBKI62121-1029116801-20171-3	111
+68	KBKI62121-1029116801-20171-3	112
+69	KBKI62121-1029116801-20171-3	113
+70	KBKI62121-1029116801-20171-3	114
+76	KBKI62121-1029116801-20171-1	120
+77	KBKI62121-1029116801-20171-1	121
 \.
 
 
@@ -1615,7 +1725,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 13, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 77, true);
 
 
 --
@@ -1644,9 +1754,10 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
-KPKI12101-1007118403-20171-1	2017-12-12	20:00:00	22:00:00	Ujian	1	1	1	KPKI12101-1007118403-20171
-KKKI23109-1015067501-20171-1	2017-12-12	20:00:00	22:30:00	Ujian	1	1	1	KKKI23109-1015067501-20171
-KPKI12102-1029108702-20171-1	2017-12-13	09:30:00	10:30:00	Ujian	1	1	2	KPKI12102-1029108702-20171
+KPKI12102-1029108702-20171-3	2017-12-24	21:00:00	21:15:00	Ujian	1	3	1	KPKI12102-1029108702-20171
+KKKI23104-1012128601-20171-3	2017-12-24	21:20:00	21:30:00	Ujian	1	3	1	KKKI23104-1012128601-20171
+KBKI62121-1029116801-20171-1	2017-12-28	15:00:00	23:00:00	Ujian	1	1	2	KBKI62121-1029116801-20171
+KBKI62121-1029116801-20171-3	2017-12-28	20:30:00	22:00:00	ujian	1	3	1	KBKI62121-1029116801-20171
 \.
 
 
@@ -2001,7 +2112,6 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 344	14101152610565	b8395747c31aa0193e7e77927657e475	3	1
 345	14101152610544	5950281a3621ea1c6c4c0f65833269b1	3	1
 346	14101152610550	6cb5b33ada74131864000ba9613a07f9	3	1
-347	14101152610545	d54b2fc4585b90728ab84583d5c1a39f	3	1
 348	14101152610590	a83a194d10279ec3f04200762ebbcc7d	3	1
 349	14101152610555	6e64633165732096f3b954ab36812bda	3	1
 350	14101152610579	8126e4037e2ec701a56dcfe28ad16cdc	3	1
@@ -2016,11 +2126,15 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 359	14101152610457	39ed25e64fb16dc99b8defcc926dd315	3	1
 360	admin	21232f297a57a5a743894a0e4a801fc3	1	1
 361	regiza	095174c8a29df0283f049b9c0fb240a6	3	1
-362	gundul	bcc668a0f1fcf385f0f3b7709ec5dff8	1	1
 363	14101152611552	6faba0d1ce7697ccde3b9493f0ba8708	3	1
 364	mandan	e070e2dd9634c6c078a59218cdca9e23	1	1
 365	14101152610999	becea52c3fdd0efb4a11a6effeac4053	3	1
 367	14101152610123	31b4af51dea7643e619a3c2631447005	3	1
+368	10101010101	fd260ade032ac70a8ad22a88f10b145e	2	1
+371	12345678912345	095174c8a29df0283f049b9c0fb240a6	3	1
+362	gundul	b16807b37a7611d2bb44cc07057569c0	1	1
+372	13101152610565	e4a80dd9fafdbc51a29a1d69990bd89c	3	1
+374	14101152610545	d54b2fc4585b90728ab84583d5c1a39f	3	1
 \.
 
 
@@ -2028,7 +2142,7 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 -- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbuser_id_user_seq', 367, true);
+SELECT pg_catalog.setval('tbuser_id_user_seq', 374, true);
 
 
 --
@@ -2276,6 +2390,13 @@ CREATE INDEX tbujian_id_kuliah ON tbujian USING btree (id_kuliah);
 
 
 --
+-- Name: tambahUserDosen; Type: TRIGGER; Schema: public; Owner: mandan
+--
+
+CREATE TRIGGER "tambahUserDosen" BEFORE INSERT ON tbdosen FOR EACH ROW EXECUTE PROCEDURE tambahuserdosen();
+
+
+--
 -- Name: tambahUserMahasiswa; Type: TRIGGER; Schema: public; Owner: mandan
 --
 
@@ -2297,6 +2418,22 @@ CREATE TRIGGER "updateStatusUjian" AFTER INSERT ON tbsoal_ujian FOR EACH ROW EXE
 
 
 --
+-- Name: tbhasil_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbhasil_ujian
+    ADD CONSTRAINT tbhasil_ujian_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbjawaban_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbjawaban
+    ADD CONSTRAINT tbjawaban_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: tbkelas_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
 --
 
@@ -2310,6 +2447,14 @@ ALTER TABLE ONLY tbkelas_kuliah
 
 ALTER TABLE ONLY tbpeserta_kuliah
     ADD CONSTRAINT tbpeserta_kuliah_id_kuliah_fkey FOREIGN KEY (id_kuliah) REFERENCES tbkuliah(id_kuliah) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tbsoal_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+--
+
+ALTER TABLE ONLY tbsoal_ujian
+    ADD CONSTRAINT tbsoal_ujian_id_ujian_fkey FOREIGN KEY (id_ujian) REFERENCES tbujian(id_ujian) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
