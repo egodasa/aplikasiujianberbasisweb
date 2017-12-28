@@ -1,10 +1,9 @@
 <template>
 <div class="w3-container">
-    <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
-        <div class="w3-modal-content w3-animate-top">
-        <form class="w3-card-8 w3-container w3-section" id="addData" @submit.prevent="submitData()" name="addData">
+    <gen-form :pk="id_sujian" url="custom" :input="listForm" contentType="lain">
+        <form id="addData" @submit.prevent="submitData()" name="addData">
             <h3>Tambah Soal</h3>
-                <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
+            <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
             <label>Isi Soal</label>
             <wysiwyg v-model="dataForm.isi_soal" />
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
@@ -30,9 +29,6 @@
                 </div>
             </template>
             <template v-else>
-            <label>Jawaban</label>
-            <wysiwyg v-model="dataForm.jawaban" />
-            <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
             <label>Bobot Nilai</label>
             <input class="w3-input w3-border" v-validate data-vv-rules="required" data-vv-as="Bobot Soal" type="number" name="bobot" v-model="dataForm.bobot" placeholder="Bobot Nilai Soal" />
             <span class="w3-text-red" v-if="errors.has('bobot')">{{ errors.first('bobot') }}</span>
@@ -42,9 +38,8 @@
             <button type="button" class="w3-button w3-red w3-section" @click="resetForm()">Reset</button>
             <button type="button" class="w3-button w3-blue w3-section" @click="formBatal()">Batal</button>
         </form>
-        </div>
-    </div>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="hapus">
+    </gen-form>
+    <gen-table :pk="tableContent.content[0]" :url="url" ref="genTable" :tableContent="tableContent" tableType="hapus">
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData.id_soal)"><i class="fa fa-edit"></i> 
         </button></span>
@@ -55,11 +50,12 @@
 
 <script>
 import genTable from '../../template/GenTable.vue'
+import genForm from '../../template/formGenerator.vue'
 
 export default {
   name: 'kelolaSoalUjian',
   components : {
-      genTable
+      genTable, genForm
   },
   data () {
       return {
@@ -93,20 +89,16 @@ export default {
         }
   },
   created () {
-      bus.$on('toggleFormData',()=>{
-          this.showForm = !this.showForm
-      })
       this.getDetailUjian()
   },
   methods : {
       formBatal () {
           this.resetForm()
-          this.toggleFormData()
+          this.$refs.genTable.toggleFormData()
       },
       getDetailUjian () {
           this.$ajx.get('/api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
-              console.log(res.data)
               this.detailUjian = res.data.data[0]
               this.dataForm.id_jsoal = this.detailUjian.id_jsoal
               })
@@ -145,7 +137,6 @@ export default {
       },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
-          console.log(this.dataForm)
           if(this.dataForm.id_soal == undefined || this.dataForm.id_soal == null){
               var method = 'POST'
               var url = "/api/ujian/"+this.$route.params.idUjian+'/soal'
@@ -161,8 +152,8 @@ export default {
           .then(res=>{
             if(res.data.status == false) console.log(res.data)
             else {
-                this.toggleFormData()
-                bus.$emit("newData")
+                this.$refs.genTable.toggleFormData()
+                this.$refs.genTable.getData(this.$refs.genTable.pageRows,this.$refs.genTable.pagePosition)
                 this.resetForm()
             }
         })
@@ -180,11 +171,16 @@ export default {
             else {
                 let hasil = res.data.data[0]
                 this.dataForm = hasil
-                this.toggleFormData()
+                this.$refs.genTable.toggleFormData()
             }
         })
         .catch(err=>{
-            console.log(err)
+            var kode = err.response.status
+            if(kode > 300){
+                bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')
+            }else{
+                bus.$emit('showAlert','Peringatan!','Terjadi kesalahan pada server!.','warning')
+            }
         })
 		}
   },
