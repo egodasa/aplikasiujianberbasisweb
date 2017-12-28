@@ -227,6 +227,7 @@ methods : {
         
     },
     kumpulkanUjian () {
+        this.simpanJawaban(this.posisiSoal,this.jawaban)
         if(this.infoUjian.id_jsoal == 1){
             var benar = 0
             var salah = 0
@@ -261,17 +262,16 @@ methods : {
             console.log(hasil)
             this.$ajx.post('api/ujian/jawaban',hasil)
             .then(res=>{
-                console.log(res.data)
+                this.$lcs.remove('infoUjian')
+                this.$lcs.remove('infoLogin')
+                this.$lcs.remove('ljk')
+                this.$router.push({path: '/'})
                 })
             .catch(err=>{
                 console.log(err)
+                bus.$emit('showAlert','Kesalahan!','Tidak dapat mengumpukan ujian. Silahkan diulangi kembali!','warning')
                 })
         }
-        this.simpanJawaban(this.posisiSoal,this.jawaban)
-        this.$lcs.remove('infoUjian')
-        this.$lcs.remove('infoLogin')
-        this.$lcs.remove('ljk')
-        this.$router.push({path: '/'})
     },
     simpanJawaban (x,jawaban){
         this.jawabanPeserta[x].jawaban = jawaban

@@ -17,8 +17,17 @@ import lodash from 'lodash'
 import { Bus } from './bus.js'
 
 Vue.use(wysiwyg, {
-    hideModules: { "hyperlink": true,"image":true}
-    })
+    hideModules: { "bold":false,
+"headings":true,
+"hyperlink":true,
+"image":true,
+"italic":false,
+"list_ordered":false,
+"list_unordered":false,
+"removeFormat":false,
+"table":false
+}
+})
 Vue.use(Notifications)
 Vue.component('v-select', vSelect)
 VeeValidate.Validator.addLocale(bahasa)

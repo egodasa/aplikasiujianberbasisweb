@@ -20,6 +20,7 @@ import DkelolaKuliahDetail from './components/page/dosen/kelolaKuliahDetail.vue'
 
 import hasilUjian from './components/page/admin/hasilUjian.vue';
 import cekJawaban from './components/page/admin/cekJawaban.vue';
+import DcekJawaban from './components/page/dosen/cekJawaban.vue';
 import loginPengguna from './components/page/loginPengguna.vue';
 import dashboardAdmin from './components/page/admin/dashboardAdmin.vue';
 import dashboardDosen from './components/page/dosen/dashboardDosen.vue';
@@ -170,7 +171,12 @@ export default [
         path: 'kuliah/:idKuliah',
         name : 'DkelolaKuliahDetail',
         component: DkelolaKuliahDetail
-      }
+      },
+      {
+        path: 'ujian/:idUjian/jawaban/:idPeserta',
+        name : 'DcekJawaban',
+        component: DcekJawaban
+      },
     ]
   }
 ];

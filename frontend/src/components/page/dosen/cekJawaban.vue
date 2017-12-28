@@ -201,8 +201,7 @@ methods : {
             }
         this.$ajx.post('api/ujian/hasil',data)
         .then(res=>{
-            console.log(res)
-            this.$router.push({path: '/dosen/'+this.$lcs.get('infoUjian').username+'/ujian/'+this.$route.params.idUjian})
+            this.$router.push({path: '/dosen/'+this.$lcs.get('infoLogin').username+'/ujian/'+this.$route.params.idUjian})
             })
         .catch(err=>{
             console.log(err)

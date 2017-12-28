@@ -5,7 +5,9 @@
             <h3>Tambah Soal</h3>
             <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
             <label>Isi Soal</label>
+            <div class="w3-mobile">
             <wysiwyg v-model="dataForm.isi_soal" />
+            </div>
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
             <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
@@ -66,7 +68,7 @@ export default {
           url : 'ujian/'+this.$route.params.idUjian+'/soal',
           showForm : false,
           dataForm : {
-              isi_soal : null,
+              isi_soal : "-",
               jawaban : null,
               pilihanGanda : [
                   {huruf:'A',isi_pilihan:null},
@@ -122,7 +124,7 @@ export default {
           }
       },
       resetForm () {
-          this.dataForm.isi_soal = null
+          this.dataForm.isi_soal = "-"
           this.dataForm.jawaban = null
           this.dataForm.id_soal = undefined
           this.dataForm.pilihanGanda = [
@@ -144,6 +146,8 @@ export default {
               var method = 'PUT'
               var url = '/api/soal/'+this.dataForm.id_soal
           }
+          console.log(this.$refs.vueEditor.content)
+          this.dataForm.isi_soal = this.$refs.vueEditor.content
           this.$ajx({
             method : method,
             data : this.dataForm,

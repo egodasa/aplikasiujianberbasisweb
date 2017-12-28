@@ -6,15 +6,15 @@
   <h2>Silahkan Pilih Ujian</h2>
 </div>
 <div class="w3-container">
-	<form method="POST" @submit.prevent="masukUjian()">
-	<div class="w3-center" style="margin:0 auto;width:75%;">
-        <span class="w3-container">
-            <v-select v-model="selectedUjian" :options="listUjian" label="nm_ujian" placeholder="Klik disini untuk memilih ujian ...."></v-select>
-        </span>
-        <button type="button" class="w3-btn w3-red w3-section" @click="batalkanUjian()">Kembali</button>
-        <button type="submit" class="w3-btn w3-blue w3-section">Login</button>
+	<div style="margin:0 auto;width:75%;">
+        <a v-for="x in listUjian" @click="masukUjian(x)">
+        <div class="w3-panel w3-leftbar w3-pale-green">
+            <p>{{x.nm_dosen}}</p>
+            <p>{{x.nm_ujian+' ( '+x.nm_kelas+' )'+' ( '+x.mulai+' - '+x.selesai+' )'}}</p>
+        </div> 
+        </a>
+        <button type="button" class="w3-btn w3-red w3-section w3-right" @click="batalkanUjian()">Kembali</button>
 	</div>
-	</form>
 </div>
 </div>
 </div>
@@ -52,8 +52,8 @@ export default {
               bus.$emit('showAlert','Kesalahan!','Tidak dapat mengambil daftar ujian. Silahkan tekan tombol "Kembali"!','warning')
               })
       },
-      masukUjian(){
-          this.$lcs.set('infoUjian',this.selectedUjian)
+      masukUjian(x){
+          this.$lcs.set('infoUjian',x)
           this.$router.push({path : '/ujian/petunjuk'})
       },
       batalkanUjian (){

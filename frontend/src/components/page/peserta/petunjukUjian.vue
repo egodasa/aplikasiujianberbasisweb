@@ -38,8 +38,8 @@ export default {
   name: 'petunjukUjian',
   methods : {
       batalkanUjian () {
-          this.$lcs.destroy()
-          this.$router.push({path: '/login'})
+          this.$lcs.clearAll()
+          this.$router.push({path: '/'})
       }
   }
 }

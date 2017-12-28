@@ -122,7 +122,6 @@ export default {
           this.$ajx.get('api/ujian/'+this.$route.params.idUjian)
             .then(res=>{
                 this.infoUjian = res.data.data[0]
-                console.log(this.infoUjian.nm_kelas)
                 bus.$emit('getKelas',this.infoUjian.nm_kelas)
                 this.infoUjian.hari = formatWaktu(new Date(this.infoUjian.hari), 'DD MMMM YYYY', {locale : lokalisasi})
                 this.periksaSoal = this.infoUjian.id_jsoal == 2

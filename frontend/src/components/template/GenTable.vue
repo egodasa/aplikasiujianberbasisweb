@@ -13,7 +13,7 @@
               </div>
               </span>
               <span class="w3-right">
-              <input type="search" class="w3-class w3-bordered w3-big" v-model="cari" /> 
+              <input type="search" class="w3-class w3-bordered w3-big" v-model="cari"  @keyup.enter="cariData()"/> 
               <button type="button" class="w3-button w3-green w3-hover-blue-gray w3-small" @click="cariData()"><i class="fa fa-search"></i></button>
               <button type="button" class="w3-button w3-red w3-hover-blue-gray w3-small" @click="resetCariData()"><i class="fa fa-close  "></i></button>
               </span>
@@ -215,7 +215,7 @@ export default {
         bus.$on('newData',()=>{
             this.getData(this.pageRows,this.pagePosition)
             })
-        bus.$emit('newData')
+        this.getData(this.pageRows,this.pagePosition)
   },
   computed : {
         tableCenter : function () {
@@ -266,7 +266,9 @@ export default {
             offset = (offset-1)*this.pageRows
             var url
             if(this.pencarian == true){
-                url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
+                if(this.cari == undefined || this.cari == null || this.cari == ""){
+                    url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
+                }else url = this.baseUrl+this.url+'/cari/'+this.cari+'?limit='+limit+'&offset='+offset+this.urlQuery
             }else url = this.baseUrl+this.url+'?limit='+limit+'&offset='+offset+this.urlQuery
 			this.$ajx.get(url)
 			.then(res=>{
