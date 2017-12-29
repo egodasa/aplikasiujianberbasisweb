@@ -26,6 +26,7 @@
     "md5": "^2.2.1",
     "moment": "^2.19.1",
     "moment-timezone": "^0.5.13",
+    "msgpack-lite": "^0.1.26",
     "serialize-javascript": "^1.4.0",
     "store": "^2.0.12",
     "vee-validate": "^2.0.0-rc.19",

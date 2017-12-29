@@ -17,7 +17,7 @@ import lodash from 'lodash'
 import { Bus } from './bus.js'
 import serialize from 'serialize-javascript'
 import vuecookies from 'vue-cookies'
-
+import msgpack from 'msgpack-lite'
 
 Vue.use(wysiwyg, {
     hideModules: { "bold":false,
@@ -51,7 +51,21 @@ const cks = {
         return vuecookies.isKey(x)
     }
 }
-Vue.prototype.$lcs = store
+const localStorage = {
+    setLcs (x,y){
+        store.set(x,y)
+    },
+    getLcs (x){
+        return store.get(x)
+    },
+    clearLcs (){
+        store.clearAll()
+    },
+    removeLcs (x){
+        store.remove(x)
+    }
+}
+Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks
 window.bus = Bus
 window._ = lodash

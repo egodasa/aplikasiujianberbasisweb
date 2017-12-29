@@ -55,19 +55,6 @@ data (){
     }
 },
 created () {
-    if(this.$lcs.get('user')){
-        if(this.$lcs.get('user').id_juser == 2){
-            let query = `query getDosen($id : String) { getDosen(id : $id){id_dosen,nidn,nm_dosen,status_dosen} }`
-            let kueri = { query : query, variables : { id : this.$lcs.get('user').username }}
-            this.$ajx.post('api/v2/dosen/',kueri)
-            .then(res=>{
-                this.infoUser = res.data.data.getDosen[0]
-                })
-            .catch(err=>{
-                this.infoUser = {}
-                })
-        }
-    }
     bus.$on('toggleMenu',()=>{
         this.toggleMenu()
         })

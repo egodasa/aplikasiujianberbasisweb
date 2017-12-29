@@ -45,7 +45,11 @@ beforeRouteEnter (to, from, next) {
             if(vm.$cks.getCookies('infoLogin')){
                 if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
                 else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
-                else if(vm.$cks.getCookies('infoLogin').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
+                else if(vm.$cks.getCookies('infoLogin').id_juser == 3){
+                    if(vm.$lcs.getLcs('infoUjian')){
+                        vm.$router.push({path:'/ujian/petunjuk'})
+                    }else vm.$router.push({path:'/ujian/login'})
+                }
             }
         })
 },

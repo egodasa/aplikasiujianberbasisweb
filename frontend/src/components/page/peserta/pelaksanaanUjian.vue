@@ -5,7 +5,7 @@
 <template slot="sidebarAtas">
 <div class="w3-container">
     <h3>Pilih Soal</h3>
-<button style="padding: 5px;width:40px;margin : 3px;" type="button" :class="posisiSoal == index ? 'w3-button w3-pale-blue  w3-hover-pale-blue w3-border' : 'w3-button w3-blue w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
+<button style="padding: 5px;width:40px;margin : 3px;" type="button" :class="jawabanPeserta[index].jawaban != null ? 'w3-button w3-green  w3-hover-pale-blue w3-border' : 'w3-button w3-red w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
 </div>
 </template>
 <template slot="sidebarBawah">
@@ -142,7 +142,14 @@ data () {
 beforeRouteEnter: (to, from, next)=>{
     next(vm => {
     if(vm.$cks.getCookies('infoLogin')){
-        if(vm.$cks.getCookies('infoLogin').id_juser != 3) vm.$router.push({path:'/'})
+        if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
+        else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
+        else if(vm.$cks.getCookies('infoLogin').id_juser == 3) {
+            if(!vm.$lcs.getLcs('infoUjian')){
+               vm.$router.push({path:'/ujian/login'}) 
+            }
+        }
+        else vm.$router.push({path:'/'})
     }else vm.$router.push({path:'/'})
     })
 },
@@ -151,17 +158,17 @@ beforeDestroy () {
     clearInterval(this.waktuSekarangJalan)
 },
 created (){
-    this.infoUjian = this.$lcs.get('infoUjian')  
+    this.infoUjian = this.$lcs.getLcs('infoUjian')  
     this.hariSekarang = formatWaktu(new Date(), 'DD MMMM YYYY', {locale : lokalisasi})
     this.waktuSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
-    this.waktuSelesai = new Date(this.$lcs.get('infoUjian').hari.substr(0,10) + " " + this.$lcs.get('infoUjian').selesai).getTime()
+    this.waktuSelesai = new Date(this.$lcs.getLcs('infoUjian').hari.substr(0,10) + " " + this.$lcs.getLcs('infoUjian').selesai).getTime()
     this.genLjk()
     this.runSisaWaktu()
     this.runWaktuSekarang()
 },
 methods : {
     runSisaWaktu () {
-        var sisa = new Date(this.$lcs.get('infoUjian').hari + " " + this.$lcs.get('infoUjian').selesai).getTime() - new Date().getTime()
+        var sisa = new Date(this.$lcs.getLcs('infoUjian').hari + " " + this.$lcs.getLcs('infoUjian').selesai).getTime() - new Date().getTime()
         this.sisaWaktuJalan = setInterval(()=>{
             if(sisa < 0) {
                 this.kumpulkanUjian()
@@ -204,9 +211,9 @@ methods : {
         .then(res=>{
             this.listSoal = res.data.data
             //cek sesi ujian apakah sudah ada
-            if(this.$lcs.get('ljk')){
-                this.jawabanPeserta = this.$lcs.get('ljk').jawabanPeserta
-                this.posisiSoal = this.$lcs.get('ljk').posisiSoal
+            if(this.$lcs.getLcs('ljk')){
+                this.jawabanPeserta = this.$lcs.getLcs('ljk').jawabanPeserta
+                this.posisiSoal = this.$lcs.getLcs('ljk').posisiSoal
                 this.showSoal(this.posisiSoal)
             }else{
                 _.forEach(res.data.data, (v,k)=>{
@@ -216,7 +223,7 @@ methods : {
                     jawabanPeserta : this.jawabanPeserta,
                     posisiSoal : this.posisiSoal
                 }
-                this.$lcs.set('ljk',tmp)
+                this.$lcs.setLcs('ljk',tmp)
             }
             this.hitungSoalSiap()
             this.showSoal(this.posisiSoal)
@@ -241,7 +248,6 @@ methods : {
                 nobp : this.infoUjian.nobp,
                 nilai : parseInt(nilai)
             }
-            console.log('benar ' + benar + 'salah ' + salah)
             this.$ajx.post('api/ujian/hasil',hasil)
             .then(res=>{
                 console.log(res.data)
@@ -259,12 +265,11 @@ methods : {
                     jawaban : v.jawaban
                     })
                 })
-            console.log(hasil)
             this.$ajx.post('api/ujian/jawaban',hasil)
             .then(res=>{
-                this.$lcs.remove('infoUjian')
-                this.$lcs.remove('infoLogin')
-                this.$lcs.remove('ljk')
+                this.$lcs.removeLcs('infoUjian')
+                this.$cks.clearCookies('infoLogin')
+                this.$lcs.removeLcs('ljk')
                 this.$router.push({path: '/'})
                 })
             .catch(err=>{
@@ -280,7 +285,7 @@ methods : {
             jawabanPeserta : this.jawabanPeserta,
             posisiSoal : this.posisiSoal
         }
-        this.$lcs.set('ljk',tmp)
+        this.$lcs.setLcs('ljk',tmp)
         this.hitungSoalSiap()
     },
     hitungSoalSiap () {
