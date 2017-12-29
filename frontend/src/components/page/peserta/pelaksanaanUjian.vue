@@ -79,7 +79,8 @@
 </template>
 <template v-else>
     <label>Jawaban Anda</label>
-    <textarea v-model="jawaban" placeholder="Ketik jawaban disini ..." class="w3-border w3-input" rows="7"></textarea><br/>
+    <quill-editor v-model="jawaban" :options="quillEditor" ref="quillEditor"></quill-editor>
+    <!--<textarea v-model="jawaban" placeholder="Ketik jawaban disini ..." class="w3-border w3-input" rows="7"></textarea>--><br/>
     <button type="button" class="w3-button w3-blue w3-right w3-block" @click="simpanJawaban(posisiSoal,jawaban)">Simpan Jawaban</button>
 </template>
 <div class="w3-col l6 s6">
@@ -114,6 +115,22 @@ components : {
 },
 data () {
     return {
+        jawaban : "",
+        quillEditor : {
+            modules : {
+                toolbar : [
+                'bold',
+                'italic',
+                'size',
+                'color',
+                'underline',
+                'list',
+                'align',
+                'blockquote'
+            ]
+            },
+            placeholder : "Ketik Jawaban Disini..."
+        },
         infoUjian : {},
         listSoal : [{}],
         soalSekarang : {

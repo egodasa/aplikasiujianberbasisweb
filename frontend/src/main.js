@@ -18,7 +18,22 @@ import { Bus } from './bus.js'
 import serialize from 'serialize-javascript'
 import vuecookies from 'vue-cookies'
 import msgpack from 'msgpack-lite'
+import VueQuillEditor from 'vue-quill-editor'
 
+Vue.use(VueQuillEditor, {
+    modules : {
+        toolbar : [
+        'bold',
+        'italic',
+        'size',
+        'color',
+        'underline',
+        'list',
+        'align',
+        'blockquote'
+    ]
+    }
+})
 Vue.use(wysiwyg, {
     hideModules: { "bold":false,
 "headings":true,
