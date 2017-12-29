@@ -159,7 +159,7 @@ methods : {
         .catch(err=>{
             console.log(err)
             if(err){
-                if(err.response.status == 204) this.$router.push({path:'/dosen/ujian/'+this.$lcs.get('infoLogin').username})
+                if(err.response.status == 204) this.$router.push({path:'/dosen/ujian/'+this.$cks.getCookies('infoLogin').username})
                 else {
                     bus.$emit('showAlert','Kesalahan!','Tidak dapat mengambil data jawaban. Silahkan ulangi kembali ...','warning')
                 }
@@ -201,7 +201,7 @@ methods : {
             }
         this.$ajx.post('api/ujian/hasil',data)
         .then(res=>{
-            this.$router.push({path: '/dosen/'+this.$lcs.get('infoLogin').username+'/ujian/'+this.$route.params.idUjian})
+            this.$router.push({path: '/dosen/'+this.$cks.getCookies('infoLogin').username+'/ujian/'+this.$route.params.idUjian})
             })
         .catch(err=>{
             console.log(err)

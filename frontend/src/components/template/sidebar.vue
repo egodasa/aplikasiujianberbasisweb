@@ -82,7 +82,7 @@ methods : {
         }else this.menuStatus = "none"
     },
     logout () {
-        this.$lcs.remove('infoLogin')
+        this.$cks.clearCookies('infoLogin')
         this.$router.push({path : '/'})
     }
 }

@@ -4,7 +4,7 @@
     <sec-sidebar :listMenu="menu">
         <template slot="sidebarAtas">
             <div class="w3-bar-block">
-            <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{$lcs.get('infoLogin').username}}</span>
+            <span class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw"></i> {{$cks.getCookies('infoLogin').username}}</span>
             </div>
         </template>
     </sec-sidebar>
@@ -36,14 +36,14 @@ export default {
   },
   beforeRouteEnter: (to, from, next)=>{
       next(vm => {
-        if(vm.$lcs.get('infoLogin')){
-            if(new Date().getTime() > vm.$lcs.get('infoLogin').expireLogin){
+        if(vm.$cks.getCookies('infoLogin')){
+            if(new Date().getTime() > vm.$cks.getCookies('infoLogin').expireLogin){
                 vm.$lcs.remove('infoLogin')
                 vm.$router.push({path:'/'})
             }
             else{
-                if(vm.$lcs.get('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$lcs.get('infoLogin').username})
-                else if(vm.$lcs.get('infoLogin').id_juser == 3) vm.$router.push({path:'/'})
+                if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
+                else if(vm.$cks.getCookies('infoLogin').id_juser == 3) vm.$router.push({path:'/'})
             }
         }else vm.$router.push({path:'/'})
       })

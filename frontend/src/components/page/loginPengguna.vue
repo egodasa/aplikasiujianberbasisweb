@@ -42,10 +42,10 @@ components : {
 },
 beforeRouteEnter (to, from, next) {
     next(vm => {
-            if(vm.$lcs.get('infoLogin')){
-                if(vm.$lcs.get('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
-                else if(vm.$lcs.get('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$lcs.get('infoLogin').username})
-                else if(vm.$lcs.get('infoLogin').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
+            if(vm.$cks.getCookies('infoLogin')){
+                if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
+                else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
+                else if(vm.$cks.getCookies('infoLogin').id_juser == 3) vm.$router.push({path:'/ujian/soal'})
             }
         })
 },
@@ -91,20 +91,18 @@ methods : {
                     if(hasil.status_user == 0){
                         bus.$emit('showAlert','Peringatan!','Akun Anda sudah tidak bisa digunakan lagi!','warning')
                     }else{
-                        hasil[0].loginDate = new Date().getTime(),
-                        hasil[0].expireLogin = new Date().getTime() + 108000 //waktu sekarang tambah 3 jam wakt login
-                        this.$lcs.set('infoLogin',hasil[0])
+                        this.$cks.setCookies('infoLogin',hasil[0],'6h')
+                        var x = {}
+                        if(hasil[0].id_juser == 1){
+                            x = {path : '/admin'}
+                        }else if(hasil[0].id_juser == 2){
+                            x = {path : '/dosen/'+this.username}
+                        }else if(hasil[0].id_juser == 3){
+                            x = {path : '/ujian/login'}
+                        }else this.$router.push({path: '/'})
+                        this.$router.push(x)
                         }
                     }
-                var x = {}
-                if(hasil[0].id_juser == 1){
-                    x = {path : '/admin'}
-                }else if(hasil[0].id_juser == 2){
-                    x = {path : '/dosen/'+this.username}
-                }else if(hasil[0].id_juser == 3){
-                    x = {path : '/ujian/login'}
-                }else this.$router.push({path: '/'})
-                this.$router.push(x)
                 })
             .catch(err=>{
                 this.Blogin.disabled = false

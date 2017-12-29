@@ -15,6 +15,9 @@ import store from 'store'
 import axios from 'axios'
 import lodash from 'lodash'
 import { Bus } from './bus.js'
+import serialize from 'serialize-javascript'
+import vuecookies from 'vue-cookies'
+
 
 Vue.use(wysiwyg, {
     hideModules: { "bold":false,
@@ -34,8 +37,22 @@ VeeValidate.Validator.addLocale(bahasa)
 Vue.use(VueRouter);
 Vue.use(VueSession);
 Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
-
+const cks = {
+    setCookies (x,y,z = null){
+        z == null ? vuecookies.set(x,serialize(y)) : vuecookies.set(x,serialize(y),z)
+    },
+    getCookies (x){
+        return eval('(' + vuecookies.get(x) + ')')
+    },
+    clearCookies (x){
+        vuecookies.remove(x)
+    },
+    isCookies (x){
+        return vuecookies.isKey(x)
+    }
+}
 Vue.prototype.$lcs = store
+Vue.prototype.$cks = cks
 window.bus = Bus
 window._ = lodash
 Vue.prototype.$ajx = axios

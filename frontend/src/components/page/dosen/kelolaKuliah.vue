@@ -26,7 +26,7 @@ export default {
   },
   data () {
       return {
-          url : 'dosen/'+this.$lcs.get('infoLogin').username+'/kuliah',
+          url : 'dosen/'+this.$cks.getCookies('infoLogin').username+'/kuliah',
             tableContent : {
                 header : ['Mata Kuliah','Kelas','Tahun Akademik','Status'],
                 content : ['id_kuliah','nm_matkul','ket_nm_kelas','tahun_akademik','nm_status_kuliah']

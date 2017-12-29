@@ -33,8 +33,8 @@ export default {
   },
   beforeRouteEnter: (to, from, next)=>{
     next(vm => {
-    if(vm.$lcs.get('infoLogin')){
-        if(vm.$lcs.get('infoLogin').id_juser != 3) vm.$router.push({path:'/'})
+    if(vm.$cks.getCookies('infoLogin')){
+        if(vm.$cks.getCookies('infoLogin').id_juser != 3) vm.$router.push({path:'/'})
     }else vm.$router.push({path:'/'})
     })
 },
@@ -43,7 +43,7 @@ export default {
   },
   methods : {
       getUjian () {
-          this.$ajx.get('/api/mahasiswa/'+this.$lcs.get('infoLogin').username+'/ujian')
+          this.$ajx.get('/api/mahasiswa/'+this.$cks.getCookies('infoLogin').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               })
