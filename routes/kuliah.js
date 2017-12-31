@@ -81,6 +81,45 @@ router.post('/',(req,res,next)=>{
             });
         }
 	}); 
+});
+router.put('/:id',(req,res,next)=>{
+	var data = req.body;
+	var hasil = {};
+    var id = req.params.id
+    req.checkBody(validator.update_kuliah);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false,
+		hasil.error = pesan;
+		res.status(422).json(hasil);
+	}
+	else{
+        db(tbl).update({
+            tahun_akademik : data.tahun_akademik
+            }).
+        then((rows)=>{
+            return db('tbkelas_kuliah').where('id_kuliah',id).del()
+            }).
+        then((rows)=>{
+            let kelas = []
+            _.forEach(data.kelas,(v,k)=>{
+                kelas.push({id_kuliah:id,id_kelas:v})
+                })
+            return db('tbkelas_kuliah').insert(kelas)
+            }).
+        then(function(){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            hasil.status = false;
+            hasil.error = err;
+            res.status(503).json(hasil);
+            });
+        }
+	}); 
 }); 
 router.delete('/:id',(req,res,next)=>{
 	var id = req.params.id;

@@ -175,8 +175,9 @@ router.put('/:id',(req,res,next)=>{
 });
 
 //lihat kuliah yg diampu dosen
-router.get('/:id/kuliah',(req, res, next)=>{
+router.get('/:id/kuliah/:idKuliah?',(req, res, next)=>{
 	var id = req.params.id || 0;
+	var idKuliah = req.params.idKuliah;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
 	var hasil = {};
@@ -185,8 +186,15 @@ router.get('/:id/kuliah',(req, res, next)=>{
         count : null,
         tmp : null
     }
-    query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
-    query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
+    if(idKuliah){
+        query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where({nidn:id,id_kuliah:idKuliah})
+        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where({nidn:id,id_kuliah:idKuliah})
+        }
+    else{
+        query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
+        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
+    }
+    
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
@@ -194,13 +202,14 @@ router.get('/:id/kuliah',(req, res, next)=>{
         query.show = query.tmp.limit(limit).offset(offset)
     }
 	query.show.then(function(rows){
+        if(idKuliah) rows.id_kelas = rows.nm_kelas
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
 		return query.count
 		}).
 	then((rows)=>{
-		 let code
+        let code
 		hasil.row = rows.length
         if(rows.length == 0) code = 204
         else code = 200
@@ -232,7 +241,6 @@ router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 	});
 
 //DOSEN MENGELOLA KULIAH
-
 router.post('/:id/kuliah',(req,res,next)=>{
 	var data = req.body;
     console.log(data)
@@ -273,6 +281,45 @@ router.post('/:id/kuliah',(req,res,next)=>{
     }
 	});
 });
+router.put('/:nidn/kuliah/:id',(req,res,next)=>{
+	var data = req.body;
+	var hasil = {};
+    var id = req.params.id
+    req.checkBody(validator.update_kuliah);
+	req.getValidationResult().then(function(result){
+	result.useFirstErrorOnly();
+	var pesan = result.mapped();
+	if(result.isEmpty() == false){
+		hasil.status = false,
+		hasil.error = pesan;
+		res.status(422).json(hasil);
+	}
+	else{
+        db(tbl).update({
+            tahun_akademik : data.tahun_akademik
+            }).
+        then((rows)=>{
+            return db('tbkelas_kuliah').where('id_kuliah',id).del()
+            }).
+        then((rows)=>{
+            let kelas = []
+            _.forEach(data.kelas,(v,k)=>{
+                kelas.push({id_kuliah:id,id_kelas:v})
+                })
+            return db('tbkelas_kuliah').insert(kelas)
+            }).
+        then(function(){
+            hasil.status = true;
+            res.json(hasil);
+            }).
+        catch(function(err){
+            hasil.status = false;
+            hasil.error = err;
+            res.status(503).json(hasil);
+            });
+        }
+	}); 
+}); 
 //EOF DOSEN MENGELOLA KULIAH
 
 //DOSEN MENGELOLA UJIAN

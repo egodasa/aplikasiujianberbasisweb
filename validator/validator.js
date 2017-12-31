@@ -82,6 +82,25 @@ let validator = {
             }
         }
     },
+    update_kuliah: {
+        'tahun_akademik': {
+            notEmpty: {
+                errorMessage: 'Tahun akademik harus diisi ...'
+            },
+            isLength: {
+                options: [{
+                    min: 4,
+                    max: 5
+                }],
+                errorMessage: 'Tahun akademik maksimal 5 karakter ...'
+            }
+        },
+        'kelas': {
+            notEmpty: {
+                errorMessage: 'Kelas harus diisi ...'
+            }
+        }
+    },
     matkul: {
         'kd_matkul': {
             notEmpty: {
