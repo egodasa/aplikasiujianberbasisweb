@@ -19,21 +19,10 @@ import serialize from 'serialize-javascript'
 import vuecookies from 'vue-cookies'
 import msgpack from 'msgpack-lite'
 import VueQuillEditor from 'vue-quill-editor'
+import fp2 from 'fingerprintjs2'
 
-Vue.use(VueQuillEditor, {
-    modules : {
-        toolbar : [
-        'bold',
-        'italic',
-        'size',
-        'color',
-        'underline',
-        'list',
-        'align',
-        'blockquote'
-    ]
-    }
-})
+
+Vue.use(VueQuillEditor)
 Vue.use(wysiwyg, {
     hideModules: { "bold":false,
 "headings":true,
@@ -82,6 +71,7 @@ const localStorage = {
 }
 Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks
+Vue.prototype.$fp2 = new fp2()
 window.bus = Bus
 window._ = lodash
 Vue.prototype.$ajx = axios

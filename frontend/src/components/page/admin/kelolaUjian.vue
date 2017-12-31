@@ -1,14 +1,13 @@
 <template>
 <div class="w3-container">
-    <h2>Kelola Ujian</h2>
-    <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
+    <h2>Jadwal Ujian</h2>
     <div class="w3-border"></div>
     <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="list">
         <template slot="customAction" slot-scope="ca">
-            <span class="hint--top" aria-label="Kelola Ujian">
-                <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+            <span class="hint--top" aria-label="Daftar Mahasiswa">
+                <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
             </span>
         </template>
     </gen-table>

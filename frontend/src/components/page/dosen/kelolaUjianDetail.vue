@@ -1,6 +1,6 @@
 <template>
 <div class="w3-container">
-    <h2>Detail Ujian</h2>
+    <h2>Informasi Ujian</h2>
     <div id="infoUjian" :style="!loading ? 'display:block;':'display:none;height:300px;'">
         <template v-if="infoUjian == null">
             Tidak Dapat Menampilkan Info Ujian<br/>
@@ -54,10 +54,10 @@
     </div>
     
 <div class="w3-section w3-border w3-white w3-mobile">
-<span class="w3-bar w3-teal">
-<button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('soalUjian')">Soal Ujian</button>
-<button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-teal w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('hasilUjian')">Hasil Ujian</button>
-</span>
+<div class="w3-bar w3-light-gray">
+<button type="button" :class="currentTabs != 'soalUjian' ? 'w3-button w3-bar-item w3-light-gray w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('soalUjian')"><b>Soal Ujian</b></button>
+<button type="button" :class="currentTabs != 'hasilUjian' ? 'w3-button w3-bar-item w3-light-gray w3-mobile' : 'w3-button w3-hover-white w3-bar-item w3-white w3-mobile'" @click="changeTabs('hasilUjian')"><b>Hasil Ujian</b></button>
+</div>
 <br/>
     <keep-alive>
         <components :is="currentTabs" :infoUjian="infoUjian">

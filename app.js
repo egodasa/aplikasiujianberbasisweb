@@ -88,6 +88,7 @@ app.use('/api/v2/ujian', expressGraphQL({
   schema: sUjian,
   graphiql: true,
 }));
+// ^.+\/(api)\/.+$
 //EOF ROUTES
 
 // catch 404 and forward to error handler

@@ -6,9 +6,9 @@
             <input class="w3-radio" type="hidden" name="id_jsoal" v-model="dataForm.id_jsoal" />
             <label>Isi Soal</label>
             <div class="w3-mobile">
-            <!--<wysiwyg v-model="dataForm.isi_soal" />-->
-            <quill-editor v-model="dataForm.isi_soal" ref="quillEditor">
-            </quill-editor>
+            <wysiwyg v-model="dataForm.isi_soal" />
+            <!--<quill-editor v-model="dataForm.isi_soal" ref="quillEditor">
+            </quill-editor>-->
             </div>
             <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
             <template v-if="dataForm.id_jsoal == 1">

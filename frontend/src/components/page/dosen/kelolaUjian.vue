@@ -1,7 +1,7 @@
 <template>
 
 <div class="w3-container">
-    <h2>Kelola Ujian</h2>
+    <h2>Daftar Ujian</h2>
     <i>* Status ujian akan aktif jika terdapat minimal 1 soal pada ujian tersebut.</i>
     <div class="w3-border"></div>
     <br/>

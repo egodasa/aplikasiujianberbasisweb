@@ -1936,6 +1936,10 @@ find-up@^1.0.0:
     path-exists "^2.0.0"
     pinkie-promise "^2.0.0"
 
+fingerprintjs2@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/fingerprintjs2/-/fingerprintjs2-1.5.1.tgz#010691d425bc37fa0b5a7ec1ae85404bb3f934cb"
+
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"

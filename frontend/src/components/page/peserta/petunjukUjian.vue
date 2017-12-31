@@ -38,7 +38,7 @@ export default {
   name: 'petunjukUjian',
   methods : {
       batalkanUjian () {
-          this.$lcs.clearAll()
+          this.$lcs.removeLcs('infoLogin')
           this.$router.push({path: '/'})
       }
   }

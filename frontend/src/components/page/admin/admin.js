@@ -7,7 +7,7 @@ export const adminConf = {
               name : 'Beranda',
               icon : 'fa-home fa-fw',
               key : 1
-              },
+              },/*
               {
                   path : '/admin/kuliah',
                   name : 'Kuliah',
@@ -16,10 +16,10 @@ export const adminConf = {
               },
               {
                   path : '/admin/ujian',
-                  name : 'Ujian',
+                  name : 'Jadwal Ujian',
               icon : 'fa-list-alt fa-fw',
               key : 2
-              },
+              },*/
               {
                   path : '/admin/mahasiswa',
                   name : 'Mahasiswa',

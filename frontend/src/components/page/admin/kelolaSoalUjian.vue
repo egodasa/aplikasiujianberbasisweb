@@ -41,7 +41,7 @@
         </form>
         </div>
     </div>
-    <gen-table :pk="tableContent.content[0]" ref="genTable" :url="url" :tableContent="tableContent" tableType="hapus">
+    <gen-table :pk="tableContent.content[0]" ref="genTable" :url="url" :tableContent="tableContent" tableType="list" :aksi.Boolean="false" :formButton.Boolean="false" :cetakButton.Boolean="false" :exportButton.Boolean="true" >
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData.id_soal)"><i class="fa fa-edit"></i> 
         </button></span>

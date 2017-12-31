@@ -55,8 +55,8 @@ beforeRouteEnter (to, from, next) {
 },
 data () {
     return {
-    username : '1029116801',
-    password : 'upi1029116801yptk',
+    username : '1029108702',
+    password : 'upi1029108702yptk',
     Blogin : {
         disabled : false,
         caption : "login"
@@ -64,6 +64,10 @@ data () {
     }
 },
 created (){
+    this.$fp2.get((result, components)=>{
+        console.log(result); //a hash, representing your device fingerprint
+        console.log(components); // an array of FP components
+        });
     bus.$emit('toggleModal')
 },
 methods : {

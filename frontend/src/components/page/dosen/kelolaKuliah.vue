@@ -1,11 +1,14 @@
 <template>
 <div class="w3-container">
     <h2>Daftar Kuliah</h2>
+    <i>* Status kuliah akan aktif jika terdapat minimal 1 mahasiswa pada kuliah tersebut.</i>
+    <div class="w3-border"></div>
+    <br/>
     <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus">
     <template slot="customAction" slot-scope="ca">
-        <span class="hint--top" aria-label="Kelola Kuliah">
-            <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+        <span class="hint--top" aria-label="Peserta Kuliah">
+            <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
         </span>
     </template>
     </gen-table>
