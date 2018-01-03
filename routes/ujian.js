@@ -5,6 +5,8 @@ var json2csv = require('json2csv')
 var axios = require('axios')
 const excel = require('node-excel-export');
 _ = require('lodash')
+var Excel = require('exceljs');
+
 router.get('/:id?', (req, res, next) => {
     var id = req.params.id || 0;
     var nidn = req.query.nidn || 0;
@@ -426,59 +428,29 @@ router.get('/:idUjian/hasil/cetak/csv', (req, res, next) => {
 });
 router.get('/:idUjian/hasil/cetak/excel', (req, res, next) => {
     let id_ujian = req.params.idUjian
-    let header = {
-        fill: {
-            fgColor: {
-                rgb: 'E0E0E0'
-            }
-        },
-        font: {
-            sz: 12,
-            bold: true
-        }
-    }
-    const dataConf = {
-        nobp: { // <- the key should match the actual data key 
-            displayName: 'NOBP', // <- Here you specify the column header 
-            headerStyle: header
-        },
-        nm_mahasiswa: { // <- the key should match the actual data key 
-            displayName: 'Nama Mahasiswa', // <- Here you specify the column header 
-            headerStyle: header
-        },
-        nm_kelas: {
-            displayName: 'Kelas',
-            headerStyle: header
-        },
-        nm_status_ujian_peserta: {
-            displayName: 'Status',
-            headerStyle: header
-        },
-        nilai: { // <- the key should match the actual data key 
-            displayName: 'Nilai', // <- Here you specify the column header 
-            headerStyle: header
-        }
-    }
-    db(db.raw("getHasilUjian('" + id_ujian + "')")).select(db.raw('distinct(nobp),id_ujian,nm_mahasiswa,id_kelas,nm_kelas,nilai,status_ujian_peserta,nm_status_ujian_peserta')).where('id_ujian', id_ujian).orderBy('nobp','asc')
+    var workbook = new Excel.Workbook();
+    var worksheet = workbook.addWorksheet('Laporan Ujian');
+    db('lap_ujian').select("*", db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
+        .then((rows)=>{
+            var hasil = rows[0]
+            worksheet.addRow(['Mata Kuliah',hasil.nm_matkul,'Dosen',hasil.nm_dosen])
+            worksheet.addRow(['Kelas',hasil.nm_kelas.toString(),'Tahun Akademik',hasil.tahun_akademik])
+            worksheet.addRow(['Hari',hasil.ket_waktu])
+            worksheet.addRow(['Jenis Ujian',hasil.nm_jujian,'Jenis Soal',hasil.nm_jsoal])
+            return db(db.raw("getHasilUjian('" + id_ujian + "')")).select(db.raw('distinct(nobp),id_ujian,nm_mahasiswa,id_kelas,nm_kelas,nilai,status_ujian_peserta,nm_status_ujian_peserta')).where('id_ujian', id_ujian).orderBy('nobp','asc')
+        })
         .then(function (rows) {
-            const report = excel.buildExport(
-                [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report 
-                    {
-                        name: rows[0].id_ujian, // <- Specify sheet name (optional) 
-                        //heading: heading, // <- Raw heading array (optional) 
-                        //merges: merges, // <- Merge cell ranges 
-                        specification: dataConf, // <- Report specification 
-                        data: rows // <-- Report data 
-                    }
-                ]
-            );
-            res.header('Content-type', 'application/vnd.ms-excel')
-                .header("Content-Disposition", "attachment;filename=laporan_nilai_" + id_ujian + ".xlsx")
-                .send(report)
-        }).
-    catch(function (err) {
-        res.json(err);
-    });
+            worksheet.addRow(['NOBP','Nama','Kelas','Status','Nilai'])
+            _.forEach(rows,(v,k) => {
+                worksheet.addRow([v.nobp,v.nm_mahasiswa,v.nm_kelas,v.nm_status_ujian_peserta,v.nilai])
+            });
+            workbook.xlsx.writeFile('gundulmu.xlsx').then(()=>{
+                res.download('./gundulmu.xlsx',id_ujian+'.xlsx')
+            })
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
 });
 
 //get rata
