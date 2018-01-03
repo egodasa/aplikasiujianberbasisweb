@@ -33,7 +33,6 @@ export default {
                 content : ['id','nobp','nm_mahasiswa','nm_kelas','nm_status_ujian_peserta','nilai']
             },
             exportUrl : [
-            {url:'/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/csv',name:'CSV'},
             {url:'/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/excel',name:'Excel'},
             ]
         }
