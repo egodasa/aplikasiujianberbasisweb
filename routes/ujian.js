@@ -431,7 +431,7 @@ router.get('/:idUjian/hasil/cetak/csv', (req, res, next) => {
 router.get('/:idUjian/hasil/cetak/excel', (req, res, next) => {
     let id_ujian = req.params.idUjian
     var workbook = new Excel.Workbook();
-    var worksheet = workbook.addWorksheet('Laporan Hasil Ujian');
+    var worksheet = workbook.addWorksheet('Hasil Ujian');
     db('lap_ujian').select("*", db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
         .then((rows)=>{
             var hasil = rows[0]
