@@ -139,28 +139,31 @@ router.delete('/:id',(req,res,next)=>{
 //Mahasiswa pada sebuah kuliah
 router.get('/:id/mahasiswa',(req, res, next)=>{
 	var id = req.params.id;
+    var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
     var hasil = {};
-    var limit = parseInt(parseInt(req.query.limit)) || null;
-	var offset = parseInt(parseInt(req.query.offset)) || null;
-    var belumDitambahkan = req.query.belumDitambahkan || 0;
-    if(belumDitambahkan == 0) var query = db('lap_peserta_kuliah').select().where('id_kuliah',id)
-    else {
-        var query = db('lap_peserta_kuliah').select('nobp').where('id_kuliah',id)
-        query = db('tbmahasiswa').select().whereNotIn('nobp',query)
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
     }
-	query.limit(limit).offset(offset).
-	then(function(rows){
+    query.count = db('lap_peserta_kuliah').select('nobp').where('id_kuliah',id)
+    query.tmp = db('lap_peserta_kuliah').select().where('id_kuliah',id)
+    console.log(limit)
+    if(limit == null) query.show = query.tmp
+    else query.show = query.tmp.limit(limit).offset(offset)
+	query.show.then(function(rows){
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;
-		return query.count('* as jumlah');
+		return query.count;
 		}).
-	then((jumlah)=>{
-		let code
-		hasil.row = jumlah[0].jumlah;
-        if(hasil.row == 0) code = 204
+	then((rows)=>{
+		 let code
+		hasil.row = rows.length
+        if(rows.length == 0) code = 204
         else code = 200
-		res.status(code).json(hasil); 
+		res.status(code).json(hasil);
 		}).
 	catch(function(err){
 		hasil.status = false

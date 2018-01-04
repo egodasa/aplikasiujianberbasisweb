@@ -407,26 +407,78 @@ router.post('/hasil', (req, res, next) => {
 });
 router.get('/:idUjian/hasil/cetak/csv', (req, res, next) => {
     let id_ujian = req.params.idUjian
-    db(db.raw("getHasilUjian('" + id_ujian + "')")).select('nobp', 'nm_mahasiswa', 'nilai').orderBy('nm_mahasiswa', 'asc')
+    var workbook = new Excel.Workbook();
+    var worksheet = workbook.addWorksheet('Hasil Ujian');
+    db('lap_ujian').select("*", db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
+        .then((rows)=>{
+            var hasil = rows[0]
+            worksheet.addRow(['LAPORAN HASIL UJIAN'])
+            worksheet.addRow(['Mata Kuliah',hasil.nm_matkul])
+            worksheet.addRow(['Dosen',hasil.nm_dosen])
+            worksheet.addRow(['Kelas',hasil.nm_kelas.toString()])
+            worksheet.addRow(['Tahun Akademik',hasil.tahun_akademik])
+            worksheet.addRow(['Hari',formatWaktu(new Date(hasil.hari), 'DD MMMM YYYY', {locale : lokalisasi})])
+            worksheet.addRow(['Jam',hasil.mulai+' - '+hasil.selesai])
+            worksheet.addRow(['Jenis Ujian',hasil.nm_jujian])
+            worksheet.addRow(['Jenis Soal',hasil.nm_jsoal])
+            return db(db.raw("getHasilUjian('" + id_ujian + "')")).select(db.raw('distinct(nobp),id_ujian,nm_mahasiswa,id_kelas,nm_kelas,nilai,status_ujian_peserta,nm_status_ujian_peserta')).where('id_ujian', id_ujian).orderBy('nobp','asc')
+        })
         .then(function (rows) {
-            var data = rows
-            var fields = ['nobp', 'nm_mahasiswa', 'nilai']
-            var fieldsName = ['NOBP', 'Nama Mahasiswa', 'Nilai']
-            json2csv({
-                data: data,
-                fields: fields,
-                fieldNames: fieldsName
-            }, function (err, csv) {
-                if (err) console.log(err);
-                res
-                    .header('Content-type', 'text/csv')
-                    .header("Content-Disposition", "attachment;filename=laporan_nilai.csv")
-                    .send(csv)
+            var fontHeader = {
+                size : 12,
+                bold : true
+            }
+            var fillHeader = {
+                type: 'pattern',
+                pattern:'solid',
+                fgColor:{argb:'00DFE2E5'}
+            }
+            worksheet.addRow([])
+            worksheet.addRow(['NOBP','Nama','Kelas','Status','Nilai'])
+            _.forEach(rows,(v,k) => {
+                worksheet.addRow([v.nobp.toString(),v.nm_mahasiswa,v.nm_kelas,v.nm_status_ujian_peserta,v.nilai])
+            });
+            /*
+            worksheet.getRow(11).alignment = {vertical : "middle",horizontal: "center"}
+            for(var x=2;x<=9;x++){
+                worksheet.mergeCells('B'+x+':E'+x)
+                worksheet.getCell('A'+x).font = fontHeader
+            }
+            worksheet.mergeCells('A1:E1')
+            worksheet.getCell('A1').alignment = {vertical : "middle",horizontal: "center"}
+            worksheet.getCell('A1').font = {
+                size : 17,
+                bold : true
+            }
+            worksheet.getCell('A11').font = fontHeader
+            worksheet.getCell('B11').font = fontHeader
+            worksheet.getCell('C11').font = fontHeader
+            worksheet.getCell('D11').font = fontHeader
+            worksheet.getCell('E11').font = fontHeader
+            worksheet.getCell('A11').fill = fillHeader
+            worksheet.getCell('B11').fill = fillHeader
+            worksheet.getCell('C11').fill = fillHeader
+            worksheet.getCell('D11').fill = fillHeader
+            worksheet.getCell('E11').fill = fillHeader
+            
+            for(var x = 2;x <= 9;x++){
+                worksheet.getCell('A'+x).font = fillHeader
+            }
+            worksheet.getCell('A1').border = {
+                top: {style:'thin'},
+                left: {style:'thin'},
+                bottom: {style:'thin'},
+                right: {style:'thin'}
+            };
+            */
+            var file_tmp = tmp_file('.csv')
+            workbook.csv.writeFile(file_tmp).then(()=>{
+                res.download(file_tmp,id_ujian+'.csv')
             })
-        }).
-    catch(function (err) {
-        res.json(err);
-    });
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
 });
 router.get('/:idUjian/hasil/cetak/excel', (req, res, next) => {
     let id_ujian = req.params.idUjian
