@@ -24,7 +24,7 @@
                 <th v-if="aksi">Aksi</th>
             </tr>
             <tr class="w3-white w3-hover-light-gray" v-for="(tr,index,key) in dataTable.data">
-                <td v-if="rowNumber">{{index+1}}</td>
+                <td v-if="rowNumber">{{index+1+numStart}}</td>
                 <template v-if="showPk == true">
                 <td v-for="td in tableContent.content">{{tr[td]}}</td>
                 </template>
@@ -235,6 +235,9 @@ computed : {
         this.showPk ? pk=1 : pk = 0
         this.rowNumber ? numb=1 : numb = 0
         return this.tableContent.header.length+numb+aksi+pk
+    },
+    numStart : function(){
+        return (this.pagePosition-1)*this.pageRows
     }
 },
 methods : {
