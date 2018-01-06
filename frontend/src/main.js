@@ -20,7 +20,7 @@ import vuecookies from 'vue-cookies'
 import msgpack from 'msgpack-lite'
 import VueQuillEditor from 'vue-quill-editor'
 import fp2 from 'fingerprintjs2'
-
+import jwt_decode from 'jwt-decode'
 
 Vue.use(VueQuillEditor)
 Vue.use(wysiwyg, {
@@ -43,10 +43,10 @@ Vue.use(VueSession);
 Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
 const cks = {
     setCookies (x,y,z = null){
-        z == null ? vuecookies.set(x,serialize(y)) : vuecookies.set(x,serialize(y),z)
+        z == null ? vuecookies.set(x,y) : vuecookies.set(x,y,z)
     },
     getCookies (x){
-        return eval('(' + vuecookies.get(x) + ')')
+        return jwt_decode(vuecookies.get(x))
     },
     clearCookies (x){
         vuecookies.remove(x)
