@@ -158,7 +158,7 @@ data () {
 },
 beforeRouteEnter: (to, from, next)=>{
     next(vm => {
-    if(vm.$cks.getCookies('infoLogin')){
+    if(vm.$cks.isCookies('infoLogin')){
         if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
         else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
         else if(vm.$cks.getCookies('infoLogin').id_juser == 3) {

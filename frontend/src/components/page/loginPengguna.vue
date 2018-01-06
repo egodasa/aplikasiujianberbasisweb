@@ -42,7 +42,7 @@ components : {
 },
 beforeRouteEnter (to, from, next) {
     next(vm => {
-            if(vm.$cks.getCookies('infoLogin')){
+            if(vm.$cks.isCookies('infoLogin')){
                 if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
                 else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
                 else if(vm.$cks.getCookies('infoLogin').id_juser == 3){
@@ -87,19 +87,19 @@ methods : {
                                 }
                             }`
             var kueri = {query : query,variables : {username : this.username,password : md5(this.password)}}
-            this.$ajx.post('api/v2/user',kueri)
+            this.$ajx.post('api/user/cek',{username : this.username,password : md5(this.password)})
             .then(res=>{
                 this.Blogin.disabled = false
                 this.Blogin.caption = "Login"
-                let hasil = res.data.data.cekUser
+                let hasil = res.data.data
                 if(hasil.length == 0) {
                     bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
                     }
                 else {
-                    if(hasil.status_user == 0){
+                    if(hasil[0].status_user == 0){
                         bus.$emit('showAlert','Peringatan!','Akun Anda sudah tidak bisa digunakan lagi!','warning')
                     }else{
-                        this.$cks.setCookies('infoLogin',hasil[0],'6h')
+                        this.$cks.setCookies('infoLogin',hasil[0].token,'6h')
                         var x = {}
                         if(hasil[0].id_juser == 1){
                             x = {path : '/admin'}
