@@ -1,4 +1,4 @@
-var app = angular.module("adminAUBE", ["ngRoute","ngStorage"]);
+var app = angular.module("adminAUBE", ["ngRoute","ngStorage",'ngMessages']);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {

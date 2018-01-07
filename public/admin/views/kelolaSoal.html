@@ -27,7 +27,7 @@
             <span ng-include="'/admin/views/buttonCreate.html'"></span>
         </form>
         <!-- UPDATE FORM -->
-        <form ng-show="updateForm" class="w3-card-8 w3-container w3-section" method="PUT" ng-submit="updateData(idSoal)">
+        <form ng-show="updateForm" class="w3-card-8 w3-container w3-section" method="PUT" ng-submit="updateData(id)">
             <span ng-click="showForm(0,1)" class="w3-closebtn">&times;</span>
             <h3>Update Data </h3>
             <input class="w3-input w3-border" type="text" id="UTsoal" ng-model="UTsoal" placeholder="Isi Soal" /><label class="w3-label w3-text-red">{{EUTsoal}}</label><br/>
@@ -69,8 +69,8 @@
                 <td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id_soal)" ng-disable="toggleBulkDelete"></td>
                 <td>{{$index+1+pagination.offset}}</td>
                 <td>{{x.isi_soal}}</td>
-                <td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_soal)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
-                    <button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_soal)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
+                <td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)"><i class="fa fa-trash w3-small"></i> <b>Hapus</b></button>
+                    <button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button></td>
             </tr>
         </table>
     </div>

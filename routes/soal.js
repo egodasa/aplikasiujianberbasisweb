@@ -1,121 +1,138 @@
 var express = require('express');
 var router = express.Router();
-var checkData = require('../validator/soal/create_update');
+var validator = require('../validator/validator');
 router.get('/:id?',(req, res, next)=>{
-	var id = req.params.id || "0000000";
-	var limit = req.query.limit || 0;
-	var offset = req.query.offset || 0;
-	sql = 'call getSoal(?,?,?);';
-	if(id != "0000000") sql = sql + ' select * from tbpilihan_ganda where id_soal="'+id+'"';
-	koneksi.query(sql,[id,limit,offset], (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.data = r[0];
-		if(id != "0000000") r[0][0].pilihanGanda = r[3];
-		hasil.row = r[1][0].jumlah;
-		hasil.error = e;
-		res.json(hasil);
+	var id = req.params.id || 0;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    if(id == 0){
+        query.count = db('lap_soal').select('id_soal')
+        query.tmp = db('lap_soal').select()
+    }else{
+        query.count = db('lap_soal').select().where('id_soal',id)
+        query.tmp = db('lap_soal').select().where('id_soal',id)
+    }
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		 let code
+		hasil.row = rows.length
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-	console.log(data);
-	req.checkBody(checkData);
+	if(data.id_jsoal == 1){
+        data.bobot = 1
+    }else{
+        data.jawaban = " - "
+        data.pilihanGanda = [{}]
+    }
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-		if(pesan.isi_soal == undefined){
-			pesan.isi_soal ={
-				param : "isi_soal",
-				msg : "",
-				value : data.isi_soal
-			};
-		}
-		if(pesan.jawaban == undefined){
-			pesan.jawaban ={
-				param : "jawaban",
-				msg : "",
-				value : data.jawaban
-			};
-		}
 		hasil.status = false;
 		hasil.error = pesan;
-	console.log(hasil);
-	res.json(hasil); 
+        console.log(hasil.error);
+        res.status(422).json(hasil); 
 	}
 	else{
-	var sql1 = '';
-	var pg = data.pilihanGanda;
-	for(var x=0;x<pg.length;x++){
-		if(x == 0) sql1 = '(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-		else sql1+= ',(@id_pg,"'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-	}
-	sql = 'set @id_pg=genIdSoal(); call createSoal(@id_pg,?,?); insert into tbpilihan_ganda (id_soal,huruf,isi_pilihan) values '+sql1+';';
-	koneksi.query(sql,[data.isi_soal,data.jawaban], function(e, r, f){
-		if(!e) hasil.status = true;
-		else hasil.status = false;
-		hasil.error = e;
-		console.log(hasil);
+	db('tbsoal').insert({
+        isi_soal:data.isi_soal,
+        jawaban:data.jawaban,
+        pilihanGanda:JSON.stringify(data.pilihanGanda),
+        id_jsoal:data.id_jsoal,
+        bobot:data.bobot
+        }).then(()=>{
+		hasil.status =true;
+		hasil.error = null;
 		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
-	}
-	});
+    }
+    });
 });
 router.delete('/:id',(req,res,next)=>{
 	var id = req.params.id;
-	sql = 'call deleteSoal("'+id+'");';
-	koneksi.query(sql, (e, r, f)=>{
-		var hasil = {};
-		if(!e) hasil.status = true;	
-		else hasil.status = false;
-		hasil.error = e;
+    var hasil = {};
+	db('tbsoal').where('id_soal',id).del().
+	then(function(){
+		hasil.status = true;
 		res.json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false;
+		hasil.error = err;
+		res.status(503).json(hasil);
 		});
 	});
 router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
-	req.checkBody(checkData);
+	if(data.id_jsoal == 1){
+        data.bobot = 1
+    }else{
+        data.jawaban = " - "
+        data.pilihanGanda = [{}]
+    }
+	req.checkBody(validator.soal);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-		if(pesan.isi_soal == undefined){
-			pesan.isi_soal ={
-				param : "isi_soal",
-				msg : "",
-				value : data.isi_soal
-			};
-		}
-		if(pesan.jawaban == undefined){
-			pesan.jawaban ={
-				param : "jawaban",
-				msg : "",
-				value : data.jawaban
-			};
-		}
 		hasil.status = false;
 		hasil.error = pesan;
-	res.json(hasil);
+        res.status(422).json(hasil);
 	}
 	else{
-	var sql1 = '';
-	var pg = data.pilihanGanda;
-	for(var x=0;x<pg.length;x++){
-		if(x == 0) sql1 = '("'+id+'","'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-		else sql1+= ',("'+id+'","'+pg[x].huruf+'","'+pg[x].isi_pilihan+'")';
-	}
-	sql = 'call updateSoal("'+id+'","'+data.isi_soal+'","'+data.jawaban+'"); insert into tbpilihan_ganda (id_soal,huruf,isi_pilihan) values '+sql1+';';
-	koneksi.query(sql, function(e, r, f){
-		if(!e) hasil.status = true;
-		else hasil.status = false;
-		hasil.error = e;
-		res.json(hasil);
-		});
+		db('tbsoal').update({
+        isi_soal:data.isi_soal,
+        jawaban:data.jawaban,
+        pilihanGanda:JSON.stringify(data.pilihanGanda),
+        id_tsoal:data.id_tsoal,
+        bobot:data.bobot
+        }).where('id_soal',id).
+		then(function(){
+			hasil.status =true;
+			hasil.error = null;
+			res.json(hasil);
+			}).
+		catch(function(err){
+			hasil.status = false;
+			hasil.error = err;
+			res.status(503).json(hasil);
+			});
 	}
 	});
 });

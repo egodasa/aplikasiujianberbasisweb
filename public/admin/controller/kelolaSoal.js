@@ -163,7 +163,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
             pilihanGanda: $scope.pilihanGanda,
             jawaban: $scope.Rjawaban
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $rootScope.tombolSimpan(1);
         $http({
                 method: 'POST',
@@ -190,10 +190,10 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
             })
     };
     $scope.detailData = function(id) {
-        $scope.idSoal = id;
         $http.get($rootScope.serverBackEnd + '/api/soal/' + id)
             .then(function(res) {
                 var hasil = res.data.data[0];
+                $scope.id = hasil.id;
                 $scope.UThuruf = [];
                 $scope.UTisi_pilihan = [];
                 $scope.pilihanGandaUpdate = hasil.pilihanGanda;
@@ -212,7 +212,7 @@ app.controller("kelolaSoal", function($rootScope, $scope, $http, $location, $tim
             pilihanGanda: $scope.pilihanGandaUpdate,
             jawaban: $scope.URjawaban
         };
-        data = JSON.stringify(data);
+        data = angular.toJson(data);
         $http({
                 method: 'PUT',
                 url: $rootScope.serverBackEnd + '/api/soal/' + id,

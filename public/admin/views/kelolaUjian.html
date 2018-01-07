@@ -60,17 +60,17 @@
 				<th>Aksi</th>
 			</tr>
 			<tr class="w3-white" ng-repeat="x in data | filter : kataKunci ">
-				<td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id_ujian)"/ ng-disable="toggleBulkDelete"></td>
+				<td ng-show="toggleBulkDelete" style="width:10px;text-align:center;"><input type="checkbox" name="bulkDelete" ng-model="bulkValue" ng-click="addBulkDelete(bulkValue,x.id)"/ ng-disable="toggleBulkDelete"></td>
 				<td>{{$index+1+pagination.offset}}</td>
 				<td>{{x.nm_ujian}}</td>
 				<td>{{x.banyak_soal}}</td>
 				<td>{{x.banyak_peserta}} Orang</td>
 				<td>{{x.jam + ' Jam '+ x.menit + ' menit'}}</td>
-				<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id_ujian)"><i class="fa fa-close w3-small"></i> <b>Hapus</b></button>
-				<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id_ujian)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button>
-				<a href="{{'#!ujian/'+x.id_ujian+'/soal'}}" class="w3-btn w3-small w3-indigo"><i class="fa fa-list-alt"></i> <b>Soal Ujian</b></a>
-				<a href="{{'#!ujian/'+x.id_ujian+'/peserta'}}" class="w3-btn w3-small w3-lime"><i class="fa fa-user"></i> <b>Peserta Ujian</b></a>
-				<a href="{{'#!ujian/'+x.id_ujian+'/laporan'}}" class="w3-btn w3-small w3-cyan"><i class="fa fa-list-ol"></i> <b>Hasil Ujian</b></a></td>
+				<td><button type="button" class="w3-btn w3-small w3-red" ng-click="deleteData(x.id)"><i class="fa fa-close w3-small"></i> <b>Hapus</b></button>
+				<button type="button" class="w3-btn w3-small w3-teal" ng-click="detailData(x.id)"><i class="fa fa-edit w3-small"></i> <b>Update</b></button>
+				<a href="{{'#!ujian/'+x.id+'/soal'}}" class="w3-btn w3-small w3-indigo"><i class="fa fa-list-alt"></i> <b>Soal Ujian</b></a>
+				<a href="{{'#!ujian/'+x.id+'/peserta'}}" class="w3-btn w3-small w3-lime"><i class="fa fa-user"></i> <b>Peserta Ujian</b></a>
+				<a href="{{'#!ujian/'+x.id+'/laporan'}}" class="w3-btn w3-small w3-cyan"><i class="fa fa-list-ol"></i> <b>Hasil Ujian</b></a></td>
 			</tr>
 		</table>
 	</div>

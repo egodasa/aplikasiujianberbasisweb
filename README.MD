@@ -1,8 +1,8 @@
 <h1>Aplikasi ujian berbasis web</h1>
-versi : 1.0.0
+versi : 2.0.0
 
 <h2>Keterangan</h2>
-1. Backend menggunakan NodeJS dan frontend menggunakan angularjs v1.6.5 
+1. Backend menggunakan NodeJS dan frontend menggunakan VueJS 
 2. Pertukaran data menggunakan konsep Restful API dengan format data JSON.
 
 <h2>Fitur</h2>
@@ -12,18 +12,8 @@ versi : 1.0.0
 4. Laporan hasil ujian setelah selesai pelaksanaan ujian oleh peserta.
 
 <h2>Kekurangan</h2>
-1. Pada frontend (AngularJS) masih menerapkan module $http native untuk pertukaran data. DI versi selanjutnya akan 
-menggunakan modul $resource.
-2. Masih menggunakan cookies untuk mengingat sesi ujian. Akan digantikan dengan localStorage
-<h2>Informasi</h2>
-1. Untuk module yang dibutuhkan NodeJS silahkan lihat file "package.json".
-2. File untuk frontend AngularJS dapat dilihat pada folder "public". Untuk halaman admin pada folder "admin" dan folder 
-"peserta" untuk halaman peserta ujian.
+1. Frontend (VueJS) baru diterapkan pada halaman kelola peserta dan ujian (get,delete)
 
-Versi Admin : [https://ujianweb.herokuapp.com/admin](https://ujianweb.herokuapp.com/admin)
-Versi Peserta : [https://ujianweb.herokuapp.com/peserta](https://ujianweb.herokuapp.com/peserta)
-
-URL admin : [localhost:3000/admin](localhost:3000/admin)
-URL peserta : [localhost:3000/peserta](localhost:3000/peserta)
-URL API : [localhost:3000/api/NAMA_DATA](localhost:3000/api/NAMA_DATA)
+[https://ujianweb.herokuapp.com/admin](https://ujianweb.herokuapp.com/)
+URL API : [/api/NAMA_DATA](/api/NAMA_DATA)
 File Database : dbujian.sql

@@ -1,0 +1,57 @@
+<template>
+    
+<div class="w3-container">
+    <h2>Daftar Mahasiswa</h2>
+    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+</div>
+
+</template>
+
+<script>
+import genTable from '../../template/GenTable.vue'
+import genForm from '../../template/formGenerator.vue'
+
+import admin from './halamanAdmin.vue'
+
+export default {
+  name: 'kelolaMahasiswa',
+  components : {
+      genTable, genForm, admin
+  },
+  data () {
+      return {
+          url : 'mahasiswa',
+            listForm : [
+                {
+					caption: "Nama Mahasiswa",
+					name:"nm_mahasiswa",
+					jenis:"textField",
+					tipe:"text",
+					value:null,
+                    error : null
+					},
+                {
+					caption: "NOBP",
+					name:"nobp",
+					jenis:"textField",
+					tipe:"text",
+                    min:14,
+                    max:14,
+					value:null,
+                    error : null
+					}
+                    
+			],
+            tableContent : {
+                header : ['Nama','NOBP'],
+                content : ['id_mahasiswa','nm_mahasiswa','nobp']
+            }
+        }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

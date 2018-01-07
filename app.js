@@ -8,17 +8,22 @@ var validator = require('express-validator');
 var fileUpload = require('express-fileupload');
 var Promise = require('promise');
 var url = require('url');
-mysql = require('mysql');
-var urlDb = url.parse(process.env.DATABASE_URL_MYSQL);
-var auth = urlDb.auth.split(":");
-var mysqlSetting = {
-		host : urlDb.hostname,
-		user : auth[0],
-		password : auth[1] || "",
-		database : urlDb.path.substr(1),
-		multipleStatements : true
-		};
-koneksi = mysql.createPool(mysqlSetting);
+var knexLogger = require('knex-logger');
+const expressGraphQL = require('express-graphql');
+
+const sMahasiswa = require('./schema/mahasiswa.js');
+const sJujian = require('./schema/jenis_ujian.js');
+const sKuliah = require('./schema/kuliah.js');
+const sStatistik = require('./schema/statistik.js');
+const sDosen = require('./schema/dosen.js');
+const sUser = require('./schema/user.js');
+const sUjian = require('./schema/ujian.js');
+
+db = require('knex')({
+  client: 'pg',
+  connection: process.env.DATABASE_URL
+});
+process.env.TZ= 'Asia/Jakarta'
 var app = express();
 {}
 // view engine setup
@@ -27,6 +32,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(knexLogger(db));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,22 +50,49 @@ app.use(validator({
 //ROUTES
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
-app.use('/api/peserta', require('./routes/peserta'));
-
-/*
-app.get('/test',(req,res,next)=>{
-	console.log(mysqlSetting);
-	res.send({
-		host : urlDb.hostname,
-		user : auth[0],
-		password : auth[1],
-		database : urlDb.path.substr(1)
-		});
-	});
-	*/
+app.use('/api/mahasiswa', require('./routes/mahasiswa'));
+app.use('/api/matkul', require('./routes/matkul'));
+app.use('/api/kelas', require('./routes/kelas'));
+app.use('/api/jenis_ujian', require('./routes/jenis_ujian'));
+app.use('/api/jenis_soal', require('./routes/jenis_soal'));
+app.use('/api/dosen', require('./routes/dosen'));
+app.use('/api/kuliah', require('./routes/kuliah'));
+app.use('/api/cek', require('./routes/cekPesertaUjian'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/jenis_user', require('./routes/jenis_user'));
+app.use('/api/v2/mahasiswa', expressGraphQL({
+  schema: sMahasiswa,
+  graphiql: true,
+}));
+app.use('/api/v2/jenis_ujian', expressGraphQL({
+  schema: sJujian,
+  graphiql: true,
+}));
+app.use('/api/v2/kuliah', expressGraphQL({
+  schema: sKuliah,
+  graphiql: true,
+}));
+app.use('/api/v2/statistik', expressGraphQL({
+  schema: sStatistik,
+  graphiql: true,
+}));
+app.use('/api/v2/dosen', expressGraphQL({
+  schema: sDosen,
+  graphiql: true,
+}));
+app.use('/api/v2/user', expressGraphQL({
+  schema: sUser,
+  graphiql: true,
+}));
+app.use('/api/v2/ujian', expressGraphQL({
+  schema: sUjian,
+  graphiql: true,
+}));
+// ^.+\/(api)\/.+$
 //EOF ROUTES
 
 // catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
