@@ -39,10 +39,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use(function(req,res,next){
+app.use('^/api/:params*', function( req, res, next ) {
 	res.set({'Access-Control-Allow-Origin' : '*'});
 	next()
-	});
+} );
 app.use(validator({
 	customValidators : require('./validator/custom_validator')
 }));
