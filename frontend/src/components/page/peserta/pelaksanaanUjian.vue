@@ -221,7 +221,7 @@ methods : {
     },
     showSoal (noSoal) {
         this.posisiSoal = noSoal
-        this.jawaban = this.jawabanPeserta[this.posisiSoal].jawaban || null
+        this.jawaban = this.jawabanPeserta[this.posisiSoal].jawaban
     },
     genLjk () {
         this.$ajx.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
@@ -234,7 +234,7 @@ methods : {
                 this.showSoal(this.posisiSoal)
             }else{
                 _.forEach(res.data.data, (v,k)=>{
-                    this.jawabanPeserta.push({id_soal : v.id_soal, jawaban : null}) 
+                    this.jawabanPeserta.push({id_soal : v.id_soal, jawaban : "-"}) 
                     })
                 var tmp = {
                     jawabanPeserta : this.jawabanPeserta,
