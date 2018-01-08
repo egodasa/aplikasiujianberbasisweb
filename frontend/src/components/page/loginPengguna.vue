@@ -87,7 +87,7 @@ methods : {
                                 }
                             }`
             var kueri = {query : query,variables : {username : this.username,password : md5(this.password)}}
-            this.$ajx.post('api/user/cek',{username : this.username,password : md5(this.password)})
+            this.$ajx.post('/login/cek',{username : this.username,password : md5(this.password)})
             .then(res=>{
                 this.Blogin.disabled = false
                 this.Blogin.caption = "Login"
@@ -100,6 +100,7 @@ methods : {
                         bus.$emit('showAlert','Peringatan!','Akun Anda sudah tidak bisa digunakan lagi!','warning')
                     }else{
                         this.$cks.setCookies('infoLogin',hasil[0].token,'6h')
+                        this.$ajx.defaults.headers.common['Authorization'] ='Bearer ' + hasil[0].token
                         var x = {}
                         if(hasil[0].id_juser == 1){
                             x = {path : '/admin'}
