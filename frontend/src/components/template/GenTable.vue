@@ -299,16 +299,18 @@ methods : {
         })
     },
     deleteData (id) {
-        this.$ajx({
+        if(window.confirm("Apakah yakin ingin menghapus data ini?")){
+            this.$ajx({
             method : 'DELETE',
             url :this.baseUrl+this.url+'/'+id
             })
-        .then(res=>{
-            this.getData(this.pageRows,this.pagePosition)
-        })
-        .catch(err=>{
-            bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
-        })
+            .then(res=>{
+                this.getData(this.pageRows,this.pagePosition)
+            })
+            .catch(err=>{
+                bus.$emit('showAlert','Peringatan!','Gagal menghapus data!','warning')
+            })
+        }
     },
     getDataDetail (x) {
         bus.$emit('getDataDetail',x)
