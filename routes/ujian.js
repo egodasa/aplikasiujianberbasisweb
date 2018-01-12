@@ -329,11 +329,12 @@ router.post('/jawaban', (req, res, next) => {
     var data = req.body;
     var hasil = {};
     var data_tmp = []
+    var x = null
     _.forEach(data, (v, k) => {
         data_tmp.push({
             id_ujian: v.id_ujian,
             nobp: v.nobp,
-            jawaban: v.jawaban,
+            jawaban: v.jawaban || "Kosong",
             id_soal: v.id_soal
         })
     });

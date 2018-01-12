@@ -55,8 +55,8 @@ beforeRouteEnter (to, from, next) {
 },
 data () {
     return {
-    username : '1029108702',
-    password : 'upi1029108702yptk',
+    username : '0005076607',
+    password : 'upi0005076607yptk',
     Blogin : {
         disabled : false,
         caption : "login"
