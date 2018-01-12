@@ -10,8 +10,6 @@ var Promise = require('promise');
 var url = require('url');
 var knexLogger = require('knex-logger');
 const expressGraphQL = require('express-graphql');
-const jwt = require('express-jwt')
-const unless = require('express-unless');
 
 const sMahasiswa = require('./schema/mahasiswa.js');
 const sJujian = require('./schema/jenis_ujian.js');
@@ -41,20 +39,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-app.use('^/api/:params*',jwt({secret: 'Panther G 7.5cm kwk 42L/70'}), function( req, res, next ) {
-	res.set({'Access-Control-Allow-Origin' : '*'})
-    if(req.user){
-        next()
-    }else{
-        res.status(401).json({status:false,error:"Anda harus login terlebih dahulu!"})
-    }
-})
+app.use(function(req,res,next){
+	res.set({'Access-Control-Allow-Origin' : '*'});
+	next()
+	});
 app.use(validator({
 	customValidators : require('./validator/custom_validator')
 }));
 
 //ROUTES
-app.use('/login', require('./routes/login'));
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
 app.use('/api/mahasiswa', require('./routes/mahasiswa'));
