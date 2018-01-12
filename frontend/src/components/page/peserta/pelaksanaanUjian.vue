@@ -158,7 +158,7 @@ data () {
 },
 beforeRouteEnter: (to, from, next)=>{
     next(vm => {
-    if(vm.$cks.isCookies('infoLogin')){
+    if(vm.$cks.getCookies('infoLogin')){
         if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
         else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
         else if(vm.$cks.getCookies('infoLogin').id_juser == 3) {
@@ -267,10 +267,13 @@ methods : {
             }
             this.$ajx.post('api/ujian/hasil',hasil)
             .then(res=>{
-                console.log(res.data)
+                this.$lcs.removeLcs('infoUjian')
+                this.$cks.clearCookies('infoLogin')
+                this.$lcs.removeLcs('ljk')
+                this.$router.push({path: '/'})
                 })
             .catch(err=>{
-                console.log(err)
+                bus.$emit('showAlert','Kesalahan!','Tidak dapat mengumpukan ujian. Silahkan diulangi kembali!','warning')
                 })
         }else if(this.infoUjian.id_jsoal == 2){
             var hasil = []

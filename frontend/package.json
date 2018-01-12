@@ -24,7 +24,6 @@
     "date-fns": "^1.29.0",
     "fingerprintjs2": "^1.5.1",
     "jquery": "^3.2.1",
-    "jwt-decode": "^2.2.0",
     "md5": "^2.2.1",
     "moment": "^2.19.1",
     "moment-timezone": "^0.5.13",
