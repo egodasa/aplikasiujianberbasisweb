@@ -1,0 +1,17 @@
+######Aplikasi CAT dengan backend NodeJS dan frontend VueJS#######
+Versi online : http://ujianweb.herokuapp.com
+Github : http://github.com/egodasa/aplikasiujianberbasisweb
+------------------------------------------------------------------------------
+username dan password : admin
+------------------------------------------------------------------------------
+username dosen, mahasiswa : nobp/nidn
+password dosen,mahasiswa : "upi"+nidn/nobp+"yptk"
+------------------------------------------------------------------------------
+
+0. Pastikan Nodejs dan postgresql sudah terpasang.
+1.Buat database dengan nama "dbcat3.0.1" dan tambahkan variabel environment "DATABASE_URL=postgres://USERNAME:PASSWORD@localhost/dbcat3.0.1
+" pada sistem.
+2.Import database. File : DATABASE_FINAL.sql
+3.Cek file "app.js" untuk mengatur pengaturan database dll.
+4. Folder "frontend" berisi koding "VueJS".
+5.Masuk ke folder ini menggunakan cmd/terminal dan ketik perintah "npm start"

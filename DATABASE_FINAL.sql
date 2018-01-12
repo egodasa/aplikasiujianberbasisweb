@@ -1233,6 +1233,10 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 25	KBKI62121-1029116801-20171-1	14101152610561	23
 26	KBKI62121-1029116801-20171-1	14101152610562	17
 27	KBKI62121-1029116801-20171-3	14101152610562	9
+28	KBKI62121-1029116801-20171-1	14101152610565	15
+29	BBKI82112-1029108702-20171-1	14101152610565	60
+30	KPKI12102-1029108702-20171-3	14101152610574	31
+31	KPKI12101-1029108702-20171-1	14101152610545	30
 \.
 
 
@@ -1240,7 +1244,7 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 27, true);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 31, true);
 
 
 --
@@ -1254,6 +1258,19 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 26	KBKI62121-1029116801-20171-1	14101152610561	dzcdcdc	121
 27	KBKI62121-1029116801-20171-1	14101152610562	mdsamdsa	120
 28	KBKI62121-1029116801-20171-1	14101152610562	xcdcd	121
+32	KBKI62121-1029116801-20171-1	14101152610555	<p><strong>asdas</strong></p><p><em>asdasd</em></p><p><u>asdas</u></p><blockquote>assa</blockquote>	120
+33	KBKI62121-1029116801-20171-1	14101152610555	<p>l,,l</p>	121
+34	KBKI62121-1029116801-20171-1	14101152610555	<p>,ll,lllijjjiji</p>	122
+35	KBKI62121-1029116801-20171-1	14101152610565	<p><strong>sbsbsbss</strong></p><p><strong>sssdd</strong></p><p><strong><em>ndnbebe</em></strong></p><p><br></p><p><strong><em>dnsms</em></strong></p><p><strong><em><u>smsnsns</u></em></strong></p>	120
+36	KBKI62121-1029116801-20171-1	14101152610565	<p>annanndb<span>nnnndd</span></p><p><u>dnsndndn</u></p>	121
+37	KBKI62121-1029116801-20171-1	14101152610565	<p>nnanabbbs</p>	122
+38	BBKI82112-1029108702-20171-1	14101152610565	<p>Pesan verbal adalah semua jenis simbol yang menggunakan satu kata atau</p><p>lebih. Pesan verbal terdiri atas kata-kata terucap atau tertulis.</p><p>Pesan verbal terbagi atas 2 jenis yaitu :</p><p><br></p><ol><li>Fungsional yaitu alat yang dimiliki bersama untuk mengungkap gagasan</li><li>Formal yaitu rangkaian kata-kata yang disusun sesuai dengan tata bahasa.</li></ol>	124
+39	BBKI82112-1029108702-20171-1	14101152610565	<ol><li>Mengenal dunia di sekitar kita. Melalui bahasa kita mempelajari apa saja yang menarik minat kita, mulai dari sejarah suatu bangsa yang hidup pada masa lalu sampai pada kemajuan teknologi saat ini.</li><li>Berhubungan dengan orang lain. Bahasa memungkinkan kita bergaul dengan orang lain untuk kesenangan kita, dan atau mempengaruhi mereka untuk mencapai tujuan kita. Melalui bahasa kita dapat mengendalikan lingkungan kita, termasuk orang-orang di sekitar kita.</li><li>Untuk menciptakan koherensi dalam kehidupan kita. Bahasa memungkinkan kita untuk lebih teratur, saling memahami mengenal diri kita, kepercayaan-kepercayaan kita, dan tujuan-tujuan kita.</li></ol>	125
+40	BBKI82112-1029108702-20171-1	14101152610565	<ul><li><br></li></ul>	126
+41	BBKI82112-1029108702-20171-1	14101152610565	<p>   </p>	127
+42	BBKI82112-1029108702-20171-1	14101152610565	<p>   </p>	128
+43	KPKI12101-1029108702-20171-1	14101152610545	<p>Pancasila adalah ideologi negar</p>	129
+44	KPKI12101-1029108702-20171-1	14101152610545	<p>Pancasila</p>	130
 \.
 
 
@@ -1261,7 +1278,7 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 -- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 28, true);
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 44, true);
 
 
 --
@@ -1361,6 +1378,10 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 88	KBKI62121-1029116801-20171	1
 89	KBKI62121-1029116801-20171	2
 90	KBKI62121-1029116801-20171	3
+96	KPKI12101-1029108702-20171	1
+97	KPKI12101-1029108702-20171	2
+98	KPKI12101-1029108702-20171	3
+99	KPKI12101-1029108702-20171	6
 62	KPKI62104-1028018801-20171	1
 63	KPKI62104-1028018801-20171	2
 64	KPKI62104-1028018801-20171	3
@@ -1373,7 +1394,7 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 90, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 99, true);
 
 
 --
@@ -1381,13 +1402,14 @@ SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 90, true);
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
+BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
 KPKI62104-1028018801-20171	1028018801	KPKI62104	20171	0
 KBKI32110-1016038602-20171	1016038602	KBKI32110	20171	0
-KPKI12101-1007118403-20171	1007118403	KPKI12101	20171	1
 KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
+KPKI12101-1029108702-20171	1029108702	KPKI12101	20171	1
+KPKI12101-1007118403-20171	1007118403	KPKI12101	20171	1
 KKKI23104-1012128601-20171	1012128601	KKKI23104	20171	1
 KKKI23109-1015067501-20171	1015067501	KKKI23109	20171	1
-BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	0
 KBKI62121-1029116801-20171	1029116801	KBKI62121	20171	1
 \.
 
@@ -1523,6 +1545,32 @@ COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas
 14101152610545-KBKI62121-1029116801-20171	14101152610545	KBKI62121-1029116801-20171	1	3	1
 14101152610562-KBKI62121-1029116801-20171	14101152610562	KBKI62121-1029116801-20171	1	3	1
 14101152610565-KBKI62121-1029116801-20171	14101152610565	KBKI62121-1029116801-20171	1	3	1
+14101152610555-BBKI82112-1029108702-20171	14101152610555	BBKI82112-1029108702-20171	1	3	1
+14101152610544-BBKI82112-1029108702-20171	14101152610544	BBKI82112-1029108702-20171	1	3	1
+14101152610561-BBKI82112-1029108702-20171	14101152610561	BBKI82112-1029108702-20171	1	3	1
+14101152610545-BBKI82112-1029108702-20171	14101152610545	BBKI82112-1029108702-20171	1	3	1
+14101152610562-BBKI82112-1029108702-20171	14101152610562	BBKI82112-1029108702-20171	1	3	1
+14101152610565-BBKI82112-1029108702-20171	14101152610565	BBKI82112-1029108702-20171	1	3	1
+13101152610342-BBKI82112-1029108702-20171	13101152610342	BBKI82112-1029108702-20171	1	3	1
+14101152610574-KPKI12102-1029108702-20171	14101152610574	KPKI12102-1029108702-20171	1	3	7
+14101152611552-KPKI12102-1029108702-20171	14101152611552	KPKI12102-1029108702-20171	1	3	7
+14101152610999-KPKI12102-1029108702-20171	14101152610999	KPKI12102-1029108702-20171	1	3	7
+14101152610457-KPKI12102-1029108702-20171	14101152610457	KPKI12102-1029108702-20171	1	3	7
+14101152610551-KPKI12102-1029108702-20171	14101152610551	KPKI12102-1029108702-20171	1	3	7
+14101152610545-KPKI12102-1029108702-20171	14101152610545	KPKI12102-1029108702-20171	1	3	7
+14101152610562-KPKI12102-1029108702-20171	14101152610562	KPKI12102-1029108702-20171	1	3	7
+14101152610565-KPKI12102-1029108702-20171	14101152610565	KPKI12102-1029108702-20171	1	3	7
+14101152610555-KPKI12102-1029108702-20171	14101152610555	KPKI12102-1029108702-20171	1	3	9
+14101152610544-KPKI12102-1029108702-20171	14101152610544	KPKI12102-1029108702-20171	1	3	9
+14101152610561-KPKI12102-1029108702-20171	14101152610561	KPKI12102-1029108702-20171	1	3	9
+13101152610342-KPKI12102-1029108702-20171	13101152610342	KPKI12102-1029108702-20171	1	3	9
+14101152610550-KPKI12102-1029108702-20171	14101152610550	KPKI12102-1029108702-20171	1	3	9
+14101152610579-KPKI12102-1029108702-20171	14101152610579	KPKI12102-1029108702-20171	1	3	9
+14101152610555-KPKI12101-1029108702-20171	14101152610555	KPKI12101-1029108702-20171	1	3	1
+14101152610544-KPKI12101-1029108702-20171	14101152610544	KPKI12101-1029108702-20171	1	3	1
+14101152610561-KPKI12101-1029108702-20171	14101152610561	KPKI12101-1029108702-20171	1	3	1
+14101152610545-KPKI12101-1029108702-20171	14101152610545	KPKI12101-1029108702-20171	1	3	1
+14101152610562-KPKI12101-1029108702-20171	14101152610562	KPKI12101-1029108702-20171	1	3	1
 14101152610555-KPKI12101-1007118403-20171	14101152610555	KPKI12101-1007118403-20171	1	3	1
 14101152610544-KPKI12101-1007118403-20171	14101152610544	KPKI12101-1007118403-20171	1	3	1
 14101152610561-KPKI12101-1007118403-20171	14101152610561	KPKI12101-1007118403-20171	1	3	1
@@ -1662,6 +1710,15 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 119	kldkfndsfjkefnewfjbebfebwjh ewbfv fvdsvfdsfbdsfshdasfkbskfb	[{}]	2	4	 - 
 120	Isi soal	[{}]	2	9	 - 
 121	Isi soal	[{}]	2	21	 - 
+122	<ol><li>asdsa</li><li>asdsadsa</li><li>sdaassda</li></ol>	[{}]	2	12	 - 
+123	<table><tbody><tr><td style="padding: 8px; line-height: 1.42857; vertical-align: top; border: 1px solid #999">&nbsp;dassadsa</td><td style="padding: 8px; line-height: 1.42857; vertical-align: top; border: 1px solid #999"><b>&nbsp;asdasdssdsad</b></td></tr><tr><td style="padding: 8px; line-height: 1.42857; vertical-align: top; border: 1px solid #999">&nbsp;sdsadas</td><td style="padding: 8px; line-height: 1.42857; vertical-align: top; border: 1px solid #999">&nbsp;asdsadasd</td></tr></tbody></table>	[{"huruf":"A","isi_pilihan":"cdc"},{"huruf":"B","isi_pilihan":"sss"},{"huruf":"C","isi_pilihan":"xsxsa"}]	1	1	A
+124	<span style="color: inherit; font-family: inherit;">Jelaskan maksud dari </span><b style="color: inherit; font-family: inherit;">pesan verbal</b><br>	[{}]	2	20	 - 
+125	Jelaskan fungsi bahasa menurut&nbsp;Cansandra L. Book	[{}]	2	30	 - 
+126	Sebutkan keterbatasan dalam bahasa beserta contoh min. 1 contoh	[{}]	2	30	 - 
+127	Sebutkan klasifikasi pesan nonverbal menurut Jalaludin Rakhmat	[{}]	2	10	 - 
+128	<p>Jelaskan pengertian dari pesan <strong>nonverbal</strong></p>	[{}]	2	10	 - 
+129	<p><strong>Pancasila</strong> adalah</p>	[{}]	2	20	 - 
+130	<p>Ideologi negara Indoensia adalah</p>	[{}]	2	20	 - 
 \.
 
 
@@ -1669,7 +1726,7 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 121, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 130, true);
 
 
 --
@@ -1726,6 +1783,14 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 70	KBKI62121-1029116801-20171-3	114
 76	KBKI62121-1029116801-20171-1	120
 77	KBKI62121-1029116801-20171-1	121
+78	KBKI62121-1029116801-20171-1	122
+80	BBKI82112-1029108702-20171-1	124
+81	BBKI82112-1029108702-20171-1	125
+82	BBKI82112-1029108702-20171-1	126
+83	BBKI82112-1029108702-20171-1	127
+84	BBKI82112-1029108702-20171-1	128
+85	KPKI12101-1029108702-20171-1	129
+86	KPKI12101-1029108702-20171-1	130
 \.
 
 
@@ -1733,7 +1798,7 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 77, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 86, true);
 
 
 --
@@ -1762,10 +1827,12 @@ SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
-KPKI12102-1029108702-20171-3	2017-12-24	21:00:00	21:15:00	Ujian	1	3	1	KPKI12102-1029108702-20171
+KPKI12101-1029108702-20171-1	2018-01-05	08:00:00	12:00:00	Ujian	1	1	2	KPKI12101-1029108702-20171
 KKKI23104-1012128601-20171-3	2017-12-24	21:20:00	21:30:00	Ujian	1	3	1	KKKI23104-1012128601-20171
-KBKI62121-1029116801-20171-1	2017-12-29	15:00:00	23:00:00	Ujian	1	1	2	KBKI62121-1029116801-20171
+KBKI62121-1029116801-20171-1	2017-12-30	01:00:00	23:00:00	Ujian	1	1	2	KBKI62121-1029116801-20171
 KBKI62121-1029116801-20171-3	2017-12-29	20:30:00	23:59:00	ujian	1	3	1	KBKI62121-1029116801-20171
+BBKI82112-1029108702-20171-1	2017-12-31	13:30:00	15:00:00	UTS KAP	1	1	2	BBKI82112-1029108702-20171
+KPKI12102-1029108702-20171-3	2017-12-31	13:00:00	15:10:00	Ujian	1	3	1	KPKI12102-1029108702-20171
 \.
 
 
