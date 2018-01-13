@@ -15,9 +15,7 @@ import store from 'store'
 import axios from 'axios'
 import lodash from 'lodash'
 import { Bus } from './bus.js'
-import serialize from 'serialize-javascript'
 import vuecookies from 'vue-cookies'
-import msgpack from 'msgpack-lite'
 import VueQuillEditor from 'vue-quill-editor'
 import fp2 from 'fingerprintjs2'
 import jwt_decode from 'jwt-decode'
@@ -71,7 +69,24 @@ const localStorage = {
 }
 Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks
-Vue.prototype.$fp2 = new fp2()
+Vue.prototype.$fp2 = new fp2({
+        excludeUserAgent : true,
+        excludeLanguage : true,
+        excludeColorDepth : true,
+        excludeScreenResolution : true,
+        excludeAvailableScreenResolution : true,
+        excludeSessionStorage  : true,
+        excludePlatform : true
+        })
+axios.interceptors.request.use((config)=>{
+    if(vuecookies.isKey('infoLogin')){
+        config.headers.common['Authorization'] = 'Bearer '+ vuecookies.get('infoLogin')
+    }
+    return config;
+  }, (error)=>{
+    // Do something with request error
+    return Promise.reject(error);
+  });
 window.bus = Bus
 window._ = lodash
 Vue.prototype.$ajx = axios
