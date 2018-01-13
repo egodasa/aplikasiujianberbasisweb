@@ -35,6 +35,7 @@
 
 import md5 from 'md5'
 import modal from '../template/modal.vue'
+import jwt_decode from 'jwt-decode'
 export default {
 name: 'loginPengguna',
 components : {
@@ -42,7 +43,7 @@ components : {
 },
 beforeRouteEnter (to, from, next) {
     next(vm => {
-            if(vm.$cks.getCookies('infoLogin')){
+            if(vm.$cks.isCookies('infoLogin')){
                 if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
                 else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
                 else if(vm.$cks.getCookies('infoLogin').id_juser == 3){
@@ -77,38 +78,29 @@ methods : {
         }else{
             this.Blogin.disabled = true
             this.Blogin.caption = "Mengecek"
-            var query = `query cekUser($username : String,$password : String){
-                            cekUser(username : $username,password : $password){
-                                id_user,
-                                username,
-                                id_juser,
-                                nm_juser,
-                                status_user,
-                                }
-                            }`
-            var kueri = {query : query,variables : {username : this.username,password : md5(this.password)}}
-            this.$ajx.post('api/v2/user',kueri)
+            this.$ajx.post('login',{username : this.username,password : md5(this.password)})
             .then(res=>{
                 this.Blogin.disabled = false
                 this.Blogin.caption = "Login"
-                let hasil = res.data.data.cekUser
-                if(hasil.length == 0) {
+                let hasil = res.data.data
+                console.log(hasil)
+                if(hasil.token == null) {
                     bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
                     }
                 else {
-                    if(hasil.status_user == 0){
+                    var userInfo = jwt_decode(hasil.token).data
+                    if(userInfo.status_user == 0){
                         bus.$emit('showAlert','Peringatan!','Akun Anda sudah tidak bisa digunakan lagi!','warning')
                     }else{
-                        this.$cks.setCookies('infoLogin',hasil[0],'6h')
+                        this.$cks.setCookies('infoLogin',hasil.token,'6h')
                         var x = {}
-                        if(hasil[0].id_juser == 1){
-                            x = {path : '/admin'}
-                        }else if(hasil[0].id_juser == 2){
-                            x = {path : '/dosen/'+this.username}
-                        }else if(hasil[0].id_juser == 3){
-                            x = {path : '/ujian/login'}
-                        }else this.$router.push({path: '/'})
-                        this.$router.push(x)
+                            if(userInfo.id_juser == 1){
+                                this.$router.push({path : '/admin'})
+                            }else if(userInfo.id_juser == 2){
+                                this.$router.push({path : '/dosen/'+this.username})
+                            }else if(userInfo.id_juser == 3){
+                                this.$router.push({path : '/ujian/login'})
+                            }else this.$router.push({path: '/'})
                         }
                     }
                 })

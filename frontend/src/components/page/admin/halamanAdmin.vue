@@ -36,7 +36,7 @@ export default {
   },
   beforeRouteEnter: (to, from, next)=>{
       next(vm => {
-        if(vm.$cks.getCookies('infoLogin')){
+        if(vm.$cks.isCookies('infoLogin')){
             if(new Date().getTime() > vm.$cks.getCookies('infoLogin').expireLogin){
                 vm.$lcs.remove('infoLogin')
                 vm.$router.push({path:'/'})
