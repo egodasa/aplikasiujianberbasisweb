@@ -65,10 +65,6 @@ data () {
     }
 },
 created (){
-    this.$fp2.get((result, components)=>{
-        console.log(result); //a hash, representing your device fingerprint
-        console.log(components); // an array of FP components
-        });
     bus.$emit('toggleModal')
 },
 methods : {
