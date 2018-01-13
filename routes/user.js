@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var validator = require('../validator/validator');
-let md5 = require('md5')
+var validator = require('../validator/validator')
 let pk = "id_user"
 let tbl = "tbuser"
 router.get('/:id?',(req, res, next)=>{
@@ -49,24 +48,7 @@ router.get('/:id?',(req, res, next)=>{
 		res.status(503).json(hasil);
 		});
 	});
-router.post('/cek',(req, res, next)=>{
-	let username = req.body.username
-    let password = req.body.password
-    let hasil = {}
-    let query = db('lap_user').select()
-	query.where({username:username,password:password}).
-	then(function(rows){
-		hasil.status = true;
-		hasil.data = rows;
-		hasil.current_row = rows.length;
-        res.json(hasil);
-		}).
-	catch(function(err){
-		hasil.status = false
-		hasil.error = err;
-		res.status(503).json(hasil);
-		});
-	});
+
 
 router.post('/',(req,res,next)=>{
 	var data = req.body;
