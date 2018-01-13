@@ -48,6 +48,7 @@ app.use(validator({
 }));
 
 //ROUTES
+app.use('/login', require('./routes/login'));
 app.use('/api/soal', require('./routes/soal'));
 app.use('/api/ujian', require('./routes/ujian'));
 app.use('/api/mahasiswa', require('./routes/mahasiswa'));
