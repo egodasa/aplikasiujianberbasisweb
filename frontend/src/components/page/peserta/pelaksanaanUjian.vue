@@ -255,7 +255,6 @@ methods : {
         if(this.infoUjian.id_jsoal == 1){
             var benar = 0
             var salah = 0
-            console.log(this.ljk)
             _.forEach(this.jawabanPeserta, (x, index)=>{
                 x.jawaban == this.listSoal[index].jawaban ? benar++ : salah++
             })

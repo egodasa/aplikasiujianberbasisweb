@@ -38,8 +38,10 @@ export default {
   name: 'petunjukUjian',
   methods : {
       batalkanUjian () {
-          this.$cks.clearCookies('infoLogin')
-          this.$router.push({path: '/'})
+        this.$lcs.removeLcs('infoUjian')
+        this.$cks.clearCookies('infoLogin')
+        this.$lcs.removeLcs('ljk')
+        this.$router.push({path: '/'})
       }
   }
 }
