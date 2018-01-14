@@ -7,7 +7,7 @@ router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
-    console.log(req.query)
+    
 	var hasil = {};
     let query = {
         show : null,
@@ -87,7 +87,7 @@ router.get('/cari/:cari',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
+    
 	req.checkBody(validator.matkul);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();

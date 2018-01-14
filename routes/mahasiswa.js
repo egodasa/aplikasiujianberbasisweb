@@ -8,7 +8,7 @@ router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
-    console.log(req.query)
+    
 	var hasil = {};
     let query = {
         show : null,
@@ -126,7 +126,7 @@ router.get('/:id/ujian',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
-    console.log(req.query)
+    
 	var hasil = {};
     let query = {
         show : null,
@@ -142,7 +142,7 @@ router.get('/:id/ujian',(req, res, next)=>{
         query.show = query.tmp.limit(limit).offset(offset)
     }
 	query.show.then(function(rows){
-        console.log(rows)
+        
 		hasil.status = true;
 		hasil.data = rows;
 		hasil.current_row = rows.length;

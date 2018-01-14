@@ -30,7 +30,7 @@ router.get('/:id?', (req, res, next) => {
     if (limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)
     query.show.then(function (rows) {
-        console.log(rows)
+        
         hasil.status = true;
         hasil.data = rows;
         hasil.current_row = rows.length;
@@ -52,7 +52,7 @@ router.get('/:id?', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     var data = req.body;
-    console.log(data)
+    
     var hasil = {};
     req.checkBody(validator.ujian);
     req.getValidationResult().then(function (result) {
@@ -78,7 +78,7 @@ router.post('/', (req, res, next) => {
                     res.json(hasil);
                 }).
             catch(function (err) {
-                console.log(err)
+                
                 hasil.status = false;
                 res.status(500).json(hasil);
             });
@@ -221,7 +221,7 @@ router.post('/:id/soal/', (req, res, next) => {
         if (result.isEmpty() == false) {
             hasil.status = false;
             hasil.error = pesan;
-            console.log(pesan)
+            
             res.status(422).json(hasil);
         } else {
             db('tbsoal').insert({
@@ -338,7 +338,7 @@ router.post('/jawaban', (req, res, next) => {
             id_soal: v.id_soal
         })
     });
-    console.log(data_tmp)
+    
     db('tbjawaban').insert(data_tmp).then(() => {
         hasil.status = true;
         hasil.error = null;

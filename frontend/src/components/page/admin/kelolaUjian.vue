@@ -70,7 +70,7 @@ export default {
                             this.listForm[1].option = res.data.data['jenisUjianTersedia']
                             })
                         .catch(err=>{
-                            console.log(err)
+                            
                             })
                         },
                     onFocus : ()=>{
@@ -128,7 +128,7 @@ export default {
                     this.listForm[index].option = res.data.data
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     })
         }
   }

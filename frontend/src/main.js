@@ -15,12 +15,10 @@ import store from 'store'
 import axios from 'axios'
 import lodash from 'lodash'
 import { Bus } from './bus.js'
-import serialize from 'serialize-javascript'
 import vuecookies from 'vue-cookies'
-import msgpack from 'msgpack-lite'
 import VueQuillEditor from 'vue-quill-editor'
 import fp2 from 'fingerprintjs2'
-
+import jwt_decode from 'jwt-decode'
 
 Vue.use(VueQuillEditor)
 Vue.use(wysiwyg, {
@@ -43,10 +41,10 @@ Vue.use(VueSession);
 Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
 const cks = {
     setCookies (x,y,z = null){
-        z == null ? vuecookies.set(x,serialize(y)) : vuecookies.set(x,serialize(y),z)
+        z == null ? vuecookies.set(x,y) : vuecookies.set(x,y,z)
     },
     getCookies (x){
-        return eval('(' + vuecookies.get(x) + ')')
+        return jwt_decode(vuecookies.get(x)).data
     },
     clearCookies (x){
         vuecookies.remove(x)
@@ -69,9 +67,27 @@ const localStorage = {
         store.remove(x)
     }
 }
+Vue.prototype.$cekLogin = null
 Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks
-Vue.prototype.$fp2 = new fp2()
+Vue.prototype.$fp2 = new fp2({
+        excludeUserAgent : true,
+        excludeLanguage : true,
+        excludeColorDepth : true,
+        excludeScreenResolution : true,
+        excludeAvailableScreenResolution : true,
+        excludeSessionStorage  : true,
+        excludePlatform : true
+        })
+axios.interceptors.request.use((config)=>{
+    if(vuecookies.isKey('infoLogin')){
+        config.headers.common['Authorization'] = 'Bearer '+ vuecookies.get('infoLogin')
+    }
+    return config;
+  }, (error)=>{
+    // Do something with request error
+    return Promise.reject(error);
+  });
 window.bus = Bus
 window._ = lodash
 Vue.prototype.$ajx = axios

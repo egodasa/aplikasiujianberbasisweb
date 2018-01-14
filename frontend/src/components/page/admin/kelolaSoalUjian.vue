@@ -105,7 +105,7 @@ export default {
               this.dataForm.id_jsoal = this.detailUjian.id_jsoal
               })
           .catch(err=>{
-              console.log(err)
+              
               })
       },
       toggleFormData () {
@@ -152,15 +152,12 @@ export default {
             url :url,
             })
           .then(res=>{
-            if(res.data.status == false) console.log(res.data)
-            else {
                 this.$refs.genTable.toggleFormData()
                 this.$refs.genTable.getData(this.$refs.genTable.pageRows,this.$refs.genTable.pagePosition)
                 this.resetForm()
-            }
         })
         .catch(err=>{
-            console.log(err)
+            
         })
 		},
       getDataDetail (x) {

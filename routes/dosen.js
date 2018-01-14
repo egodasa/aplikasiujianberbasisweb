@@ -9,12 +9,12 @@ var _ = require('lodash')
 router.get('/cetak/csv',(req,res,next)=>{
     db('tbdosen').select()
     .then(function(rows){
-        console.log(rows)
+        
         var data = rows
         var fields = ['id_dosen','nm_dosen','nidn','status']
         json2csv({ data: data, fields: fields }, function(err, csv) {
-          if (err) console.log(err);
-          console.log(csv);
+          if (err) 
+          
           res.header('Content-type','text/csv').send(csv)
 		})
         }).
@@ -243,7 +243,7 @@ router.delete('/:id/kuliah/:idKuliah',(req, res, next)=>{
 //DOSEN MENGELOLA KULIAH
 router.post('/:id/kuliah',(req,res,next)=>{
 	var data = req.body;
-    console.log(data)
+    
 	var hasil = {};
     var id = req.params.id
     req.checkBody(validator.dosen_kuliah);
@@ -339,7 +339,7 @@ router.get('/:id/ujian/:idUjian?',(req, res, next)=>{
         query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
     }else{
         query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id)
-        query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id)
+        query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id).orderBy('hari','desc')
     }
     if(limit == null && offset == null) {
         query.show = query.tmp
@@ -369,7 +369,7 @@ router.get('/:id/ujian/:idUjian?',(req, res, next)=>{
 router.post('/:id/ujian', (req, res, next) => {
     var data = req.body;
     var id = req.params.id
-    console.log(data)
+    
     var hasil = {};
     req.checkBody(validator.ujian);
 	req.getValidationResult().then(function(result){
@@ -391,7 +391,7 @@ router.post('/:id/ujian', (req, res, next) => {
             res.json(hasil);
             }).
         catch(function(err){
-            console.log(err)
+            
             hasil.status = false;
             res.status(500).json(hasil);
             });

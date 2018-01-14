@@ -81,10 +81,10 @@ export default {
             this.$ajx.get(url)
                 .then(res=>{
                     this.listForm[index].options = res.data.data
-                    console.log(this.listForm[index].options)
+                    
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     })
         }
   }

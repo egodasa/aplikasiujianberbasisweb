@@ -157,7 +157,7 @@ methods : {
             this.infoPeserta = res.data.data.detailPesertaUjian[0]
             })
         .catch(err=>{
-            console.log(err)
+            
             if(err){
                 if(err.response.status == 204) this.$router.push({path:'/dosen/ujian/'+this.$cks.getCookies('infoLogin').username})
                 else {
@@ -170,7 +170,7 @@ methods : {
     getListJawaban (){
         this.$ajx.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
         .then(res=>{
-            console.log(res.data.data)
+            
             this.listJawaban = res.data.data
             _.forEach(this.listJawaban, (v,k)=>{
                 this.listJawaban[k].bobot_peserta = 0
@@ -178,7 +178,7 @@ methods : {
             })
         .catch(err=>{
             this.listJawaban = []
-            console.log(err)
+            
             })
     },
     showSoal (x){
@@ -204,7 +204,7 @@ methods : {
             this.$router.push({path: '/dosen/'+this.$cks.getCookies('infoLogin').username+'/ujian/'+this.$route.params.idUjian})
             })
         .catch(err=>{
-            console.log(err)
+            
             })
         
     }

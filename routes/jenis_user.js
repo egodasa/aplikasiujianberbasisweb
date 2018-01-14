@@ -49,7 +49,7 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
+    
 	req.checkBody(checkData);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();

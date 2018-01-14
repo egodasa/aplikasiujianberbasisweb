@@ -64,7 +64,7 @@ export default {
               })
           .catch(err=>{
               this[target] = []
-              console.log(err)
+              
               })
       }
   }
