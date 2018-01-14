@@ -57,7 +57,7 @@ export default {
                 this.mahasiswa = null
                 })
             .catch(err=>{
-                console.log(err)
+                
                 })
             
         },

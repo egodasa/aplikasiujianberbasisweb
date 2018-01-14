@@ -77,7 +77,7 @@ export default {
                     this.listForm[index].options = res.data.data
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     })
         }
   }

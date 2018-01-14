@@ -72,7 +72,7 @@ export default {
                     this.listForm[2].option = res.data.data
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     })
         }
   }

@@ -67,6 +67,7 @@ const localStorage = {
         store.remove(x)
     }
 }
+Vue.prototype.$cekLogin = null
 Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks
 Vue.prototype.$fp2 = new fp2({

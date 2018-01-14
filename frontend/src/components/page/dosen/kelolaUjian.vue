@@ -118,7 +118,7 @@ export default {
                     this.listForm[index].option = res.data.data
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     })
         },
         getDataSelectGraph (url,query,name,index,nama,tipe){

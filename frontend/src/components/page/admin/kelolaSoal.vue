@@ -92,7 +92,7 @@ export default {
   },
   created () {
       bus.$on('getDataDetail', x =>{
-          console.log('detail soal')
+          
             this.getDataDetail(x)
         })
       bus.$on('toggleFormData', () =>{
@@ -129,7 +129,7 @@ export default {
       },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
-          console.log(this.dataForm)
+          
           if(this.dataForm.id_soal == undefined || this.dataForm.id_soal == null){
               var method = 'POST'
               var url = ""
@@ -143,15 +143,12 @@ export default {
             url :'/api/'+this.url+url,
             })
           .then(res=>{
-            if(res.data.status == false) console.log(res.data)
-            else {
                 this.toggleFormData()
                 bus.$emit("newData")
                 this.resetForm()
-            }
         })
         .catch(err=>{
-            console.log(err)
+            
         })
 		},
       getDataDetail (x) {
@@ -160,16 +157,12 @@ export default {
             url :'/api/'+this.url+'/'+x,
             })
           .then(res=>{
-            console.log(res.data.data)
-            if(res.data.status == false) console.log(res.data)
-            else {
                 let hasil = res.data.data[0]
                 this.dataForm = hasil
                 this.toggleFormData()
-            }
         })
         .catch(err=>{
-            console.log(err)
+            
         })
 		}
   },

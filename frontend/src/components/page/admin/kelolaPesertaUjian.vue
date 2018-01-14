@@ -84,20 +84,20 @@ export default {
                 this.id_kelas = null
                 })
             .catch(err=>{
-                console.log(err)
+                
                 })
             
         },
         getDataSelect (x,y,name,args) {
             let query = `query mahasiswaNotInKelasUjian($id_ujian : String) {mahasiswaNotInKelasUjian(id_ujian : $id_ujian){nobp,nm_mahasiswa}}`
             let kueri = {query:query, variables : {id_ujian : this.$route.params.idUjian}}
-            console.log(kueri)
+            
             this.$ajx.post('api/v2/'+x,kueri)
                 .then(res=>{
                     this[y] = res.data.data[name]
                     })
                 .catch((err)=>{
-                    console.log(err)
+                    
                     this[y] = []
                     })
         },

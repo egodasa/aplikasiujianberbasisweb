@@ -246,7 +246,7 @@ methods : {
             this.showSoal(this.posisiSoal)
             })
         .catch(err=>{
-            console.log(err)
+            
             })
         
     },
@@ -292,7 +292,7 @@ methods : {
                 this.$router.push({path: '/'})
                 })
             .catch(err=>{
-                console.log(err)
+                
                 bus.$emit('showAlert','Kesalahan!','Tidak dapat mengumpukan ujian. Silahkan diulangi kembali!','warning')
                 })
         }

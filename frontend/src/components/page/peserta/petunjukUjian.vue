@@ -39,10 +39,23 @@ export default {
   methods : {
       batalkanUjian () {
         this.$lcs.removeLcs('infoUjian')
-        this.$cks.clearCookies('infoLogin')
         this.$lcs.removeLcs('ljk')
-        this.$router.push({path: '/'})
+        this.$router.push({path: '/ujian/login'})
       }
+  },
+  beforeRouteEnter: (to, from, next)=>{
+    next(vm => {
+    if(vm.$cks.isCookies('infoLogin')){
+        if(vm.$cks.getCookies('infoLogin').id_juser == 1) vm.$router.push({path:'/admin'})
+        else if(vm.$cks.getCookies('infoLogin').id_juser == 2) vm.$router.push({path:'/dosen/'+vm.$cks.getCookies('infoLogin').username})
+        else if(vm.$cks.getCookies('infoLogin').id_juser == 3) {
+            if(!vm.$lcs.getLcs('infoUjian')){
+               vm.$router.push({path:'/ujian/login'}) 
+            }
+        }
+        else vm.$router.push({path:'/'})
+    }else vm.$router.push({path:'/'})
+    })
   }
 }
 </script>
