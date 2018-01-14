@@ -80,7 +80,7 @@ export default {
                   {huruf:'E',isi_pilihan:null}
                 ],
             id_jsoal : null,
-            bobot : 1
+            bobot : 0
           },
           pilihanGandaDef : [
           {huruf:'A',isi_pilihan:null},
@@ -137,7 +137,7 @@ export default {
           {huruf:'E',isi_pilihan:null}
           ]
           this.id_jsoal = this.detailUjian.id_jsoal
-          this.dataForm.bobot = null
+          this.dataForm.bobot = 0
       },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
