@@ -69,7 +69,7 @@ created (){
 },
 methods : {
     cekUser () {
-        if(this.username == null || this.password == null){
+        if(this.username == null || this.password == null || this.username.length == 0 || this.password.length == 0){
             bus.$emit("showAlert","Pesan!","Username atau password tidak boleh kosong!","warning")
         }else{
             this.Blogin.disabled = true
