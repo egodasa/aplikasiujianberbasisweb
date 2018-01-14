@@ -10,7 +10,7 @@ var Promise = require('promise');
 var url = require('url');
 var knexLogger = require('knex-logger');
 const expressGraphQL = require('express-graphql');
-
+var jwt = require('jsonwebtoken')
 const sMahasiswa = require('./schema/mahasiswa.js');
 const sJujian = require('./schema/jenis_ujian.js');
 const sKuliah = require('./schema/kuliah.js');
@@ -40,9 +40,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 app.use('^/api/:params*',function(req,res,next){
-    console.log(req.header('Authorization'))
+    let token = req.header('Authorization')
 	res.set({'Access-Control-Allow-Origin' : '*'});
-	next()
+    if(token){
+        jwt.verify(token.split(" ")[1], 'Panther A 7.5cm kwk 42 L/70', function(err, decoded) {
+            if(err) res.status(401).json({status:false,error:"Anda harus login terlebih dahulu!"})
+            else next()
+            })
+    }else res.status(401).json({status:false,error:"Anda harus login terlebih dahulu!"})
 	});
 app.use(validator({
 	customValidators : require('./validator/custom_validator')
