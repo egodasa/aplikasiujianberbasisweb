@@ -59,7 +59,7 @@ router.post('/',(req,res,next)=>{
 	if(result.isEmpty() == false){
 		hasil.status = false;
 		hasil.error = pesan;
-        console.log(hasil.error);
+        
         res.status(422).json(hasil); 
 	}
 	else{

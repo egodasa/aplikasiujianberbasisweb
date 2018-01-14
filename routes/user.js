@@ -53,13 +53,13 @@ router.get('/:id?',(req, res, next)=>{
 router.post('/',(req,res,next)=>{
 	var data = req.body;
 	var hasil = {};
-    console.log(data)
+    
 	req.checkBody(validator.user);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();
 	var pesan = result.mapped();
 	if(result.isEmpty() == false){
-        console.log(pesan);
+        
 		hasil.status = false;
 		hasil.error = pesan;
 		res.status(422).json(hasil); 
@@ -76,7 +76,7 @@ router.post('/',(req,res,next)=>{
 			res.json(hasil);
 			}).
 		catch(function(err){
-            console.log(err);
+            
 			hasil.status = false;
 			hasil.error = err;
 			res.status(503).json(hasil);
@@ -102,7 +102,7 @@ router.put('/:id',(req,res,next)=>{
 	var data = req.body;
 	var id = req.params.id;
 	var hasil = {};
-    console.log(data)
+    
 	req.checkBody(validator.edit_user);
 	req.getValidationResult().then(function(result){
 	result.useFirstErrorOnly();

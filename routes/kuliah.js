@@ -149,7 +149,7 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
     }
     query.count = db('lap_peserta_kuliah').select('nobp').where('id_kuliah',id)
     query.tmp = db('lap_peserta_kuliah').select().where('id_kuliah',id)
-    console.log(limit)
+    
     if(limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)
 	query.show.then(function(rows){
@@ -173,7 +173,7 @@ router.get('/:id/mahasiswa',(req, res, next)=>{
 	});
 router.post('/:id/mahasiswa',(req,res,next)=>{
 	var data = req.body;
-    console.log(data)
+    
 	var hasil = {};
     var id = req.params.id
     req.checkBody(validator.peserta_kuliah);
@@ -201,7 +201,7 @@ router.post('/:id/mahasiswa',(req,res,next)=>{
             res.json(hasil);
             }).
         catch(function(err){
-            console.log(err)
+            
             hasil.status = false;
             hasil.error = err;
             res.status(503).json(hasil);
