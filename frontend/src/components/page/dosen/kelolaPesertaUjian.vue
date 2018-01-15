@@ -41,7 +41,7 @@ import genForm from '../../template/formGenerator.vue'
 import dosen from './halamanDosen.vue'
 
 export default {
-  name: 'DkelolaPesertaUjian',
+  name: 'kelolaPesertaUjian',
   components : {
       genTable, genForm
   },

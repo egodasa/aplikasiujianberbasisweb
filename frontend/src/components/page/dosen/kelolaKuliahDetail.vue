@@ -42,7 +42,7 @@ import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 
 export default {
-  name: 'DkelolaKuliahDetail',
+  name: 'kelolaKuliahDetail',
   components : {
       'genTable' : genTable,
       'genForm' : genForm,

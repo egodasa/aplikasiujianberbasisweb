@@ -8,7 +8,7 @@
     <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus">
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Peserta Kuliah">
-            <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
+            <router-link :to="{name:'kelolaPesertaKuliah',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
         </span>
     </template>
     </gen-table>

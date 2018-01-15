@@ -9,7 +9,7 @@
     <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="edit_hapus">
         <template slot="customAction" slot-scope="ca">
             <span class="hint--top" aria-label="Kelola Ujian">
-                <router-link :to="{name:'DkelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
+                <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
             </span>
         </template>
     </gen-table>

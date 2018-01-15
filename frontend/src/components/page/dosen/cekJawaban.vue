@@ -115,7 +115,7 @@ import dosen from './halamanDosen.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 export default {
-name: 'DcekJawaban',
+name: 'cekJawaban',
 components : {
     dosen
 },

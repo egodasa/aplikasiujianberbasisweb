@@ -21,7 +21,7 @@
 <script>
 import genTable from '../../template/GenTable.vue'
 export default {
-  name: 'DhasilUjian',
+  name: 'hasilUjian',
   components : {
       genTable
   },
