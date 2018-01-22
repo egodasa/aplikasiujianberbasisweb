@@ -142,12 +142,9 @@ export default {
 		}
 	},
     created () {
-        bus.$on('getDataDetail', x =>{
-            this.getDataDetail(x)
-        })
-        bus.$on('toggleFormData', () =>{
-            this.toggleFormData()
-        })
+        console.log(bus._events)
+        bus.$on('getDataDetail',this.getDataDetail)
+        bus.$on('toggleFormData',this.toggleFormData)
         this.showForm = false
         _.forEach(this.input,(v,k)=>{
             this.$set(this.error,v.name, null)
@@ -214,7 +211,7 @@ export default {
 				url :'/api/'+this.url+url,
 				})
 			.then(res=>{
-                bus.$emit('newData')
+                bus.$emit('newData',10,0)
                 this.toggleFormData()
                 this.buttonSubmit(0)
                 this.edit = false
@@ -251,7 +248,8 @@ export default {
 		}
 	},
     destroyed () {
-        //bus.$off('getDataDetail')
+        bus.$off('getDataDetail',this.getDataDetail)
+        bus.$off('toggleFormData',this.toggleFormData)
     }
 }
 </script>
