@@ -3,6 +3,7 @@
     <template v-if="spinStatus == false">
             <template v-if="statusCodeDataTable == 200 && dataTable.row != 0">
                 <span class="w3-left">
+                <slot name="customButton"></slot>
                 <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><b><i class="fa fa-plus"></i> Tambah Data</b></button>
                 <button type="button" @click="getData(pageRows,null)" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="refreshButton"><b><i class="fa fa-refresh"></i> Refresh</b></button>
                 <div class="w3-dropdown-click" v-if="exportButton">
@@ -13,24 +14,21 @@
                 </div>
                 </span>
                 <span class="w3-right">
+                <slot name="customSearch">
                 <input type="search" class="w3-button w3-small w3-border w3-white" v-model="cari" placeholder="Pencarian..." @keyup.enter="cariData()"/> 
                 <button type="button" class="w3-button w3-red w3-hover-blue-gray w3-small" @click="resetCariData()">Reset</button>
+                </slot>
                 </span>
                 <div class="w3-clear"></div>
             <table :class="tableCenter" style="margin-top:5px;">
             <tr class="w3-teal">
                 <th>No</th>
-                <th v-for="th in tableContent.header" v-if="th != pk">{{th}}</th>
+                <th v-for="th in tableContent" v-if="th.show">{{th.caption}}</th>
                 <th v-if="aksi">Aksi</th>
             </tr>
             <tr class="w3-white w3-hover-light-gray" v-for="(tr,index,key) in dataTable.data">
                 <td v-if="rowNumber">{{index+1+numStart}}</td>
-                <template v-if="showPk == true">
-                <td v-for="td in tableContent.content">{{tr[td]}}</td>
-                </template>
-                <template v-else>
-                <td v-html="tr[td]" v-for="td in tableContent.content" v-if="td != pk"></td>
-                </template>
+                <td v-for="td in tableContent" v-if="td.show" v-html="tr[td.name]"></td>
                 <td v-if="aksi">
                 <template v-if="tableType == 'edit_hapus'">
                 <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(tr[pk])"><i class="fa fa-edit"></i> 
@@ -149,13 +147,10 @@ props : {
         default : 'edit_hapus'
     },
     tableContent : {
-        type : Object,
+        type : Array,
         required : true,
         default : function(){
-                return {
-                header : [],
-                content : []
-            }
+                return [{}]
         }
     },
     formButton : {
@@ -213,9 +208,7 @@ return {
 }
 },
 created () {
-    bus.$on('newData',()=>{
-        this.getData(this.pageRows,this.pagePosition)
-        })
+    bus.$on('newData',this.getData)
     this.getData(this.pageRows,this.pagePosition)
 },
 computed : {
@@ -234,7 +227,7 @@ computed : {
         this.aksi ? aksi=1 : aksi = 0
         this.showPk ? pk=1 : pk = 0
         this.rowNumber ? numb=1 : numb = 0
-        return this.tableContent.header.length+numb+aksi+pk
+        return this.tableContent.length+numb+aksi+pk
     },
     numStart : function(){
         return (this.pagePosition-1)*this.pageRows
@@ -331,7 +324,7 @@ methods : {
     }
 },
 destroyed () {
-
+    bus.$off('newData',this.getData)
 }
 }
 </script>
