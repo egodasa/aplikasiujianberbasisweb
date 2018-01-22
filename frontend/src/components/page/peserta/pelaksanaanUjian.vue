@@ -5,7 +5,12 @@
 <template slot="sidebarAtas">
 <div class="w3-container">
     <h3>Pilih Soal</h3>
+<template v-if="jawabanPeserta.length != 0">
 <button style="padding: 5px;width:40px;margin : 3px;" type="button" :class="jawabanPeserta[index].jawaban != null ? 'w3-button w3-green  w3-hover-pale-blue w3-border' : 'w3-button w3-red w3-hover-pale-blue w3-border'" v-for="(y,index,key) in listSoal" @click="showSoal(index); toggleMenu();">{{index+1}}</button>
+</template>
+<template v-else>
+Memuat Soal ...
+</template>
 </div>
 </template>
 <template slot="sidebarBawah">
