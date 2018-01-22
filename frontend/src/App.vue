@@ -44,9 +44,7 @@
 export default {
   name: 'app',
   created () {
-      bus.$on('showAlert',(w,x,y,z)=>{
-          this.showAlert(w,x,y,z)
-          })
+      bus.$on('showAlert',this.showAlert)
   },
   methods : {
       showAlert (judul,isi,tipe) {
@@ -58,6 +56,9 @@ export default {
               type : tipe
             })
         }
+  },
+  destroyed (){
+      bus.$off('showAlert',this.showAlert)
   }
 }
 </script>
