@@ -79,7 +79,6 @@ methods : {
                 this.Blogin.disabled = false
                 this.Blogin.caption = "Login"
                 let hasil = res.data.data
-                
                 if(hasil.token == null) {
                     bus.$emit('showAlert','Peringatan!','Username atau password tidak cocok!','warning')
                     }
