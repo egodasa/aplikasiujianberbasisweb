@@ -573,8 +573,8 @@ router.get('/nilai/rata/:url_cari?/:cari?', (req, res, next) => {
         query.count = db('nilai_rata').select().where("nm_matkul", "like", '%' + cari + '%').orWhere(db.raw('lower(nm_dosen)'), 'like', '%' + cari + '%').orWhere("nm_jujian", "like", '%' + cari + '%')
         query.tmp = db('nilai_rata').select().where("nm_matkul", "like", '%' + cari + '%').orWhere(db.raw('lower(nm_dosen)'), 'like', '%' + cari + '%').orWhere("nm_jujian", "like", '%' + cari + '%')
     } else {
-        query.count = db('nilai_rata').select()
-        query.tmp = db('nilai_rata').select()
+        query.count = db('nilai_rata').select().orderBy('avg','desc')
+        query.tmp = db('nilai_rata').select().orderBy('avg','desc')
     }
     if (limit == null) query.show = query.tmp
     else query.show = query.tmp.limit(limit).offset(offset)

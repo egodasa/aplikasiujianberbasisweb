@@ -1,6 +1,6 @@
 <template>
     <div class="w3-container">
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm" contentType="lain">
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm" contentType="lain">
         <h2>Tambah Data</h2>
         <span class="w3-container">
             <label>Pilih Kelas</label>
@@ -17,7 +17,7 @@
         <button class="w3-button w3-red" @click="toggleFormData()">Batal</button>
         </span>
     </gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent" tableType="lain">
+    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent" tableType="lain">
         <template slot="customAction" slot-scope="ca">
             <template v-if="ca.pkData.status_ujian_peserta == 3">
                 <button class="w3-button w3-small w3-red" disabled="true">Tidak Ada</button>
@@ -41,7 +41,7 @@ import genForm from '../../template/formGenerator.vue'
 import dosen from './halamanDosen.vue'
 
 export default {
-  name: 'DkelolaPesertaUjian',
+  name: 'kelolaPesertaUjian',
   components : {
       genTable, genForm
   },
@@ -57,10 +57,14 @@ export default {
   data () {
       return {
           url : 'ujian/'+this.$route.params.idUjian+'/mahasiswa',
-            tableContent : {
-                header :  ['NOBP','Nama','Kelas','Status Peserta','Status Ujian'],
-                content : ['id_mahasiswa','nobp','nm_mahasiswa','nm_kelas','nm_status_peserta','nm_status_upeserta']
-            },
+            tableContent : [
+                {name: "id_mahasiswa",show: false,caption: null},
+                {name: "nobp",show: true,caption:"NOBP"},
+                {name: "nm_mahasiswa",show: true,caption:"Nama"},
+                {name: "nm_kelas",show: true,caption:"Kelas"},
+                {name: "nm_status_peserta",show: true,caption:"Status Peserta"},
+                {name: "nm_status_upeserta",show: true,caption:"Status Ujian"}
+            ],
             mahasiswa : null,
             id_kelas : null,
             listMahasiswa : [],

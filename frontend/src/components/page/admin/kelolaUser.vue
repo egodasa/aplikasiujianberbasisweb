@@ -2,8 +2,8 @@
     
 <div class="w3-container">
     <h2>Daftar User</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent"></gen-table>
 </div>
 
 </template>
@@ -47,10 +47,11 @@ export default {
                     valueSelect : 'id_juser'
 					}
 			],
-            tableContent : {
-                header :  ['Username','Jenis User'],
-                content : ['id_user','username','nm_juser']
-            }
+            tableContent : [
+                {name:"id_user",show:false,caption:null},
+                {name:"username",show:true,caption:"Username"},
+                {name:"nm_juser",show:true,caption:"Jenis User"}
+            ]
         }
   },
   created (){

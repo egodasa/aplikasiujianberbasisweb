@@ -28,8 +28,8 @@
             </div>
     </div>
     <h2>Daftar Peserta Kuliah</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus"></gen-table>
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :table-content="tableContent" tableType="hapus"></gen-table>
 </div>
 
 </template>
@@ -42,7 +42,7 @@ import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 
 export default {
-  name: 'DkelolaKuliahDetail',
+  name: 'kelolaKuliahDetail',
   components : {
       'genTable' : genTable,
       'genForm' : genForm,
@@ -52,10 +52,12 @@ export default {
       return {
           url : 'kuliah/'+this.$route.params.idKuliah+'/mahasiswa',
           infoKuliah : {},
-          tableContent : {
-              header : ['NOBP','Nama Mahasiswa','Kelas'],
-              content : ['id_peserta','nobp','nm_mahasiswa','nm_kelas']
-          },
+          tableContent : [
+              {name: 'id_peserta',show: false,caption: null},
+              {name: 'nobp',show: true,caption: "NOBP"},
+              {name: 'nm_mahasiswa',show: true,caption: "Nama Mahasiswa"},
+              {name: 'nm_kelas',show: true,caption: "Kelas"}
+          ],
           loading : false,
           listForm : [
             {

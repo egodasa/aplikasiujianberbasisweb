@@ -43,7 +43,7 @@
             <button type="button" class="w3-button w3-blue w3-section" @click="formBatal()">Batal</button>
         </form>
     </gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" ref="genTable" :tableContent="tableContent" tableType="hapus">
+    <gen-table :pk="tableContent[0].name" :url="url" ref="genTable" :tableContent="tableContent" tableType="hapus">
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Edit"><button class="w3-button w3-hover-white w3-white" @click="getDataDetail(ca.pkData.id_soal)"><i class="fa fa-edit"></i> 
         </button></span>
@@ -63,10 +63,12 @@ export default {
   },
   data () {
       return {
-          tableContent : {
-              header : ['Isi Soal','Bobot'],
-              content : ['id_soal','isi_soal','bobot']
-          },
+          showFormUpload : false,
+          tableContent : [
+              {name: 'id_soal', show: false, caption: null},
+              {name: 'isi_soal', show: true, caption: "Isi Soal"},
+              {name: 'bobot', show: true, caption: "Bobot"}
+          ],
           url : 'ujian/'+this.$route.params.idUjian+'/soal',
           showForm : false,
           dataForm : {
@@ -96,6 +98,9 @@ export default {
       this.getDetailUjian()
   },
   methods : {
+      toggleFormUpload (){
+          this.showFormUpload = !this.showFormUpload
+      },
       formBatal () {
           this.resetForm()
           this.$refs.genTable.toggleFormData()

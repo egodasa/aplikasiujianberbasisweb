@@ -19,7 +19,7 @@ router.post('/',(req, res, next)=>{
             }, 'Panther A 7.5cm kwk 42 L/70', { expiresIn:  86400 });
             res.json(hasil)
         }else {
-            res.json({token:null})
+            res.json({data : {token:null}})
             }
 		}).
 	catch(function(err){

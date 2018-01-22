@@ -55,9 +55,7 @@ data (){
     }
 },
 created () {
-    bus.$on('toggleMenu',()=>{
-        this.toggleMenu()
-        })
+    bus.$on('toggleMenu',this.toggleMenu)
     this.hariSekarang = formatWaktu(new Date(), 'dddd, DD MMMM YYYY', {locale : lokalisasi})
     this.jamSekarang = formatWaktu(new Date(), 'h:m:s', {locale : lokalisasi})
     this.sisaWaktu = 0
@@ -72,6 +70,9 @@ methods : {
         this.$cks.clearCookies('infoLogin')
         this.$router.push({path : '/'})
     }
+},
+destroyed (){
+    bus.$off('toggleMenu',this.toggleMenu)
 }
 }
 </script>

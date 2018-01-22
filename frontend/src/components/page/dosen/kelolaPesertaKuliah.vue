@@ -1,7 +1,7 @@
 <template>
 
 <div class="w3-container">
-    <h2>Detail Kuliah</h2>
+    <h2>Informasi Kuliah</h2>
     <div id="infoKuliah" :style="!loading ? 'display:block;':'display:none;height:300px;'">
             <div class="w3-row">
                 <div class="w3-col l6 s12 xs12">
@@ -28,8 +28,8 @@
             </div>
     </div>
     <h2>Daftar Peserta Kuliah</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus"></gen-table>
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :table-content="tableContent" tableType="hapus"></gen-table>
 </div>
 
 </template>
@@ -37,25 +37,27 @@
 <script>
 import genTable from '../../template/GenTable.vue'
 import genForm from '../../template/formGenerator.vue'
-import admin from './halamanAdmin.vue'
+import dosen from './halamanDosen.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 
 export default {
-  name: 'kelolaKuliahDetail',
+  name: 'kelolaPesertaKuliah',
   components : {
       'genTable' : genTable,
       'genForm' : genForm,
-      'admin' : admin
+      'dosen' : dosen
   },
   data () {
       return {
           url : 'kuliah/'+this.$route.params.idKuliah+'/mahasiswa',
           infoKuliah : {},
-          tableContent : {
-              header : ['NOBP','Nama Mahasiswa','Kelas'],
-              content : ['id_peserta','nobp','nm_mahasiswa','nm_kelas']
-          },
+          tableContent : [
+              {name: 'id_peserta',show: false,caption: null},
+              {name: 'nobp',show: true,caption: "NOBP"},
+              {name: 'nm_mahasiswa',show: true,caption: "Nama Mahasiswa"},
+              {name: 'nm_kelas',show: true,caption: "Kelas"}
+          ],
           loading : false,
           listForm : [
             {
@@ -119,7 +121,7 @@ export default {
                 })
                 })
             .catch(err=>{
-                bus.$emit('showAlert','Pesan!','Tidak dapat mengambil detail kuliah. Silahkan muat ulang halaman!','warning')
+                Bus.$emit('showAlert','Pesan!','Tidak dapat mengambil detail kuliah. Silahkan muat ulang halaman!','warning')
                 this.infoKuliah = [{}]
                 })
       }

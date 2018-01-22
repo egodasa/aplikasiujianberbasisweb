@@ -1,6 +1,7 @@
 <template>
 <div class="w3-container">
     <h2>Informasi Ujian</h2>
+    <template v-if="Object.keys(infoUjian) != 0">
     <div class="w3-row">
             <div class="w3-col l6 s12 xs12">
             <table class="w3-table w3-border w3-bordered">
@@ -44,6 +45,7 @@
             </table>
             </div>
         </div>
+    </template>
 <h2>Pemeriksaan Jawaban</h2>
 <div class="w3-row-padding w3-white">
     <div class="w3-col l6 m6 s12 xs12">
@@ -115,7 +117,7 @@ import dosen from './halamanDosen.vue'
 import formatWaktu from 'date-fns/format'
 import lokalisasi from 'date-fns/locale/id'
 export default {
-name: 'DcekJawaban',
+name: 'cekJawaban',
 components : {
     dosen
 },
@@ -201,7 +203,7 @@ methods : {
             }
         this.$ajx.post('api/ujian/hasil',data)
         .then(res=>{
-            this.$router.push({path: '/dosen/'+this.$cks.getCookies('infoLogin').username+'/ujian/'+this.$route.params.idUjian})
+            this.$router.push({path: '/dosen/'+this.$cks.getCookies('infoLogin').username+'/ujian/'+this.$route.params.idUjian+'/detail'})
             })
         .catch(err=>{
             

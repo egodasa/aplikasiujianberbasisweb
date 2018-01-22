@@ -4,12 +4,17 @@
     <i>* Status kuliah akan aktif jika terdapat minimal 1 mahasiswa pada kuliah tersebut.</i>
     <div class="w3-border"></div>
     <br/>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :table-content="tableContent" tableType="hapus">
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm">
+    </gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :table-content="tableContent" tableType="hapus">
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Peserta Kuliah">
-            <router-link :to="{name:'DkelolaKuliahDetail',params:{idKuliah:ca.pkData[tableContent.content[0]]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
+            <router-link :to="{name:'kelolaPesertaKuliah',params:{idKuliah:ca.pkData[tableContent[0].name]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
         </span>
+    </template>
+    <template slot="customSearch">
+        <label style="font-size:17px;">Tahun Akademik </label>
+        <input type="number" style="width:100px;height:30px;" class="w3-button w3-small w3-border w3-white" v-model="tahun_akademik" :placeholder="tahun_akademik"/> 
     </template>
     </gen-table>
 </div>
@@ -29,11 +34,14 @@ export default {
   },
   data () {
       return {
+          tahun_akademik : new Date().getFullYear().toString(),
           url : 'dosen/'+this.$cks.getCookies('infoLogin').username+'/kuliah',
-            tableContent : {
-                header : ['Mata Kuliah','Kelas','Tahun Akademik','Status'],
-                content : ['id_kuliah','nm_matkul','ket_nm_kelas','tahun_akademik','nm_status_kuliah']
-            },
+            tableContent : [
+                {name: 'id_kuliah',show: false,caption: null},
+                {name: 'nm_matkul',show: true,caption: "Mata Kuliah"},
+                {name: 'ket_nm_kelas',show: true,caption: "Kelas"},
+                {name: 'nm_status_kuliah',show: true,caption: "Status"}
+            ],
             listForm : [
                 {
                     caption : "Pilih Mata Kuliah",

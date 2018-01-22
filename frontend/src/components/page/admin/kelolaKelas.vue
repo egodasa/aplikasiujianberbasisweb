@@ -2,8 +2,8 @@
     
 <div class="w3-container">
     <h2>Daftar Nama Kelas</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent"></gen-table>
 </div>
 
 </template>
@@ -29,10 +29,10 @@ export default {
 					value:null
 					}
 			],
-            tableContent : {
-                header :  ['Nama Kelas'],
-                content : ['id_kelas','nm_kelas']
-            }
+            tableContent : [
+                {name:'id_kelas',show:false,caption:"ID Kelas"},
+                {name:'nm_kelas',show:true,caption:"Nama Kelas"}
+            ]
         }
   }
 }
