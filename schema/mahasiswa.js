@@ -72,7 +72,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parentValue, args) {
         return db('tbmahasiswa').select()
         .whereNotIn("nobp",db.raw("select nobp from lap_peserta_kuliah where id_kuliah=?",[args.id_kuliah]))
-            .where("status_mahasiswa",1).orderBy("nm_mahasiswa","asc")
+            .where("status_mahasiswa",1).orderBy("nm_mahasiswa","asc").limit(20)
       }
     }
   }
