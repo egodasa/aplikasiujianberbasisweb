@@ -3,6 +3,7 @@ var router = express.Router();
 var validator = require('../validator/validator')
 let pk = "id_user"
 let tbl = "tbuser"
+let md5=require('md5')
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
