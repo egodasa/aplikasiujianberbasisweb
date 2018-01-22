@@ -2,8 +2,8 @@
     
 <div class="w3-container">
     <h2>Daftar Tipe Soal</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent.content[0]" :url="url" :tableContent="tableContent"></gen-table>
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent"></gen-table>
 </div>
 
 </template>
@@ -30,10 +30,10 @@ export default {
 					value:null
 					}
 			],
-            tableContent : {
-                header :  ['Nama Tipe Soal'],
-                content : ['id_jsoal','nm_jsoal']
-            }
+            tableContent : [
+                {name:"id_jsoal",show:false,caption:null},
+                {name:"nm_jsoal",show:true,caption:"Nama Tipe Soal"}
+            ]
         }
   }
 }

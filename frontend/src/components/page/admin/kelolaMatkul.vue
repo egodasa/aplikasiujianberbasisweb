@@ -2,8 +2,8 @@
     
 <div class="w3-container">
     <h2>Daftar Mata Kuliah</h2>
-    <gen-form :pk="tableContent.content[0]" :url="url" :input="listForm"></gen-form>
-    <gen-table pk="id_matkul" :url="url" :tableContent="tableContent">
+    <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
+    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent">
     </gen-table>
 </div>
 
@@ -52,10 +52,13 @@ export default {
 					value:null
 					}
 			],
-            tableContent : {
-                header :  ['Kode Matkul','Nama Matkul','Semester','SKS'],
-                content : ['id_matkul','kd_matkul','nm_matkul','smt','sks']
-            }
+            tableContent : [
+                {name:"id_matkul",show:false,caption:null},
+                {name:"kd_matkul",show:true,caption:"Kode Matkul"},
+                {name:"nm_matkul",show:true,caption:"Nama Matkul"},
+                {name:"smt",show:true,caption:"Semester"},
+                {name:"sks",show:true,caption:"SKS"}
+            ]
         }
   }
 }

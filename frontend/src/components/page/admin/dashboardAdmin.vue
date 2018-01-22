@@ -48,7 +48,7 @@
     <header style="padding-top:22px">
     <h2><i class="fa fa-list"></i> Daftar Nilai</h2>
     </header>
-    <gen-table :aksi.Boolean="false" :refreshButton.Boolean="false" :exportUrl="exportUrl" :exportButton.Boolean="false" :pk="tableContent.content[0]" :formButton.Boolean="false" :url="url" :tableContent="tableContent" tableType="lain"></gen-table>
+    <gen-table :aksi.Boolean="false" :refreshButton.Boolean="false" :exportUrl="exportUrl" :exportButton.Boolean="false" :pk="tableContent[0].name" :formButton.Boolean="false" :url="url" :tableContent="tableContent" tableType="lain"></gen-table>
     </div>
   </div>
   </div>
@@ -74,10 +74,13 @@ export default {
           total_mahasiswa : 0
           },
     url : 'ujian/nilai/rata',
-    tableContent : {
-        header :  ['Ujian',"Dosen","Jenis","Nilai"],
-        content : ['id_ujian','nm_matkul','nm_dosen','nm_jujian','avg']
-    }
+    tableContent : [
+          {name:'id_ujian',show:false,caption:"ID Ujian"},
+          {name:'nm_matkul',show:true,caption:"Ujian"},
+          {name:'nm_dosen',show:true,caption:"Dosen"},
+          {name:'nm_jujian',show:true,caption:'Jenis'},
+          {name:'avg',show:true,caption:"Rata-rata"}
+          ]
     }
 },
   methods : {
