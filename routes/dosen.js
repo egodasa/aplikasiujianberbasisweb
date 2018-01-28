@@ -6,22 +6,6 @@ var tbl = 'tbdosen';
 var json2csv = require('json2csv')
 var _ = require('lodash')
 
-router.get('/cetak/csv',(req,res,next)=>{
-    db('tbdosen').select()
-    .then(function(rows){
-        
-        var data = rows
-        var fields = ['id_dosen','nm_dosen','nidn','status']
-        json2csv({ data: data, fields: fields }, function(err, csv) {
-          if (err) 
-          
-          res.header('Content-type','text/csv').send(csv)
-		})
-        }).
-	catch(function(err){
-		res.json(hasil);
-		});
-    });
 router.get('/:id?',(req, res, next)=>{
 	var id = req.params.id || 0;
 	var limit = parseInt(req.query.limit) || null;
@@ -64,6 +48,8 @@ router.get('/:id?',(req, res, next)=>{
 		res.status(503).json(hasil);
 		});
 	});
+
+//pencarian dosen
 router.get('/cari/:cari',(req, res, next)=>{
 	var cari = req.params.cari;
 	var limit = parseInt(req.query.limit) || null;
@@ -180,6 +166,7 @@ router.get('/:id/kuliah/:idKuliah?',(req, res, next)=>{
 	var idKuliah = req.params.idKuliah;
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
+    var thn = req.query.thn || "2"
 	var hasil = {};
     let query = {
         show : null,
@@ -187,12 +174,12 @@ router.get('/:id/kuliah/:idKuliah?',(req, res, next)=>{
         tmp : null
     }
     if(idKuliah){
-        query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where({nidn:id,id_kuliah:idKuliah})
+        query.count = db('lap_kuliah').select("nidn").where({nidn:id,id_kuliah:idKuliah})
         query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where({nidn:id,id_kuliah:idKuliah})
         }
     else{
-        query.count = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
-        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id)
+        query.count = db('lap_kuliah').select("nidn").where('nidn',id).andWhere("tahun_akademik","like","").andWhere("tahun_akademik","like","%"+thn+"%")
+        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id).andWhere("tahun_akademik","like","").andWhere("tahun_akademik","like","%"+thn+"%")
     }
     
     if(limit == null && offset == null) {
@@ -328,6 +315,7 @@ router.get('/:id/ujian/:idUjian?',(req, res, next)=>{
 	var limit = parseInt(req.query.limit) || null;
 	var offset = parseInt(req.query.offset) || null;
     let id_ujian = req.params.idUjian
+    let thn = req.query.thn || "2"
 	var hasil = {};
     let query = {
         show : null,
@@ -335,11 +323,11 @@ router.get('/:id/ujian/:idUjian?',(req, res, next)=>{
         tmp : null
     }
     if(id_ujian){
-        query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
+        query.count = db('lap_ujian').select("id_ujian").where('id_ujian',id_ujian)
         query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('id_ujian',id_ujian)
     }else{
-        query.count = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id)
-        query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id).orderBy('hari','desc')
+        query.count = db('lap_ujian').select("id_ujian").where('nidn',id).andWhere("tahun_akademik","like","%"+thn+"%")
+        query.tmp = db('lap_ujian').select("*",db.raw("concat(to_char(hari,'dd TMMonth yyyy'),' ',mulai,'-',selesai) as ket_waktu")).where('nidn',id).orderBy('hari','desc').andWhere("tahun_akademik","like","%"+thn+"%")
     }
     if(limit == null && offset == null) {
         query.show = query.tmp
