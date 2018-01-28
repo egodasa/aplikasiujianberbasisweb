@@ -1,7 +1,6 @@
 <template>
 <div class="w3-responsive">
     <template v-if="spinStatus == false">
-            <template v-if="statusCodeDataTable == 200 && dataTable.row != 0">
                 <span class="w3-left">
                 <slot name="customButton"></slot>
                 <button type="button" @click="toggleFormData()" class="w3-button w3-blue w3-hover-blue-grey w3-small" v-if="formButton"><b><i class="fa fa-plus"></i> Tambah Data</b></button>
@@ -20,6 +19,7 @@
                 </slot>
                 </span>
                 <div class="w3-clear"></div>
+            <template v-if="statusCodeDataTable == 200 && dataTable.row != 0">
             <table :class="tableCenter" style="margin-top:5px;">
             <tr class="w3-teal">
                 <th>No</th>
@@ -86,10 +86,11 @@
                 <div class="w3-display-container" style="height:300px;">
                 <div class="w3-display-middle">
                     <div class="w3-text-blue-gray" style="font-size:40px;text-align:center;">{{statusDataTable}}</div><br/>
+                    <!--
                     <div class="w3-center">
                     <button type="button" @click="toggleFormData()" class="w3-button w3-center w3-blue-grey" :disabled="statusCodeDataTable >= 500" v-if="formButton"><i class="fa fa-plus"></i> Tambah Data</button>
                 <button type="button" @click="getData(pageRows,null)" class="w3-button w3-center w3-blue-grey"><i class="fa fa-refresh"></i> Refresh</button>
-                    </div>
+                    </div>-->
                 </div>
                 </div>
                 <br/>
