@@ -37,7 +37,8 @@ export default {
                 {name:"nilai",show:true,caption:"Nilai"}
             ],
             exportUrl : [
-            {url:'/api/ujian/'+this.$route.params.idUjian+'/hasil/cetak/excel',name:'Excel'},
+            {url:'/cetak/'+this.$route.params.idUjian+'/hasil/excel',name:'Excel'},
+            {url:'/cetak/'+this.$route.params.idUjian+'/hasil/csv',name:'CSV'}
             ]
         }
   }
