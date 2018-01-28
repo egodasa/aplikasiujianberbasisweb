@@ -134,7 +134,7 @@ router.get('/:id/ujian',(req, res, next)=>{
         tmp : null
     }
     query.count = db('lap_peserta_ujian').select('id_ujian').where('nobp',id)
-    query.tmp = db('lap_peserta_ujian').select(db.raw('id_ujian,cast(hari as varchar),mulai,selesai,deskripsi,status_ujian,nm_status_ujian,id_jsoal,nm_jsoal,id_jujian,nm_jujian,kd_matkul,nm_matkul,nidn,nm_dosen,id_kuliah,nobp,nm_mahasiswa,id_kelas,nm_kelas,nm_ujian')).whereRaw("hari = cast(now() as date) and status_ujian=1 and cast(now() as time) between mulai - interval '15 minute' and selesai and nobp=? and nobp in (select nobp from getHasilUjian(id_ujian) where nobp=? and status_ujian_peserta = 3);",[id,id])
+    query.tmp = db('lap_peserta_ujian').select(db.raw('id_ujian,cast(hari as varchar),mulai,selesai,deskripsi,status_ujian,nm_status_ujian,id_jsoal,nm_jsoal,id_jujian,nm_jujian,kd_matkul,nm_matkul,nidn,nm_dosen,id_kuliah,nobp,nm_mahasiswa,id_kelas,nm_kelas,nm_ujian')).whereRaw("hari = cast((now() AT TIME ZONE 'Asia/Jakarta') as date) and status_ujian=1 and cast((now() AT TIME ZONE 'Asia/Jakarta') as time) between mulai - interval '15 minute' and selesai and nobp=? and nobp in (select nobp from getHasilUjian(id_ujian) where nobp=? and status_ujian_peserta = 3);",[id,id])
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
