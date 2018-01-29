@@ -178,8 +178,8 @@ router.get('/:id/kuliah/:idKuliah?',(req, res, next)=>{
         query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where({nidn:id,id_kuliah:idKuliah})
         }
     else{
-        query.count = db('lap_kuliah').select("nidn").where('nidn',id).andWhere("tahun_akademik","like","").andWhere("tahun_akademik","like","%"+thn+"%")
-        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id).andWhere("tahun_akademik","like","").andWhere("tahun_akademik","like","%"+thn+"%")
+        query.count = db('lap_kuliah').select("nidn").where('nidn',id).andWhere("tahun_akademik","like","%"+thn+"%")
+        query.tmp = db('lap_kuliah').select("*",db.raw("array_to_string(nm_kelas,',') as ket_nm_kelas")).where('nidn',id).andWhere("tahun_akademik","like","%"+thn+"%")
     }
     
     if(limit == null && offset == null) {
