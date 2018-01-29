@@ -6,7 +6,7 @@
     <br/>
     <gen-form :pk="tableContent[0].name" :url="url" :input="listForm">
     </gen-form>
-    <gen-table :pk="tableContent[0].name" :url="url" :urlQuery="'&thn='+tahun_akademik" :table-content="tableContent" tableType="hapus">
+    <gen-table :pk="tableContent[0].name" :url="url" :urlQuery="'&thn='+tahun_akademik" :table-content="tableContent" tableType="hapus" ref="genTable">
     <template slot="customAction" slot-scope="ca">
         <span class="hint--top" aria-label="Peserta Kuliah">
             <router-link :to="{name:'kelolaPesertaKuliah',params:{idKuliah:ca.pkData[tableContent[0].name]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-users "></i></router-link>
@@ -14,7 +14,7 @@
     </template>
     <template slot="customSearch">
         <label style="font-size:17px;">Tahun Akademik </label>
-        <input type="number" style="width:100px;height:30px;" class="w3-button w3-small w3-border w3-white" v-model="tahun_akademik" :placeholder="tahun_akademik"/> 
+        <input type="number" style="width:100px;height:30px;" class="w3-button w3-small w3-border w3-white" v-model="tahun_akademik" @keyup.enter="$refs.genTable.getData(10,0)" @blur="$refs.genTable.getData(10,0)" :placeholder="tahun_akademik"/> 
     </template>
     </gen-table>
 </div>
