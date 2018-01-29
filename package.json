@@ -1,6 +1,6 @@
 {
   "name": "aplikasiujianberbasisweb",
-  "version": "2.7.11",
+  "version": "2.7.12",
   "description": "A Computer Assisted Test Apps with REST API concept for exchange data between backend (NodeJS) and frontend (VueJS)",
   "author": "egodasa <egodasa@gmail.com>",
   "private": true,
