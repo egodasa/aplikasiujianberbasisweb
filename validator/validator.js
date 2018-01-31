@@ -108,7 +108,7 @@ let validator = {
             },
             isLength: {
                 options: [{
-                    min: 14,
+                    min: 1,
                     max: 15
                 }],
                 errorMessage: 'Kode matkul tidak benar ...'
