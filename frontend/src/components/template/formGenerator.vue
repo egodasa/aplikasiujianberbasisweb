@@ -3,8 +3,15 @@
     <div class="w3-modal" :style="showForm ? 'display:block;' : 'display:none;'">
         <div class="w3-modal-content">
         <div class="w3-card-8 w3-container w3-section">
+        <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
+        <div class="w3-big w3-margin-top">Mengambil Data
+        <div class="sk-three-bounce">
+            <img src="/images/loading.gif" class="w3-image" width="200" />
+        </div>
+        </div>
+        </div>
         <template v-if="contentType == 'form'">
-            <form v-if="showForm" id="addData" @submit.prevent="submitData()" name="addData" method="POST">
+            <form v-if="showForm" id="addData" @submit.prevent="submitData()" name="addData" method="POST" v-show="!loading">
                 <h3>{{edit ? 'Edit Data' : 'Tambah Data'}}</h3>
                 <span v-for="x in input">
                     <template v-if="x.jenis == 'textField'">
@@ -126,19 +133,20 @@ export default {
             idData : null,
             output : {},
             error : {},
-              Bsimpan : {
-                  disabled : false,
-                  caption : '<i class="fa fa-save w3-small"></i> Simpan',
-              },
-              Bbatal : {
-                  disabled : false,
-                  caption : '<i class="fa fa-remove w3-small"></i> Batal'
-              },
-              Breset : {
-                  disabled : false,
-                  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
-              },
-              edit : false
+			  Bsimpan : {
+				  disabled : false,
+				  caption : '<i class="fa fa-save w3-small"></i> Simpan',
+			  },
+			  Bbatal : {
+				  disabled : false,
+				  caption : '<i class="fa fa-remove w3-small"></i> Batal'
+			  },
+			  Breset : {
+				  disabled : false,
+				  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
+			  },
+			  edit : false,
+			  loading : false
 		}
 	},
     created () {
@@ -230,14 +238,18 @@ export default {
 			})
 		},
         getDataDetail (x){
+            this.showForm = !this.showForm
+            this.loading = true
             this.edit = true
             this.$ajx.get('/api/'+this.url+'/'+x)
             .then(res=>{
+                this.loading = false
                 this.output = res.data.data[0]
-                this.showForm = !this.showForm
                 this.idData = this.output[this.pk]
             })
             .catch(err=>{
+                this.loading = false
+                this.showForm = false
                 var kode = err.response.status
                 if(kode > 300){
                     bus.$emit('showAlert','Peringatan!','Tidak dapat mengambil data. Silahkan ulangi kembali.','warning')

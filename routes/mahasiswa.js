@@ -121,6 +121,45 @@ router.put('/:id',(req,res,next)=>{
 	});
 });
 
+//pencarian mahasiswa
+router.get('/cari/:cari',(req, res, next)=>{
+	var cari = req.params.cari;
+	var limit = parseInt(req.query.limit) || null;
+	var offset = parseInt(req.query.offset) || null;
+	var hasil = {};
+    let query = {
+        show : null,
+        count : null,
+        tmp : null
+    }
+    query.count = db('tbmahasiswa').select('nobp').where('nobp','like','%'+cari+'%').orWhere(db.raw('lower(nm_mahasiswa)'),'like','%'+cari+'%')
+    query.tmp = db('tbmahasiswa').select().where('nobp','like','%'+cari+'%').orWhere(db.raw('lower(nm_mahasiswa)'),'like','%'+cari+'%')
+    if(limit == null && offset == null) {
+        query.show = query.tmp
+    }
+    else {
+        query.show = query.tmp.limit(limit).offset(offset)
+    }
+	query.show.then(function(rows){
+		hasil.status = true;
+		hasil.data = rows;
+		hasil.current_row = rows.length;
+		return query.count
+		}).
+	then((rows)=>{
+		 let code
+		hasil.row = rows.length
+        if(rows.length == 0) code = 204
+        else code = 200
+		res.status(code).json(hasil);
+		}).
+	catch(function(err){
+		hasil.status = false
+		hasil.error = err;
+		res.status(503).json(hasil);
+		});
+	});
+
 //daftar ujian yang diikuti peserta
 router.get('/:id/ujian',(req, res, next)=>{
 	var id = req.params.id || 0;
@@ -134,7 +173,7 @@ router.get('/:id/ujian',(req, res, next)=>{
         tmp : null
     }
     query.count = db('lap_peserta_ujian').select('id_ujian').where('nobp',id)
-    query.tmp = db('lap_peserta_ujian').select(db.raw('id_ujian,cast(hari as varchar),mulai,selesai,deskripsi,status_ujian,nm_status_ujian,id_jsoal,nm_jsoal,id_jujian,nm_jujian,kd_matkul,nm_matkul,nidn,nm_dosen,id_kuliah,nobp,nm_mahasiswa,id_kelas,nm_kelas,nm_ujian')).whereRaw("hari = cast(now() as date) and status_ujian=1 and cast(now() as time) between mulai - interval '15 minute' and selesai and nobp=? and nobp in (select nobp from getHasilUjian(id_ujian) where nobp=? and status_ujian_peserta = 3);",[id,id])
+    query.tmp = db('lap_peserta_ujian').select(db.raw('id_ujian,cast(hari as varchar),mulai,selesai,deskripsi,status_ujian,nm_status_ujian,id_jsoal,nm_jsoal,id_jujian,nm_jujian,kd_matkul,nm_matkul,nidn,nm_dosen,id_kuliah,nobp,nm_mahasiswa,id_kelas,nm_kelas,nm_ujian')).whereRaw("hari = cast((now() AT TIME ZONE 'Asia/Jakarta') as date) and status_ujian=1 and cast((now() AT TIME ZONE 'Asia/Jakarta') as time) between mulai - interval '15 minute' and selesai and nobp=? and nobp in (select nobp from getHasilUjian(id_ujian) where nobp=? and status_ujian_peserta = 3);",[id,id])
     if(limit == null && offset == null) {
         query.show = query.tmp
     }
