@@ -133,20 +133,20 @@ export default {
             idData : null,
             output : {},
             error : {},
-              Bsimpan : {
-                  disabled : false,
-                  caption : '<i class="fa fa-save w3-small"></i> Simpan',
-              },
-              Bbatal : {
-                  disabled : false,
-                  caption : '<i class="fa fa-remove w3-small"></i> Batal'
-              },
-              Breset : {
-                  disabled : false,
-                  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
-              },
-              edit : false,
-              loading : false
+			  Bsimpan : {
+				  disabled : false,
+				  caption : '<i class="fa fa-save w3-small"></i> Simpan',
+			  },
+			  Bbatal : {
+				  disabled : false,
+				  caption : '<i class="fa fa-remove w3-small"></i> Batal'
+			  },
+			  Breset : {
+				  disabled : false,
+				  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
+			  },
+			  edit : false,
+			  loading : false
 		}
 	},
     created () {

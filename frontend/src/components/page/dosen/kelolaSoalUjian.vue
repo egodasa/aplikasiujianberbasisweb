@@ -9,8 +9,8 @@
             <!--<wysiwyg v-model="dataForm.isi_soal" />-->
             <quill-editor v-model="dataForm.isi_soal" ref="quillEditor">
             </quill-editor>
+            <span class="w3-text-red">{{ error.isi_soal }}</span>   
             </div>
-            <span class="w3-text-red" v-if="errors.has('isi_soal')">{{ errors.first('isi_soal') }}</span><br/>
             <template v-if="dataForm.id_jsoal == 1">
             <div class="w3-row">
                 <div class="w3-col l1">
@@ -35,12 +35,13 @@
             <template v-else>
             <label>Bobot Nilai</label>
             <input class="w3-input w3-border" v-validate data-vv-rules="required" data-vv-as="Bobot Soal" type="number" name="bobot" v-model="dataForm.bobot" placeholder="Bobot Nilai Soal" />
-            <span class="w3-text-red" v-if="errors.has('bobot')">{{ errors.first('bobot') }}</span>
+            <span class="w3-text-red">{{ error.bobot }}</span>
             </template>
-            <span class="w3-text-red" v-if="errors.has('jawaban')">{{ errors.first('jawaban') }}</span><br/>
-            <button :disabled="errors.any()" type="submit" class="w3-button w3-teal w3-section">Simpan</button>
-            <button type="button" class="w3-button w3-red w3-section" @click="resetForm()">Reset</button>
-            <button type="button" class="w3-button w3-blue w3-section" @click="formBatal()">Batal</button>
+            <div class="w3-section">
+	            <button :disabled="Bsimpan.disabled" type="submit" class="w3-button w3-teal w3-section"><span v-html="Bsimpan.caption"></span></button>
+	            <button :disabled="Breset.disabled" type="button" class="w3-button w3-red w3-section" @click="resetForm()"><span v-html="Breset.caption"></span></button>
+	            <button :disabled="Bbatal.disabled" type="button" class="w3-button w3-blue w3-section" @click="formBatal()"><span v-html="Bbatal.caption"></span></button>
+			</div>
         </form>
     </gen-form>
     <gen-table :pk="tableContent[0].name" :url="url" ref="genTable" :tableContent="tableContent" tableType="hapus">
@@ -91,7 +92,23 @@ export default {
           {huruf:'D',isi_pilihan:null},
           {huruf:'E',isi_pilihan:null}
           ],
-          detailUjian : {}
+          detailUjian : {},
+          Bsimpan : {
+				  disabled : false,
+				  caption : '<i class="fa fa-save w3-small"></i> Simpan',
+		  },
+		  Bbatal : {
+			  disabled : false,
+			  caption : '<i class="fa fa-remove w3-small"></i> Batal'
+		  },
+		  Breset : {
+			  disabled : false,
+			  caption : '<i class="fa fa-repeat w3-small"></i> Reset'
+		  },
+		  error : {
+			isi_soal : null,
+			bobot : null
+		  }
         }
   },
   created () {
@@ -143,7 +160,25 @@ export default {
           ]
           this.id_jsoal = this.detailUjian.id_jsoal
           this.dataForm.bobot = 0
+          this.resetError();
       },
+      resetError (){
+		  this.error.isi_soal = null
+          this.error.bobot = null
+      },
+      buttonSubmit (x) {
+            if(x == 1){
+                this.Bsimpan.disabled = true
+                this.Bsimpan.caption = '<i class="fa fa-spinner w3-spin w3-small"></i> Menyimpan Data'
+                this.Breset.disabled = true
+                this.Bbatal.disabled = true
+            }else{
+                this.Bsimpan.disabled = false
+                this.Bsimpan.caption = '<i class="fa fa-save w3-small"></i> Simpan'
+                this.Breset.disabled = false
+                this.Bbatal.disabled = false
+            }
+        },
       submitData () {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
           if(this.dataForm.id_soal == undefined || this.dataForm.id_soal == null){
@@ -153,6 +188,8 @@ export default {
               var method = 'PUT'
               var url = '/api/soal/'+this.dataForm.id_soal
           }
+          this.buttonSubmit(1);
+          this.resetError();
           this.$ajx({
             method : method,
             data : this.dataForm,
@@ -162,9 +199,19 @@ export default {
                 this.$refs.genTable.toggleFormData()
                 this.$refs.genTable.getData(this.$refs.genTable.pageRows,this.$refs.genTable.pagePosition)
                 this.resetForm()
+                this.buttonSubmit(0);
         })
         .catch(err=>{
-            
+				var kode = err.response.status 
+                if(kode == 422){
+                    var listError = Object.keys(err.response.data.error)
+                    _.forEach(listError,(v,k)=>{
+                        this.error[v] = err.response.data.error[v].msg
+                        })
+                }else if(kode >= 500){
+                    bus.$emit('showAlert','Kesalahan!','Terjadi kesalahan pada server.','bottom right','danger')
+                }
+                this.buttonSubmit(0);
         })
 		},
       getDataDetail (x) {
