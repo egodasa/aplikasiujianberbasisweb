@@ -41,6 +41,12 @@ Memuat Soal ...
         <div class="w3-col l11 md11 s11">
             {{waktuSekarang}}
         </div>
+        <div class="w3-col l1 md1 s1">
+            <i class="fa fa-newspaper-o"></i>
+        </div>
+        <div class="w3-col l11 md11 s11">
+            {{infoUjian.deskripsi}}
+        </div>
     </div>
     <button type="button" class="w3-button w3-red w3-block" @click="kumpulkanUjian()">Kumpulkan Ujian</button>
 </div>
