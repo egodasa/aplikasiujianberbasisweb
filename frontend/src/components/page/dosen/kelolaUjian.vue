@@ -6,7 +6,7 @@
     <div class="w3-border"></div>
     <br/>
     <gen-form :pk="tableContent[0].name" :url="url" :input="listForm"></gen-form>
-    <gen-table :pk="tableContent[0].name" :url="url" :tableContent="tableContent" tableType="edit_hapus">
+    <gen-table :pk="tableContent[0].name" :url="url" :urlQuery="'&thn='+tahun_akademik" :tableContent="tableContent" tableType="edit_hapus" ref="genTable">
         <template slot="customAction" slot-scope="ca">
             <span class="hint--top" aria-label="Kelola Ujian">
                 <router-link :to="{name:'kelolaUjianDetail',params:{idUjian:ca.pkData[tableContent[0].name]}}" class="w3-button w3-hover-white w3-white"><i class="fa fa-cog "></i></router-link>
@@ -14,7 +14,7 @@
         </template>
         <template slot="customSearch">
         <label style="font-size:17px;">Tahun Akademik </label>
-        <input type="number" style="width:100px;height:30px;" class="w3-button w3-small w3-border w3-white" v-model="tahun_akademik" :placeholder="tahun_akademik"/> 
+        <input type="number" style="width:100px;height:30px;" class="w3-button w3-small w3-border w3-white" v-model="tahun_akademik" @keyup.enter="$refs.genTable.getData(10,0)" @blur="$refs.genTable.getData(10,0)" :placeholder="tahun_akademik"/> 
         </template>
     </gen-table>
 </div>
@@ -118,6 +118,14 @@ export default {
           query : `query getKuliah($nidn : String){ getKuliah(nidn : $nidn){id_kuliah,nm_matkul,nm_dosen,tahun_akademik,ket_nm_kelas}}`,
           variables : {nidn : this.$route.params.nidn}
           },'getKuliah',0,'kuliah','selectize')
+      var bulan = parseInt(new Date().getMonth().toString())+1
+      if(bulan >= 8 && bulan <= 12){
+          this.tahun_akademik = parseInt(new Date().getFullYear().toString())
+          }
+      else if(bulan >= 1 && bulan <= 7){
+          this.tahun_akademik = parseInt(new Date().getFullYear().toString()) - 1
+      }
+      else this.tahun_akademik = parseInt(new Date().getFullYear().toString())
   },
   methods : {
         getDataSelect (url,index){

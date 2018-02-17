@@ -1,41 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.5.9
--- Dumped by pg_dump version 9.5.9
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET search_path = public, pg_catalog;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- Name: peserta_ujian; Type: TABLE; Schema: public; Owner: mandan
---
 
 CREATE TABLE peserta_ujian (
     id_ujian character varying(40),
@@ -49,10 +11,8 @@ CREATE TABLE peserta_ujian (
 );
 
 
-ALTER TABLE peserta_ujian OWNER TO mandan;
-
 --
--- Name: gethasilujian(character varying); Type: FUNCTION; Schema: public; Owner: mandan
+-- Name: gethasilujian(character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION gethasilujian(v_id_ujian character varying) RETURNS SETOF peserta_ujian
@@ -78,10 +38,8 @@ where a.id_ujian=v_id_ujian order by a.nm_kelas desc,a.nm_mahasiswa asc;
 END; $$;
 
 
-ALTER FUNCTION public.gethasilujian(v_id_ujian character varying) OWNER TO mandan;
-
 --
--- Name: tambahuserdosen(); Type: FUNCTION; Schema: public; Owner: mandan
+-- Name: tambahuserdosen(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION tambahuserdosen() RETURNS trigger
@@ -94,10 +52,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.tambahuserdosen() OWNER TO mandan;
-
 --
--- Name: tambahusermahasiswa(); Type: FUNCTION; Schema: public; Owner: mandan
+-- Name: tambahusermahasiswa(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION tambahusermahasiswa() RETURNS trigger
@@ -110,10 +66,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.tambahusermahasiswa() OWNER TO mandan;
-
 --
--- Name: updatestatuskuliah(); Type: FUNCTION; Schema: public; Owner: mandan
+-- Name: updatestatuskuliah(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION updatestatuskuliah() RETURNS trigger
@@ -126,10 +80,8 @@ end;
 $$;
 
 
-ALTER FUNCTION public.updatestatuskuliah() OWNER TO mandan;
-
 --
--- Name: updatestatusujian(); Type: FUNCTION; Schema: public; Owner: mandan
+-- Name: updatestatusujian(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION updatestatusujian() RETURNS trigger
@@ -142,10 +94,8 @@ END;
 $$;
 
 
-ALTER FUNCTION public.updatestatusujian() OWNER TO mandan;
-
 --
--- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbjawaban_id_jawaban_seq
@@ -156,10 +106,8 @@ CREATE SEQUENCE tbjawaban_id_jawaban_seq
     CACHE 1;
 
 
-ALTER TABLE tbjawaban_id_jawaban_seq OWNER TO mandan;
-
 --
--- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbjawaban; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbjawaban (
@@ -171,10 +119,8 @@ CREATE TABLE tbjawaban (
 );
 
 
-ALTER TABLE tbjawaban OWNER TO mandan;
-
 --
--- Name: tbsoal_id_soal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbsoal_id_soal_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbsoal_id_soal_seq
@@ -185,10 +131,8 @@ CREATE SEQUENCE tbsoal_id_soal_seq
     CACHE 1;
 
 
-ALTER TABLE tbsoal_id_soal_seq OWNER TO mandan;
-
 --
--- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbsoal; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbsoal (
@@ -201,10 +145,8 @@ CREATE TABLE tbsoal (
 );
 
 
-ALTER TABLE tbsoal OWNER TO mandan;
-
 --
--- Name: lap_jawaban; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_jawaban; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_jawaban AS
@@ -220,10 +162,8 @@ CREATE VIEW lap_jawaban AS
      JOIN tbsoal ON ((tbjawaban.id_soal = tbsoal.id_soal)));
 
 
-ALTER TABLE lap_jawaban OWNER TO mandan;
-
 --
--- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbnama_kelas_id_kelas_seq
@@ -234,10 +174,8 @@ CREATE SEQUENCE tbnama_kelas_id_kelas_seq
     CACHE 1;
 
 
-ALTER TABLE tbnama_kelas_id_kelas_seq OWNER TO mandan;
-
 --
--- Name: tbkelas; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbkelas; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbkelas (
@@ -246,10 +184,8 @@ CREATE TABLE tbkelas (
 );
 
 
-ALTER TABLE tbkelas OWNER TO mandan;
-
 --
--- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbkelas_ujian_id_kujian_seq
@@ -260,10 +196,8 @@ CREATE SEQUENCE tbkelas_ujian_id_kujian_seq
     CACHE 1;
 
 
-ALTER TABLE tbkelas_ujian_id_kujian_seq OWNER TO mandan;
-
 --
--- Name: tbkelas_kuliah; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbkelas_kuliah; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbkelas_kuliah (
@@ -273,10 +207,8 @@ CREATE TABLE tbkelas_kuliah (
 );
 
 
-ALTER TABLE tbkelas_kuliah OWNER TO mandan;
-
 --
--- Name: lap_kelas_kuliah; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_kelas_kuliah; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_kelas_kuliah AS
@@ -288,10 +220,8 @@ CREATE VIEW lap_kelas_kuliah AS
      JOIN tbkelas b ON ((a.id_kelas = b.id_kelas)));
 
 
-ALTER TABLE lap_kelas_kuliah OWNER TO mandan;
-
 --
--- Name: tbdosen_id_dosen_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbdosen_id_dosen_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbdosen_id_dosen_seq
@@ -302,10 +232,8 @@ CREATE SEQUENCE tbdosen_id_dosen_seq
     CACHE 1;
 
 
-ALTER TABLE tbdosen_id_dosen_seq OWNER TO mandan;
-
 --
--- Name: tbdosen; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbdosen; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbdosen (
@@ -316,10 +244,8 @@ CREATE TABLE tbdosen (
 );
 
 
-ALTER TABLE tbdosen OWNER TO mandan;
-
 --
--- Name: tbkuliah; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbkuliah; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbkuliah (
@@ -331,10 +257,8 @@ CREATE TABLE tbkuliah (
 );
 
 
-ALTER TABLE tbkuliah OWNER TO mandan;
-
 --
--- Name: tbmatkul_id_matkul_seq1; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbmatkul_id_matkul_seq1; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbmatkul_id_matkul_seq1
@@ -345,10 +269,8 @@ CREATE SEQUENCE tbmatkul_id_matkul_seq1
     CACHE 1;
 
 
-ALTER TABLE tbmatkul_id_matkul_seq1 OWNER TO mandan;
-
 --
--- Name: tbmatkul; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbmatkul; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbmatkul (
@@ -361,10 +283,8 @@ CREATE TABLE tbmatkul (
 );
 
 
-ALTER TABLE tbmatkul OWNER TO mandan;
-
 --
--- Name: tbstatus_status_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbstatus_status_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbstatus_status_seq
@@ -375,10 +295,8 @@ CREATE SEQUENCE tbstatus_status_seq
     CACHE 1;
 
 
-ALTER TABLE tbstatus_status_seq OWNER TO mandan;
-
 --
--- Name: tbstatus; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbstatus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbstatus (
@@ -387,10 +305,8 @@ CREATE TABLE tbstatus (
 );
 
 
-ALTER TABLE tbstatus OWNER TO mandan;
-
 --
--- Name: lap_kuliah; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_kuliah; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_kuliah AS
@@ -416,10 +332,8 @@ CREATE VIEW lap_kuliah AS
      JOIN tbstatus d ON ((a.status_kuliah = d.status)));
 
 
-ALTER TABLE lap_kuliah OWNER TO mandan;
-
 --
--- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbmahasiswa_id_mahasiswa_seq
@@ -430,10 +344,8 @@ CREATE SEQUENCE tbmahasiswa_id_mahasiswa_seq
     CACHE 1;
 
 
-ALTER TABLE tbmahasiswa_id_mahasiswa_seq OWNER TO mandan;
-
 --
--- Name: tbmahasiswa; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbmahasiswa; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbmahasiswa (
@@ -444,10 +356,8 @@ CREATE TABLE tbmahasiswa (
 );
 
 
-ALTER TABLE tbmahasiswa OWNER TO mandan;
-
 --
--- Name: tbpeserta_kuliah; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbpeserta_kuliah; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbpeserta_kuliah (
@@ -460,10 +370,8 @@ CREATE TABLE tbpeserta_kuliah (
 );
 
 
-ALTER TABLE tbpeserta_kuliah OWNER TO mandan;
-
 --
--- Name: lap_peserta_kuliah; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_peserta_kuliah; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_peserta_kuliah AS
@@ -490,10 +398,8 @@ CREATE VIEW lap_peserta_kuliah AS
      JOIN tbkelas f ON ((a.id_kelas = f.id_kelas)));
 
 
-ALTER TABLE lap_peserta_kuliah OWNER TO mandan;
-
 --
--- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbjenis_soal_id_jsoal_seq
@@ -504,10 +410,8 @@ CREATE SEQUENCE tbjenis_soal_id_jsoal_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_soal_id_jsoal_seq OWNER TO mandan;
-
 --
--- Name: tbjenis_soal; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbjenis_soal; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbjenis_soal (
@@ -516,10 +420,8 @@ CREATE TABLE tbjenis_soal (
 );
 
 
-ALTER TABLE tbjenis_soal OWNER TO mandan;
-
 --
--- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbjenis_ujian_id_jujian_seq
@@ -530,10 +432,8 @@ CREATE SEQUENCE tbjenis_ujian_id_jujian_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_ujian_id_jujian_seq OWNER TO mandan;
-
 --
--- Name: tbjenis_ujian; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbjenis_ujian; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbjenis_ujian (
@@ -542,10 +442,8 @@ CREATE TABLE tbjenis_ujian (
 );
 
 
-ALTER TABLE tbjenis_ujian OWNER TO mandan;
-
 --
--- Name: tbujian; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbujian; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbujian (
@@ -561,10 +459,8 @@ CREATE TABLE tbujian (
 );
 
 
-ALTER TABLE tbujian OWNER TO mandan;
-
 --
--- Name: lap_ujian; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_ujian; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_ujian AS
@@ -594,10 +490,8 @@ CREATE VIEW lap_ujian AS
      JOIN tbjenis_ujian e ON ((a.id_jujian = e.id_jujian)));
 
 
-ALTER TABLE lap_ujian OWNER TO mandan;
-
 --
--- Name: lap_peserta_ujian; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_peserta_ujian; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_peserta_ujian AS
@@ -634,10 +528,8 @@ CREATE VIEW lap_peserta_ujian AS
   WHERE (a.status_ujian = 1);
 
 
-ALTER TABLE lap_peserta_ujian OWNER TO mandan;
-
 --
--- Name: lap_soal; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_soal; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_soal AS
@@ -652,10 +544,8 @@ CREATE VIEW lap_soal AS
      JOIN tbjenis_soal ON ((tbsoal.id_jsoal = tbjenis_soal.id_jsoal)));
 
 
-ALTER TABLE lap_soal OWNER TO mandan;
-
 --
--- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbsoal_ujian_id_sujian_seq1
@@ -666,10 +556,8 @@ CREATE SEQUENCE tbsoal_ujian_id_sujian_seq1
     CACHE 1;
 
 
-ALTER TABLE tbsoal_ujian_id_sujian_seq1 OWNER TO mandan;
-
 --
--- Name: tbsoal_ujian; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbsoal_ujian (
@@ -679,10 +567,8 @@ CREATE TABLE tbsoal_ujian (
 );
 
 
-ALTER TABLE tbsoal_ujian OWNER TO mandan;
-
 --
--- Name: lap_soal_ujian; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_soal_ujian; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_soal_ujian AS
@@ -697,10 +583,8 @@ CREATE VIEW lap_soal_ujian AS
      JOIN tbsoal ON ((tbsoal_ujian.id_soal = tbsoal.id_soal)));
 
 
-ALTER TABLE lap_soal_ujian OWNER TO mandan;
-
 --
--- Name: tbjenis_user_id_juser_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbjenis_user_id_juser_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbjenis_user_id_juser_seq
@@ -711,10 +595,8 @@ CREATE SEQUENCE tbjenis_user_id_juser_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_user_id_juser_seq OWNER TO mandan;
-
 --
--- Name: tbjenis_user; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbjenis_user; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbjenis_user (
@@ -723,10 +605,8 @@ CREATE TABLE tbjenis_user (
 );
 
 
-ALTER TABLE tbjenis_user OWNER TO mandan;
-
 --
--- Name: tbuser_id_user_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbuser_id_user_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbuser_id_user_seq
@@ -737,10 +617,8 @@ CREATE SEQUENCE tbuser_id_user_seq
     CACHE 1;
 
 
-ALTER TABLE tbuser_id_user_seq OWNER TO mandan;
-
 --
--- Name: tbuser; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbuser; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbuser (
@@ -752,10 +630,8 @@ CREATE TABLE tbuser (
 );
 
 
-ALTER TABLE tbuser OWNER TO mandan;
-
 --
--- Name: lap_user; Type: VIEW; Schema: public; Owner: mandan
+-- Name: lap_user; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW lap_user AS
@@ -769,10 +645,8 @@ CREATE VIEW lap_user AS
      JOIN tbjenis_user ON ((tbuser.id_juser = tbjenis_user.id_juser)));
 
 
-ALTER TABLE lap_user OWNER TO mandan;
-
 --
--- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE tbhasil_ujian_id_hasil_seq
@@ -783,10 +657,8 @@ CREATE SEQUENCE tbhasil_ujian_id_hasil_seq
     CACHE 1;
 
 
-ALTER TABLE tbhasil_ujian_id_hasil_seq OWNER TO mandan;
-
 --
--- Name: tbhasil_ujian; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbhasil_ujian (
@@ -797,10 +669,8 @@ CREATE TABLE tbhasil_ujian (
 );
 
 
-ALTER TABLE tbhasil_ujian OWNER TO mandan;
-
 --
--- Name: nilai_rata; Type: VIEW; Schema: public; Owner: mandan
+-- Name: nilai_rata; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW nilai_rata AS
@@ -823,10 +693,8 @@ CREATE VIEW nilai_rata AS
   GROUP BY b.id_ujian, b.nm_matkul, b.nm_jujian, b.nm_dosen;
 
 
-ALTER TABLE nilai_rata OWNER TO mandan;
-
 --
--- Name: statistik; Type: VIEW; Schema: public; Owner: mandan
+-- Name: statistik; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW statistik AS
@@ -840,10 +708,8 @@ CREATE VIEW statistik AS
            FROM tbdosen) AS total_dosen;
 
 
-ALTER TABLE statistik OWNER TO mandan;
-
 --
--- Name: tbpengaturan; Type: TABLE; Schema: public; Owner: mandan
+-- Name: tbpengaturan; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tbpengaturan (
@@ -851,10 +717,8 @@ CREATE TABLE tbpengaturan (
 );
 
 
-ALTER TABLE tbpengaturan OWNER TO mandan;
-
 --
--- Data for Name: peserta_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: peserta_ujian; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY peserta_ujian (id_ujian, nobp, nm_mahasiswa, id_kelas, nm_kelas, nilai, status_ujian_peserta, nm_status_ujian_peserta) FROM stdin;
@@ -862,7 +726,7 @@ COPY peserta_ujian (id_ujian, nobp, nm_mahasiswa, id_kelas, nm_kelas, nilai, sta
 
 
 --
--- Data for Name: tbdosen; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbdosen; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
@@ -1210,19 +1074,18 @@ COPY tbdosen (id_dosen, nm_dosen, nidn, status_dosen) FROM stdin;
 342	WENDI BOY	0006047306	1
 343	WIDIAWATI PURBA	1018118401	1
 344	ZULDES JONI ST	1024127202	1
-366	amaik	10101010101	1
 \.
 
 
 --
--- Name: tbdosen_id_dosen_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbdosen_id_dosen_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 366, true);
+SELECT pg_catalog.setval('tbdosen_id_dosen_seq', 367, true);
 
 
 --
--- Data for Name: tbhasil_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbhasil_ujian; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
@@ -1237,18 +1100,101 @@ COPY tbhasil_ujian (id_hasil, id_ujian, nobp, nilai) FROM stdin;
 29	BBKI82112-1029108702-20171-1	14101152610565	60
 30	KPKI12102-1029108702-20171-3	14101152610574	31
 31	KPKI12101-1029108702-20171-1	14101152610545	30
+32	KPKI12101-1029108702-20171-1	14101152610544	29
+33	KPKI12102-1029108702-20171-3	14101152610579	6
+34	KPKI12102-1029108702-20171-3	14101152610579	6
+35	KPKI12102-1029108702-20171-3	14101152610579	6
+36	KPKI12102-1029108702-20171-3	14101152610579	6
+37	KPKI12102-1029108702-20171-3	14101152610579	6
+38	KPKI12102-1029108702-20171-3	14101152610579	6
+39	KPKI12102-1029108702-20171-3	14101152610579	6
+40	KPKI12102-1029108702-20171-3	14101152610579	6
+41	KPKI12102-1029108702-20171-3	14101152610579	6
+42	KPKI12102-1029108702-20171-3	14101152610579	6
+43	KPKI12102-1029108702-20171-3	14101152610579	6
+44	KPKI12102-1029108702-20171-3	14101152610579	6
+45	KPKI12102-1029108702-20171-3	14101152610579	6
+46	KPKI12102-1029108702-20171-3	14101152610579	6
+47	KPKI12102-1029108702-20171-3	14101152610579	6
+48	KPKI12102-1029108702-20171-3	14101152610579	6
+49	KPKI12102-1029108702-20171-3	14101152610579	6
+50	KPKI12102-1029108702-20171-3	14101152610579	6
+51	KPKI12102-1029108702-20171-3	14101152610579	6
+52	KPKI12102-1029108702-20171-3	14101152610579	6
+53	KPKI12102-1029108702-20171-3	14101152610579	6
+54	KPKI12102-1029108702-20171-3	14101152610579	6
+55	KPKI12102-1029108702-20171-3	14101152610579	6
+56	KPKI12102-1029108702-20171-3	14101152610579	12
+57	KPKI12102-1029108702-20171-3	14101152610579	12
+58	KPKI12102-1029108702-20171-3	14101152610579	12
+59	KPKI12102-1029108702-20171-3	14101152610579	12
+60	KPKI12102-1029108702-20171-3	14101152610579	12
+61	KPKI12102-1029108702-20171-3	14101152610579	12
+62	KPKI12102-1029108702-20171-3	14101152610579	12
+63	KPKI12102-1029108702-20171-3	14101152610579	12
+64	KPKI12102-1029108702-20171-3	14101152610579	12
+65	KPKI12102-1029108702-20171-3	14101152610579	12
+66	KPKI12102-1029108702-20171-3	14101152610579	12
+67	KPKI12102-1029108702-20171-3	14101152610579	12
+68	KPKI12102-1029108702-20171-3	14101152610579	12
+69	KPKI12102-1029108702-20171-3	14101152610579	12
+70	KPKI12102-1029108702-20171-3	14101152610579	12
+71	KPKI12102-1029108702-20171-3	14101152610579	12
+72	KPKI12102-1029108702-20171-3	14101152610579	12
+73	KPKI12102-1029108702-20171-3	14101152610579	12
+74	KPKI12102-1029108702-20171-3	14101152610579	12
+75	KPKI12102-1029108702-20171-3	14101152610579	12
+76	KPKI12102-1029108702-20171-3	14101152610579	12
+77	KPKI12102-1029108702-20171-3	14101152610579	12
+78	KPKI12102-1029108702-20171-3	14101152610579	12
+79	KPKI12102-1029108702-20171-3	14101152610579	12
+80	KPKI12102-1029108702-20171-3	14101152610579	12
+81	KPKI12102-1029108702-20171-3	14101152610579	12
+82	KPKI12102-1029108702-20171-3	14101152610579	12
+83	KPKI12102-1029108702-20171-3	14101152610579	12
+84	KPKI12102-1029108702-20171-3	14101152610579	12
+85	KPKI12102-1029108702-20171-3	14101152610579	12
+86	KPKI12102-1029108702-20171-3	14101152610579	12
+87	KPKI12102-1029108702-20171-3	14101152610579	12
+88	KPKI12102-1029108702-20171-3	14101152610579	12
+89	KPKI12102-1029108702-20171-3	14101152610561	6
+90	BBKI82112-1029108702-20171-1	14101152610544	40
+91	KPKI12102-1029108702-20171-3	14101152610545	12
+92	KPKI12102-1029108702-20171-3	14101152610545	12
+93	KPKI12102-1029108702-20171-3	14101152610545	12
+94	KPKI12102-1029108702-20171-3	14101152610562	0
+95	KPKI12102-1029108702-20171-3	14101152610562	0
+96	KPKI12102-1029108702-20171-3	14101152610562	0
+97	KPKI12102-1029108702-20171-3	14101152610562	0
+98	KPKI12102-1029108702-20171-3	14101152610562	0
+99	KPKI12102-1029108702-20171-3	14101152610562	0
+100	KPKI12102-1029108702-20171-3	14101152610555	12
+101	KPKI62108-0005076607-20151-1	14101152610544	66
+102	KPKI62108-0005076607-20151-2	14101152610544	21
+103	KKKI12106-0005076607-20151-1	14101152610544	100
+104	KKKI12106-0005076607-20151-2	14101152610545	13
+105	KKKI12106-0005076607-20151-2	14101152610544	11
+106	KKKI12106-0005076607-20151-1	14101152610561	0
+107	KKKI12106-0005076607-20151-2	14101152610561	0
+108	KPKI62108-0005076607-20171-1	14101152610561	50
+109	KPKI62108-0005076607-20171-2	14101152610562	16
+110	KPKI12101-0005076607-20151-1	14101152610545	0
+111	KPKI12101-0005076607-20151-1	14101152610561	0
+112	KPKI12101-0005076607-20151-1	14101152610562	0
+113	KPKI62108-0005076607-20171-2	14101152610545	0
+114	KPKI12101-0005076607-20151-1	14101152610544	100
 \.
 
 
 --
--- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 31, true);
+SELECT pg_catalog.setval('tbhasil_ujian_id_hasil_seq', 114, true);
 
 
 --
--- Data for Name: tbjawaban; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbjawaban; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
@@ -1271,18 +1217,55 @@ COPY tbjawaban (id_jawaban, id_ujian, nobp, jawaban, id_soal) FROM stdin;
 42	BBKI82112-1029108702-20171-1	14101152610565	<p>   </p>	128
 43	KPKI12101-1029108702-20171-1	14101152610545	<p>Pancasila adalah ideologi negar</p>	129
 44	KPKI12101-1029108702-20171-1	14101152610545	<p>Pancasila</p>	130
+45	KPKI12101-1029108702-20171-1	14101152610544	<p>dssdsdsd</p>	129
+46	KPKI12101-1029108702-20171-1	14101152610544	<p>ddssx</p>	130
+48	KPKI12101-1029108702-20171-1	14101152610555	<p>sds</p>	129
+49	KPKI12101-1029108702-20171-1	14101152610555	<p>sdds</p>	130
+56	BBKI82112-1029108702-20171-1	14101152610544	<p>asdsa</p>	124
+57	BBKI82112-1029108702-20171-1	14101152610544		125
+58	BBKI82112-1029108702-20171-1	14101152610544	<p>sasadsad</p>	126
+59	BBKI82112-1029108702-20171-1	14101152610544	-	127
+60	BBKI82112-1029108702-20171-1	14101152610544	-	128
+61	BBKI82112-1029108702-20171-1	14101152610561	<p>fefsfe</p>	124
+62	BBKI82112-1029108702-20171-1	14101152610561	<p>fdsf</p>	125
+63	BBKI82112-1029108702-20171-1	14101152610561	<p>sdfes</p>	126
+64	BBKI82112-1029108702-20171-1	14101152610561	Kosong	127
+65	BBKI82112-1029108702-20171-1	14101152610561	Kosong	128
+66	BBKI82112-1029108702-20171-1	14101152610562	Kosong	124
+67	BBKI82112-1029108702-20171-1	14101152610562	Kosong	125
+68	BBKI82112-1029108702-20171-1	14101152610562	Kosong	126
+69	BBKI82112-1029108702-20171-1	14101152610562	Kosong	127
+70	BBKI82112-1029108702-20171-1	14101152610562	Kosong	128
+71	BBKI82112-1029108702-20171-1	14101152610555	<p>dsadxsa</p>	124
+72	BBKI82112-1029108702-20171-1	14101152610555	<p>xsss</p>	125
+73	BBKI82112-1029108702-20171-1	14101152610555	<p>xassxxs</p>	126
+74	BBKI82112-1029108702-20171-1	14101152610555	Kosong	127
+75	BBKI82112-1029108702-20171-1	14101152610555	Kosong	128
+76	KPKI62108-0005076607-20151-2	14101152610544	<p>ee222e</p>	134
+77	KPKI62108-0005076607-20151-2	14101152610544	Kosong	135
+78	KPKI62108-0005076607-20151-2	14101152610544	<p>dsde32</p>	136
+79	KKKI12106-0005076607-20151-2	14101152610545	<p>adwxw</p>	139
+80	KKKI12106-0005076607-20151-2	14101152610545	Kosong	140
+81	KKKI12106-0005076607-20151-2	14101152610544	<p>dss</p>	139
+82	KKKI12106-0005076607-20151-2	14101152610544	<p>saaz</p>	140
+83	KKKI12106-0005076607-20151-2	14101152610561	Kosong	139
+84	KKKI12106-0005076607-20151-2	14101152610561	Kosong	140
+85	KPKI62108-0005076607-20171-2	14101152610562	<ol><li>sdsde</li><li>sede</li><li>seeded</li></ol>	143
+86	KPKI62108-0005076607-20171-2	14101152610562	Kosong	144
+90	KPKI62108-0005076607-20171-2	14101152610545	<p>sxsx</p>	143
+91	KPKI62108-0005076607-20171-2	14101152610545	Kosong	144
 \.
 
 
 --
--- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 44, true);
+SELECT pg_catalog.setval('tbjawaban_id_jawaban_seq', 91, true);
 
 
 --
--- Data for Name: tbjenis_soal; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbjenis_soal; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbjenis_soal (id_jsoal, nm_jsoal) FROM stdin;
@@ -1292,14 +1275,14 @@ COPY tbjenis_soal (id_jsoal, nm_jsoal) FROM stdin;
 
 
 --
--- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbjenis_soal_id_jsoal_seq', 6, true);
+SELECT pg_catalog.setval('tbjenis_soal_id_jsoal_seq', 9, true);
 
 
 --
--- Data for Name: tbjenis_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbjenis_ujian; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbjenis_ujian (id_jujian, nm_jujian) FROM stdin;
@@ -1310,14 +1293,14 @@ COPY tbjenis_ujian (id_jujian, nm_jujian) FROM stdin;
 
 
 --
--- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 12, true);
+SELECT pg_catalog.setval('tbjenis_ujian_id_jujian_seq', 13, true);
 
 
 --
--- Data for Name: tbjenis_user; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbjenis_user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbjenis_user (id_juser, nm_juser) FROM stdin;
@@ -1328,14 +1311,14 @@ COPY tbjenis_user (id_juser, nm_juser) FROM stdin;
 
 
 --
--- Name: tbjenis_user_id_juser_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbjenis_user_id_juser_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('tbjenis_user_id_juser_seq', 3, true);
 
 
 --
--- Data for Name: tbkelas; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbkelas; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbkelas (id_kelas, nm_kelas) FROM stdin;
@@ -1350,11 +1333,12 @@ COPY tbkelas (id_kelas, nm_kelas) FROM stdin;
 9	SI-9
 10	SI-10
 11	SI-11
+17	xscd
 \.
 
 
 --
--- Data for Name: tbkelas_kuliah; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbkelas_kuliah; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
@@ -1382,27 +1366,36 @@ COPY tbkelas_kuliah (id_kkuliah, id_kuliah, id_kelas) FROM stdin;
 97	KPKI12101-1029108702-20171	2
 98	KPKI12101-1029108702-20171	3
 99	KPKI12101-1029108702-20171	6
+124	KPKI62108-0005076607-20171	1
+125	KPKI62108-0005076607-20171	2
+126	KPKI62108-0005076607-20171	3
+127	KPKI62108-0005076607-20171	4
 62	KPKI62104-1028018801-20171	1
 63	KPKI62104-1028018801-20171	2
 64	KPKI62104-1028018801-20171	3
 65	KPKI62104-1028018801-20171	4
 66	KPKI62104-1028018801-20171	5
+128	KPKI12101-0005076607-20151	3
+129	KPKI12101-0005076607-20151	4
+130	KPKI12101-0005076607-20151	5
 \.
 
 
 --
--- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 99, true);
+SELECT pg_catalog.setval('tbkelas_ujian_id_kujian_seq', 139, true);
 
 
 --
--- Data for Name: tbkuliah; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbkuliah; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbkuliah (id_kuliah, nidn, kd_matkul, tahun_akademik, status_kuliah) FROM stdin;
 BBKI82112-1029108702-20171	1029108702	BBKI82112	20171	1
+KPKI62108-0005076607-20171	0005076607	KPKI62108	20171	1
+KPKI12101-0005076607-20151	0005076607	KPKI12101	20151	1
 KPKI62104-1028018801-20171	1028018801	KPKI62104	20171	0
 KBKI32110-1016038602-20171	1016038602	KBKI32110	20171	0
 KPKI12102-1029108702-20171	1029108702	KPKI12102	20171	1
@@ -1415,7 +1408,7 @@ KBKI62121-1029116801-20171	1029116801	KBKI62121	20171	1
 
 
 --
--- Data for Name: tbmahasiswa; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbmahasiswa; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin;
@@ -1443,14 +1436,14 @@ COPY tbmahasiswa (id_mahasiswa, nm_mahasiswa, nobp, status_mahasiswa) FROM stdin
 
 
 --
--- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 33, true);
+SELECT pg_catalog.setval('tbmahasiswa_id_mahasiswa_seq', 34, true);
 
 
 --
--- Data for Name: tbmatkul; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbmatkul; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbmatkul (id_matkul, kd_matkul, nm_matkul, sks, smt, status_matkul) FROM stdin;
@@ -1513,21 +1506,21 @@ COPY tbmatkul (id_matkul, kd_matkul, nm_matkul, sks, smt, status_matkul) FROM st
 
 
 --
--- Name: tbmatkul_id_matkul_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbmatkul_id_matkul_seq1; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbmatkul_id_matkul_seq1', 60, true);
-
-
---
--- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
---
-
-SELECT pg_catalog.setval('tbnama_kelas_id_kelas_seq', 15, true);
+SELECT pg_catalog.setval('tbmatkul_id_matkul_seq1', 61, true);
 
 
 --
--- Data for Name: tbpengaturan; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('tbnama_kelas_id_kelas_seq', 17, true);
+
+
+--
+-- Data for Name: tbpengaturan; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbpengaturan (pengaturan) FROM stdin;
@@ -1535,7 +1528,7 @@ COPY tbpengaturan (pengaturan) FROM stdin;
 
 
 --
--- Data for Name: tbpeserta_kuliah; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbpeserta_kuliah; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas_peserta, id_kelas) FROM stdin;
@@ -1581,11 +1574,18 @@ COPY tbpeserta_kuliah (id_peserta, nobp, id_kuliah, status_peserta, status_kelas
 regiza-KPKI12102-1029108702-20171	regiza	KPKI12102-1029108702-20171	1	3	7
 regiza-KKKI23104-1012128601-20171	regiza	KKKI23104-1012128601-20171	1	3	1
 14101152610561-KKKI23109-1015067501-20171	14101152610561	KKKI23109-1015067501-20171	1	3	8
+14101152610561-KPKI62108-0005076607-20171	14101152610561	KPKI62108-0005076607-20171	1	3	1
+14101152610545-KPKI62108-0005076607-20171	14101152610545	KPKI62108-0005076607-20171	1	3	1
+14101152610562-KPKI62108-0005076607-20171	14101152610562	KPKI62108-0005076607-20171	1	3	1
+14101152610544-KPKI12101-0005076607-20151	14101152610544	KPKI12101-0005076607-20151	1	3	3
+14101152610561-KPKI12101-0005076607-20151	14101152610561	KPKI12101-0005076607-20151	1	3	3
+14101152610545-KPKI12101-0005076607-20151	14101152610545	KPKI12101-0005076607-20151	1	3	3
+14101152610562-KPKI12101-0005076607-20151	14101152610562	KPKI12101-0005076607-20151	1	3	3
 \.
 
 
 --
--- Data for Name: tbsoal; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbsoal; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM stdin;
@@ -1719,18 +1719,34 @@ COPY tbsoal (id_soal, isi_soal, "pilihanGanda", id_jsoal, bobot, jawaban) FROM s
 128	<p>Jelaskan pengertian dari pesan <strong>nonverbal</strong></p>	[{}]	2	10	 - 
 129	<p><strong>Pancasila</strong> adalah</p>	[{}]	2	20	 - 
 130	<p>Ideologi negara Indoensia adalah</p>	[{}]	2	20	 - 
+131	<p>asdasawawd</p>	[{"huruf":"A","isi_pilihan":"addaw"},{"huruf":"B","isi_pilihan":"sdasd"},{"huruf":"C","isi_pilihan":"asdsa"}]	1	1	A
+132	<p>asdasdaas</p>	[{"huruf":"A","isi_pilihan":"adsaas"},{"huruf":"B","isi_pilihan":"asdasd"},{"huruf":"C","isi_pilihan":"asdadas"}]	1	1	B
+133	<p>asdasd</p>	[{"huruf":"A","isi_pilihan":"adwwd"},{"huruf":"B","isi_pilihan":"wdwd"},{"huruf":"C","isi_pilihan":"cdcdd"}]	1	1	A
+134	<p>cdscscdzd</p>	[{}]	2	9	 - 
+135	<p>-zczsscsz</p>	[{}]	2	12	 - 
+136	<p>-2212131</p>	[{}]	2	12	 - 
+137	<p>sdsaadsdsa</p>	[{"huruf":"A","isi_pilihan":"xsax"},{"huruf":"B","isi_pilihan":"saxw"},{"huruf":"C","isi_pilihan":"zaaaz"}]	1	1	A
+138	<p>sadsxs-</p>	[{"huruf":"A","isi_pilihan":"cdcas"},{"huruf":"B","isi_pilihan":"xsxx"},{"huruf":"C","isi_pilihan":"zaz"}]	1	1	B
+139	<p>dadwdwsw</p>	[{}]	2	1	 - 
+140	<p>-waswa</p>	[{}]	2	12	 - 
+141	<blockquote>dsaxas<u>xsaxxas</u><em><u>xaxss</u><s><u>xsxssxssxssx</u></s></em></blockquote>	[{"huruf":"A","isi_pilihan":"xsxs"},{"huruf":"B","isi_pilihan":"xsxsxs"},{"huruf":"C","isi_pilihan":"szss"},{"huruf":"D","isi_pilihan":"zszx"},{"huruf":"E","isi_pilihan":"zsxxsx"}]	1	1	E
+142	<p>xssxxsscddc</p>	[{"huruf":"A","isi_pilihan":"cddc"},{"huruf":"B","isi_pilihan":"wcdcd"},{"huruf":"C","isi_pilihan":"xss"}]	1	1	A
+143	<p>xsasxsxsa</p>	[{}]	2	10	 - 
+144	<p>xaxsxsza</p>	[{}]	2	12	 - 
+145	<p>dsassasx</p>	[{"huruf":"A","isi_pilihan":"xasx"},{"huruf":"B","isi_pilihan":"zaz"},{"huruf":"C","isi_pilihan":"XSXS"}]	1	1	B
+146	<p><strong>zazazaazaaz</strong></p>	[{"huruf":"A","isi_pilihan":"zaz"},{"huruf":"B","isi_pilihan":"zdc"},{"huruf":"C","isi_pilihan":"xss"}]	1	1	C
 \.
 
 
 --
--- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbsoal_id_soal_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbsoal_id_soal_seq', 130, true);
+SELECT pg_catalog.setval('tbsoal_id_soal_seq', 146, true);
 
 
 --
--- Data for Name: tbsoal_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbsoal_ujian; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
@@ -1791,18 +1807,33 @@ COPY tbsoal_ujian (id_sujian, id_ujian, id_soal) FROM stdin;
 84	BBKI82112-1029108702-20171-1	128
 85	KPKI12101-1029108702-20171-1	129
 86	KPKI12101-1029108702-20171-1	130
+87	KPKI62108-0005076607-20151-1	131
+88	KPKI62108-0005076607-20151-1	132
+89	KPKI62108-0005076607-20151-1	133
+90	KPKI62108-0005076607-20151-2	134
+91	KPKI62108-0005076607-20151-2	135
+92	KPKI62108-0005076607-20151-2	136
+93	KKKI12106-0005076607-20151-1	137
+94	KKKI12106-0005076607-20151-1	138
+95	KKKI12106-0005076607-20151-2	139
+96	KKKI12106-0005076607-20151-2	140
+97	KPKI62108-0005076607-20171-1	141
+98	KPKI62108-0005076607-20171-1	142
+99	KPKI62108-0005076607-20171-2	143
+100	KPKI62108-0005076607-20171-2	144
+101	KPKI12101-0005076607-20151-1	145
 \.
 
 
 --
--- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 86, true);
+SELECT pg_catalog.setval('tbsoal_ujian_id_sujian_seq1', 102, true);
 
 
 --
--- Data for Name: tbstatus; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbstatus; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbstatus (status, nm_status) FROM stdin;
@@ -1816,28 +1847,35 @@ COPY tbstatus (status, nm_status) FROM stdin;
 
 
 --
--- Name: tbstatus_status_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbstatus_status_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('tbstatus_status_seq', 1, false);
 
 
 --
--- Data for Name: tbujian; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbujian; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbujian (id_ujian, hari, mulai, selesai, deskripsi, status_ujian, id_jujian, id_jsoal, id_kuliah) FROM stdin;
-KPKI12101-1029108702-20171-1	2018-01-05	08:00:00	12:00:00	Ujian	1	1	2	KPKI12101-1029108702-20171
+KPKI12101-1029108702-20171-1	2018-01-07	00:20:00	23:00:00	Ujian	1	1	2	KPKI12101-1029108702-20171
+KPKI12102-1029108702-20171-3	2018-01-12	13:00:00	20:10:00	Ujian	1	3	1	KPKI12102-1029108702-20171
+BBKI82112-1029108702-20171-1	2018-01-12	13:30:00	20:00:00	UTS KAP	1	1	2	BBKI82112-1029108702-20171
+KPKI62108-0005076607-20151-1	2018-01-12	15:00:00	20:00:00	ujian	1	1	1	KPKI62108-0005076607-20151
+KPKI62108-0005076607-20151-2	2018-01-12	15:00:00	20:00:00	ujian	1	2	2	KPKI62108-0005076607-20151
 KKKI23104-1012128601-20171-3	2017-12-24	21:20:00	21:30:00	Ujian	1	3	1	KKKI23104-1012128601-20171
+KKKI12106-0005076607-20151-1	2018-01-14	11:00:00	23:59:00	ujian	1	1	1	KKKI12106-0005076607-20151
+KKKI12106-0005076607-20151-2	2018-01-14	12:10:00	22:00:00	asxa	1	2	2	KKKI12106-0005076607-20151
+KPKI62108-0005076607-20171-1	2018-01-14	15:00:00	23:00:00	sadass	1	1	1	KPKI62108-0005076607-20171
+KPKI12101-0005076607-20151-1	2018-01-22	10:00:00	23:00:00	dssaas	1	1	1	KPKI12101-0005076607-20151
+KPKI62108-0005076607-20171-2	2018-01-22	15:00:00	23:00:00	dsdws	1	2	2	KPKI62108-0005076607-20171
 KBKI62121-1029116801-20171-1	2017-12-30	01:00:00	23:00:00	Ujian	1	1	2	KBKI62121-1029116801-20171
 KBKI62121-1029116801-20171-3	2017-12-29	20:30:00	23:59:00	ujian	1	3	1	KBKI62121-1029116801-20171
-BBKI82112-1029108702-20171-1	2017-12-31	13:30:00	15:00:00	UTS KAP	1	1	2	BBKI82112-1029108702-20171
-KPKI12102-1029108702-20171-3	2017-12-31	13:00:00	15:10:00	Ujian	1	3	1	KPKI12102-1029108702-20171
 \.
 
 
 --
--- Data for Name: tbuser; Type: TABLE DATA; Schema: public; Owner: mandan
+-- Data for Name: tbuser; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
@@ -2210,18 +2248,19 @@ COPY tbuser (id_user, username, password, id_juser, status_user) FROM stdin;
 362	gundul	b16807b37a7611d2bb44cc07057569c0	1	1
 372	13101152610565	e4a80dd9fafdbc51a29a1d69990bd89c	3	1
 374	14101152610545	d54b2fc4585b90728ab84583d5c1a39f	3	1
+375	12432231434243	a66dfaf260b43985d266fbf8fe344cae	3	1
 \.
 
 
 --
--- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: mandan
+-- Name: tbuser_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('tbuser_id_user_seq', 374, true);
+SELECT pg_catalog.setval('tbuser_id_user_seq', 377, true);
 
 
 --
--- Name: tbdosen_id_dosen; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbdosen_id_dosen; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbdosen
@@ -2229,7 +2268,7 @@ ALTER TABLE ONLY tbdosen
 
 
 --
--- Name: tbdosen_nidn; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbdosen_nidn; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbdosen
@@ -2237,7 +2276,7 @@ ALTER TABLE ONLY tbdosen
 
 
 --
--- Name: tbhasil_ujian_id_hasil; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_hasil; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbhasil_ujian
@@ -2245,7 +2284,7 @@ ALTER TABLE ONLY tbhasil_ujian
 
 
 --
--- Name: tbjawaban_id_jawaban; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_jawaban; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbjawaban
@@ -2253,7 +2292,7 @@ ALTER TABLE ONLY tbjawaban
 
 
 --
--- Name: tbjenis_soal_id_jsoal; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbjenis_soal_id_jsoal; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbjenis_soal
@@ -2261,7 +2300,7 @@ ALTER TABLE ONLY tbjenis_soal
 
 
 --
--- Name: tbjenis_ujian_id_jujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbjenis_ujian_id_jujian; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbjenis_ujian
@@ -2269,7 +2308,7 @@ ALTER TABLE ONLY tbjenis_ujian
 
 
 --
--- Name: tbjenis_user_id_juser; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbjenis_user_id_juser; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbjenis_user
@@ -2277,7 +2316,7 @@ ALTER TABLE ONLY tbjenis_user
 
 
 --
--- Name: tbkelas_id_kelas; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbkelas_id_kelas; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbkelas
@@ -2285,7 +2324,7 @@ ALTER TABLE ONLY tbkelas
 
 
 --
--- Name: tbkelas_kuliah_id_kkuliah; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbkelas_kuliah_id_kkuliah; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbkelas_kuliah
@@ -2293,7 +2332,7 @@ ALTER TABLE ONLY tbkelas_kuliah
 
 
 --
--- Name: tbkuliah_id_kuliah; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbkuliah_id_kuliah; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbkuliah
@@ -2301,7 +2340,7 @@ ALTER TABLE ONLY tbkuliah
 
 
 --
--- Name: tbmahasiswa_id_mahasiswa; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbmahasiswa_id_mahasiswa; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbmahasiswa
@@ -2309,7 +2348,7 @@ ALTER TABLE ONLY tbmahasiswa
 
 
 --
--- Name: tbmahasiswa_nobp; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbmahasiswa_nobp; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbmahasiswa
@@ -2317,7 +2356,7 @@ ALTER TABLE ONLY tbmahasiswa
 
 
 --
--- Name: tbmatkul_id_matkul; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbmatkul_id_matkul; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbmatkul
@@ -2325,7 +2364,7 @@ ALTER TABLE ONLY tbmatkul
 
 
 --
--- Name: tbpeserta_kuliah_id_peserta; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbpeserta_kuliah_id_peserta; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbpeserta_kuliah
@@ -2333,7 +2372,7 @@ ALTER TABLE ONLY tbpeserta_kuliah
 
 
 --
--- Name: tbsoal_id_soal; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbsoal_id_soal; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbsoal
@@ -2341,7 +2380,7 @@ ALTER TABLE ONLY tbsoal
 
 
 --
--- Name: tbsoal_ujian_id_sujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_sujian; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbsoal_ujian
@@ -2349,7 +2388,7 @@ ALTER TABLE ONLY tbsoal_ujian
 
 
 --
--- Name: tbstatus_status; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbstatus_status; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbstatus
@@ -2357,7 +2396,7 @@ ALTER TABLE ONLY tbstatus
 
 
 --
--- Name: tbujian_id_ujian; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbujian_id_ujian; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbujian
@@ -2365,7 +2404,7 @@ ALTER TABLE ONLY tbujian
 
 
 --
--- Name: tbuser_id_user; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbuser_id_user; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbuser
@@ -2373,7 +2412,7 @@ ALTER TABLE ONLY tbuser
 
 
 --
--- Name: tbuser_username; Type: CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbuser_username; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbuser
@@ -2381,119 +2420,119 @@ ALTER TABLE ONLY tbuser
 
 
 --
--- Name: tbhasil_ujian_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_ujian; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbhasil_ujian_id_ujian ON tbhasil_ujian USING btree (id_ujian);
 
 
 --
--- Name: tbhasil_ujian_nobp; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_nobp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbhasil_ujian_nobp ON tbhasil_ujian USING btree (nobp);
 
 
 --
--- Name: tbjawaban_id_soal; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_soal; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbjawaban_id_soal ON tbjawaban USING btree (id_soal);
 
 
 --
--- Name: tbjawaban_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_ujian; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbjawaban_id_ujian ON tbjawaban USING btree (id_ujian);
 
 
 --
--- Name: tbjawaban_nobp; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbjawaban_nobp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbjawaban_nobp ON tbjawaban USING btree (nobp);
 
 
 --
--- Name: tbkuliah_kd_matkul; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbkuliah_kd_matkul; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbkuliah_kd_matkul ON tbkuliah USING btree (kd_matkul);
 
 
 --
--- Name: tbkuliah_nidn; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbkuliah_nidn; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbkuliah_nidn ON tbkuliah USING btree (nidn);
 
 
 --
--- Name: tbpeserta_kuliah_id_kuliah; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbpeserta_kuliah_id_kuliah; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbpeserta_kuliah_id_kuliah ON tbpeserta_kuliah USING btree (id_kuliah);
 
 
 --
--- Name: tbpeserta_kuliah_nobp; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbpeserta_kuliah_nobp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbpeserta_kuliah_nobp ON tbpeserta_kuliah USING btree (nobp);
 
 
 --
--- Name: tbsoal_ujian_id_soal; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_soal; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbsoal_ujian_id_soal ON tbsoal_ujian USING btree (id_soal);
 
 
 --
--- Name: tbsoal_ujian_id_ujian; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_ujian; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbsoal_ujian_id_ujian ON tbsoal_ujian USING btree (id_ujian);
 
 
 --
--- Name: tbujian_id_kuliah; Type: INDEX; Schema: public; Owner: mandan
+-- Name: tbujian_id_kuliah; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX tbujian_id_kuliah ON tbujian USING btree (id_kuliah);
 
 
 --
--- Name: tambahUserDosen; Type: TRIGGER; Schema: public; Owner: mandan
+-- Name: tambahUserDosen; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER "tambahUserDosen" BEFORE INSERT ON tbdosen FOR EACH ROW EXECUTE PROCEDURE tambahuserdosen();
 
 
 --
--- Name: tambahUserMahasiswa; Type: TRIGGER; Schema: public; Owner: mandan
+-- Name: tambahUserMahasiswa; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER "tambahUserMahasiswa" AFTER INSERT ON tbmahasiswa FOR EACH ROW EXECUTE PROCEDURE tambahusermahasiswa();
 
 
 --
--- Name: updateStatusKuliah; Type: TRIGGER; Schema: public; Owner: mandan
+-- Name: updateStatusKuliah; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER "updateStatusKuliah" AFTER INSERT ON tbpeserta_kuliah FOR EACH ROW EXECUTE PROCEDURE updatestatuskuliah();
 
 
 --
--- Name: updateStatusUjian; Type: TRIGGER; Schema: public; Owner: mandan
+-- Name: updateStatusUjian; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER "updateStatusUjian" AFTER INSERT ON tbsoal_ujian FOR EACH ROW EXECUTE PROCEDURE updatestatusujian();
 
 
 --
--- Name: tbhasil_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbhasil_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbhasil_ujian
@@ -2501,7 +2540,7 @@ ALTER TABLE ONLY tbhasil_ujian
 
 
 --
--- Name: tbjawaban_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbjawaban_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbjawaban
@@ -2509,7 +2548,7 @@ ALTER TABLE ONLY tbjawaban
 
 
 --
--- Name: tbkelas_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbkelas_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbkelas_kuliah
@@ -2517,7 +2556,7 @@ ALTER TABLE ONLY tbkelas_kuliah
 
 
 --
--- Name: tbpeserta_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbpeserta_kuliah_id_kuliah_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbpeserta_kuliah
@@ -2525,7 +2564,7 @@ ALTER TABLE ONLY tbpeserta_kuliah
 
 
 --
--- Name: tbsoal_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mandan
+-- Name: tbsoal_ujian_id_ujian_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tbsoal_ujian
@@ -2533,7 +2572,7 @@ ALTER TABLE ONLY tbsoal_ujian
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;

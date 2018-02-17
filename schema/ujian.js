@@ -43,20 +43,6 @@ const daftarPeserta = new GraphQLObjectType({
     nm_kelas: { type: GraphQLString }
   })
 });
-const hasil = new GraphQLScalarType({
-  name: 'Hasil',
-  serialize: value => value,
-  parseValue: value => value,
-  parseLiteral: (ast) => {
-    if (ast.kind !== Kind.OBJECT) {
-      throw new GraphQLError(
-        `Query error: Can only parse object but got a: ${ast.kind}`, 
-        [ast],
-      );
-    }
-    return ast.value;
-  },
-});
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {

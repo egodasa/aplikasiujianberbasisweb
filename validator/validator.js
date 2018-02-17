@@ -108,7 +108,7 @@ let validator = {
             },
             isLength: {
                 options: [{
-                    min: 14,
+                    min: 1,
                     max: 15
                 }],
                 errorMessage: 'Kode matkul tidak benar ...'
@@ -281,8 +281,7 @@ let validator = {
             },
             isLength: {
                 options: [{
-                    min: 3,
-                    max: 3000
+                    min: 3
                 }],
                 errorMessage: 'Isi soal maksimal 3000 karakter ...'
             }
@@ -308,7 +307,7 @@ let validator = {
                     min: 1,
                     max: 100
                 }],
-                errorMessage: 'Bobot nilai maksimal 100 ...'
+                errorMessage: 'Bobot nilai minimal 1 dan maksimal 100 ...'
             }
         },
         'id_jsoal': {
