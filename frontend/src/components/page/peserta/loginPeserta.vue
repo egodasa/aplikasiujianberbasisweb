@@ -72,7 +72,7 @@ export default {
   methods : {
       getUjian () {
           this.loading = true
-          this.$ajx.get('/api/mahasiswa/'+this.$cks.getCookies('infoLogin').username+'/ujian')
+          this.$ajx.get('./api/mahasiswa/'+this.$cks.getCookies('infoLogin').username+'/ujian')
           .then(res=>{
               this.listUjian = res.data.data
               this.loading = false

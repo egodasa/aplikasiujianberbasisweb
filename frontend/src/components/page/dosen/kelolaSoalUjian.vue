@@ -1,5 +1,5 @@
 <template>
-<div class="w3-container">
+<div id="kelolasoal" class="w3-container">
     <gen-form :pk="id_sujian" url="custom" :input="listForm" contentType="lain">
         <form id="addData" @submit.prevent="submitData()" name="addData">
             <h3>Tambah Soal</h3>
@@ -123,7 +123,7 @@ export default {
           this.$refs.genTable.toggleFormData()
       },
       getDetailUjian () {
-          this.$ajx.get('/api/ujian/'+this.$route.params.idUjian)
+          this.$ajx.get('./api/ujian/'+this.$route.params.idUjian)
           .then(res=>{
               this.detailUjian = res.data.data[0]
               this.dataForm.id_jsoal = this.detailUjian.id_jsoal
@@ -183,10 +183,10 @@ export default {
           if(this.dataForm.id_jsoal == 2) this.dataForm.pilihanGanda = undefined
           if(this.dataForm.id_soal == undefined || this.dataForm.id_soal == null){
               var method = 'POST'
-              var url = "/api/ujian/"+this.$route.params.idUjian+'/soal'
+              var url = "./api/ujian/"+this.$route.params.idUjian+'/soal'
           }else {
               var method = 'PUT'
-              var url = '/api/soal/'+this.dataForm.id_soal
+              var url = './api/soal/'+this.dataForm.id_soal
           }
           this.buttonSubmit(1);
           this.resetError();
@@ -217,7 +217,7 @@ export default {
       getDataDetail (x) {
           this.$ajx({
             method : 'GET',
-            url :'/api/soal/'+x,
+            url :'./api/soal/'+x,
             })
           .then(res=>{
                 let hasil = res.data.data[0]
@@ -240,6 +240,6 @@ export default {
 }
 </script>
 
-<style src="../../../../node_modules/vue-wysiwyg/dist/vueWysiwyg.css">
+<style>
 
 </style>

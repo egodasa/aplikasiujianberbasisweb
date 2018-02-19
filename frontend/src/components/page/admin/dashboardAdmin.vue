@@ -94,7 +94,7 @@ export default {
               }
             }`
             let kueri = {query:query}
-            this.$ajx.post('api/v2/statistik',kueri)
+            this.$ajx.post('./api/v2/statistik',kueri)
             .then(res=>{
                 
                 this.statistik = res.data.data.statistik[0]

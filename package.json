@@ -1,6 +1,6 @@
 {
   "name": "aplikasiujianberbasisweb",
-  "version": "2.7.13",
+  "version": "2.7.15",
   "description": "A Computer Assisted Test Apps with REST API concept for exchange data between backend (NodeJS) and frontend (VueJS)",
   "author": "egodasa <egodasa@gmail.com>",
   "private": true,
@@ -20,7 +20,6 @@
     "express-unless": "^0.3.1",
     "express-validator": "^3.2.1",
     "graphql": "^0.11.7",
-    "heroku-cli": "^6.14.37",
     "jade": "^1.11.0",
     "json2csv": "^3.11.5",
     "jsonwebtoken": "^8.1.0",
@@ -31,6 +30,7 @@
     "morgan": "^1.8.2",
     "mysql": "^2.14.1",
     "node-excel-export": "^1.4.2",
+    "pdfmake": "^0.1.35",
     "pg": "^7.3.0",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.3",

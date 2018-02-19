@@ -67,6 +67,7 @@ const localStorage = {
         store.remove(x)
     }
 }
+//Vue.prototype.$pdfMake = pdfMake
 Vue.prototype.$cekLogin = null
 Vue.prototype.$lcs = localStorage
 Vue.prototype.$cks = cks

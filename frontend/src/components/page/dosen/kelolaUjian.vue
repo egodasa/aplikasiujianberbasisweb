@@ -62,7 +62,7 @@ export default {
                             }
                     },
                     onItemAdd : (value, $item)=>{
-                        this.getDataSelectGraph('api/v2/jenis_ujian',{
+                        this.getDataSelectGraph('./api/v2/jenis_ujian',{
                           query : `query jenisUjianTersedia($id_kuliah : String) {jenisUjianTersedia(id_kuliah : $id_kuliah){id_jujian,nm_jujian}}`,
                           variables : {id_kuliah : value}
                           },'jenisUjianTersedia',1,'jenis ujian','select')
@@ -113,8 +113,8 @@ export default {
         }
   },
   created () {
-      this.getDataSelect('api/jenis_soal',2)
-      this.getDataSelectGraph('api/v2/dosen',{
+      this.getDataSelect('./api/jenis_soal',2)
+      this.getDataSelectGraph('./api/v2/dosen',{
           query : `query getKuliah($nidn : String){ getKuliah(nidn : $nidn){id_kuliah,nm_matkul,nm_dosen,tahun_akademik,ket_nm_kelas}}`,
           variables : {nidn : this.$route.params.nidn}
           },'getKuliah',0,'kuliah','selectize')
