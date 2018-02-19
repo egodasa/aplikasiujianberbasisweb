@@ -55,7 +55,7 @@ export default {
         }
   },
   created (){
-      this.getDataSelect('api/jenis_user',2)
+      this.getDataSelect('./api/jenis_user',2)
   },
   methods : {
       getDataSelect (url,target) {

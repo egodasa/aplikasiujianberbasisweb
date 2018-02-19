@@ -72,8 +72,8 @@ export default {
         }
   },
   created () {
-        this.getDataSelect('api/matkul',0)
-        this.getDataSelect('api/kelas',1)
+        this.getDataSelect('./api/matkul',0)
+        this.getDataSelect('./api/kelas',1)
         var bulan = parseInt(new Date().getMonth().toString())+1
           if(bulan >= 8 && bulan <= 12){
               this.tahun_akademik = parseInt(new Date().getFullYear().toString())

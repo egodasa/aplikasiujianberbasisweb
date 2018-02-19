@@ -235,7 +235,7 @@ methods : {
         this.jawaban = this.jawabanPeserta[this.posisiSoal].jawaban || null
     },
     genLjk () {
-        this.$ajx.get('/api/ujian/'+this.infoUjian.id_ujian+'/soal')
+        this.$ajx.get('./api/ujian/'+this.infoUjian.id_ujian+'/soal')
         .then(res=>{
             this.listSoal = res.data.data
             //cek sesi ujian apakah sudah ada
@@ -275,7 +275,7 @@ methods : {
                 nobp : this.infoUjian.nobp,
                 nilai : parseInt(nilai)
             }
-            this.$ajx.post('api/ujian/hasil',hasil)
+            this.$ajx.post('./api/ujian/hasil',hasil)
             .then(res=>{
                 this.$lcs.removeLcs('infoUjian')
                 this.$cks.clearCookies('infoLogin')
@@ -295,7 +295,7 @@ methods : {
                     jawaban : v.jawaban
                     })
                 })
-            this.$ajx.post('api/ujian/jawaban',hasil)
+            this.$ajx.post('./api/ujian/jawaban',hasil)
             .then(res=>{
                 this.$lcs.removeLcs('infoUjian')
                 this.$cks.clearCookies('infoLogin')

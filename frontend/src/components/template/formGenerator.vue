@@ -6,7 +6,7 @@
         <div class="w3-center w3-container" :style="loading ? 'display:block;height:250px;':'display:none;height:300px;'">
         <div class="w3-big w3-margin-top">Mengambil Data
         <div class="sk-three-bounce">
-            <img src="/images/loading.gif" class="w3-image" width="200" />
+            <img src="./images/loading.gif" class="w3-image" width="200" />
         </div>
         </div>
         </div>

@@ -149,11 +149,11 @@ methods : {
             }
         }`
         var kueri = {query : query,variables : {id : this.$route.params.idUjian,nobp:this.$route.params.idPeserta}}
-        this.$ajx.get('api/ujian/'+this.$route.params.idUjian)
+        this.$ajx.get('./api/ujian/'+this.$route.params.idUjian)
         .then(res=>{
             this.infoUjian = res.data.data[0]
             this.infoUjian.hari = formatWaktu(new Date(this.infoUjian.hari), 'DD MMMM YYYY', {locale : lokalisasi})
-            return this.$ajx.post('api/v2/ujian/',kueri)
+            return this.$ajx.post('./api/v2/ujian/',kueri)
             })
         .then(res=>{
             this.infoPeserta = res.data.data.detailPesertaUjian[0]
@@ -170,7 +170,7 @@ methods : {
         })       
     },
     getListJawaban (){
-        this.$ajx.get('api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
+        this.$ajx.get('./api/ujian/'+this.$route.params.idUjian+'/jawaban/'+this.$route.params.idPeserta)
         .then(res=>{
             
             this.listJawaban = res.data.data
@@ -201,7 +201,7 @@ methods : {
             nobp : this.$route.params.idPeserta,
             nilai : this.totalBobot
             }
-        this.$ajx.post('api/ujian/hasil',data)
+        this.$ajx.post('./api/ujian/hasil',data)
         .then(res=>{
             this.$router.push({path: '/dosen/'+this.$cks.getCookies('infoLogin').username+'/ujian/'+this.$route.params.idUjian+'/detail'})
             })
