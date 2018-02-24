@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 let jwt = require('jsonwebtoken')
-
+let md5 = require('md5')
 router.post('/',(req, res, next)=>{
 	let username = req.body.username
     let password = req.body.password
     let hasil = {}
     let query = db('lap_user').select()
-	query.where({username:username,password:password}).
+	query.where({username:username,password:md5(password)}).
 	then(function(rows){
 		hasil.status = true;
         hasil.data = {token:null}
-		if(rows.length > 1){
-            res.status(503).json(hasil)
+		if(rows.length != 1){
+            res.json(hasil)
         }else if(rows.length == 1){
             hasil.data.token =jwt.sign({
               data: rows[0]

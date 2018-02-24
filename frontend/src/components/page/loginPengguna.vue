@@ -74,7 +74,7 @@ methods : {
         }else{
             this.Blogin.disabled = true
             this.Blogin.caption = "Mengecek"
-            this.$ajx.post('login',{username : this.username,password : md5(this.password)})
+            this.$ajx.post('login',{username : this.username,password : this.password})
             .then(res=>{
                 this.Blogin.disabled = false
                 this.Blogin.caption = "Login"
