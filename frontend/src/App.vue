@@ -1,6 +1,6 @@
 <template>
-<div>
-<notifications>
+  <div id="app">
+    <notifications>
 <template slot="body" slot-scope="props">
 <div class="w3-container">
   <template v-if="props.item.type == 'danger'">
@@ -36,7 +36,7 @@
 </div>
 </template>
 </notifications>
-<router-view></router-view>
+<router-view/>
 </div>
 </template>
 
@@ -62,7 +62,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-    
-
-</style>

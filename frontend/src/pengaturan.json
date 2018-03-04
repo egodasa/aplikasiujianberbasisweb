@@ -1,9 +1,0 @@
-{
-    "tahun_akademik":"20171",
-    "err" : [
-       /*0*/"Ok",
-       /*1*/"Terjadi kesalahan pada server. Silahkan refresh halaman." ,
-       /*2*/"Data yang diinput salah.",
-       /*3*/"Tidak ada akses kehalaman yang dituju"
-    ]
-    }

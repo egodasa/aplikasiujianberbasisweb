@@ -18,6 +18,7 @@ const sStatistik = require('./schema/statistik.js');
 const sDosen = require('./schema/dosen.js');
 const sUser = require('./schema/user.js');
 const sUjian = require('./schema/ujian.js');
+const cors = require('cors')
 
 db = require('knex')({
   client: 'pg',
@@ -40,9 +41,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 app.use('^/api/:params*',function(req,res,next){
     let token = req.header('Authorization')
-	res.set({'Access-Control-Allow-Origin' : '*'});
     if(token){
         jwt.verify(token.split(" ")[1], 'Panther A 7.5cm kwk 42 L/70', function(err, decoded) {
             if(err) res.status(401).json({status:false,error:"Anda harus login terlebih dahulu!"})

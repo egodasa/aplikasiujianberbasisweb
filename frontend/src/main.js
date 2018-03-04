@@ -1,13 +1,9 @@
-// The following line loads the standalone build of Vue instead of the runtime-only build,
-// so you don't have to do: import Vue from 'vue/dist/vue'
-// This is done with the browser options. For the config, see package.json
 import Vue from 'vue'
 import VueSession from 'vue-session'
 import VueRouter from 'vue-router'
 import App from './App.vue'
-import routes from './routes.js'
-import VeeValidate, { Validator } from 'vee-validate';
-import bahasa from '../node_modules/vee-validate/dist/locale/id.js'
+import router from './router'
+
 import vSelect from 'vue-select'
 import wysiwyg from "vue-wysiwyg";
 import Notifications from 'vue-notification'
@@ -35,10 +31,8 @@ Vue.use(wysiwyg, {
 })
 Vue.use(Notifications)
 Vue.component('v-select', vSelect)
-VeeValidate.Validator.addLocale(bahasa)
 Vue.use(VueRouter);
 Vue.use(VueSession);
-Vue.use(VeeValidate, {locale: 'id',delay:"1000"});
 const cks = {
     setCookies (x,y,z = null){
         z == null ? vuecookies.set(x,y) : vuecookies.set(x,y,z)
@@ -80,6 +74,7 @@ Vue.prototype.$fp2 = new fp2({
         excludeSessionStorage  : true,
         excludePlatform : true
         })
+axios.defaults.baseURL = 'http://127.0.0.1:49300'
 axios.interceptors.request.use((config)=>{
     if(vuecookies.isKey('infoLogin')){
         config.headers.common['Authorization'] = 'Bearer '+ vuecookies.get('infoLogin')
@@ -92,12 +87,10 @@ axios.interceptors.request.use((config)=>{
 window.bus = Bus
 window._ = lodash
 Vue.prototype.$ajx = axios
-// We create te router instance here.
-const router = new VueRouter({
-  routes: routes
-});
-new Vue({ // eslint-disable-line no-new
-  el: '#app',
+
+Vue.config.productionTip = false
+
+new Vue({
   router,
-  render: (h) => h(App)
-})
+  render: h => h(App)
+}).$mount('#app')
