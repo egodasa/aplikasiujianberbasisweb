@@ -12,6 +12,6 @@ versi : 2.7.8
 3. Laporan hasil ujian
 4. CRUD data master (mata kuliah,mahasiswa,dosen,user)
 
-URL : [https://ujianweb.herokuapp.com](https://ujianweb.herokuapp.com/)
+URL : [http://cat-upiyptk.mandan.online](http://cat-upiyptk.mandan.online)
 URL API : [/api/NAMA_DATA](/api/NAMA_DATA)
 File Database : DATABASE_FINAL.sql
