@@ -49,7 +49,7 @@ CREATE TABLE peserta_ujian (
 );
 
 
-ALTER TABLE peserta_ujian OWNER TO mandan;
+
 
 --
 -- Name: gethasilujian(character varying); Type: FUNCTION; Schema: public; Owner: mandan
@@ -78,7 +78,7 @@ where a.id_ujian=v_id_ujian order by a.nm_kelas desc,a.nm_mahasiswa asc;
 END; $$;
 
 
-ALTER FUNCTION public.gethasilujian(v_id_ujian character varying) OWNER TO mandan;
+
 
 --
 -- Name: tambahuserdosen(); Type: FUNCTION; Schema: public; Owner: mandan
@@ -94,7 +94,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.tambahuserdosen() OWNER TO mandan;
+
 
 --
 -- Name: tambahusermahasiswa(); Type: FUNCTION; Schema: public; Owner: mandan
@@ -110,7 +110,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.tambahusermahasiswa() OWNER TO mandan;
+
 
 --
 -- Name: updatestatuskuliah(); Type: FUNCTION; Schema: public; Owner: mandan
@@ -126,7 +126,7 @@ end;
 $$;
 
 
-ALTER FUNCTION public.updatestatuskuliah() OWNER TO mandan;
+
 
 --
 -- Name: updatestatusujian(); Type: FUNCTION; Schema: public; Owner: mandan
@@ -142,7 +142,7 @@ END;
 $$;
 
 
-ALTER FUNCTION public.updatestatusujian() OWNER TO mandan;
+
 
 --
 -- Name: tbjawaban_id_jawaban_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -156,7 +156,7 @@ CREATE SEQUENCE tbjawaban_id_jawaban_seq
     CACHE 1;
 
 
-ALTER TABLE tbjawaban_id_jawaban_seq OWNER TO mandan;
+
 
 --
 -- Name: tbjawaban; Type: TABLE; Schema: public; Owner: mandan
@@ -171,7 +171,7 @@ CREATE TABLE tbjawaban (
 );
 
 
-ALTER TABLE tbjawaban OWNER TO mandan;
+
 
 --
 -- Name: tbsoal_id_soal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -185,7 +185,7 @@ CREATE SEQUENCE tbsoal_id_soal_seq
     CACHE 1;
 
 
-ALTER TABLE tbsoal_id_soal_seq OWNER TO mandan;
+
 
 --
 -- Name: tbsoal; Type: TABLE; Schema: public; Owner: mandan
@@ -201,7 +201,7 @@ CREATE TABLE tbsoal (
 );
 
 
-ALTER TABLE tbsoal OWNER TO mandan;
+
 
 --
 -- Name: lap_jawaban; Type: VIEW; Schema: public; Owner: mandan
@@ -220,7 +220,7 @@ CREATE VIEW lap_jawaban AS
      JOIN tbsoal ON ((tbjawaban.id_soal = tbsoal.id_soal)));
 
 
-ALTER TABLE lap_jawaban OWNER TO mandan;
+
 
 --
 -- Name: tbnama_kelas_id_kelas_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -234,7 +234,7 @@ CREATE SEQUENCE tbnama_kelas_id_kelas_seq
     CACHE 1;
 
 
-ALTER TABLE tbnama_kelas_id_kelas_seq OWNER TO mandan;
+
 
 --
 -- Name: tbkelas; Type: TABLE; Schema: public; Owner: mandan
@@ -246,7 +246,7 @@ CREATE TABLE tbkelas (
 );
 
 
-ALTER TABLE tbkelas OWNER TO mandan;
+
 
 --
 -- Name: tbkelas_ujian_id_kujian_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -260,7 +260,7 @@ CREATE SEQUENCE tbkelas_ujian_id_kujian_seq
     CACHE 1;
 
 
-ALTER TABLE tbkelas_ujian_id_kujian_seq OWNER TO mandan;
+
 
 --
 -- Name: tbkelas_kuliah; Type: TABLE; Schema: public; Owner: mandan
@@ -273,7 +273,7 @@ CREATE TABLE tbkelas_kuliah (
 );
 
 
-ALTER TABLE tbkelas_kuliah OWNER TO mandan;
+
 
 --
 -- Name: lap_kelas_kuliah; Type: VIEW; Schema: public; Owner: mandan
@@ -288,7 +288,7 @@ CREATE VIEW lap_kelas_kuliah AS
      JOIN tbkelas b ON ((a.id_kelas = b.id_kelas)));
 
 
-ALTER TABLE lap_kelas_kuliah OWNER TO mandan;
+
 
 --
 -- Name: tbdosen_id_dosen_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -302,7 +302,7 @@ CREATE SEQUENCE tbdosen_id_dosen_seq
     CACHE 1;
 
 
-ALTER TABLE tbdosen_id_dosen_seq OWNER TO mandan;
+
 
 --
 -- Name: tbdosen; Type: TABLE; Schema: public; Owner: mandan
@@ -316,7 +316,7 @@ CREATE TABLE tbdosen (
 );
 
 
-ALTER TABLE tbdosen OWNER TO mandan;
+
 
 --
 -- Name: tbkuliah; Type: TABLE; Schema: public; Owner: mandan
@@ -331,7 +331,7 @@ CREATE TABLE tbkuliah (
 );
 
 
-ALTER TABLE tbkuliah OWNER TO mandan;
+
 
 --
 -- Name: tbmatkul_id_matkul_seq1; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -345,7 +345,7 @@ CREATE SEQUENCE tbmatkul_id_matkul_seq1
     CACHE 1;
 
 
-ALTER TABLE tbmatkul_id_matkul_seq1 OWNER TO mandan;
+
 
 --
 -- Name: tbmatkul; Type: TABLE; Schema: public; Owner: mandan
@@ -361,7 +361,7 @@ CREATE TABLE tbmatkul (
 );
 
 
-ALTER TABLE tbmatkul OWNER TO mandan;
+
 
 --
 -- Name: tbstatus_status_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -375,7 +375,7 @@ CREATE SEQUENCE tbstatus_status_seq
     CACHE 1;
 
 
-ALTER TABLE tbstatus_status_seq OWNER TO mandan;
+
 
 --
 -- Name: tbstatus; Type: TABLE; Schema: public; Owner: mandan
@@ -387,7 +387,7 @@ CREATE TABLE tbstatus (
 );
 
 
-ALTER TABLE tbstatus OWNER TO mandan;
+
 
 --
 -- Name: lap_kuliah; Type: VIEW; Schema: public; Owner: mandan
@@ -416,7 +416,7 @@ CREATE VIEW lap_kuliah AS
      JOIN tbstatus d ON ((a.status_kuliah = d.status)));
 
 
-ALTER TABLE lap_kuliah OWNER TO mandan;
+
 
 --
 -- Name: tbmahasiswa_id_mahasiswa_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -430,7 +430,7 @@ CREATE SEQUENCE tbmahasiswa_id_mahasiswa_seq
     CACHE 1;
 
 
-ALTER TABLE tbmahasiswa_id_mahasiswa_seq OWNER TO mandan;
+
 
 --
 -- Name: tbmahasiswa; Type: TABLE; Schema: public; Owner: mandan
@@ -444,7 +444,7 @@ CREATE TABLE tbmahasiswa (
 );
 
 
-ALTER TABLE tbmahasiswa OWNER TO mandan;
+
 
 --
 -- Name: tbpeserta_kuliah; Type: TABLE; Schema: public; Owner: mandan
@@ -460,7 +460,7 @@ CREATE TABLE tbpeserta_kuliah (
 );
 
 
-ALTER TABLE tbpeserta_kuliah OWNER TO mandan;
+
 
 --
 -- Name: lap_peserta_kuliah; Type: VIEW; Schema: public; Owner: mandan
@@ -490,7 +490,7 @@ CREATE VIEW lap_peserta_kuliah AS
      JOIN tbkelas f ON ((a.id_kelas = f.id_kelas)));
 
 
-ALTER TABLE lap_peserta_kuliah OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_soal_id_jsoal_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -504,7 +504,7 @@ CREATE SEQUENCE tbjenis_soal_id_jsoal_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_soal_id_jsoal_seq OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_soal; Type: TABLE; Schema: public; Owner: mandan
@@ -516,7 +516,7 @@ CREATE TABLE tbjenis_soal (
 );
 
 
-ALTER TABLE tbjenis_soal OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_ujian_id_jujian_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -530,7 +530,7 @@ CREATE SEQUENCE tbjenis_ujian_id_jujian_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_ujian_id_jujian_seq OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_ujian; Type: TABLE; Schema: public; Owner: mandan
@@ -542,7 +542,7 @@ CREATE TABLE tbjenis_ujian (
 );
 
 
-ALTER TABLE tbjenis_ujian OWNER TO mandan;
+
 
 --
 -- Name: tbujian; Type: TABLE; Schema: public; Owner: mandan
@@ -561,7 +561,7 @@ CREATE TABLE tbujian (
 );
 
 
-ALTER TABLE tbujian OWNER TO mandan;
+
 
 --
 -- Name: lap_ujian; Type: VIEW; Schema: public; Owner: mandan
@@ -594,7 +594,7 @@ CREATE VIEW lap_ujian AS
      JOIN tbjenis_ujian e ON ((a.id_jujian = e.id_jujian)));
 
 
-ALTER TABLE lap_ujian OWNER TO mandan;
+
 
 --
 -- Name: lap_peserta_ujian; Type: VIEW; Schema: public; Owner: mandan
@@ -634,7 +634,7 @@ CREATE VIEW lap_peserta_ujian AS
   WHERE (a.status_ujian = 1);
 
 
-ALTER TABLE lap_peserta_ujian OWNER TO mandan;
+
 
 --
 -- Name: lap_soal; Type: VIEW; Schema: public; Owner: mandan
@@ -652,7 +652,7 @@ CREATE VIEW lap_soal AS
      JOIN tbjenis_soal ON ((tbsoal.id_jsoal = tbjenis_soal.id_jsoal)));
 
 
-ALTER TABLE lap_soal OWNER TO mandan;
+
 
 --
 -- Name: tbsoal_ujian_id_sujian_seq1; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -666,7 +666,7 @@ CREATE SEQUENCE tbsoal_ujian_id_sujian_seq1
     CACHE 1;
 
 
-ALTER TABLE tbsoal_ujian_id_sujian_seq1 OWNER TO mandan;
+
 
 --
 -- Name: tbsoal_ujian; Type: TABLE; Schema: public; Owner: mandan
@@ -679,7 +679,7 @@ CREATE TABLE tbsoal_ujian (
 );
 
 
-ALTER TABLE tbsoal_ujian OWNER TO mandan;
+
 
 --
 -- Name: lap_soal_ujian; Type: VIEW; Schema: public; Owner: mandan
@@ -697,7 +697,7 @@ CREATE VIEW lap_soal_ujian AS
      JOIN tbsoal ON ((tbsoal_ujian.id_soal = tbsoal.id_soal)));
 
 
-ALTER TABLE lap_soal_ujian OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_user_id_juser_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -711,7 +711,7 @@ CREATE SEQUENCE tbjenis_user_id_juser_seq
     CACHE 1;
 
 
-ALTER TABLE tbjenis_user_id_juser_seq OWNER TO mandan;
+
 
 --
 -- Name: tbjenis_user; Type: TABLE; Schema: public; Owner: mandan
@@ -723,7 +723,7 @@ CREATE TABLE tbjenis_user (
 );
 
 
-ALTER TABLE tbjenis_user OWNER TO mandan;
+
 
 --
 -- Name: tbuser_id_user_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -737,7 +737,7 @@ CREATE SEQUENCE tbuser_id_user_seq
     CACHE 1;
 
 
-ALTER TABLE tbuser_id_user_seq OWNER TO mandan;
+
 
 --
 -- Name: tbuser; Type: TABLE; Schema: public; Owner: mandan
@@ -752,7 +752,7 @@ CREATE TABLE tbuser (
 );
 
 
-ALTER TABLE tbuser OWNER TO mandan;
+
 
 --
 -- Name: lap_user; Type: VIEW; Schema: public; Owner: mandan
@@ -769,7 +769,7 @@ CREATE VIEW lap_user AS
      JOIN tbjenis_user ON ((tbuser.id_juser = tbjenis_user.id_juser)));
 
 
-ALTER TABLE lap_user OWNER TO mandan;
+
 
 --
 -- Name: tbhasil_ujian_id_hasil_seq; Type: SEQUENCE; Schema: public; Owner: mandan
@@ -783,7 +783,7 @@ CREATE SEQUENCE tbhasil_ujian_id_hasil_seq
     CACHE 1;
 
 
-ALTER TABLE tbhasil_ujian_id_hasil_seq OWNER TO mandan;
+
 
 --
 -- Name: tbhasil_ujian; Type: TABLE; Schema: public; Owner: mandan
@@ -797,7 +797,7 @@ CREATE TABLE tbhasil_ujian (
 );
 
 
-ALTER TABLE tbhasil_ujian OWNER TO mandan;
+
 
 --
 -- Name: nilai_rata; Type: VIEW; Schema: public; Owner: mandan
@@ -823,7 +823,7 @@ CREATE VIEW nilai_rata AS
   GROUP BY b.id_ujian, b.nm_matkul, b.nm_jujian, b.nm_dosen;
 
 
-ALTER TABLE nilai_rata OWNER TO mandan;
+
 
 --
 -- Name: statistik; Type: VIEW; Schema: public; Owner: mandan
@@ -840,7 +840,7 @@ CREATE VIEW statistik AS
            FROM tbdosen) AS total_dosen;
 
 
-ALTER TABLE statistik OWNER TO mandan;
+
 
 --
 -- Name: tbpengaturan; Type: TABLE; Schema: public; Owner: mandan
@@ -851,7 +851,7 @@ CREATE TABLE tbpengaturan (
 );
 
 
-ALTER TABLE tbpengaturan OWNER TO mandan;
+
 
 --
 -- Data for Name: peserta_ujian; Type: TABLE DATA; Schema: public; Owner: mandan
@@ -2545,4 +2545,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
